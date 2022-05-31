@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\AccountantController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CeoController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ManagerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +18,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [LoginController::class, 'login'])->name('login');
+Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::resource('employees', EmployeeController::class)->except([
+	'show',
+]);
+Route::resource('accountants', AccountantController::class)->except([
+	'show',
+]);
+Route::resource('managers', ManagerController::class)->except([
+	'show',
+]);
+Route::resource('ceo', CeoController::class)->except([
+	'show',
+]);

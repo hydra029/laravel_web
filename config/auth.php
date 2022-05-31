@@ -46,6 +46,23 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+	    'emp' => [
+		    'driver' => 'session',
+		    'provider' => 'emp',
+	    ],
+	    'mgr' => [
+		    'driver' => 'session',
+		    'provider' => 'mgr',
+	    ],
+	    'acct' => [
+		    'driver' => 'session',
+		    'provider' => 'acct',
+	    ],
+	    'ceo' => [
+		    'driver' => 'session',
+		    'provider' => 'ceo',
+	    ],
+
     ],
 
     /*
@@ -66,9 +83,21 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'emp' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Employee::class,
+        ],
+        'mgr' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Manager::class,
+        ],
+        'acct' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Accountant::class,
+        ],
+        'ceo' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Ceo::class,
         ],
 
         // 'users' => [
@@ -93,7 +122,25 @@ return [
     */
 
     'passwords' => [
-        'users' => [
+        'emp' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'mgr' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'acct' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'ceo' => [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
