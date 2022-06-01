@@ -13,8 +13,8 @@ class Pay_rateFactory extends Factory
 	 */
 	public function definition(): array
 	{
-		for ($i = 1; $i <= 20; $i++) {
-			for ($j = 1; $j <= 20; $j++) {
+		for ($i = 1; $i <= 10; $i++) {
+			for ($j = 1; $j <= 10; $j++) {
 				$unique[] = $i . '-' . $j;
 			}
 		}

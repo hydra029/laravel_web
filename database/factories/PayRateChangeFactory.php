@@ -14,8 +14,8 @@ class PayRateChangeFactory extends Factory
 	public function definition(): array
 	{
 		return [
-			'dept_id' => $this->faker->numberBetween(1, 20),
-			'role_id' => $this->faker->numberBetween(1, 20),
+			'dept_id' => $this->faker->numberBetween(1, 10),
+			'role_id' => $this->faker->numberBetween(1, 10),
 			'pay_rate' => $this->faker->numberBetween(5000000, 20000000),
 		];
 	}

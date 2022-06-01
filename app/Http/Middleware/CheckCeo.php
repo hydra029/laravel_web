@@ -18,18 +18,16 @@ class CheckCeo
 	 */
 	public function handle(Request $request, Closure $next)
 	{
-		if (!session('key')) {
-			return redirect()->route('login');
-		}
-		switch (session('key')) {
+		switch (session('level')) {
 			case 1:
-				return redirect()->route('employee.index');
+				return redirect()->route('employees.index');
 			case 2:
-				return redirect()->route('manager.index');
+				return redirect()->route('managers.index');
 			case 3:
-				return redirect()->route('accountant.index');
-			default:
+				return redirect()->route('accountants.index');
+			case 4:
 				return $next($request);
-		}
-	}
+			default:
+				return redirect()->route('login');
+		}	}
 }

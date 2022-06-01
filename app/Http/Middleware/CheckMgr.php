@@ -18,18 +18,17 @@ class CheckMgr
      */
     public function handle(Request $request, Closure $next)
     {
-	    if (!session('key')) {
-		    return redirect()->route('login');
-	    }
-	    switch (session('key')) {
+	    switch (session('level')) {
 		    case 1:
-			    return redirect()->route('employee.index');
+			    return redirect()->route('employees.index');
 		    case 2:
-			    return redirect()->route('manager.index');
+			    return $next($request);
+		    case 3:
+			    return redirect()->route('accountants.index');
 		    case 4:
 			    return redirect()->route('ceo.index');
 		    default:
-			    return $next($request);
+			    redirect()->route('ceo.index');
 	    }
     }
 }

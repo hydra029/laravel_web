@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Accountant;
 use App\Models\Ceo;
-use App\Models\Check;
+use App\Models\Attendance;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Manager;
@@ -23,23 +23,23 @@ class DatabaseSeeder extends Seeder
 	public function run(): void
 	{
 		$this->call([
-			Department::factory(20)
+			Department::factory(10)
 				->create(),
-			Role::factory(20)
+			Role::factory(10)
 				->create(),
-			Pay_rate::factory(100)
+			Pay_rate::factory(5)
 				->create(),
-			Employee::factory(1000)
+			Employee::factory(10)
 				->create(),
-			Accountant::factory(50)
+			Accountant::factory(5)
 				->create(),
 			Ceo::factory(1)
 				->create(),
-			Manager::factory(20)
+			Manager::factory(10)
 				->create(),
-			Check::factory(100)
+			Attendance::factory(10)
 				->create(),
-			Salary::factory(1000)
+			Salary::factory(10)
 				->create(),
 		]);
 	}

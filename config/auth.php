@@ -83,6 +83,10 @@ return [
     */
 
     'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
         'emp' => [
             'driver' => 'eloquent',
             'model' => App\Models\Employee::class,

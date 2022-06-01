@@ -13,7 +13,8 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+	    return session('level') === 1;
+
     }
 
     /**

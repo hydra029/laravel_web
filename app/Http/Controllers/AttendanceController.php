@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Check;
+use App\Models\Attendance;
 use App\Http\Requests\StoreCheckRequest;
 use App\Http\Requests\UpdateCheckRequest;
+use Illuminate\Http\Response;
 
-class CheckController extends Controller
+class AttendanceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -21,7 +22,7 @@ class CheckController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create()
     {
@@ -31,8 +32,8 @@ class CheckController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCheckRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCheckRequest $request
+     * @return Response
      */
     public function store(StoreCheckRequest $request)
     {
@@ -42,10 +43,10 @@ class CheckController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Check  $check
-     * @return \Illuminate\Http\Response
+     * @param Attendance $check
+     * @return void
      */
-    public function show(Check $check)
+    public function show(Attendance $check)
     {
         //
     }
@@ -53,10 +54,10 @@ class CheckController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Check  $check
-     * @return \Illuminate\Http\Response
+     * @param Attendance $check
+     * @return void
      */
-    public function edit(Check $check)
+    public function edit(Attendance $check)
     {
         //
     }
@@ -64,11 +65,11 @@ class CheckController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCheckRequest  $request
-     * @param  \App\Models\Check  $check
-     * @return \Illuminate\Http\Response
+     * @param UpdateCheckRequest $request
+     * @param Attendance $check
+     * @return Response
      */
-    public function update(UpdateCheckRequest $request, Check $check)
+    public function update(UpdateCheckRequest $request, Attendance $check)
     {
         //
     }
@@ -76,10 +77,10 @@ class CheckController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Check  $check
-     * @return \Illuminate\Http\Response
+     * @param Attendance $check
+     * @return Response
      */
-    public function destroy(Check $check)
+    public function destroy(Attendance $check)
     {
         //
     }

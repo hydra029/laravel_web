@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Check;
+use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class CheckPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Check  $check
+     * @param  \App\Models\Attendance  $check
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Check $check)
+    public function view(User $user, Attendance $check)
     {
         //
     }
@@ -48,10 +48,10 @@ class CheckPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Check  $check
+     * @param  \App\Models\Attendance  $check
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Check $check)
+    public function update(User $user, Attendance $check)
     {
         //
     }
@@ -60,10 +60,10 @@ class CheckPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Check  $check
+     * @param  \App\Models\Attendance  $check
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Check $check)
+    public function delete(User $user, Attendance $check)
     {
         //
     }
@@ -72,10 +72,10 @@ class CheckPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Check  $check
+     * @param  \App\Models\Attendance  $check
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Check $check)
+    public function restore(User $user, Attendance $check)
     {
         //
     }
@@ -84,10 +84,10 @@ class CheckPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Check  $check
+     * @param  \App\Models\Attendance  $check
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Check $check)
+    public function forceDelete(User $user, Attendance $check)
     {
         //
     }

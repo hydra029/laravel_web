@@ -19,7 +19,6 @@
     <div class="auth-fluid-form-box">
         <div class="align-items-center d-flex h-100">
             <div class="card-body">
-
                 <!-- Logo -->
                 <div class="auth-brand text-center text-lg-left">
                         <span><img src="{{ asset('img/cc6b25538116323e310f02dc72369bd4.jpg') }}" height="20" alt="Logo"></span>
@@ -50,7 +49,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-center">
-                        <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-login"></i> Log In
+                        <button class="btn btn-primary btn-block"><i class="mdi mdi-login"></i> Log In
                         </button>
                     </div>
                 </form>

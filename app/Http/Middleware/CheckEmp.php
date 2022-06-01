@@ -18,10 +18,17 @@ class CheckEmp
      */
     public function handle(Request $request, Closure $next)
     {
-	    if (session('key') !== 1) {
-		    return redirect()->route('login');
+	    switch (session('level')) {
+		    case 1:
+			    return $next($request);
+		    case 2:
+			    return redirect()->route('managers.index');
+		    case 3:
+			    return redirect()->route('accountants.index');
+		    case 4:
+			    return redirect()->route('ceo.index');
+		    default:
+			    return redirect()->route('login');
 	    }
-
-	    return $next($request);
     }
 }

@@ -16,9 +16,9 @@ class SalaryFactory extends Factory
 
 	public function definition(): array
 	{
-		for ($i = 2010; $i <= 2022; $i++) {
+		for ($i = 2020; $i <= 2022; $i++) {
 			for ($j = 1; $j <= 12; $j++) {
-				for ($q = 1; $q <= 1000; $q++) {
+				for ($q = 1; $q <= 10; $q++) {
 					$unique[] = $i . '-' . $j . '-' . $q;
 				}
 			}
@@ -41,8 +41,8 @@ class SalaryFactory extends Factory
 			'work_day' => $this->faker->numberBetween(20, 30),
 			'pay_rate' => $this->faker->numberBetween(5000000, 20000000),
 			'salary' => $this->faker->numberBetween(8000000, 40000000),
-			'mgr_id' => $this->faker->numberBetween(1, 20),
-			'acct_id' => $this->faker->numberBetween(1, 50),
+			'mgr_id' => $this->faker->numberBetween(1, 10),
+			'acct_id' => $this->faker->numberBetween(1, 5),
 			'ceo_sign' => $this->faker->boolean,
 			'status' => $this->faker->boolean,
 		];

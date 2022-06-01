@@ -32,107 +32,108 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class Kernel extends HttpKernel
 {
-    /**
-     * The application's global HTTP middleware stack.
-     *
-     * This middleware are run during every request to your application.
-     *
-     * @var array
-     */
-    protected $middleware = [
-        // \App\Http\Middleware\TrustHosts::class,
-        TrustProxies::class,
-        HandleCors::class,
-        PreventRequestsDuringMaintenance::class,
-        ValidatePostSize::class,
-        TrimStrings::class,
-        ConvertEmptyStringsToNull::class,
-    ];
+	/**
+	 * The application's global HTTP middleware stack.
+	 *
+	 * This middleware are run during every request to your application.
+	 *
+	 * @var array
+	 */
+	protected $middleware = [
+		// \App\Http\Middleware\TrustHosts::class,
+		TrustProxies::class,
+		HandleCors::class,
+		PreventRequestsDuringMaintenance::class,
+		ValidatePostSize::class,
+		TrimStrings::class,
+		ConvertEmptyStringsToNull::class,
+	];
 
-    /**
-     * The application's route middleware groups.
-     *
-     * @var array
-     */
-    protected $middlewareGroups = [
-        'web' => [
-            EncryptCookies::class,
-            AddQueuedCookiesToResponse::class,
-            StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
-            ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
-            SubstituteBindings::class,
-        ],
+	/**
+	 * The application's route middleware groups.
+	 *
+	 * @var array
+	 */
+	protected $middlewareGroups = [
+		'web' => [
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			StartSession::class,
+//			AuthenticateSession::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+			SubstituteBindings::class,
 
-        'api' => [
-            'throttle:api',
-            SubstituteBindings::class,
-        ],
-	    'employee' => [
-		    EncryptCookies::class,
-		    AddQueuedCookiesToResponse::class,
-		    StartSession::class,
-		    // \Illuminate\Session\Middleware\AuthenticateSession::class,
-		    ShareErrorsFromSession::class,
-		    VerifyCsrfToken::class,
-		    SubstituteBindings::class,
-		    CheckEmp::class,
-	    ],
-	    'accountant' => [
-		    EncryptCookies::class,
-		    AddQueuedCookiesToResponse::class,
-		    StartSession::class,
-		    // \Illuminate\Session\Middleware\AuthenticateSession::class,
-		    ShareErrorsFromSession::class,
-		    VerifyCsrfToken::class,
-		    SubstituteBindings::class,
-		    CheckAcct::class,
-	    ],
-	    'manager' => [
-		    EncryptCookies::class,
-		    AddQueuedCookiesToResponse::class,
-		    StartSession::class,
-		    // \Illuminate\Session\Middleware\AuthenticateSession::class,
-		    ShareErrorsFromSession::class,
-		    VerifyCsrfToken::class,
-		    SubstituteBindings::class,
-		    CheckMgr::class,
-	    ],
-	    'ceo' => [
-		    EncryptCookies::class,
-		    AddQueuedCookiesToResponse::class,
-		    StartSession::class,
-		    // \Illuminate\Session\Middleware\AuthenticateSession::class,
-		    ShareErrorsFromSession::class,
-		    VerifyCsrfToken::class,
-		    SubstituteBindings::class,
-		    CheckCeo::class,
-	    ],
+		],
 
-    ];
+		'api' => [
+			'throttle:api',
+			SubstituteBindings::class,
+		],
+		'employee' => [
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			StartSession::class,
+//		    AuthenticateSession::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+			SubstituteBindings::class,
+			CheckEmp::class,
+		],
+		'accountant' => [
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			StartSession::class,
+//		    AuthenticateSession::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+			SubstituteBindings::class,
+			CheckAcct::class,
+		],
+		'manager' => [
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			StartSession::class,
+//		    AuthenticateSession::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+			SubstituteBindings::class,
+			CheckMgr::class,
+		],
+		'ceo' => [
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			StartSession::class,
+//		    AuthenticateSession::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+			SubstituteBindings::class,
+			CheckCeo::class,
+		],
 
-    /**
-     * The application's route middleware.
-     *
-     * This middleware may be assigned to group or used individually.
-     *
-     * @var array
-     */
-    protected $routeMiddleware = [
-        'auth' => Authenticate::class,
-        'auth.basic' => AuthenticateWithBasicAuth::class,
-        'cache.headers' => SetCacheHeaders::class,
-        'can' => Authorize::class,
-        'guest' => RedirectIfAuthenticated::class,
-        'password.confirm' => RequirePassword::class,
-        'signed' => ValidateSignature::class,
-        'throttle' => ThrottleRequests::class,
-        'verified' => EnsureEmailIsVerified::class,
-	    'emp' =>  CheckEmp::class,
-	    'ceo' =>  CheckCeo::class,
-	    'mgr' =>  CheckMgr::class,
-	    'acct' =>  CheckAcct::class,
-	    'login' => CheckLogin::class,
-    ];
+	];
+
+	/**
+	 * The application's route middleware.
+	 *
+	 * This middleware may be assigned to group or used individually.
+	 *
+	 * @var array
+	 */
+	protected $routeMiddleware = [
+		'auth' => Authenticate::class,
+		'auth.basic' => AuthenticateWithBasicAuth::class,
+		'cache.headers' => SetCacheHeaders::class,
+		'can' => Authorize::class,
+		'guest' => RedirectIfAuthenticated::class,
+		'password.confirm' => RequirePassword::class,
+		'signed' => ValidateSignature::class,
+		'throttle' => ThrottleRequests::class,
+		'verified' => EnsureEmailIsVerified::class,
+		'employee' => CheckEmp::class,
+		'ceo' => CheckCeo::class,
+		'manager' => CheckMgr::class,
+		'accountant' => CheckAcct::class,
+		'login' => CheckLogin::class,
+	];
 }

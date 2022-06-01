@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChecksTable extends Migration
+class CreateAttendanceTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -13,13 +13,13 @@ class CreateChecksTable extends Migration
 	 */
 	public function up(): void
 	{
-		Schema::create('checks', static function (Blueprint $table) {
-			$table->timestamp('date');
+		Schema::create('attendances', static function (Blueprint $table) {
+			$table->timestamp('date')->format('d-m-Y');
 			$table->unsignedBigInteger('emp_id');
 			$table->tinyInteger('shift');
 			$table->boolean('check_in')->default(0);
 			$table->boolean('check_out')->default(0);
-			$table->primary(['emp_id', 'date']);
+			$table->primary(['emp_id', 'date', 'shift']);
 		});
 	}
 
@@ -30,6 +30,6 @@ class CreateChecksTable extends Migration
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('checks');
+		Schema::dropIfExists('attendances');
 	}
 }

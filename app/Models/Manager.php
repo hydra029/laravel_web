@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Database\Factories\ManagerFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,20 +23,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $age
  * @property-read string $full_name
  * @property-read string $gender_name
- * @method static \Database\Factories\ManagerFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Manager newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Manager query()
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereDeptId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereDob($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereFname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereLname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereRoleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manager whereStatus($value)
+ * @method static ManagerFactory factory(...$parameters)
+ * @method static Builder|Manager newModelQuery()
+ * @method static Builder|Manager newQuery()
+ * @method static Builder|Manager query()
+ * @method static Builder|Manager whereDeptId($value)
+ * @method static Builder|Manager whereDob($value)
+ * @method static Builder|Manager whereEmail($value)
+ * @method static Builder|Manager whereFname($value)
+ * @method static Builder|Manager whereGender($value)
+ * @method static Builder|Manager whereId($value)
+ * @method static Builder|Manager whereLname($value)
+ * @method static Builder|Manager wherePassword($value)
+ * @method static Builder|Manager whereRoleId($value)
+ * @method static Builder|Manager whereStatus($value)
  * @mixin \Eloquent
  */
 class Manager extends Model

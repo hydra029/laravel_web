@@ -9,25 +9,26 @@ use Illuminate\Http\Response;
 
 class CheckLogin
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param Request $request
-     * @param Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return Response|RedirectResponse
-     */
+	/**
+	 * Handle an incoming request.
+	 *
+	 * @param Request $request
+	 * @param Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+	 * @return Response|RedirectResponse
+	 */
 	public function handle(Request $request, Closure $next)
 	{
-
-		switch (session('key')) {
+		switch (session('level')) {
 			case 1:
-				return redirect()->route('employee.index');
+				return redirect()->route('employees.index');
 			case 2:
-				return redirect()->route('manager.index');
+				return redirect()->route('managers.index');
 			case 3:
-				return redirect()->route('accountant.index');
+				return redirect()->route('accountants.index');
 			case 4:
 				return redirect()->route('ceo.index');
+			default:
+				session()->flush();
 		}
 		return $next($request);
 	}

@@ -20,7 +20,7 @@ class ManagerFactory extends Factory
 	        'dob' => $this->faker->dateTimeBetween(),
 	        'email' => $this->faker->email,
 	        'password' => $this->faker->password,
-	        'dept_id' => $this->faker->unique()->numberBetween(1, 20),
+	        'dept_id' => $this->faker->unique()->numberBetween(1, 10),
 	        'role_id' => 1,
 	        'status' => $this->faker->boolean,
         ];
