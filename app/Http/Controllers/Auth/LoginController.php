@@ -29,48 +29,61 @@ class LoginController extends Controller
 		return view('auth.login');
 	}
 
-	public function processLogin(Request $request)
+	public function processLogin(Request $request): RedirectResponse
 	{
 		try {
-			session()->put('email', $request->get('email'));
-			session()->put('password', $request->get('password'));
-			if ($user = Employee::query()
+
+			if ($emp = Employee::query()
 				->where('email', $request->get('email'))
 				->where('password', $request->get('password'))
-				->exists()) {
-
+				->first()) {
+				session()->put('id', $emp->id);
+				session()->put('email', $emp->email);
+				session()->put('password', $emp->password);
 				session()->put('level', 1);
-
+				session()->put('success', 'Sign in successfully');
 				return redirect()->route('employees.index');
 			}
 
-			if ($user = Manager::query()
+			if ($mgr = Manager::query()
 				->where('email', $request->get('email'))
 				->where('password', $request->get('password'))
-				->exists()) {
+				->first()) {
+				session()->put('id', $mgr->id);
+				session()->put('email', $mgr->email);
+				session()->put('password', $mgr->password);
 				session()->put('level', 2);
+				session()->put('success', 'Sign in successfully');
 				return redirect()->route('managers.index');
 			}
-
 			if ($user = Accountant::query()
 				->where('email', $request->get('email'))
 				->where('password', $request->get('password'))
-				->exists()) {
+				->first()) {
+				session()->put('id', $user->id);
+				session()->put('email', $user->email);
+				session()->put('password', $user->password);
 				session()->put('level', 3);
-
+				session()->put('success', 'Sign in successfully');
 				return redirect()->route('accountants.index');
 			}
 
 			if ($user = Ceo::query()
 				->where('email', $request->get('email'))
 				->where('password', $request->get('password'))
-				->exists()) {
+				->first()) {
+				session()->put('id', $user->id);
+				session()->put('email', $user->email);
+				session()->put('password', $user->password);
 				session()->put('level', 4);
-
+				session()->put('success', 'Sign in successfully');
 				return redirect()->route('ceo.index');
 			}
-		} catch (Throwable $e) {
+			session()->put('level',0);
+			session()->put('error', 'Wrong email or password');
 			return redirect()->route('login');
+		} catch (Throwable $e) {
+			return back();
 		}
 	}
 

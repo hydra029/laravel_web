@@ -18,7 +18,8 @@ class ManagerController extends Controller
 
 	public function __construct()
 	{
-		$this->model = (new Manager())->query();
+		$this->middleware('manager');
+		$this->model = Manager::query();
 		$routeName = Route::currentRouteName();
 		$arr = explode('.', $routeName);
 		$arr = array_map('ucfirst', $arr);
@@ -34,17 +35,18 @@ class ManagerController extends Controller
 	 */
 	public function index()
 	{
-		$limit = 25;
-		$fields = array('employees.*', 'departments.name as dept_name', 'roles.name as role_name');
+		$limit = 10;
+		$fields = array('employees.*', 'roles.name as role_name');
+		$dept_id = Manager::where('id','=',session('id'))
+			->get('dept_id');
 		$data = Employee::where('employees.status','=','1')
-			->where('departments.status','=','1')
-			->where('roles.status','=','1')
-			->leftJoin('departments', 'employees.dept_id', '=', 'departments.id')
+			->where('employees.dept_id','=',$dept_id->count())
 			->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
-			->paginate($limit, $fields);
+			->paginate($limit,$fields);
 
 		return view('managers.index', [
 			'data' => $data,
+			'num'=> 1,
 		]);
 	}
 

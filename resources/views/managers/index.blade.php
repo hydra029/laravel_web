@@ -18,17 +18,16 @@
         <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Email</th>
-            <th>Department</th>
+            <th>Role</th>
+            <th>Status<th>
+            <th>Role</th>
             <th>Role</th>
         </tr>
         </thead>
         @foreach($data as $each)
             <tr>
                 <td>
-                    {{$each -> id}}
+                    {{$num++}}
                 </td>
                 <td>
                     {{$each -> full_name}}
@@ -38,12 +37,6 @@
                 </td>
                 <td>
                     {{$each -> age}}
-                </td>
-                <td>
-                    {{$each -> email}}
-                </td>
-                <td>
-                    {{$each -> dept_name}}
                 </td>
                 <td>
                     {{$each -> role_name}}

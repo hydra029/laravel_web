@@ -42,7 +42,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Employee extends Model
 {
-    use HasFactory;
+	use HasFactory;
+
 	protected $fillable = [
 		'fname',
 		'lname',
@@ -65,7 +66,7 @@ class Employee extends Model
 
 	public function getDateAttribute(): string
 	{
-		return date_format(date_create(),'D d-m-Y');
+		return date_format(date_create(), 'D d-m-Y');
 	}
 
 	public function getFullNameAttribute(): string
@@ -75,8 +76,29 @@ class Employee extends Model
 
 	public function getGenderNameAttribute(): string
 	{
-
 		return ($this->gender === 1 ? 'Male' : 'Female');
+	}
+
+	public function getShiftStatusAttribute(): string
+	{
+		$shift = Attendance_shift_time::where('status', '=', 2)->get('id');
+		$date = date('Y-m-d');
+		$check_in = Attendance::where('date', '=', $date)
+			->where('shift', '=', $shift)
+			->get('check_in');
+		$check_out = Attendance::where('date', '=', $date)
+			->where('shift', '=', $shift)
+			->get('check_out');
+		if ($check_in != 1) {
+			if ($check_out != 1) {
+				$status = 'Not checked yet';
+			} else {
+				$status = 'Checked out';
+			}
+		}else {
+			$status = 'Checked in';
+		}
+		return $status;
 	}
 
 	public $timestamps = false;

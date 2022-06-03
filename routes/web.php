@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountantController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CeoController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,20 +19,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', [HomeController::class, 'test'])->name('test');
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
+Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
+Route::put('/managers/checkin', [EmployeeController::class, 'checkin'])->name('managers.checkin');
+Route::put('/managers/checkout', [EmployeeController::class, 'checkout'])->name('managers.checkout');
+Route::put('/accountants/checkin', [EmployeeController::class, 'checkin'])->name('accountants.checkin');
+Route::put('/accountants/checkout', [EmployeeController::class, 'checkout'])->name('accountants.checkout');
+
 
 Route::resource('employees', EmployeeController::class)->except([
 	'show',
-])->middleware('employee');
+]);
 
 Route::resource('accountants', AccountantController::class)->except([
 	'show',
-])->middleware('accountant');
+]);
+
 Route::resource('managers', ManagerController::class)->except([
 	'show',
-])->middleware('manager');
+
+]);
 Route::resource('ceo', CeoController::class)->except([
 	'show',
-])->middleware('ceo');
+]);

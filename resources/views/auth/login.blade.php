@@ -21,7 +21,8 @@
             <div class="card-body">
                 <!-- Logo -->
                 <div class="auth-brand text-center text-lg-left">
-                        <span><img src="{{ asset('img/cc6b25538116323e310f02dc72369bd4.jpg') }}" height="20" alt="Logo"></span>
+                    <span><img src="{{ asset('img/cc6b25538116323e310f02dc72369bd4.jpg') }}" height="20"
+                               alt="Logo"></span>
                 </div>
 
                 <!-- title-->
@@ -100,6 +101,7 @@
 <!-- bundle -->
 <script src="{{ asset('js/jquery.min.js' )}}"></script>
 <script src="{{ asset('js/vendor.min.js' )}}"></script>
-<script src="{{ asset('js/app.min.js' )}}"></script>
+<script src="{{ asset('js/notify.min.js' )}}"></script>
+@include('layout.notify')
 </body>
 </html>

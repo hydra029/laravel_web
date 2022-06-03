@@ -15,13 +15,13 @@ class CreateSalariesTable extends Migration
 	{
 		Schema::create('salaries', static function (Blueprint $table) {
 			$table->unsignedBigInteger('emp_id');
-			$table->tinyInteger('month');
+			$table->unsignedTinyInteger('month');
 			$table->integer('year');
 			$table->string('dept_name');
 			$table->string('role_name');
-			$table->tinyInteger('work_day');
-			$table->integer('pay_rate');
-			$table->integer('salary');
+			$table->unsignedTinyInteger('work_day');
+			$table->unsignedInteger('pay_rate');
+			$table->unsignedInteger('salary');
 			$table->unsignedBigInteger('mgr_id');
 			$table->unsignedBigInteger('acct_id');
 			$table->boolean('ceo_sign');

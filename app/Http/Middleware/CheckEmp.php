@@ -18,6 +18,7 @@ class CheckEmp
      */
     public function handle(Request $request, Closure $next)
     {
+
 	    switch (session('level')) {
 		    case 1:
 			    return $next($request);

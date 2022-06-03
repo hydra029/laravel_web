@@ -19,6 +19,8 @@ class CheckLogin
 	public function handle(Request $request, Closure $next)
 	{
 		switch (session('level')) {
+			case 0:
+				return $next($request);
 			case 1:
 				return redirect()->route('employees.index');
 			case 2:
@@ -27,9 +29,8 @@ class CheckLogin
 				return redirect()->route('accountants.index');
 			case 4:
 				return redirect()->route('ceo.index');
-			default:
-				session()->flush();
+
 		}
-		return $next($request);
+
 	}
 }

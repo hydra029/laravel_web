@@ -5,24 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Attendance;
+use App\Models\Attendance_shift_time;
 use App\Models\Employee;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class EmployeeController extends Controller
 {
 
 	public function __construct()
 	{
-		$this->model = Employee::query();
+		$this->middleware('employee');
 		$routeName = Route::currentRouteName();
 		$arr = explode('.', $routeName);
 		$arr = array_map('ucfirst', $arr);
 		$title = implode(' - ', $arr);
 
-		\Illuminate\Support\Facades\View::share('title', $title);
+		View::share('title', $title);
 	}
 
 	/**
@@ -32,21 +35,11 @@ class EmployeeController extends Controller
 	 */
 	public function index()
 	{
-		$date = date_format(date_create(), 'd-m-Y');
-		$email = session('email');
-		if ($user = Employee::query()
-			->where('email', session('email'))
-			->where('password', session('password'))
-			->first()) {
-			session()->put('id', $user->id);
-		}
-		$id = session('id');
-
-
-		$data = Attendance::where('emp_id', '=', $id)
+		$date = date_format(date_create(), 'Y-m-d');
+		$data = Attendance::where('emp_id', '=', session('id'))
 			->where('date', '=', $date)
-			->exists();
-		dd($date);
+			->where('emp_role', '=', 1)
+			->get();
 		return view('employees.index', [
 			'data' => $data,
 		]);
@@ -57,7 +50,8 @@ class EmployeeController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function create(): Response
+	public
+	function create(): Response
 	{
 		//
 	}
@@ -66,20 +60,23 @@ class EmployeeController extends Controller
 	 * Store a newly created resource in storage.
 	 *
 	 * @param StoreEmployeeRequest $request
-	 * @return void
+	 * @return string
 	 */
-	public function store(StoreEmployeeRequest $request): void
+	public
+	function store(StoreEmployeeRequest $request): string
 	{
-		$users = Employee::query()->get('id');
-
-		foreach ($users as $each) {
-			$date = date_format(date_create(), 'd-m-Y');
-
-			for ($i = 1; $i <= 3; $i++) {
-				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
-				Attendance::create($data);
-			}
-		}
+//		$users = Employee::get('id');
+//
+//		foreach ($users as $each) {
+//			$date = date_format(date_create(), 'Y-m-d');
+//
+//			for ($i = 1; $i <= 3; $i++) {
+//				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
+//				Attendance::create($data);
+//			}
+//		}
+//
+//		return redirect()->route('employees.index');
 	}
 
 	/**
@@ -88,7 +85,8 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return void
 	 */
-	public function show(Employee $employee): void
+	public
+	function show(Employee $employee): void
 	{
 		//
 	}
@@ -99,9 +97,40 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return void
 	 */
-	public function edit(Employee $employee): void
+	public
+	function edit(Employee $employee): void
 	{
 		//
+	}
+
+	public
+	function checkin(): RedirectResponse
+	{
+		$date = date('H:i');
+		$shift = Attendance::where('status', '=', 2)->get('id');
+		$start_time = Attendance_shift_time::where('id', '=', $shift)->get('check_in_start');
+		$end_time = Attendance_shift_time::where('id', '=', $shift)->get('check_in_end');
+		if ($date >= $start_time && $date <= $end_time) {
+			Attendance::where('emp_id', '=', session('id'))
+				->where('shift', '=', $shift)
+				->update(['check_in' => 1]);
+		}
+		return redirect()->route('employees.index');
+	}
+
+	public
+	function checkout(): RedirectResponse
+	{
+		$date = date('H:i');
+		$shift = Attendance::where('status', '=', 2)->get('id');
+		$start_time = Attendance_shift_time::where('id', '=', $shift)->get('check_out_start');
+		$end_time = Attendance_shift_time::where('id', '=', $shift)->get('check_out_end');
+		if ($date >= $start_time && $date <= $end_time) {
+			Attendance::where('emp_id', '=', session('id'))
+				->where('shift', '=', $shift)
+				->update(['check_out' => 1]);
+		}
+		return redirect()->route('employees.index');
 	}
 
 	/**
@@ -111,9 +140,9 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return void
 	 */
-	public function update(UpdateEmployeeRequest $request, Employee $employee): void
+	public
+	function update(UpdateEmployeeRequest $request, Employee $employee): void
 	{
-		//
 	}
 
 	/**
@@ -122,7 +151,8 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return Response
 	 */
-	public function destroy(Employee $employee): Response
+	public
+	function destroy(Employee $employee): Response
 	{
 		//
 	}

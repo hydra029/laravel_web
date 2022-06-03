@@ -15,7 +15,8 @@ class AccountantController extends Controller
 {
 	public function __construct()
 	{
-		$this->model = (new Manager())->query();
+		$this->middleware('accountant');
+		$this->model = Manager::query();
 		$routeName = Route::currentRouteName();
 		$arr = explode('.', $routeName);
 		$arr = array_map('ucfirst', $arr);
@@ -58,7 +59,7 @@ class AccountantController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAccountantRequest  $request
+     * @param StoreAccountantRequest $request
      * @return Response
      */
     public function store(StoreAccountantRequest $request)

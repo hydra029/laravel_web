@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\AttendanceEnum;
+use App\Enums\ShiftEnum;
+use App\Enums\ShiftStatusEnum;
 use Database\Factories\AttendanceFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,4 +44,20 @@ class Attendance extends Model
 	protected $casts = [
 		'date' => 'timestamp:d-m-Y',
 	];
+	public function getShiftNameAttribute(): string
+	{
+		return ShiftEnum::getKey($this->shift);
+	}
+	public function getShiftStatusAttribute(): string
+	{
+		return ShiftStatusEnum::getKey($this->status);
+	}
+	public function getCheckInStatusAttribute(): string
+	{
+		return AttendanceEnum::getKey($this->check_in);
+	}
+	public function getCheckOutStatusAttribute(): string
+	{
+		return AttendanceEnum::getKey($this->check_out);
+	}
 }

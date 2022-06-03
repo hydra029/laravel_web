@@ -17,7 +17,8 @@ class CeoController extends Controller
 {
 	public function __construct()
 	{
-		$this->model = (new Manager())->query();
+		$this->middleware('ceo');
+		$this->model = Manager::query();
 		$routeName = Route::currentRouteName();
 		$arr = explode('.', $routeName);
 		$arr = array_map('ucfirst', $arr);

@@ -19,6 +19,8 @@ class CheckMgr
     public function handle(Request $request, Closure $next)
     {
 	    switch (session('level')) {
+		    case 0:
+			    return redirect()->route('login');
 		    case 1:
 			    return redirect()->route('employees.index');
 		    case 2:
@@ -27,8 +29,6 @@ class CheckMgr
 			    return redirect()->route('accountants.index');
 		    case 4:
 			    return redirect()->route('ceo.index');
-		    default:
-			    redirect()->route('ceo.index');
 	    }
     }
 }

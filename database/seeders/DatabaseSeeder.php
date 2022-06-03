@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
 				->create(),
 			Manager::factory(10)
 				->create(),
-			Attendance::factory(10)
+			Attendance::factory(0)
 				->create(),
 			Salary::factory(10)
 				->create(),

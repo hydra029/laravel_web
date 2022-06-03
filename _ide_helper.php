@@ -15,6 +15,8 @@
     namespace Illuminate\Support\Facades {
 
 	    use Illuminate\Routing\Router;
+	    use Illuminate\Session\SessionManager;
+	    use Illuminate\Session\Store;
 
 	    /**
      * 
@@ -9210,7 +9212,7 @@
                     /**
          * Set the active session store.
          *
-         * @param \Illuminate\Session\Store $session
+         * @param Store $session
          * @return void 
          * @static 
          */ 
@@ -9630,7 +9632,7 @@
                     /**
          * Get the session associated with the request.
          *
-         * @return \Illuminate\Session\Store 
+         * @return Store
          * @throws \RuntimeException
          * @static 
          */ 
@@ -9642,7 +9644,7 @@
                     /**
          * Get the session associated with the request.
          *
-         * @return \Illuminate\Session\Store|null 
+         * @return Store|null
          * @static 
          */ 
         public static function getSession()
@@ -12843,7 +12845,7 @@
          */ 
         public static function shouldBlock()
         {
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->shouldBlock();
         }
                     /**
@@ -12854,7 +12856,7 @@
          */ 
         public static function blockDriver()
         {
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->blockDriver();
         }
                     /**
@@ -12865,7 +12867,7 @@
          */ 
         public static function getSessionConfig()
         {
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->getSessionConfig();
         }
                     /**
@@ -12876,7 +12878,7 @@
          */ 
         public static function getDefaultDriver()
         {
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->getDefaultDriver();
         }
                     /**
@@ -12888,7 +12890,7 @@
          */ 
         public static function setDefaultDriver($name)
         {
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         $instance->setDefaultDriver($name);
         }
                     /**
@@ -12901,7 +12903,7 @@
          */ 
         public static function driver($driver = null)
         {            //Method inherited from \Illuminate\Support\Manager         
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->driver($driver);
         }
                     /**
@@ -12909,12 +12911,12 @@
          *
          * @param string $driver
          * @param \Closure $callback
-         * @return \Illuminate\Session\SessionManager 
+         * @return SessionManager
          * @static 
          */ 
         public static function extend($driver, $callback)
         {            //Method inherited from \Illuminate\Support\Manager         
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->extend($driver, $callback);
         }
                     /**
@@ -12925,7 +12927,7 @@
          */ 
         public static function getDrivers()
         {            //Method inherited from \Illuminate\Support\Manager         
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->getDrivers();
         }
                     /**
@@ -12936,30 +12938,30 @@
          */ 
         public static function getContainer()
         {            //Method inherited from \Illuminate\Support\Manager         
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->getContainer();
         }
                     /**
          * Set the container instance used by the manager.
          *
          * @param \Illuminate\Contracts\Container\Container $container
-         * @return \Illuminate\Session\SessionManager 
+         * @return SessionManager
          * @static 
          */ 
         public static function setContainer($container)
         {            //Method inherited from \Illuminate\Support\Manager         
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->setContainer($container);
         }
                     /**
          * Forget all of the resolved driver instances.
          *
-         * @return \Illuminate\Session\SessionManager 
+         * @return SessionManager
          * @static 
          */ 
         public static function forgetDrivers()
         {            //Method inherited from \Illuminate\Support\Manager         
-                        /** @var \Illuminate\Session\SessionManager $instance */
+                        /** @var SessionManager $instance */
                         return $instance->forgetDrivers();
         }
                     /**
@@ -12970,7 +12972,7 @@
          */ 
         public static function start()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->start();
         }
                     /**
@@ -12981,7 +12983,7 @@
          */ 
         public static function save()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->save();
         }
                     /**
@@ -12992,7 +12994,7 @@
          */ 
         public static function ageFlashData()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->ageFlashData();
         }
                     /**
@@ -13003,7 +13005,7 @@
          */ 
         public static function all()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->all();
         }
                     /**
@@ -13015,7 +13017,7 @@
          */ 
         public static function only($keys)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->only($keys);
         }
                     /**
@@ -13027,7 +13029,7 @@
          */ 
         public static function exists($key)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->exists($key);
         }
                     /**
@@ -13039,7 +13041,7 @@
          */ 
         public static function missing($key)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->missing($key);
         }
                     /**
@@ -13051,7 +13053,7 @@
          */ 
         public static function has($key)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->has($key);
         }
                     /**
@@ -13064,7 +13066,7 @@
          */ 
         public static function get($key, $default = null)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->get($key, $default);
         }
                     /**
@@ -13077,7 +13079,7 @@
          */ 
         public static function pull($key, $default = null)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->pull($key, $default);
         }
                     /**
@@ -13089,7 +13091,7 @@
          */ 
         public static function hasOldInput($key = null)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->hasOldInput($key);
         }
                     /**
@@ -13102,7 +13104,7 @@
          */ 
         public static function getOldInput($key = null, $default = null)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->getOldInput($key, $default);
         }
                     /**
@@ -13114,7 +13116,7 @@
          */ 
         public static function replace($attributes)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->replace($attributes);
         }
                     /**
@@ -13127,7 +13129,7 @@
          */ 
         public static function put($key, $value = null)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->put($key, $value);
         }
                     /**
@@ -13140,7 +13142,7 @@
          */ 
         public static function remember($key, $callback)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->remember($key, $callback);
         }
                     /**
@@ -13153,7 +13155,7 @@
          */ 
         public static function push($key, $value)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->push($key, $value);
         }
                     /**
@@ -13166,7 +13168,7 @@
          */ 
         public static function increment($key, $amount = 1)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->increment($key, $amount);
         }
                     /**
@@ -13179,7 +13181,7 @@
          */ 
         public static function decrement($key, $amount = 1)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->decrement($key, $amount);
         }
                     /**
@@ -13192,7 +13194,7 @@
          */ 
         public static function flash($key, $value = true)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->flash($key, $value);
         }
                     /**
@@ -13205,7 +13207,7 @@
          */ 
         public static function now($key, $value)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->now($key, $value);
         }
                     /**
@@ -13216,7 +13218,7 @@
          */ 
         public static function reflash()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->reflash();
         }
                     /**
@@ -13228,7 +13230,7 @@
          */ 
         public static function keep($keys = null)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->keep($keys);
         }
                     /**
@@ -13240,7 +13242,7 @@
          */ 
         public static function flashInput($value)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->flashInput($value);
         }
                     /**
@@ -13252,7 +13254,7 @@
          */ 
         public static function remove($key)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->remove($key);
         }
                     /**
@@ -13264,7 +13266,7 @@
          */ 
         public static function forget($keys)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->forget($keys);
         }
                     /**
@@ -13275,7 +13277,7 @@
          */ 
         public static function flush()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->flush();
         }
                     /**
@@ -13286,7 +13288,7 @@
          */ 
         public static function invalidate()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->invalidate();
         }
                     /**
@@ -13298,7 +13300,7 @@
          */ 
         public static function regenerate($destroy = false)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->regenerate($destroy);
         }
                     /**
@@ -13310,7 +13312,7 @@
          */ 
         public static function migrate($destroy = false)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->migrate($destroy);
         }
                     /**
@@ -13321,7 +13323,7 @@
          */ 
         public static function isStarted()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->isStarted();
         }
                     /**
@@ -13332,7 +13334,7 @@
          */ 
         public static function getName()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->getName();
         }
                     /**
@@ -13344,7 +13346,7 @@
          */ 
         public static function setName($name)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->setName($name);
         }
                     /**
@@ -13355,7 +13357,7 @@
          */ 
         public static function getId()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->getId();
         }
                     /**
@@ -13367,7 +13369,7 @@
          */ 
         public static function setId($id)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->setId($id);
         }
                     /**
@@ -13379,7 +13381,7 @@
          */ 
         public static function isValidId($id)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->isValidId($id);
         }
                     /**
@@ -13391,7 +13393,7 @@
          */ 
         public static function setExists($value)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->setExists($value);
         }
                     /**
@@ -13402,7 +13404,7 @@
          */ 
         public static function token()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->token();
         }
                     /**
@@ -13413,7 +13415,7 @@
          */ 
         public static function regenerateToken()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->regenerateToken();
         }
                     /**
@@ -13424,7 +13426,7 @@
          */ 
         public static function previousUrl()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->previousUrl();
         }
                     /**
@@ -13436,7 +13438,7 @@
          */ 
         public static function setPreviousUrl($url)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->setPreviousUrl($url);
         }
                     /**
@@ -13447,7 +13449,7 @@
          */ 
         public static function passwordConfirmed()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->passwordConfirmed();
         }
                     /**
@@ -13458,7 +13460,7 @@
          */ 
         public static function getHandler()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->getHandler();
         }
                     /**
@@ -13469,7 +13471,7 @@
          */ 
         public static function handlerNeedsRequest()
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         return $instance->handlerNeedsRequest();
         }
                     /**
@@ -13481,7 +13483,7 @@
          */ 
         public static function setRequestOnHandler($request)
         {
-                        /** @var \Illuminate\Session\Store $instance */
+                        /** @var Store $instance */
                         $instance->setRequestOnHandler($request);
         }
          
