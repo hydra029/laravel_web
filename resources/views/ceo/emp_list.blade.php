@@ -18,33 +18,35 @@
         <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Department</th>
             <th>Role</th>
-            @foreach($shifts as $shift)
-                <th>
-                    {{$shift}}
-                </th>
-            @endforeach
         </tr>
         </thead>
         @foreach($data as $each)
             <tr>
                 <td>
-                    {{$num++}}
+                    {{$each -> id}}
                 </td>
                 <td>
                     {{$each -> full_name}}
                 </td>
                 <td>
+                    {{$each -> gender_name}}
+                </td>
+                <td>
+                    {{$each -> age}}
+                </td>
+                <td>
+                    {{$each -> email}}
+                </td>
+                <td>
+                    {{$each -> dept_name}}
+                </td>
+                <td>
                     {{$each -> role_name}}
-                </td>
-                <td>
-                    {{$each -> shift_status}}
-                </td>
-                <td>
-                    {{$each -> shift_status}}
-                </td>
-                <td>
-                    {{$each -> shift_status}}
                 </td>
             </tr>
         @endforeach

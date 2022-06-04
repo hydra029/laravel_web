@@ -1,4 +1,5 @@
 @extends('layout.master')
+@include('ceo.menu')
 @section('content')
     @push('css')
         <link rel="stylesheet" type="text/css"
@@ -13,49 +14,44 @@
             </ul>
         </div>
     @endif
-    <table class="table table-striped table-centered mb-20" id="student-table-index">
+    <table class="table table-striped table-centered mb-20 table-bordered text-center" id="student-table-index">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Role</th>
-            @foreach($shifts as $shift)
-                <th>
-                    {{$shift}}
-                </th>
-            @endforeach
+            <th rowspan="2">Shift</th>
+            <th rowspan="2">Status</th>
+            <th colspan="2">Check In</th>
+            <th colspan="2">Check Out</th>
+        </tr>
+        <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>Start</th>
+            <th>End</th>
         </tr>
         </thead>
-        @foreach($data as $each)
+        @foreach($time as $each)
             <tr>
                 <td>
-                    {{$num++}}
-                </td>
-                <td>
-                    {{$each -> full_name}}
-                </td>
-                <td>
-                    {{$each -> role_name}}
+                    {{$each -> shift_name}}
                 </td>
                 <td>
                     {{$each -> shift_status}}
                 </td>
                 <td>
-                    {{$each -> shift_status}}
+                    {{$each -> check_in_start}}
                 </td>
                 <td>
-                    {{$each -> shift_status}}
+                    {{$each -> check_in_end}}
+                </td>
+                <td>
+                    {{$each -> check_out_start}}
+                </td>
+                <td>
+                    {{$each -> check_out_end}}
                 </td>
             </tr>
         @endforeach
     </table>
-    <nav>
-        <ul class="pagination pagination-rounded mb-0">
-            <li class="page-item">
-                {{ $data->links() }}
-            </li>
-        </ul>
-    </nav>
 @endsection
 @push('js')
 

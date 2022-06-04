@@ -1,8 +1,8 @@
 @section('menu')
     <li class="side-nav-item">
-        <a href="{{route('employees.index')}}" class="side-nav-link">
+        <a href="{{route('ceo.time')}}" class="side-nav-link">
             <i class="uil-home-alt"></i>
-            <span> Attendance </span>
+            <span> Time </span>
         </a>
     </li>
 @endsection

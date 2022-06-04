@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ShiftStatusEnum;
 use Database\Factories\EmployeeFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,6 +40,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Employee whereRoleId($value)
  * @method static Builder|Employee whereStatus($value)
  * @mixin \Eloquent
+ * @property-read string $date
+ * @property-read string $shift_status
  */
 class Employee extends Model
 {
@@ -81,22 +84,30 @@ class Employee extends Model
 
 	public function getShiftStatusAttribute(): string
 	{
-		$shift = Attendance_shift_time::where('status', '=', 2)->get('id');
+		$status = "";
 		$date = date('Y-m-d');
-		$check_in = Attendance::where('date', '=', $date)
-			->where('shift', '=', $shift)
-			->get('check_in');
-		$check_out = Attendance::where('date', '=', $date)
-			->where('shift', '=', $shift)
-			->get('check_out');
-		if ($check_in != 1) {
-			if ($check_out != 1) {
-				$status = 'Not checked yet';
-			} else {
-				$status = 'Checked out';
+		$shift_status = Attendance_shift_time::get('id');
+		foreach ($shift_status as $each) {
+			$shift = $each->id;
+			$emp_id = $this->id;
+			$attendances = Attendance::where('date', '=', $date)
+				->where('shift', '=', $shift)
+				->where('emp_role', '=', 1)
+				->where('emp_id', '=', $emp_id)
+				->get();
+			foreach ($attendances as $attendance) {
+				$check_in = $attendance->check_in;
+				$check_out = $attendance->check_out;
+				if ($check_in !== 1) {
+					if ($check_out !== 1) {
+						$status = 'Not checked yet';
+					} else {
+						$status = 'Checked out';
+					}
+				} else {
+					$status = 'Checked in';
+				}
 			}
-		}else {
-			$status = 'Checked in';
 		}
 		return $status;
 	}

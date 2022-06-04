@@ -16,7 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property string $date
  * @property int $emp_id
+ * @property int $shift_id
  * @property int $shift
+ * @property int $status
  * @property int $check_in
  * @property int $check_out
  * @method static AttendanceFactory factory(...$parameters)
@@ -29,6 +31,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Attendance whereEmpId($value)
  * @method static Builder|Attendance whereShift($value)
  * @mixin Eloquent
+ * @property int $emp_role
+ * @property-read string $check_in_status
+ * @property-read string $check_out_status
+ * @method static Builder|Attendance whereEmpRole($value)
  */
 class Attendance extends Model
 {
@@ -44,12 +50,15 @@ class Attendance extends Model
 	protected $casts = [
 		'date' => 'timestamp:d-m-Y',
 	];
+
 	public function getShiftNameAttribute(): string
 	{
-		return ShiftEnum::getKey($this->shift);
+		return ShiftEnum::getKey($this->shift_id);
 	}
+
 	public function getShiftStatusAttribute(): string
 	{
+
 		return ShiftStatusEnum::getKey($this->status);
 	}
 	public function getCheckInStatusAttribute(): string

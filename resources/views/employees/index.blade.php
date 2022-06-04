@@ -14,9 +14,9 @@
             <th>Check Out</th>
         </tr>
         </thead>
+
         @foreach($data as $each)
             <tr>
-
                 <td class="col-3">
                     {{$each->shift_name}}
                 </td>
@@ -26,10 +26,12 @@
                 @switch($each->status)
                     @case(1)
                     <td>
-                        <button class="btn btn-outline-primary" disabled="disabled"> {{$each->check_in_status}}</button>
+                        <button class="btn btn-outline-primary"
+                                disabled="disabled"> {{$each->check_in_status}}</button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-primary" disabled="disabled"> {{$each->check_out_status}}</button>
+                        <button class="btn btn-outline-primary"
+                                disabled="disabled"> {{$each->check_out_status}}</button>
                     </td>
                     @break
                     @case(2)
@@ -74,8 +76,8 @@
                         <button class="btn btn-secondary" disabled="disabled"> {{$each->check_out_status}}</button>
                     </td>
                     @break
-                @endswitch
 
+                @endswitch
             </tr>
         @endforeach
     </table>

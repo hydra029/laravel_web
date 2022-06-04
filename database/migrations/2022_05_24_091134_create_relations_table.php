@@ -35,6 +35,7 @@ class CreateRelationsTable extends Migration
 	    });
 	    Schema::table('attendances', static function ($table) {
 		    $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
+		    $table->foreign('shift')->references('id')->on('attendance_shift_times')->onDelete('cascade');
 	    });
 
     }

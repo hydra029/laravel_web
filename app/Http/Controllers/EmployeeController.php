@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EmpRoleEnum;
+use App\Enums\ShiftStatusEnum;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Attendance;
@@ -35,11 +37,19 @@ class EmployeeController extends Controller
 	 */
 	public function index()
 	{
-		$date = date_format(date_create(), 'Y-m-d');
+		$date = date('Y-m-d');
+		$emp_role = EmpRoleEnum::Employee;
+		$query = [
+			'attendances.check_in as check_in',
+			'attendances.check_out as check_out',
+			'attendance_shift_times.id as shift_id',
+			'attendance_shift_times.status as status'
+		];
 		$data = Attendance::where('emp_id', '=', session('id'))
 			->where('date', '=', $date)
-			->where('emp_role', '=', 1)
-			->get();
+			->where('emp_role', '=', $emp_role)
+			->leftJoin('attendance_shift_times', 'attendances.shift','=','attendance_shift_times.id')
+			->get($query);
 		return view('employees.index', [
 			'data' => $data,
 		]);
@@ -65,18 +75,18 @@ class EmployeeController extends Controller
 	public
 	function store(StoreEmployeeRequest $request): string
 	{
-//		$users = Employee::get('id');
-//
-//		foreach ($users as $each) {
-//			$date = date_format(date_create(), 'Y-m-d');
-//
-//			for ($i = 1; $i <= 3; $i++) {
-//				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
-//				Attendance::create($data);
-//			}
-//		}
-//
-//		return redirect()->route('employees.index');
+		$users = Employee::get('id');
+
+		foreach ($users as $each) {
+			$date = date_format(date_create(), 'Y-m-d');
+
+			for ($i = 1; $i <= 3; $i++) {
+				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
+				Attendance::create($data);
+			}
+		}
+
+		return redirect()->route('employees.index');
 	}
 
 	/**
@@ -107,12 +117,12 @@ class EmployeeController extends Controller
 	function checkin(): RedirectResponse
 	{
 		$date = date('H:i');
-		$shift = Attendance::where('status', '=', 2)->get('id');
-		$start_time = Attendance_shift_time::where('id', '=', $shift)->get('check_in_start');
-		$end_time = Attendance_shift_time::where('id', '=', $shift)->get('check_in_end');
+		$status = ShiftStatusEnum::Active;
+		$start_time = Attendance_shift_time::where('id', '=', $status)->get('check_in_start');
+		$end_time = Attendance_shift_time::where('id', '=', $status)->get('check_in_end');
 		if ($date >= $start_time && $date <= $end_time) {
 			Attendance::where('emp_id', '=', session('id'))
-				->where('shift', '=', $shift)
+				->where('shift', '=', 2)
 				->update(['check_in' => 1]);
 		}
 		return redirect()->route('employees.index');

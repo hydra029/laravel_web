@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance_shift_time;
 use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\UpdateCeoRequest;
 use App\Models\Employee;
 use App\Models\Manager;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class CeoController extends Controller
 {
@@ -24,7 +23,7 @@ class CeoController extends Controller
 		$arr = array_map('ucfirst', $arr);
 		$title = implode(' - ', $arr);
 
-		\Illuminate\Support\Facades\View::share('title', $title);
+		View::share('title', $title);
 	}
 
 	/**
@@ -47,7 +46,16 @@ class CeoController extends Controller
 	    ]);
     }
 
-    /**
+	public function time()
+	{
+		$time = Attendance_shift_time::get();
+		return view('ceo.time', [
+			'time' => $time,
+		]);
+	}
+
+
+	/**
      * Show the form for creating a new resource.
      *
      * @return Response

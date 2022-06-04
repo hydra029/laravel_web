@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ShiftEnum;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateManagerRequest;
 use App\Models\Employee;
 use App\Models\Manager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -39,14 +39,15 @@ class ManagerController extends Controller
 		$fields = array('employees.*', 'roles.name as role_name');
 		$dept_id = Manager::where('id','=',session('id'))
 			->get('dept_id');
-		$data = Employee::where('employees.status','=','1')
+		$data = Employee::where('employees.status','=',1)
 			->where('employees.dept_id','=',$dept_id->count())
 			->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
 			->paginate($limit,$fields);
-
+		$shifts = ShiftEnum::getKeys();
 		return view('managers.index', [
 			'data' => $data,
 			'num'=> 1,
+			'shifts' => $shifts,
 		]);
 	}
 
