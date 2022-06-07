@@ -22,7 +22,7 @@ class CreateManagersTable extends Migration
 	        $table->string('email');
 	        $table->string('password');
 	        $table->unsignedBigInteger('dept_id');
-	        $table->unsignedBigInteger('role_id');
+	        $table->unsignedBigInteger('role_id')->default(1);
 	        $table->boolean('status');
         });
 

@@ -60,5 +60,10 @@
     </nav>
 @endsection
 @push('js')
+    <script>
+        $(document).ready(function() {
+            $('#home').attr('style', 'color: #3d73dd!important');
+        });
+    </script>
 
 @endpush

@@ -21,7 +21,7 @@ class CreateAccountantsTable extends Migration
 			$table->timestamp('dob');
 			$table->string('email');
 			$table->string('password');
-			$table->integer('dept_id');
+			$table->integer('dept_id')->default('1');
 			$table->integer('role_id');
 			$table->boolean('status');
 		});

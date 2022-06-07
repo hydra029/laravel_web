@@ -21,6 +21,7 @@
             <th rowspan="2">Status</th>
             <th colspan="2">Check In</th>
             <th colspan="2">Check Out</th>
+            <th rowspan="2">Change</th>
         </tr>
         <tr>
             <th>Start</th>
@@ -48,6 +49,11 @@
                 </td>
                 <td>
                     {{$each -> check_out_end}}
+                </td>
+                <td>
+                    <button class="btn btn-primary">
+                        Change
+                    </button>
                 </td>
             </tr>
         @endforeach

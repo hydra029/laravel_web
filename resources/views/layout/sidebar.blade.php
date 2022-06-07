@@ -12,7 +12,7 @@
         <li class="side-nav-title side-nav-item">Navigation</li>
 
         <li class="side-nav-item">
-            <a href="{{route('login')}}" class="side-nav-link">
+            <a href="{{route('login')}}" class="side-nav-link" id="home">
                 <i class="uil-home-alt"></i>
                 <span> Dashboards </span>
             </a>
