@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $check_in_status
  * @property-read string $check_out_status
  * @method static Builder|Attendance whereEmpRole($value)
+ * @property-read string $shift_name
+ * @property-read string $shift_status
  */
 class Attendance extends Model
 {

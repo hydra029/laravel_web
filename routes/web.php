@@ -30,6 +30,7 @@ Route::put('/managers/checkout', [EmployeeController::class, 'checkout'])->name(
 Route::put('/accountants/checkin', [EmployeeController::class, 'checkin'])->name('accountants.checkin');
 Route::put('/accountants/checkout', [EmployeeController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
+Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
 
 
 Route::resource('employees', EmployeeController::class)->except([

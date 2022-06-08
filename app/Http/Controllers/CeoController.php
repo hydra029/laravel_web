@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ShiftEnum;
 use App\Models\Attendance_shift_time;
 use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\UpdateCeoRequest;
 use App\Models\Employee;
 use App\Models\Manager;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -54,6 +56,23 @@ class CeoController extends Controller
 		]);
 	}
 
+	public function time_change(Request $request)
+	{
+		$check_in_start = $request->in_start;
+		$check_in_end = $request->in_end;
+		$check_out_start = $request->out_start;
+		$check_out_end = $request->out_end;
+		$id = ShiftEnum::getValue($request->get('name'));
+		Attendance_shift_time::Where('id','=',$id)
+		->update([
+			'check_in_start' => $check_in_start,
+			'check_in_end' => $check_in_end,
+			'check_out_start' => $check_out_start,
+			'check_out_end' => $check_out_end,
+		]);
+		return Attendance_shift_time::whereId($id)->get();
+	}
+
 
 	/**
      * Show the form for creating a new resource.
@@ -68,7 +87,7 @@ class CeoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCeoRequest  $request
+     * @param StoreCeoRequest $request
      * @return Response
      */
     public function store(StoreCeoRequest $request)
@@ -101,7 +120,7 @@ class CeoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCeoRequest  $request
+     * @param UpdateCeoRequest $request
      * @param Ceo $ceo
      * @return Response
      */

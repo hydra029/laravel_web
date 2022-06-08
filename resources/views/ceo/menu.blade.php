@@ -1,11 +1,5 @@
 @section('menu')
     <li class="side-nav-item">
-        <a href="{{route('login')}}" class="side-nav-link">
-            <i class="uil-home-alt"></i>
-            <span> Home </span>
-        </a>
-    </li>
-    <li class="side-nav-item">
         <a href="{{route('ceo.time')}}" class="side-nav-link">
             <i class="uil-home-alt"></i>
             <span> Time </span>

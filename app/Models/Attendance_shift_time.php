@@ -30,10 +30,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Attendance_shift_time whereId($value)
  * @method static Builder|Attendance_shift_time whereStatus($value)
  * @mixin Eloquent
+ * @property-read string $in_end
+ * @property-read string $in_start
+ * @property-read string $name
+ * @property-read string $out_end
+ * @property-read string $out_start
  */
 class Attendance_shift_time extends Model
 {
 	use HasFactory;
+	public $timestamps = false;
 
 	public function getShiftNameAttribute(): string
 	{
@@ -42,9 +48,27 @@ class Attendance_shift_time extends Model
 
 	public function getShiftStatusAttribute(): string
 	{
-
 		return ShiftStatusEnum::getKey($this->status);
 	}
 
+	public function getInStartAttribute(): string
+	{
+		return date('H:i', strtotime($this->check_in_start));
+	}
+
+	public function getInEndAttribute(): string
+	{
+		return date('H:i', strtotime($this->check_in_end));
+	}
+
+	public function getOutStartAttribute(): string
+	{
+		return date('H:i', strtotime($this->check_out_start));
+	}
+
+	public function getOutEndAttribute(): string
+	{
+		return date('H:i', strtotime($this->check_out_end));
+	}
 
 }

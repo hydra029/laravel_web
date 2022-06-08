@@ -18,7 +18,6 @@ class CreateAttendanceTable extends Migration
 			$table->unsignedBigInteger('emp_id');
 			$table->unsignedTinyInteger('emp_role')->default(1);
 			$table->unsignedtinyInteger('shift');
-			$table->unsignedTinyInteger('status')->default(1);
 			$table->boolean('check_in')->default(0);
 			$table->boolean('check_out')->default(0);
 			$table->primary(['emp_id', 'date', 'shift', 'emp_role']);
