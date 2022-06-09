@@ -26,10 +26,11 @@ Route::post('/', [LoginController::class, 'processLogin'])->name('process_login'
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
-Route::put('/managers/checkin', [EmployeeController::class, 'checkin'])->name('managers.checkin');
-Route::put('/managers/checkout', [EmployeeController::class, 'checkout'])->name('managers.checkout');
-Route::put('/accountants/checkin', [EmployeeController::class, 'checkin'])->name('accountants.checkin');
-Route::put('/accountants/checkout', [EmployeeController::class, 'checkout'])->name('accountants.checkout');
+Route::put('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
+Route::put('/managers/checkout', [ManagerController::class, 'checkout'])->name('managers.checkout');
+Route::get('/managers/attendance', [ManagerController::class, 'attendance'])->name('managers.attendance');
+Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
+Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
 Route::get('/ceo/payRate', [CeoController::class, 'payRate'])->name('ceo.payRate');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ShiftStatusEnum;
 use Database\Factories\EmployeeFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,9 +40,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Employee wherePassword($value)
  * @method static Builder|Employee whereRoleId($value)
  * @method static Builder|Employee whereStatus($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @property-read string $date
  * @property-read string $shift_status
+ * @property-read string $check_in_1
+ * @property-read string $check_in_2
+ * @property-read string $check_in_3
+ * @property-read string $check_out_1
+ * @property-read string $check_out_2
+ * @property-read string $check_out_3
  */
 class Employee extends Model
 {
@@ -111,6 +118,27 @@ class Employee extends Model
 		}
 		return $status;
 	}
+
+	public function getCheck1Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
+		return ($this->check_in_1 === 1 ? ($this->check_out_1 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+	public function getCheck2Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
+		return ($this->check_in_2 === 1 ? ($this->check_out_2 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+	public function getCheck3Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
+		return ($this->check_in_3 === 1 ? ($this->check_out_3 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+
+
 
 	public $timestamps = false;
 }

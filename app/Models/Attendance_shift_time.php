@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $name
  * @property-read string $out_end
  * @property-read string $out_start
+ * @property-read string $shift_name
+ * @property-read string $shift_status
  */
 class Attendance_shift_time extends Model
 {

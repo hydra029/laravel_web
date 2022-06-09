@@ -32,7 +32,7 @@
         </thead>
         @foreach($time as $each)
             <tr>
-                <form id="form-time-change" method="post">
+                <form class="form-time-change" method="post">
                     <td class="col-2">
                         <div class="shift-name">
                             {{$each -> shift_name}}
@@ -98,6 +98,15 @@
                 </form>
             </tr>
         @endforeach
+        @if({{$count < 3}})
+            <tr>
+                <td colspan="7">
+                    <button>
+                        Add more
+                    </button>
+                </td>
+            </tr>
+        @endif
     </table>
 @endsection
 @push('js')
@@ -125,46 +134,47 @@
             $('.btn-save').click(function (event) {
                 let tr = $(this).parents('tr');
                 let form = tr.find('form');
-                const time_regex = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/;
-                let in_start_inp = tr.find('.shift-in-start-inp').val();
-                let in_end_inp = tr.find('.shift-in-end-inp').text();
-                let out_start_inp = tr.find('.shift-out-start-inp').text();
-                let out_end_inp = tr.find('.shift-out-end-inp').text();
+                const time_regex = /^([0-1][0-9]|2[0-3]):([0-5][0-9]) ([0-1][0-9]|2[0-3]):([0-5][0-9]) ([0-1][0-9]|2[0-3]):([0-5][0-9]) ([0-1][0-9]|2[0-3]):([0-5][0-9])$/;
+                let in_start_inp = tr.find('.shift-in-start-inp').find('input').val();
+                let in_end_inp = tr.find('.shift-in-end-inp').find('input').val();
+                let out_start_inp = tr.find('.shift-out-start-inp').find('input').val();
+                let out_end_inp = tr.find('.shift-out-end-inp').find('input').val();
                 let text = in_start_inp.concat(" ", in_end_inp).concat(" ", out_start_inp).concat(" ", out_end_inp);
-
-                console.log(in_start_inp);
                 if (text.match(time_regex)) {
                     console.log('success');
+                    $.ajax({
+                        url: "{{ route('ceo.time_change') }}",
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: form.serializeArray(),
+                    })
+                        .done(function (response) {
+                            tr.find('.btn-change').removeClass('d-none');
+                            tr.find('.btn-save').addClass('d-none');
+                            tr.find('.shift-name-inp').addClass('d-none');
+                            tr.find('.shift-name').removeClass('d-none');
+                            tr.find('.shift-in-start-inp').addClass('d-none');
+                            tr.find('.shift-in-start').removeClass('d-none');
+                            tr.find('.shift-in-end-inp').addClass('d-none');
+                            tr.find('.shift-in-end').removeClass('d-none');
+                            tr.find('.shift-out-start-inp').addClass('d-none');
+                            tr.find('.shift-out-start').removeClass('d-none');
+                            tr.find('.shift-out-end-inp').addClass('d-none');
+                            tr.find('.shift-out-end').removeClass('d-none');
+                            tr.find('.shift-in-start').text(response[0]["check_in_start"].slice(0, 5));
+                            tr.find('.shift-in-end').text(response[0]["check_in_end"].slice(0, 5));
+                            tr.find('.shift-out-start').text(response[0]["check_out_start"].slice(0, 5));
+                            tr.find('.shift-out-end').text(response[0]["check_out_end"].slice(0, 5));
+                            $.notify('Action completed', 'success');
+                        })
+                        .fail(function () {
+                            $.notify('Input Format Error', 'error');
+                        })
+                } else {
+                    $.notify('Input Format Error', 'error');
                 }
 
-                $.ajax({
-                    url: "{{ route('ceo.time_change') }}",
-                    type: 'POST',
-                    dataType: 'JSON',
-                    data: form.serializeArray(),
-                })
-                    .done(function (response) {
-                        tr.find('.btn-change').removeClass('d-none');
-                        tr.find('.btn-save').addClass('d-none');
-                        tr.find('.shift-name-inp').addClass('d-none');
-                        tr.find('.shift-name').removeClass('d-none');
-                        tr.find('.shift-in-start-inp').addClass('d-none');
-                        tr.find('.shift-in-start').removeClass('d-none');
-                        tr.find('.shift-in-end-inp').addClass('d-none');
-                        tr.find('.shift-in-end').removeClass('d-none');
-                        tr.find('.shift-out-start-inp').addClass('d-none');
-                        tr.find('.shift-out-start').removeClass('d-none');
-                        tr.find('.shift-out-end-inp').addClass('d-none');
-                        tr.find('.shift-out-end').removeClass('d-none');
-                        tr.find('.shift-in-start').text(response[0]["check_in_start"].slice(0, 5));
-                        tr.find('.shift-in-end').text(response[0]["check_in_end"].slice(0, 5));
-                        tr.find('.shift-out-start').text(response[0]["check_out_start"].slice(0, 5));
-                        tr.find('.shift-out-end').text(response[0]["check_out_end"].slice(0, 5));
-                        $.notify('Action completed', 'success');
-                    })
-                    .fail(function () {
-                        $.notify('Format Input Error', 'error');
-                    })
+
             });
 
         });

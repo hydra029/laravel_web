@@ -78,8 +78,7 @@ class EmployeeController extends Controller
 		$users = Employee::get('id');
 
 		foreach ($users as $each) {
-			$date = date_format(date_create(), 'Y-m-d');
-
+			$date = date('Y-m-d');
 			for ($i = 1; $i <= 3; $i++) {
 				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
 				Attendance::create($data);

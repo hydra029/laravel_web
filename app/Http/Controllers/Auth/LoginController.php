@@ -9,6 +9,8 @@ use App\Models\Employee;
 use App\Models\Manager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Throwable;
 
 class LoginController extends Controller
@@ -23,9 +25,15 @@ class LoginController extends Controller
    | to conveniently provide its functionality to your applications.
    |
    */
+	public function __construct()
+	{
+
+	}
+
 
 	public function login()
 	{
+		$this->middleware('login');
 		return view('auth.login');
 	}
 

@@ -53,8 +53,10 @@ class CeoController extends Controller
 	public function time()
 	{
 		$time = Attendance_shift_time::get();
+		$count = Attendance_shift_time::count();
 		return view('ceo.time', [
 			'time' => $time,
+			'count' => $count,
 		]);
 	}
 
