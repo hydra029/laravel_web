@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,4 +27,18 @@ class Pay_rate extends Model
     use HasFactory;
 	public $timestamps = false;
 
+    protected $fillable = [
+        'dept_id',
+        'role_id',
+        'pay_rate',
+    ];
+    
+    protected $pay_rate = [
+        'pay_rate' => 'integer',
+    ];
+
+    // public function getPayRateAttribute(): string
+    // {   
+    //     return number_format((float)($this->pay_rate)) . ' đ';
+    // }
 }

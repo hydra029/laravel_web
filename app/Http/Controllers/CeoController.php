@@ -7,8 +7,10 @@ use App\Models\Attendance_shift_time;
 use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\UpdateCeoRequest;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Manager;
+use App\Models\Pay_rate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -75,7 +77,36 @@ class CeoController extends Controller
 		return Attendance_shift_time::whereId($id)->get();
 	}
 
+    public function payRate()
+    {
+        $dept = Department::get();
+        return view('ceo.payRate', [
+            'dept' => $dept,
+        ]);
+    }
 
+   public function payRateApi(Request $request)
+    {
+        $dept_id = $request->get('dept_id');
+        $pay_rate = Pay_rate::query()
+        ->leftjoin('rol', 'pay_rates.role_id', '=', 'rol.id')
+        ->where('dept_id','=',$dept_id)
+        ->get();
+        return $pay_rate;        
+    }
+
+    public function payRate_change(Request $request)
+    {
+        $pay_rate = $request->pay_rate;
+        $dept_id = $request->dept_id;
+        $role_id = $request->role_id;
+        Pay_rate::Where('dept_id','=',$dept_id)
+        ->Where('role_id','=',$role_id)
+        ->update([
+            'pay_rate' => $pay_rate,
+        ]);
+        return Pay_rate::whereDeptId($dept_id)->whereRoleId($role_id)->get();
+    }
 	/**
      * Show the form for creating a new resource.
      *
