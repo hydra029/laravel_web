@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
 				->create(),
 			Role::factory(10)
 				->create(),
-			Pay_rate::factory(5)
+			Pay_rate::factory(100)
 				->create(),
 			Employee::factory(10)
 				->create(),
@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
 				->create(),
 			Attendance::factory(0)
 				->create(),
-			Salary::factory(10)
+			Salary::factory(0)
 				->create(),
 		]);
 	}

@@ -24,4 +24,13 @@ class Department extends Model
 {
     use HasFactory;
 	public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'status',
+    ];
+    
+    protected $status = [
+        'status' => 'integer',
+    ];
 }

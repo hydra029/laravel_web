@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class DepartmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private Builder $models;
+
+    public function __construct()
+    {
+        $this->models = Department::query();
+    }
     public function index()
     {
-        //
+       return $this->models->get([
+            'id',
+            'name',
+        ]);
     }
 
     /**

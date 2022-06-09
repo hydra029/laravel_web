@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountantController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CeoController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
@@ -31,7 +32,9 @@ Route::put('/accountants/checkin', [EmployeeController::class, 'checkin'])->name
 Route::put('/accountants/checkout', [EmployeeController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
-
+Route::get('/ceo/payRate', [CeoController::class, 'payRate'])->name('ceo.payRate');
+Route::post('/ceo/payRateApi', [CeoController::class, 'payRateApi'])->name('ceo.payRateApi');
+Route::post('/ceo/payRate_change/', [CeoController::class, 'payRate_change'])->name('ceo.payRate_change');
 
 Route::resource('employees', EmployeeController::class)->except([
 	'show',
