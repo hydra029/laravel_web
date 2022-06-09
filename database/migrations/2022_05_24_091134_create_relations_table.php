@@ -29,12 +29,15 @@ class CreateRelationsTable extends Migration
 		    $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
 		    $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 	    });
+	    Schema::table('accountants', static function($table) {
+		    $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
+		    $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+	    });
 	    Schema::table('pay_rates', static function($table) {
 		    $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
 		    $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 	    });
 	    Schema::table('attendances', static function ($table) {
-		    $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
 		    $table->foreign('shift')->references('id')->on('attendance_shift_times')->onDelete('cascade');
 	    });
 

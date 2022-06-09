@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ShiftStatusEnum;
 use Database\Factories\EmployeeFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,7 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Employee wherePassword($value)
  * @method static Builder|Employee whereRoleId($value)
  * @method static Builder|Employee whereStatus($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @property-read string $date
  * @property-read string $shift_status
  * @property-read string $check_in_1

@@ -12,7 +12,6 @@ use App\Models\Manager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -31,18 +30,39 @@ class ManagerController extends Controller
 		View::share('title', $title);
 	}
 
+
+	public function index()
+	{
+		$date = date('Y-m-d');
+		$emp_role = EmpRoleEnum::Manager;
+		$query = [
+			'attendances.check_in as check_in',
+			'attendances.check_out as check_out',
+			'attendance_shift_times.id as shift_id',
+			'attendance_shift_times.status as status'
+		];
+		$data = Attendance::where('emp_id', '=', session('id'))
+			->where('date', '=', $date)
+			->where('emp_role', '=', $emp_role)
+			->leftJoin('attendance_shift_times', 'attendances.shift','=','attendance_shift_times.id')
+			->get($query);
+		return view('managers.index', [
+			'data' => $data,
+		]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Application|Factory
 	 */
-	public function index()
+	public function attendance()
 	{
 		$limit = 10;
 		$date = date('Y-m-d');
 		$dept_id = Manager::where('id', '=', session('id'))
 			->get('dept_id');
-		$data = Employee::addSelect(['employees.lname','employees.fname', 'roles.name as role_name'])
+		$data = Employee::addSelect(['employees.lname', 'employees.fname', 'roles.name as role_name'])
 			->addSelect(['check_in_1' => Attendance::select('check_in')
 				->whereColumn('attendances.emp_id', 'employees.id')
 				->where('attendances.emp_role', '=', EmpRoleEnum::Employee)
@@ -78,7 +98,7 @@ class ManagerController extends Controller
 			->leftJoin('roles as roles', 'employees.role_id', '=', 'roles.id')
 			->paginate($limit);
 		$shifts = ShiftEnum::getKeys();
-		return view('managers.index', [
+		return view('managers.attendance', [
 			'data' => $data,
 			'num' => 1,
 			'shifts' => $shifts,
