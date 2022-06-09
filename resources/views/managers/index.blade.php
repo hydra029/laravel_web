@@ -38,13 +38,13 @@
                     {{$each -> role_name}}
                 </td>
                 <td>
-                    {{$each -> shift_status}}
+                    {{$each -> check_1}}
                 </td>
                 <td>
-                    {{$each -> shift_status}}
+                    {{$each -> check_2}}
                 </td>
                 <td>
-                    {{$each -> shift_status}}
+                    {{$each -> check_3}}
                 </td>
             </tr>
         @endforeach

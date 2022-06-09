@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
 					$acct = array('emp_id' => $each->id, 'date' => date('Y-m-d'), 'shift' => $shift->id, 'emp_role' => 3);
 					DB::table('attendances')->insert($acct);
 				}
-			})->dailyAt('10:05');
+			})->daily();
 
 			$check_in_start = date('H:i', strtotime($shift->check_in_start));
 			$check_in_end = date('H:i', strtotime($shift->check_in_end));
