@@ -89,7 +89,8 @@ class CeoController extends Controller
     {
         $dept_id = $request->get('dept_id');
         $pay_rate = Pay_rate::query()
-        ->leftjoin('rol', 'pay_rates.role_id', '=', 'rol.id')
+        ->leftjoin('roles', 'pay_rates.role_id', '=', 'roles.id')
+        ->select('pay_rates.*', 'roles.name as role_name')
         ->where('dept_id','=',$dept_id)
         ->get();
         return $pay_rate;        
