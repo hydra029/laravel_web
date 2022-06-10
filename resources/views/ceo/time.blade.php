@@ -98,7 +98,7 @@
                 </form>
             </tr>
         @endforeach
-        @if({{$count < 3}})
+        @if($count < 3)
             <tr>
                 <td colspan="7">
                     <button>

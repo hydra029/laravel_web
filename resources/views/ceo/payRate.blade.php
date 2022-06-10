@@ -20,7 +20,7 @@
         </div>
         @foreach ($dept as $each)
             <div class="dept">
-                 <div class="col-12 p-2 border border-1 border-light btn  " id="dept-name" data-id="{{ $each->id }}" align="center">
+                 <div class="col-12 p-2 border border-1 border-light btn dept-name"  data-id="{{ $each->id }}" align="center">
                     {{$each -> name}}
                 </div>
                 <div class="col-12 p-2 border border-1 border-light pay-rate d-none">
@@ -94,11 +94,21 @@
 // searching by department
     <script type="text/javascript" >
         $(document).ready(function () {
-           
-            $('#dept-name').on(click, function (event) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $('.dept-name').click(function (event) {
                 var pay_rate = $(this).parents('.dept').find('.pay-rate');
-                pay_rate.removeClass('d-none');
+                if(pay_rate.hasClass('d-none')){
+                    pay_rate.removeClass('d-none');
+                }else{
+                    pay_rate.addClass('d-none');
+                }
+
                     console.log(1);
+                    
                 $.ajax({
                     url: '{{route('ceo.payRateApi')}}',
                     type: 'POST',
@@ -108,7 +118,7 @@
                     },
                     success: function (response) {
                         pay_rate.html('');
-                        pay_rate.append('<table class="table table-striped table-centered mb-20 table-bordered text-center" id="student-table-index">' +
+                        pay_rate.append('<table class="table table-striped table-centered mb-20 table-bordered text-center student-table-index">' +
                             '<thead>' +
                             '<tr>' +
                             '<th>Roles</th>' +
@@ -116,11 +126,11 @@
                             '<th>Change</th>' +
                             '</tr>' +
                             '</thead>' +
-                            '<tbody>');
+                            '<tbody>')
                         $.each(response, function (index, value) {
                             pay_rate.append('<tr>' +
                                 '<form id="form-payRate-change" method="post">' +
-                                '<td class="col-2">' +
+                                '<td class="col-1">' +
                                 '<div class="role-name">' +
                                 value.role_name +
                                 '</div>' +
@@ -128,7 +138,7 @@
                                 '<input type="text" name="role_id" class="form-control text-center" value="' + value.role_id + '">' +
                                 '</label>' +
                                 '</td>' +
-                                '<td class="col-2">' +
+                                '<td class="col-1">' +
                                 '<div class="pay-rate">' +
                                 value.pay_rate +
                                 '</div>' +
@@ -136,116 +146,63 @@
                                 '<input type="text" name="pay_rate" class="form-control text-center" value="' + value.pay_rate + '">' +
                                 '</label>' +
                                 '</td>' +
-                                '<td class="col-2">' +
+                                '<td class="col-1">' +
                                 '<button type="button" class="btn btn-primary btn-change">' +
                                 'Change' +
                                 '</button>' +
-                                '<button type="button" class="btn btn-primary btn-save d-none"  data-id="' + value.dept_id + ',' + value.role_id + '">' +
+                                '<button type="button" class="btn btn-primary btn-save d-none"  data-pay_rate="' + value.pay_rate+ '" data-dept_id ="' + value.dept_id + '" data-role_id ="' + value.role_id + '">' +
                                 'Save' +
                                 '</button>' +
                                 '</td>' +
                                 '</form>' +
-                                '</tr>');
+                                '</tr>'+
+                                '</tbody>'+
+                                '</table>')
                         });
-                    // done(function(response) {
-                    //     for(var i = 0; i < response.length; i++) {
-                           
-                       
-                    //     pay_rate.append(
-                    //         "<table class='table table-striped table-centered mb-20 table-bordered text-center' id='student-table-index'>"+
-                    //             "<thead>"+
-                    //                 "<tr>"+
-                    //                     "<th>Roles</th>"+
-                    //                     "<th>Pay rate</th>"+
-                    //                     "<th>Change</th>"+
-                    //                 "</tr>"+
-                    //             "</thead>"+
-                    //             "<tbody>"+
-                    //                     "<tr>"+
-                    //                         "<form id='form-payRate-change' method='post'>"+
-                    //                             "<td class='col-2'>"+
-                    //                                 "<div class='role-name'>"+
-                    //                                     response[i].role_name+
-                    //                                 "</div>"+
-                    //                                 "<label class='role-name-inp d-none'>"+
-                    //                                     "<input type='text' name='role_id' class='form-control text-center' value='"+response[i].dept_id+"'>"+
-                    //                                 "</label>"+
-                    //                             "</td>"+
-                    //                             "<td class='col-2'>"+
-                    //                                 "<div class='pay-rate'>"+
-                    //                                     response[i].pay_rate+
-                    //                                 "</div>"+
-                    //                                 "<label class='pay-rate-inp d-none'>"+
-                    //                                     "<input type='text' name='pay_rate' class='form-control text-center' value='"+response[i].pay_rate+"' >"+
-                    //                                 "</label>"+
-                    //                             "</td>"+
-                    //                             "<td class='col-2'>"+
-                    //                                 "<button type='button' class='btn btn-primary btn-change'>"+
-                    //                                     "Change"+
-                    //                                 "</button>"+
-                    //                                 "<button type='button' class='btn btn-primary btn-save d-none' "+
-                    //                                     "data-id='"+response[i].dept_id+","+response[i].role_name+"'>"+
-                    //                                     "Save"+
-                    //                                 "</button>"+
-                    //                             "</td>"+
-                    //                         "</form>"+
-                    //                     "</tr>"+
-                    //             "</tbody>"+
-                    //         "</table>"
-                        
-                    //         );
-                    //     }
-                    // });
-                    };
+                        change();
+                    }
                 });
-            });
-        });
-    </script>
+                function change(){
+                            
+                    $('.btn-change').click(function (event) {
+                        $(this).addClass('d-none');
+                        $(this).parents('tr').find('.btn-save').removeClass('d-none');
+                        $(this).parents('tr').find('.pay-rate-inp').removeClass('d-none');
+                        $(this).parents('tr').find('.pay-rate').addClass('d-none');
+                    });
+                    $('.btn-save').click(function (event) {
+                        let tr = $(this).parents('tr');
+                        const time_regex = /^[0-9]{6,9}$/;
+                        let data = tr.find('.pay-rate-inp').find('input[name="pay_rate"]').val();
+                        let text = data.substr(0, data.length - 1);
+                        let dept_id = $(this).data('dept_id');
+                        let role_id = $(this).data('role_id');
+                        console.log(data);
+                        if (data.match(time_regex)) {
+                            console.log('success');
+                        }
 
-    // pay-rate 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        $.ajax({
+                                    url: "{{ route('ceo.payRate_change') }}",
+                                    type: 'POST',
+                                    dataType: 'JSON',
+                                    data: {
+                                        pay_rate: data,
+                                        dept_id: dept_id,
+                                        role_id: role_id,
+                                    },
+                                    success:function (response) {
+                                        tr.find('.btn-change').removeClass('d-none');
+                                        tr.find('.btn-save').addClass('d-none');
+                                        tr.find('.pay-rate-inp').addClass('d-none');
+                                        tr.find('.pay-rate').removeClass('d-none');
+                                        tr.find('.pay-rate').text(response[0]["pay_rate"]);
+                                        $.notify('Action completed', 'success');
+                                    }
+                                })
+                    })
                 }
             });
-            $('.btn-change').click(function (event) {
-                $(this).addClass('d-none');
-                $(this).parents('tr').find('.btn-save').removeClass('d-none');
-                $(this).parents('tr').find('.pay-rate-inp').removeClass('d-none');
-                $(this).parents('tr').find('.pay-rate').addClass('d-none');
-            });
-            $('.btn-save').click(function (event) {
-                let tr = $(this).parents('tr');
-                let form = tr.find('form');
-                const time_regex = /^[0-9]{6,9}$/;
-                let pay_rate = tr.find('.pay-rate-inp').val();
-
-                console.log(pay_rate);
-                if (pay_rate.match(time_regex)) {
-                    console.log('success');
-                }
-
-                $.ajax({
-                    url: "{{ route('ceo.payRate_change') }}",
-                    type: 'POST',
-                    dataType: 'JSON',
-                    data: form.serializeArray(),
-                });
-                    .done(function (response) {
-                        tr.find('.btn-change').removeClass('d-none');
-                        tr.find('.btn-save').addClass('d-none');
-                        tr.find('.pay-rate-inp').addClass('d-none');
-                        tr.find('.pay-rate').removeClass('d-none');
-                        tr.find('.pay-rate').text(response[0]["pay_rate"]);
-                        $.notify('Action completed', 'success');
-                    });
-                    .fail(function () {
-                        $.notify('Format Input Error', 'error');
-                    });
-            })
-
         });
     </script>
 @endpush
