@@ -17,7 +17,7 @@ class DepartmentController extends Controller
     }
     public function index()
     {
-       return $this->models->get([
+       return $this->models::get([
             'id',
             'name',
         ]);
@@ -36,7 +36,7 @@ class DepartmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreDepartmentRequest  $request
+     * @param StoreDepartmentRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreDepartmentRequest $request)
@@ -47,7 +47,7 @@ class DepartmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Department  $department
+     * @param Department $department
      * @return \Illuminate\Http\Response
      */
     public function show(Department $department)
@@ -58,7 +58,7 @@ class DepartmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Department  $department
+     * @param Department $department
      * @return \Illuminate\Http\Response
      */
     public function edit(Department $department)
@@ -69,8 +69,8 @@ class DepartmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateDepartmentRequest  $request
-     * @param  \App\Models\Department  $department
+     * @param UpdateDepartmentRequest $request
+     * @param Department $department
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateDepartmentRequest $request, Department $department)
@@ -81,7 +81,7 @@ class DepartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Department  $department
+     * @param Department $department
      * @return \Illuminate\Http\Response
      */
     public function destroy(Department $department)

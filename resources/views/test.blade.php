@@ -1,85 +1,89 @@
 @extends('layout.master')
 @include('employees.menu')
+@push('css')
+    <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+@endpush
 @section('content')
-    <form action="{{ route('employees.store') }}" method="post">
-        @csrf
-        <button class="btn btn-secondary"> Add</button>
-    </form>
-    <table class="table table-striped table-centered mb-0" id="table-index">
-        <thead>
-        <tr>
-            <th>Shift</th>
-            <th>Status</th>
-            <th>Check In</th>
-            <th>Check Out</th>
-        </tr>
-        </thead>
-        @foreach($data as $each)
-            <tr>
-
-                <td class="col-3">
-                    {{$each->shift_name}}
-                </td>
-                <td class="col-3">
-                    {{$each->shift_status}}
-                </td>
-                @switch($each->status)
-                    @case(1)
-                    <td>
-                        <button class="btn btn-outline-primary" disabled="disabled"> {{$each->check_in_status}}</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-primary" disabled="disabled"> {{$each->check_out_status}}</button>
-                    </td>
-                    @break
-                    @case(2)
-                    @switch($each->check_in)
-                        @case(0)
-                        <td>
-                            <form action="{{ route('employees.checkin') }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <button class="btn btn-primary"> {{$each->check_in_status}}</button>
-                            </form>
-                        </td>
-                        @break
-                        @case(1)
-                        <td>
-                            <button class="btn btn-success"> {{$each->check_in_status}}</button>
-                        </td>
-                        @break
-                    @endswitch
-                    @switch($each->check_out)
-                        @case(0)
-                        <td>
-                            <form action="{{ route('employees.checkout') }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <button class="btn btn-primary"> {{$each->check_out_status}}</button>
-                            </form>
-                        </td>
-                        @break
-                        @case(1)
-                        <td>
-                            <button class="btn btn-success"> {{$each->check_out_status}}</button>
-                        </td>
-                        @break
-                    @endswitch
-                    @break
-                    @case(3)
-                    <td>
-                        <button class="btn btn-secondary" disabled="disabled"> {{$each->check_in_status}}</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-secondary" disabled="disabled"> {{$each->check_out_status}}</button>
-                    </td>
-                    @break
-                @endswitch
-
-            </tr>
-        @endforeach
-    </table>
+    <div id="calendar"></div>
 @endsection
 @push('js')
+    <script src="{{ asset('js/main.min.js' )}}"></script>
+    <script>
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            let today = new Date();
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'today',
+                },
+                initialDate:  today,
+                navLinks: true, // can click day/week names to navigate views
+                nowIndicator: true,
+
+                weekNumbers: true,
+                weekNumberCalculation: 'ISO',
+
+                editable: true,
+                selectable: true,
+                dayMaxEvents: true, // allow "more" link when too many events
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2019-09-01'
+                    },
+                    {
+                        title: 'Long Event',
+                        start: '2020-09-07',
+                        end: '2020-09-10'
+                    },
+                    {
+                        groupId: 999,
+                        title: 'Repeating Event',
+                        start: '2020-09-09T16:00:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: 'Repeating Event',
+                        start: '2020-09-16T16:00:00'
+                    },
+                    {
+                        title: 'Conference',
+                        start: '2020-09-11',
+                        end: '2020-09-13'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T10:30:00',
+                        end: '2020-09-12T12:30:00'
+                    },
+                    {
+                        title: 'Lunch',
+                        start: '2020-09-12T12:00:00'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T14:30:00'
+                    },
+                    {
+                        title: 'Happy Hour',
+                        start: '2020-09-12T17:30:00'
+                    },
+                    {
+                        title: 'Dinner',
+                        start: '2020-09-12T20:00:00'
+                    },
+                    {
+                        title: 'Birthday Party',
+                        start: '2020-09-13T07:00:00'
+                    },
+
+                ]
+            });
+
+            calendar.render();
+        });
+    </script>
 @endpush

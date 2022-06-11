@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ShiftStatusEnum;
-use App\Models\Attendance;
-use App\Models\Attendance_shift_time;
 use Illuminate\Contracts\Support\Renderable;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class HomeController extends Controller
 {
@@ -17,6 +15,8 @@ class HomeController extends Controller
 	 */
 	public function test(): Renderable
 	{
-
+		return view('test',([
+			'title' => 'Test'
+		]));
 	}
 }
