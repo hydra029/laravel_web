@@ -85,12 +85,26 @@ class CeoController extends Controller
         ]);
     }
 
+    public function manager_name(Request $request)
+    {
+        $dept_id = $request->get('dept_id');
+        $manager = Manager::query()
+        ->leftJoin('roles', 'managers.role_id', '=', 'roles.id')
+        ->select('managers.*', 'roles.name as role_name')
+        ->where('managers.id','=',$dept_id)
+        ->get()
+        ->first();
+
+        return $manager;
+    }
+
    public function pay_rate_api(Request $request)
     {
         $dept_id = $request->get('dept_id');
         $pay_rate = Pay_rate::query()
+        ->leftJoin('departments', 'pay_rates.dept_id', '=', 'departments.id')
         ->leftjoin('roles', 'pay_rates.role_id', '=', 'roles.id')
-        ->select('pay_rates.*', 'roles.name as role_name')
+        ->select('pay_rates.*', 'departments.name as dept_name', 'roles.name as role_name')
         ->where('dept_id','=',$dept_id)
         ->get();
         return $pay_rate;        
@@ -101,7 +115,8 @@ class CeoController extends Controller
         $pay_rate = $request->pay_rate;
         $dept_id = $request->dept_id;
         $role_id = $request->role_id;
-        Pay_rate::Where('dept_id','=',$dept_id)
+        Pay_rate::query()
+        ->Where('dept_id','=',$dept_id)
         ->Where('role_id','=',$role_id)
         ->update([
             'pay_rate' => $pay_rate,

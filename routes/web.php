@@ -36,6 +36,8 @@ Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('c
 Route::get('/ceo/pay_rate', [CeoController::class, 'pay_rate'])->name('ceo.pay_rate');
 Route::post('/ceo/pay_rate_api', [CeoController::class, 'pay_rate_api'])->name('ceo.pay_rate_api');
 Route::post('/ceo/pay_rate_change/', [CeoController::class, 'pay_rate_change'])->name('ceo.pay_rate_change');
+Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
+
 
 Route::resource('employees', EmployeeController::class)->except([
 	'show',
