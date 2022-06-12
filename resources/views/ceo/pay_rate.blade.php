@@ -101,16 +101,19 @@
             });
             $('.dept-name').click(function (event) {
                 var pay_rate = $(this).parents('.dept').find('.pay-rate');
+                
                 if(pay_rate.hasClass('d-none')){
                     pay_rate.removeClass('d-none');
+                    $(this).addClass('bg-dark text-white');
                 }else{
                     pay_rate.addClass('d-none');
+                    $(this).removeClass('bg-dark text-white');
                 }
 
                     console.log(1);
                     
                 $.ajax({
-                    url: '{{route('ceo.payRateApi')}}',
+                    url: '{{route('ceo.pay_rate_api')}}',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -131,7 +134,7 @@
                             pay_rate.append('<tr>' +
                                 '<form id="form-payRate-change" method="post">' +
                                 '<td class="col-1">' +
-                                '<div class="role-name">' +
+                                '<div class="role-name text-center form-group">' +
                                 value.role_name +
                                 '</div>' +
                                 '<label class="role-name-inp d-none">' +
@@ -139,20 +142,22 @@
                                 '</label>' +
                                 '</td>' +
                                 '<td class="col-1">' +
-                                '<div class="pay-rate">' +
+                                '<div class="pay-rate text-center">' +
                                 value.pay_rate +
                                 '</div>' +
                                 '<label class="pay-rate-inp d-none">' +
                                 '<input type="text" name="pay_rate" class="form-control text-center" value="' + value.pay_rate + '">' +
                                 '</label>' +
                                 '</td>' +
-                                '<td class="col-1">' +
+                                '<td class="col-1 ">' +
+                                '<div class="text-center">' +
                                 '<button type="button" class="btn btn-primary btn-change">' +
                                 'Change' +
                                 '</button>' +
                                 '<button type="button" class="btn btn-primary btn-save d-none"  data-pay_rate="' + value.pay_rate+ '" data-dept_id ="' + value.dept_id + '" data-role_id ="' + value.role_id + '">' +
                                 'Save' +
                                 '</button>' +
+                                '</div>' +
                                 '</td>' +
                                 '</form>' +
                                 '</tr>'+
@@ -174,7 +179,6 @@
                         let tr = $(this).parents('tr');
                         const time_regex = /^[0-9]{6,9}$/;
                         let data = tr.find('.pay-rate-inp').find('input[name="pay_rate"]').val();
-                        let text = data.substr(0, data.length - 1);
                         let dept_id = $(this).data('dept_id');
                         let role_id = $(this).data('role_id');
                         console.log(data);
@@ -183,7 +187,7 @@
                         }
 
                         $.ajax({
-                                    url: "{{ route('ceo.payRate_change') }}",
+                                    url: "{{ route('ceo.pay_rate_change') }}",
                                     type: 'POST',
                                     dataType: 'JSON',
                                     data: {

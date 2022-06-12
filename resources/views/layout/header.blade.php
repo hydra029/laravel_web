@@ -144,16 +144,6 @@
                 <span></span>
             </div>
         </a>
-        <div class="app-search dropdown">
-            <form>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search..." id="top-search">
-                    <span class="mdi mdi-magnify search-icon"></span>
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+        
     </div>
 </div>
