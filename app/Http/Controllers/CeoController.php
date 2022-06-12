@@ -77,15 +77,15 @@ class CeoController extends Controller
 		return Attendance_shift_time::whereId($id)->get();
 	}
 
-    public function payRate()
+    public function pay_rate()
     {
         $dept = Department::get();
-        return view('ceo.payRate', [
+        return view('ceo.pay_rate', [
             'dept' => $dept,
         ]);
     }
 
-   public function payRateApi(Request $request)
+   public function pay_rate_api(Request $request)
     {
         $dept_id = $request->get('dept_id');
         $pay_rate = Pay_rate::query()
@@ -96,7 +96,7 @@ class CeoController extends Controller
         return $pay_rate;        
     }
 
-    public function payRate_change(Request $request)
+    public function pay_rate_change(Request $request)
     {
         $pay_rate = $request->pay_rate;
         $dept_id = $request->dept_id;

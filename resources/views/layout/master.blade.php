@@ -17,7 +17,7 @@
 <body class="loading" data-layout="detached"
       data-layout-config='{"leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true}'>
 @include('layout.header')
-<div class="container-fluid">
+<div class="container-fluid m-0" style="max-width: 100%;">
     <div class="wrapper">
         @include('layout.sidebar')
         <div class="content-page">

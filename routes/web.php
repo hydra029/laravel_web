@@ -33,9 +33,9 @@ Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->na
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
-Route::get('/ceo/payRate', [CeoController::class, 'payRate'])->name('ceo.payRate');
-Route::post('/ceo/payRateApi', [CeoController::class, 'payRateApi'])->name('ceo.payRateApi');
-Route::post('/ceo/payRate_change/', [CeoController::class, 'payRate_change'])->name('ceo.payRate_change');
+Route::get('/ceo/pay_rate', [CeoController::class, 'pay_rate'])->name('ceo.pay_rate');
+Route::post('/ceo/pay_rate_api', [CeoController::class, 'pay_rate_api'])->name('ceo.pay_rate_api');
+Route::post('/ceo/pay_rate_change/', [CeoController::class, 'pay_rate_change'])->name('ceo.pay_rate_change');
 
 Route::resource('employees', EmployeeController::class)->except([
 	'show',
