@@ -48,7 +48,7 @@ class EmployeeController extends Controller
 		$data = Attendance::where('emp_id', '=', session('id'))
 			->where('date', '=', $date)
 			->where('emp_role', '=', $emp_role)
-			->leftJoin('attendance_shift_times', 'attendances.shift','=','attendance_shift_times.id')
+			->leftJoin('attendance_shift_times', 'attendances.shift', '=', 'attendance_shift_times.id')
 			->get($query);
 		return view('employees.index', [
 			'data' => $data,
@@ -60,8 +60,7 @@ class EmployeeController extends Controller
 	 *
 	 * @return Response
 	 */
-	public
-	function create(): Response
+	public function create(): Response
 	{
 		//
 	}
@@ -72,8 +71,7 @@ class EmployeeController extends Controller
 	 * @param StoreEmployeeRequest $request
 	 * @return string
 	 */
-	public
-	function store(StoreEmployeeRequest $request): string
+	public function store(StoreEmployeeRequest $request): string
 	{
 		$users = Employee::get('id');
 
@@ -94,8 +92,7 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return void
 	 */
-	public
-	function show(Employee $employee): void
+	public function show(Employee $employee): void
 	{
 		//
 	}
@@ -106,14 +103,12 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return void
 	 */
-	public
-	function edit(Employee $employee): void
+	public function edit(Employee $employee): void
 	{
 		//
 	}
 
-	public
-	function checkin(): RedirectResponse
+	public function checkin(): RedirectResponse
 	{
 		$date = date('H:i');
 		$status = ShiftStatusEnum::Active;
@@ -127,8 +122,7 @@ class EmployeeController extends Controller
 		return redirect()->route('employees.index');
 	}
 
-	public
-	function checkout(): RedirectResponse
+	public function checkout(): RedirectResponse
 	{
 		$date = date('H:i');
 		$shift = Attendance::where('status', '=', 2)->get('id');
@@ -149,8 +143,7 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return void
 	 */
-	public
-	function update(UpdateEmployeeRequest $request, Employee $employee): void
+	public function update(UpdateEmployeeRequest $request, Employee $employee): void
 	{
 	}
 
@@ -160,8 +153,7 @@ class EmployeeController extends Controller
 	 * @param Employee $employee
 	 * @return Response
 	 */
-	public
-	function destroy(Employee $employee): Response
+	public function destroy(Employee $employee): Response
 	{
 		//
 	}
