@@ -8,6 +8,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Employee
@@ -137,8 +138,6 @@ class Employee extends Model
 		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
 		return ($this->check_in_3 === 1 ? ($this->check_out_3 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
 	}
-
-
 
 	public $timestamps = false;
 }
