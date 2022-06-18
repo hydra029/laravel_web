@@ -11,12 +11,12 @@
             <span> Pay rate </span>
         </a>
     </li>
-    {{-- <li class="side-nav-item">
-        <a href="{{route('ceo.salary')}}" class="side-nav-link">
+    <li class="side-nav-item">
+        <a href="{{route('ceo.department')}}" class="side-nav-link">
             <i class="uil-home-alt"></i>
-            <span> Salary </span>
+            <span> Department </span>
         </a>
-    </li> --}}
+    </li>
     <li class="side-nav-item">
         <a href="#" class="side-nav-link">
             <i class="uil-calender"></i>

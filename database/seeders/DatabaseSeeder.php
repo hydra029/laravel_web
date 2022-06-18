@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
 				->create(),
 			Role::factory(10)
 				->create(),
-			Pay_rate::factory(100)
+			Pay_rate::factory(50)
 				->create(),
-			Employee::factory(10)
+			Employee::factory(40)
 				->create(),
 			Accountant::factory(5)
 				->create(),

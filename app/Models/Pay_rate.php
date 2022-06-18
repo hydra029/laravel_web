@@ -37,8 +37,8 @@ class Pay_rate extends Model
         'pay_rate' => 'integer',
     ];
 
-    // public function getPayRateAttribute(): string
-    // {   
-    //     return number_format((float)($this->pay_rate)) . ' đ';
-    // }
+    public function getPayRateMoneyAttribute(): string
+    {   
+        return number_format((float)($this->pay_rate)) . ' đ';
+    }
 }
