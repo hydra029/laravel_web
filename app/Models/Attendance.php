@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Enums\AttendanceEnum;
 use App\Enums\ShiftEnum;
 use App\Enums\ShiftStatusEnum;
+use App\Http\Controllers\AttendanceShiftTimeController;
 use Database\Factories\AttendanceFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Attendance
@@ -71,4 +73,22 @@ class Attendance extends Model
 	{
 		return AttendanceEnum::getKey($this->check_out);
 	}
+
+	public function emp(): HasMany
+	{
+		return $this->hasMany(Employee::class, 'emp_id');
+	}
+	public function mgr(): HasMany
+	{
+		return $this->hasMany(Manager::class, 'emp_id');
+	}
+	public function acct(): HasMany
+	{
+		return $this->hasMany(Accountant::class, 'emp_id');
+	}
+	public function shift(): HasMany
+	{
+		return $this->hasMany(Attendance_shift_time::class, 'shift');
+	}
+
 }

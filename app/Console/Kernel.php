@@ -72,6 +72,10 @@ class Kernel extends ConsoleKernel
 				Attendance_shift_time::where('id', '=', $shift_id)
 					->update(['status' => ShiftStatusEnum::TimeOut]);
 			})->dailyAt($check_out_end);
+			$schedule->call(function () use ($shift_id) {
+				Attendance_shift_time::where('id', '=', $shift_id)
+					->update(['status' => ShiftStatusEnum::Inactive]);
+			})->daily();
 		}
 	}
 

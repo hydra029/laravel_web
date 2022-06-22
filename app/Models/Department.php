@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,12 +13,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property int $status
  * @method static \Database\Factories\DepartmentFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Department newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Department newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Department query()
- * @method static \Illuminate\Database\Eloquent\Builder|Department whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Department whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Department whereStatus($value)
+ * @method static Builder|Department newModelQuery()
+ * @method static Builder|Department newQuery()
+ * @method static Builder|Department query()
+ * @method static Builder|Department whereId($value)
+ * @method static Builder|Department whereName($value)
+ * @method static Builder|Department whereStatus($value)
  * @mixin \Eloquent
  */
 class Department extends Model

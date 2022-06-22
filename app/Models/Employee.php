@@ -8,7 +8,9 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\Models\Employee
@@ -137,6 +139,15 @@ class Employee extends Model
 		/** @noinspection NestedTernaryOperatorInspection */
 		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
 		return ($this->check_in_3 === 1 ? ($this->check_out_3 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+
+	public function departments(): BelongsTo
+	{
+		return $this->BelongsTo(Department::class, 'dept_id','id');
+	}
+	public function roles(): BelongsTo
+	{
+		return $this->BelongsTo(Role::class,'role_id','id');
 	}
 
 	public $timestamps = false;

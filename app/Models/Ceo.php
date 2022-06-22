@@ -7,6 +7,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\Models\Ceo
@@ -34,5 +35,14 @@ use Illuminate\Database\Eloquent\Model;
 class Ceo extends Model
 {
     use HasFactory;
+	public function department(): HasOne
+	{
+		return $this->hasOne(Department::class, 'dept_id');
+	}
+	public function role(): HasOne
+	{
+		return $this->hasOne(Role::class, 'role_id');
+	}
+
 	public $timestamps = false;
 }

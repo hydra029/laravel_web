@@ -11,9 +11,9 @@ class AlterAddColumnAvatarInEmployeeTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
+        Schema::table('employees', static function (Blueprint $table) {
             $table->string('avatar')->nullable();
         });
     }
@@ -23,10 +23,10 @@ class AlterAddColumnAvatarInEmployeeTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-            //
+        Schema::table('employees', static function (Blueprint $table) {
+	        $table->dropColumn('avatar');
         });
     }
 }

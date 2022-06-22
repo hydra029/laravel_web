@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Employee;
 use Illuminate\Contracts\Support\Renderable;
-use Symfony\Component\HttpFoundation\Cookie;
 
 class HomeController extends Controller
 {
@@ -15,8 +16,12 @@ class HomeController extends Controller
 	 */
 	public function test(): Renderable
 	{
+//		$data = Employee::find(8)->roles()->select('lname')->get();
+		$data = Employee::find(1);
+//		dd($data);
 		return view('test',([
-			'title' => 'Test'
+			'title' => 'Test',
+			'data' => $data,
 		]));
 	}
 }

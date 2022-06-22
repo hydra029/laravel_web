@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use Database\Factories\Pay_rateFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,13 +14,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $dept_id
  * @property int $role_id
  * @property int $pay_rate
- * @method static \Database\Factories\Pay_rateFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Pay_rate newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Pay_rate newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Pay_rate query()
- * @method static \Illuminate\Database\Eloquent\Builder|Pay_rate whereDeptId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Pay_rate wherePayRate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Pay_rate whereRoleId($value)
+ * @method static Pay_rateFactory factory(...$parameters)
+ * @method static Builder|Pay_rate newModelQuery()
+ * @method static Builder|Pay_rate newQuery()
+ * @method static Builder|Pay_rate query()
+ * @method static Builder|Pay_rate whereDeptId($value)
+ * @method static Builder|Pay_rate wherePayRate($value)
+ * @method static Builder|Pay_rate whereRoleId($value)
  * @mixin \Eloquent
  */
 class Pay_rate extends Model
