@@ -34,7 +34,7 @@ Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
 // Pay Rate
-Route::get('/ceo/pay_rate', [CeoController::class, 'pay_rate'])->name('ceo.pay_rate');
+Route::get('/ceo/change_money', [CeoController::class, 'change_money'])->name('ceo.change_money');
 Route::post('/ceo/pay_rate_api', [CeoController::class, 'pay_rate_api'])->name('ceo.pay_rate_api');
 Route::post('/ceo/pay_rate_change/', [CeoController::class, 'pay_rate_change'])->name('ceo.pay_rate_change');
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
@@ -45,21 +45,23 @@ Route::post('/ceo/department_count_employees', [DepartmentController::class, 'de
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
 Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
+// Fines
+// Route::get('/ceo/fines', [Controller::])
 
 
 
 Route::resource('employees', EmployeeController::class)->except([
-	'show',
+    'show',
 ]);
 
 Route::resource('accountants', AccountantController::class)->except([
-	'show',
+    'show',
 ]);
 
 Route::resource('managers', ManagerController::class)->except([
-	'show',
+    'show',
 
 ]);
 Route::resource('ceo', CeoController::class)->except([
-	'show',
+    'show',
 ]);

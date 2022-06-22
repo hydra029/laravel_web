@@ -25,11 +25,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">{{$title}}</h4>
+                            <span class="page-title font-weight-bold">{{$title}}</span>
+                            <span class="page-title  title-name"></span>
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card position-relative">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
