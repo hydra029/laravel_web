@@ -65,13 +65,13 @@ class DepartmentController extends Controller
         ->leftJoin('pay_rates', function($join) {
             $join->on('employees.dept_id', '=', 'pay_rates.dept_id');
             $join->on('employees.role_id', '=', 'pay_rates.role_id');
-        })  
+        })
         ->select('employees.dept_id','employees.fname','employees.lname', 'departments.name as dept_name', 'roles.name as role_name', 'pay_rates.pay_rate')
         ->where('employees.dept_id', '=', $dept_id)
         ->get();
         return response()->json($employee_dept);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -83,12 +83,12 @@ class DepartmentController extends Controller
         //
     }
 
-    
+
     public function store(StoreDepartmentRequest $request)
     {
-        $arr = $request->validate();
+        $arr = $request->validated();
         $this->models->create($arr);
-        
+
         return redirect()->route('ceo.department')->with('success', 'Đã thêm mới thành công');
     }
 
@@ -114,18 +114,11 @@ class DepartmentController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateDepartmentRequest $request
-     * @param Department $department
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
         $dept_id = $request->dept_id;
         $dept_name = $request->name;
-        Department::where('id', $dept_id)->update('name', $dept_name);
+        Department::where('id', $dept_id)->update(['name' => $dept_name]);
         return Department::whereId($dept_id)->get();
     }
 
