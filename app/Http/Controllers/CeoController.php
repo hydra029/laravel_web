@@ -9,6 +9,7 @@ use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\UpdateCeoRequest;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Pay_rate;
 use Illuminate\Http\Request;
@@ -83,6 +84,7 @@ class CeoController extends Controller
         return view('ceo.change_money', [
             'dept' => $dept,
         ]);
+
     }
 
     public function manager_name(Request $request)
@@ -107,7 +109,7 @@ class CeoController extends Controller
         ->select('pay_rates.*', 'departments.name as dept_name', 'roles.name as role_name')
         ->where('dept_id','=',$dept_id)
         ->get();
-        return $pay_rate;
+        return $pay_rate->append('pay_rate_money')->toArray();
     }
 
     public function pay_rate_change(Request $request)
@@ -121,7 +123,28 @@ class CeoController extends Controller
         ->update([
             'pay_rate' => $pay_rate,
         ]);
-        return Pay_rate::whereDeptId($dept_id)->whereRoleId($role_id)->get();
+        return Pay_rate::whereDeptId($dept_id)->whereRoleId($role_id)->get()->append('pay_rate_money')->toArray();
+    }
+
+    public function fines_api()
+    {
+        return Fines::get()->append(['fines_time','deduction_detail'])->toArray();
+    }
+
+    public function fines_update(Request $request)
+    {
+        $id = $request->id;
+        $name = $request->name;
+        $fines = $request->fines;
+        $deduction = $request->deduction;
+        Fines::query()
+        ->where('id', $id)
+        ->update([
+            'name' => $name,
+            'fines' => $fines,
+            'deduction' => $deduction,
+        ]);
+        return Fines::whereId($id)->get()->append(['fines_time','deduction_detail'])->toArray();
     }
 	/**
      * Show the form for creating a new resource.
