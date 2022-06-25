@@ -33,13 +33,10 @@ class Pay_rate extends Model
         'role_id',
         'pay_rate',
     ];
-    
-    protected $pay_rate = [
-        'pay_rate' => 'integer',
-    ];
 
     public function getPayRateMoneyAttribute(): string
-    {   
+    {
         return number_format((float)($this->pay_rate)) . ' đ';
     }
+
 }

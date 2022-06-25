@@ -33,11 +33,13 @@ Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->na
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
-// Pay Rate
+// Change money
 Route::get('/ceo/change_money', [CeoController::class, 'change_money'])->name('ceo.change_money');
 Route::post('/ceo/pay_rate_api', [CeoController::class, 'pay_rate_api'])->name('ceo.pay_rate_api');
 Route::post('/ceo/pay_rate_change/', [CeoController::class, 'pay_rate_change'])->name('ceo.pay_rate_change');
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
+Route::get('/ceo/fines_api', [CeoController::class, 'fines_api'])->name('ceo.fines_api');
+Route::post('/ceo/fines_update', [CeoController::class, 'fines_update'])->name('ceo.fines_update');
 // Department
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
 Route::post('/ceo/department_api', [DepartmentController::class, 'department_api'])->name('ceo.department_api');
@@ -45,8 +47,7 @@ Route::post('/ceo/department_count_employees', [DepartmentController::class, 'de
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
 Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
-// Fines
-// Route::get('/ceo/fines', [Controller::])
+
 
 
 

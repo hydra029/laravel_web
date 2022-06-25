@@ -30,8 +30,9 @@ class Department extends Model
         'name',
         'status',
     ];
-    
+
     protected $status = [
         'status' => 'integer',
     ];
+
 }
