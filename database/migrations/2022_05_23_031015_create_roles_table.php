@@ -15,7 +15,9 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', static function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('dept_id');
             $table->string('name');
+            $table->integer('pay_rate');
             $table->boolean('status');
         });
     }

@@ -54,6 +54,10 @@ class Manager extends Model
 		'dept_id',
 		'role_id',
 	];
+    public function getDateOfBirthAttribute(): string
+    {
+        return date_format(date_create($this->dob),"d/m/Y");
+    }
 
 	public function getAgeAttribute(): string
 	{
@@ -72,11 +76,11 @@ class Manager extends Model
 	}
 	public function department(): HasOne
 	{
-		return $this->hasOne(Department::class, 'dept_id');
+		return $this->hasOne(Department::class,'id', 'dept_id');
 	}
 	public function role(): HasOne
 	{
-		return $this->hasOne(Role::class, 'role_id');
+		return $this->hasOne(Role::class,'id', 'role_id');
 	}
 
 	public $timestamps = false;

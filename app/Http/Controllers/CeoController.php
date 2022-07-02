@@ -12,10 +12,12 @@ use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Pay_rate;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Whoops\Run;
 
 class CeoController extends Controller
 {
@@ -78,35 +80,15 @@ class CeoController extends Controller
 		return Attendance_shift_time::whereId($id)->get();
 	}
 
-    public function change_money()
-    {
-        $dept = Department::get();
-        return view('ceo.change_money', [
-            'dept' => $dept,
-        ]);
 
-    }
 
-    public function manager_name(Request $request)
-    {
-        $dept_id = $request->get('dept_id');
-        $manager = Manager::query()
-        ->leftJoin('roles', 'managers.role_id', '=', 'roles.id')
-        ->select('managers.*', 'roles.name as role_name')
-        ->where('managers.id','=',$dept_id)
-        ->get()
-        ->first();
-
-        return $manager;
-    }
 
    public function pay_rate_api(Request $request)
     {
         $dept_id = $request->get('dept_id');
-        $pay_rate = Pay_rate::query()
-        ->leftJoin('departments', 'pay_rates.dept_id', '=', 'departments.id')
-        ->leftjoin('roles', 'pay_rates.role_id', '=', 'roles.id')
-        ->select('pay_rates.*', 'departments.name as dept_name', 'roles.name as role_name')
+        $pay_rate = Role::query()
+        ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
+        ->select('roles.*', 'departments.name as dept_name')
         ->where('dept_id','=',$dept_id)
         ->get();
         return $pay_rate->append('pay_rate_money')->toArray();
@@ -115,20 +97,27 @@ class CeoController extends Controller
     public function pay_rate_change(Request $request)
     {
         $pay_rate = $request->pay_rate;
-        $dept_id = $request->dept_id;
-        $role_id = $request->role_id;
-        Pay_rate::query()
-        ->Where('dept_id','=',$dept_id)
-        ->Where('role_id','=',$role_id)
+        $id = $request->id;
+        Role::query()
+        ->Where('id','=',$id)
         ->update([
             'pay_rate' => $pay_rate,
         ]);
-        return Pay_rate::whereDeptId($dept_id)->whereRoleId($role_id)->get()->append('pay_rate_money')->toArray();
+        return Role::whereId($id)->get()->append('pay_rate_money')->toArray();
     }
 
-    public function fines_api()
+
+    public function fines_store(Request $request)
     {
-        return Fines::get()->append(['fines_time','deduction_detail'])->toArray();
+        $name = $request->name;
+        $fines = $request->fines;
+        $deduction = $request->deduction;
+        return Fines::create([
+            'name' => $name,
+            'fines' => $fines,
+            'deduction' => $deduction,
+        ])->append(['fines_time','deduction_detail'])->toArray();
+
     }
 
     public function fines_update(Request $request)

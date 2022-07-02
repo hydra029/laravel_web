@@ -35,4 +35,19 @@ class Department extends Model
         'status' => 'integer',
     ];
 
+    public function manager()
+    {
+        return $this->belongsTo(Manager::class, 'id','dept_id');
+    }
+
+    public function members()
+    {
+        return $this->belongsTo(Employee::class, 'id','dept_id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsTo(Role::class, 'id','dept_id');
+    }
+
 }
