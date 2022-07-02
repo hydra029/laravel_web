@@ -26,4 +26,15 @@ class Role extends Model
 {
     use HasFactory;
 	public $timestamps = false;
+
+   protected $fillable = [
+       'name',
+       'dept_id',
+       'pay_rate',
+       'status',
+   ];
+
+   public function getPayRateMoneyAttribute() {
+        return number_format((float)($this->pay_rate)) . ' đ';
+   }
 }

@@ -6,9 +6,9 @@
         </a>
     </li>
     <li class="side-nav-item">
-        <a href="{{route('ceo.change_money')}}" class="side-nav-link">
+        <a href="{{route('ceo.fines')}}" class="side-nav-link">
             <i class="uil-home-alt"></i>
-            <span> Change money </span>
+            <span> Fines </span>
         </a>
     </li>
     <li class="side-nav-item">

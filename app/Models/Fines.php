@@ -29,11 +29,15 @@ class Fines extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'id',
         'name',
         'fines',
         'deduction',
     ];
-
+    public function getFinesIdAttribute()
+    {
+        return $this->id . '.';
+    }
 
     public function getFinesTimeAttribute($fines)
     {
@@ -42,6 +46,6 @@ class Fines extends Model
 
     public function getDeductionDetailAttribute()
     {
-        return '-' . ($this->deduction) * 100 . '%';
+        return '-' . number_format((float)($this->deduction)). ' đ';
     }
 }

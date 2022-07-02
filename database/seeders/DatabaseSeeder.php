@@ -8,7 +8,6 @@ use App\Models\Attendance;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Manager;
-use App\Models\Pay_rate;
 use App\Models\Role;
 use App\Models\Salary;
 use Illuminate\Database\Seeder;
@@ -25,9 +24,7 @@ class DatabaseSeeder extends Seeder
 		$this->call([
 			Department::factory(10)
 				->create(),
-			Role::factory(10)
-				->create(),
-			Pay_rate::factory(50)
+			Role::factory(50)
 				->create(),
 			Employee::factory(40)
 				->create(),
