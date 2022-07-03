@@ -8,13 +8,25 @@
     <table class="table table-striped table-centered mb-0" id="table-index">
         <thead>
         <tr>
-            <th>Shift</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Birth date</th>
             <th>Status</th>
-            <th>Check In</th>
-            <th>Check Out</th>
+            <th>Roles name</th>
+            <th>Departments name</th>
         </tr>
         </thead>
-
+        @foreach($data as $each)
+        <tr>
+            <td>{{ $each->full_name }}</td>
+            <td>{{ $each->gender_name }}</td>
+            <td>{{ $each->date_of_birth }}</td>
+            <td>{{ $each->status }}</td>
+            <td>{{ $each->roles->name }}</td>
+            <td>{{ $each->departments->name }}</td>
+        </tr>
+        @endforeach
+        {{ $data->links() }}
 {{--        @foreach($data as $each)--}}
 {{--            <tr>--}}
 {{--                <td class="col-3">--}}

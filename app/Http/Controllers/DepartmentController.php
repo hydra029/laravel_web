@@ -42,10 +42,10 @@ class DepartmentController extends Controller
         $employee_dept = Employee::query()
         ->leftJoin('departments', 'employees.dept_id', '=', 'departments.id')
         ->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
-        ->select('employees.id','employees.dept_id','employees.fname','employees.lname', 'departments.name as dept_name', 'roles.name as role_name')
+        ->select('employees.*', 'departments.name as dept_name', 'roles.name as role_name')
         ->where('employees.dept_id', '=', $dept_id)
         ->get();
-        return $employee_dept->append(['full_name']);
+        return $employee_dept->append(['full_name','date_of_birth','gender_name']);
     }
 
     public function manager_role(Request $request)

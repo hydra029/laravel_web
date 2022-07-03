@@ -37,4 +37,5 @@ class Role extends Model
    public function getPayRateMoneyAttribute() {
         return number_format((float)($this->pay_rate)) . ' đ';
    }
+
 }

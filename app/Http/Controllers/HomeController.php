@@ -17,8 +17,8 @@ class HomeController extends Controller
 	public function test(): Renderable
 	{
 //		$data = Employee::find(8)->roles()->select('lname')->get();
-		$data = Employee::find(1);
-//		dd($data);
+		$data = Employee::with(['roles','departments'])->where('status', '=', '1')->paginate(5);
+		// dd($data->toArray());
 		return view('test',([
 			'title' => 'Test',
 			'data' => $data,
