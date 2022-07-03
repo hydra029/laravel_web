@@ -28,9 +28,8 @@ class AlterAddPayrateToRolesTable extends Migration
     public function down()
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->dropColumn('dept_id');
-            $table->dropColumn('name');
-            $table->dropColumn('pay_rate');
+            $table->dropColumn('dept_id')->after('name');
+            $table->dropColumn('pay_rate')->after('name');
         });
     }
 }

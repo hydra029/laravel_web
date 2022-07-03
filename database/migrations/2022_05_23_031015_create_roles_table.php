@@ -15,6 +15,7 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', static function (Blueprint $table) {
             $table->id();
+            $table->dropColumn('name');
             $table->boolean('status');
         });
     }
