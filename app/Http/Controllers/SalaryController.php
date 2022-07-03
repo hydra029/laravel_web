@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Salary;
 use App\Http\Requests\StoreSalaryRequest;
 use App\Http\Requests\UpdateSalaryRequest;
+use Illuminate\Http\Response;
 
 class SalaryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -21,7 +22,7 @@ class SalaryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -31,8 +32,8 @@ class SalaryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSalaryRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreSalaryRequest $request
+     * @return Response
      */
     public function store(StoreSalaryRequest $request)
     {
@@ -42,8 +43,8 @@ class SalaryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Salary  $salary
-     * @return \Illuminate\Http\Response
+     * @param Salary $salary
+     * @return Response
      */
     public function show(Salary $salary)
     {
@@ -53,8 +54,8 @@ class SalaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Salary  $salary
-     * @return \Illuminate\Http\Response
+     * @param Salary $salary
+     * @return Response
      */
     public function edit(Salary $salary)
     {
@@ -64,9 +65,9 @@ class SalaryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSalaryRequest  $request
-     * @param  \App\Models\Salary  $salary
-     * @return \Illuminate\Http\Response
+     * @param UpdateSalaryRequest $request
+     * @param Salary $salary
+     * @return Response
      */
     public function update(UpdateSalaryRequest $request, Salary $salary)
     {
@@ -76,8 +77,8 @@ class SalaryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Salary  $salary
-     * @return \Illuminate\Http\Response
+     * @param Salary $salary
+     * @return Response
      */
     public function destroy(Salary $salary)
     {

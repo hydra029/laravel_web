@@ -60,7 +60,7 @@ class Salary extends Model
 	}
 	public function pay_rate(): HasMany
 	{
-		return $this->hasMany(Pay_rate::class, 'pay_rate');
+		return $this->hasMany(Role::class, 'pay_rate');
 	}
 
 }

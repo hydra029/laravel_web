@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\ShiftStatusEnum;
 use Database\Factories\EmployeeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\Models\Employee
@@ -92,11 +89,25 @@ class Employee extends Model
 		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
 
+	public function getDeptNameAttribute(): string
+	{
+		$dept_id = $this->dept_id;
+		$dept_name = Department::whereId($dept_id)->get('name');
+		return $dept_name[0]['name'];
+	}
+
+	public function getRoleNameAttribute(): string
+	{
+		$role_id = $this->role_id;
+		$role_name = Department::whereId($role_id)->get('name');
+		return $role_name[0]['name'];
+	}
+
 	public function getShiftStatusAttribute(): string
 	{
 		$status = "";
 		$date = date('Y-m-d');
-		$shift_status = Attendance_shift_time::get('id');
+		$shift_status = AttendanceShiftTime::get('id');
 		foreach ($shift_status as $each) {
 			$shift = $each->id;
 			$emp_id = $this->id;
@@ -128,12 +139,14 @@ class Employee extends Model
 		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
 		return ($this->check_in_1 === 1 ? ($this->check_out_1 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
 	}
+
 	public function getCheck2Attribute(): string
 	{
 		/** @noinspection NestedTernaryOperatorInspection */
 		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
 		return ($this->check_in_2 === 1 ? ($this->check_out_2 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
 	}
+
 	public function getCheck3Attribute(): string
 	{
 		/** @noinspection NestedTernaryOperatorInspection */
@@ -143,11 +156,16 @@ class Employee extends Model
 
 	public function departments(): BelongsTo
 	{
-		return $this->BelongsTo(Department::class, 'dept_id','id');
+		return $this->BelongsTo(Department::class, 'dept_id', 'id')
+			->select(['id', 'name as dept_name'])
+			->where('status', '=', 1);
 	}
+
 	public function roles(): BelongsTo
 	{
-		return $this->BelongsTo(Role::class,'role_id','id');
+		return $this->BelongsTo(Role::class, 'role_id', 'id')
+			->select(['id', 'name'])
+			->where('status', '=', 1);
 	}
 
 	public $timestamps = false;

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Attendance_shift_time
+ * App\Models\AttendanceShiftTime
  *
  * @property int $id
  * @property string $check_in_start
@@ -20,15 +20,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $status
  * @property-read string $shifts_name
  * @property-read string $shifts_status
- * @method static Builder|Attendance_shift_time newModelQuery()
- * @method static Builder|Attendance_shift_time newQuery()
- * @method static Builder|Attendance_shift_time query()
- * @method static Builder|Attendance_shift_time whereCheckInEnd($value)
- * @method static Builder|Attendance_shift_time whereCheckInStart($value)
- * @method static Builder|Attendance_shift_time whereCheckOutEnd($value)
- * @method static Builder|Attendance_shift_time whereCheckOutStart($value)
- * @method static Builder|Attendance_shift_time whereId($value)
- * @method static Builder|Attendance_shift_time whereStatus($value)
+ * @method static Builder|AttendanceShiftTime newModelQuery()
+ * @method static Builder|AttendanceShiftTime newQuery()
+ * @method static Builder|AttendanceShiftTime query()
+ * @method static Builder|AttendanceShiftTime whereCheckInEnd($value)
+ * @method static Builder|AttendanceShiftTime whereCheckInStart($value)
+ * @method static Builder|AttendanceShiftTime whereCheckOutEnd($value)
+ * @method static Builder|AttendanceShiftTime whereCheckOutStart($value)
+ * @method static Builder|AttendanceShiftTime whereId($value)
+ * @method static Builder|AttendanceShiftTime whereStatus($value)
  * @mixin Eloquent
  * @property-read string $in_end
  * @property-read string $in_start
@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $shift_name
  * @property-read string $shift_status
  */
-class Attendance_shift_time extends Model
+class AttendanceShiftTime extends Model
 {
 	use HasFactory;
 	public $timestamps = false;

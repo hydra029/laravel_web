@@ -29,7 +29,8 @@ class CheckLogin
 				return redirect()->route('accountants.index');
 			case 4:
 				return redirect()->route('ceo.index');
-
+			default:
+				return $next($request);
 		}
 
 	}

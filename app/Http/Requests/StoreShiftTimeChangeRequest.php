@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAttendance_shift_timeRequest extends FormRequest
+class StoreShiftTimeChangeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

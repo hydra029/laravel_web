@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ShiftEnum;
-use App\Models\Attendance_shift_time;
+use App\Models\AttendanceShiftTime;
 use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\UpdateCeoRequest;
@@ -11,7 +11,6 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Manager;
-use App\Models\Pay_rate;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -40,23 +39,28 @@ class CeoController extends Controller
     public function index()
     {
 	    $limit = 25;
-	    $fields = array('employees.*', 'departments.name as dept_name', 'roles.name as role_name');
-	    $data = Employee::where('employees.status','=','1')
-		    ->where('departments.status','=','1')
-		    ->where('roles.status','=','1')
-		    ->leftJoin('departments', 'employees.dept_id', '=', 'departments.id')
-		    ->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
+	    $fields = [
+		    'id',
+		    'fname',
+		    'lname',
+		    'gender',
+		    'dob',
+		    'email',
+		    'role_id',
+		    'dept_id',
+	    ];
+	    $data = Employee::whereStatus(1)
+		    ->with(['roles','departments'])
 		    ->paginate($limit, $fields);
-
-	    return view('ceo.index', [
+	    return view('test',([
 		    'data' => $data,
-	    ]);
+	    ]));
     }
 
 	public function time()
 	{
-		$time = Attendance_shift_time::get();
-		$count = Attendance_shift_time::count();
+		$time = AttendanceShiftTime::get();
+		$count = AttendanceShiftTime::count();
 		return view('ceo.time', [
 			'time' => $time,
 			'count' => $count,
@@ -70,21 +74,21 @@ class CeoController extends Controller
 		$check_out_start = $request->out_start;
 		$check_out_end = $request->out_end;
 		$id = ShiftEnum::getValue($request->get('name'));
-		Attendance_shift_time::Where('id','=',$id)
+		AttendanceShiftTime::Where('id','=',$id)
 		->update([
 			'check_in_start' => $check_in_start,
 			'check_in_end' => $check_in_end,
 			'check_out_start' => $check_out_start,
 			'check_out_end' => $check_out_end,
 		]);
-		return Attendance_shift_time::whereId($id)->get();
+		return AttendanceShiftTime::whereId($id)->get();
 	}
 
 
 
 
-   public function pay_rate_api(Request $request)
-    {
+   public function pay_rate_api(Request $request): array
+   {
         $dept_id = $request->get('dept_id');
         $pay_rate = Role::query()
         ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
@@ -94,7 +98,7 @@ class CeoController extends Controller
         return $pay_rate->append('pay_rate_money')->toArray();
     }
 
-    public function pay_rate_change(Request $request)
+    public function pay_rate_change(Request $request): array
     {
         $pay_rate = $request->pay_rate;
         $id = $request->id;
@@ -107,7 +111,7 @@ class CeoController extends Controller
     }
 
 
-    public function fines_store(Request $request)
+    public function fines_store(Request $request): array
     {
         $name = $request->name;
         $fines = $request->fines;
