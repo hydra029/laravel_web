@@ -7,7 +7,6 @@
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description"/>
     <meta content="Coderthemes" name="author"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
     {{-- css --}}
     <link href="{{ asset('css/icons.min.css' )}}" rel="stylesheet" type="text/css"/>

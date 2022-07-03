@@ -27,9 +27,7 @@ class LoginController extends Controller
    */
 	public function __construct()
 	{
-
 	}
-
 
 	public function login()
 	{
@@ -39,66 +37,64 @@ class LoginController extends Controller
 
 	public function processLogin(Request $request): RedirectResponse
 	{
-		try {
-
-			if ($emp = Employee::query()
-				->where('email', $request->get('email'))
-				->where('password', $request->get('password'))
-				->first()) {
-				session()->put('id', $emp->id);
-				session()->put('email', $emp->email);
-				session()->put('password', $emp->password);
-				session()->put('level', 1);
-				session()->put('success', 'Sign in successfully');
-				return redirect()->route('employees.index');
-			}
-
-			if ($mgr = Manager::query()
-				->where('email', $request->get('email'))
-				->where('password', $request->get('password'))
-				->first()) {
-				session()->put('id', $mgr->id);
-				session()->put('email', $mgr->email);
-				session()->put('password', $mgr->password);
-				session()->put('level', 2);
-				session()->put('success', 'Sign in successfully');
-				return redirect()->route('managers.index');
-			}
-			if ($user = Accountant::query()
-				->where('email', $request->get('email'))
-				->where('password', $request->get('password'))
-				->first()) {
-				session()->put('id', $user->id);
-				session()->put('email', $user->email);
-				session()->put('password', $user->password);
-				session()->put('level', 3);
-				session()->put('success', 'Sign in successfully');
-				return redirect()->route('accountants.index');
-			}
-
-			if ($user = Ceo::query()
-				->where('email', $request->get('email'))
-				->where('password', $request->get('password'))
-				->first()) {
-				session()->put('id', $user->id);
-				session()->put('email', $user->email);
-				session()->put('password', $user->password);
-				session()->put('level', 4);
-				session()->put('success', 'Sign in successfully');
-				return redirect()->route('ceo.index');
-			}
-			session()->put('level',0);
-			session()->put('error', 'Wrong email or password');
-			return redirect()->route('login');
-		} catch (Throwable $e) {
-			return back();
+		session()->put('email', $request->email);
+		session()->put('password', $request->password);
+		session()->put('ad', 'Wrong email or password');
+		session()->put('aaa', 'Wrong email or password');
+		if ($emp = Employee::query()
+			->where('email', $request->get('email'))
+			->where('password', $request->get('password'))
+			->first()) {
+			session()->put('id', $emp->id);
+			session()->put('email', $emp->email);
+			session()->put('password', $emp->password);
+			session()->put('level', 1);
+			session()->put('success', 'Sign in successfully');
+			return redirect()->route('employees.index');
 		}
+
+		if ($mgr = Manager::query()
+			->where('email', $request->get('email'))
+			->where('password', $request->get('password'))
+			->first()) {
+			session()->put('id', $mgr->id);
+			session()->put('email', $mgr->email);
+			session()->put('password', $mgr->password);
+			session()->put('level', 2);
+			session()->put('success', 'Sign in successfully');
+			return redirect()->route('managers.index');
+		}
+
+		if ($user = Accountant::query()
+			->where('email', $request->get('email'))
+			->where('password', $request->get('password'))
+			->first()) {
+			session()->put('id', $user->id);
+			session()->put('email', $user->email);
+			session()->put('password', $user->password);
+			session()->put('level', 3);
+			session()->put('success', 'Sign in successfully');
+			return redirect()->route('accountants.index');
+		}
+
+		if ($user = Ceo::query()
+			->where('email', $request->get('email'))
+			->where('password', $request->get('password'))
+			->first()) {
+			session()->put('id', $user->id);
+			session()->put('email', $user->email);
+			session()->put('password', $user->password);
+			session()->put('level', 4);
+			session()->put('success', 'Sign in successfully');
+			return redirect()->route('ceo.index');
+		}
+		return back()->with('msg', 'The Message');
 	}
 
 	public function logout(): RedirectResponse
 	{
 		session()->flush();
 
-		return redirect()->route('login');
+		return redirect()->route('login')->with('success','Log out');
 	}
 }

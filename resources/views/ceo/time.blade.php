@@ -120,8 +120,6 @@
             $('.btn-change').click(function (event) {
                 $(this).addClass('d-none');
                 $(this).parents('tr').find('.btn-save').removeClass('d-none');
-                $(this).parents('tr').find('.shift-name-inp').removeClass('d-none');
-                $(this).parents('tr').find('.shift-name').addClass('d-none');
                 $(this).parents('tr').find('.shift-in-start-inp').removeClass('d-none');
                 $(this).parents('tr').find('.shift-in-start').addClass('d-none');
                 $(this).parents('tr').find('.shift-in-end-inp').removeClass('d-none');
@@ -134,7 +132,7 @@
             $('.btn-save').click(function (event) {
                 let tr = $(this).parents('tr');
                 let form = tr.find('form');
-                const time_regex = /^([0-1][0-9]|2[0-3]):([0-5][0-9]) ([0-1][0-9]|2[0-3]):([0-5][0-9]) ([0-1][0-9]|2[0-3]):([0-5][0-9]) ([0-1][0-9]|2[0-3]):([0-5][0-9])$/;
+                const time_regex = /^([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d)$/;
                 let in_start_inp = tr.find('.shift-in-start-inp').find('input').val();
                 let in_end_inp = tr.find('.shift-in-end-inp').find('input').val();
                 let out_start_inp = tr.find('.shift-out-start-inp').find('input').val();
@@ -151,7 +149,6 @@
                         .done(function (response) {
                             tr.find('.btn-change').removeClass('d-none');
                             tr.find('.btn-save').addClass('d-none');
-                            tr.find('.shift-name-inp').addClass('d-none');
                             tr.find('.shift-name').removeClass('d-none');
                             tr.find('.shift-in-start-inp').addClass('d-none');
                             tr.find('.shift-in-start').removeClass('d-none');

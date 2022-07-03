@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Department
@@ -35,17 +36,17 @@ class Department extends Model
         'status' => 'integer',
     ];
 
-    public function manager()
+    public function manager(): BelongsTo
     {
         return $this->belongsTo(Manager::class, 'id','dept_id');
     }
 
-    public function members()
+    public function members(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'id','dept_id');
     }
 
-    public function roles()
+    public function roles(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'id','dept_id');
     }

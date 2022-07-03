@@ -88,7 +88,7 @@ class Attendance extends Model
 	}
 	public function shift(): HasMany
 	{
-		return $this->hasMany(Attendance_shift_time::class, 'shift');
+		return $this->hasMany(Attendance_shiftTime::class, 'shift');
 	}
 
 }

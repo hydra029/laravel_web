@@ -64,6 +64,9 @@
     <script>
         $(document).ready(function() {
             $('#home').attr('style', 'color: #3d73dd!important');
+            if ({{session()->has('aaa')}}) {
+                console.log('aaa');
+            }
         });
     </script>
 @endpush

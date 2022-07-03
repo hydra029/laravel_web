@@ -4,7 +4,7 @@ namespace App\Console;
 
 use App\Enums\ShiftStatusEnum;
 use App\Models\Accountant;
-use App\Models\Attendance_shift_time;
+use App\Models\Attendance_shiftTime;
 use App\Models\Ceo;
 use App\Models\Employee;
 use App\Models\Manager;
@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
 	 */
 	protected function schedule(Schedule $schedule): void
 	{
-		$shifts = Attendance_shift_time::get();
+		$shifts = Attendance_shiftTime::get();
 		foreach ($shifts as $shift) {
 			$schedule->call(function () use ($shift) {
 				$users = Employee::query()->get('id');
@@ -57,23 +57,23 @@ class Kernel extends ConsoleKernel
 			$check_out_end = date('H:i', strtotime($shift->check_out_end));
 			$shift_id = $shift->id;
 			$schedule->call(function () use ($shift_id) {
-				Attendance_shift_time::where('id', '=', $shift_id)
+				Attendance_shiftTime::where('id', '=', $shift_id)
 					->update(['status' => ShiftStatusEnum::Active]);
 			})->dailyAt($check_in_start);
 			$schedule->call(function () use ($shift_id) {
-				Attendance_shift_time::where('id', '=', $shift_id)
+				Attendance_shiftTime::where('id', '=', $shift_id)
 					->update(['status' => ShiftStatusEnum::TimeOut]);
 			})->dailyAt($check_in_end);
 			$schedule->call(function () use ($shift_id) {
-				Attendance_shift_time::where('id', '=', $shift_id)
+				Attendance_shiftTime::where('id', '=', $shift_id)
 					->update(['status' => ShiftStatusEnum::Active]);
 			})->dailyAt($check_out_start);
 			$schedule->call(function () use ($shift_id) {
-				Attendance_shift_time::where('id', '=', $shift_id)
+				Attendance_shiftTime::where('id', '=', $shift_id)
 					->update(['status' => ShiftStatusEnum::TimeOut]);
 			})->dailyAt($check_out_end);
 			$schedule->call(function () use ($shift_id) {
-				Attendance_shift_time::where('id', '=', $shift_id)
+				Attendance_shiftTime::where('id', '=', $shift_id)
 					->update(['status' => ShiftStatusEnum::Inactive]);
 			})->daily();
 		}

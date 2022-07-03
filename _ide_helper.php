@@ -16672,9 +16672,13 @@
 
 namespace  {
 
+	use Illuminate\Contracts\Pagination\CursorPaginator;
+	use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+	use Illuminate\Contracts\Pagination\Paginator;
 	use Illuminate\Database\Eloquent\Builder;
 	use Illuminate\Database\Eloquent\Model;
 	use Illuminate\Database\Query\Expression;
+	use Illuminate\Pagination\Cursor;
 
 	class App extends \Illuminate\Support\Facades\App {}
             class Arr extends \Illuminate\Support\Arr {}
@@ -17121,11 +17125,11 @@ namespace  {
              * @param array $columns
              * @param string $pageName
              * @param int|null $page
-             * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator 
-             * @throws \InvalidArgumentException
+             * @return LengthAwarePaginator
+             * @throws InvalidArgumentException
              * @static 
              */ 
-            public static function paginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
+            public static function paginate($perPage = null, $columns = [], $pageName = 'page', $page = null): LengthAwarePaginator
             {
                                 /** @var Builder $instance */
                                 return $instance->paginate($perPage, $columns, $pageName, $page);
@@ -17138,7 +17142,7 @@ namespace  {
              * @param array $columns
              * @param string $pageName
              * @param int|null $page
-             * @return \Illuminate\Contracts\Pagination\Paginator 
+             * @return Paginator
              * @static 
              */ 
             public static function simplePaginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
@@ -17153,8 +17157,8 @@ namespace  {
              * @param int|null $perPage
              * @param array $columns
              * @param string $cursorName
-             * @param \Illuminate\Pagination\Cursor|string|null $cursor
-             * @return \Illuminate\Contracts\Pagination\CursorPaginator 
+             * @param Cursor|string|null $cursor
+             * @return CursorPaginator
              * @static 
              */ 
             public static function cursorPaginate($perPage = null, $columns = [], $cursorName = 'cursor', $cursor = null)
@@ -17168,7 +17172,7 @@ namespace  {
              *
              * @param array $attributes
              * @return Model|$this
-             * @static 
+             * @static
              */ 
             public static function create($attributes = [])
             {
@@ -18007,7 +18011,7 @@ namespace  {
              *
              * @param int $chunkSize
              * @return \Illuminate\Support\LazyCollection 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function lazy($chunkSize = 1000)
@@ -18023,7 +18027,7 @@ namespace  {
              * @param string|null $column
              * @param string|null $alias
              * @return \Illuminate\Support\LazyCollection 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function lazyById($chunkSize = 1000, $column = null, $alias = null)
@@ -18039,7 +18043,7 @@ namespace  {
              * @param string|null $column
              * @param string|null $alias
              * @return \Illuminate\Support\LazyCollection 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function lazyByIdDesc($chunkSize = 1000, $column = null, $alias = null)
@@ -18138,7 +18142,7 @@ namespace  {
              * @param \Closure|\Illuminate\Database\Query\Builder|Builder|string $query
              * @param string $as
              * @return \Illuminate\Database\Query\Builder 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function selectSub($query, $as)
@@ -18167,7 +18171,7 @@ namespace  {
              * @param \Closure|\Illuminate\Database\Query\Builder|string $query
              * @param string $as
              * @return \Illuminate\Database\Query\Builder 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function fromSub($query, $as)
@@ -18276,7 +18280,7 @@ namespace  {
              * @param string $type
              * @param bool $where
              * @return \Illuminate\Database\Query\Builder 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function joinSub($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false)
@@ -18434,7 +18438,7 @@ namespace  {
              * @param string $operator
              * @param bool $useDefault
              * @return array 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function prepareValueAndOperator($value, $operator, $useDefault = false)
@@ -19068,7 +19072,7 @@ namespace  {
              * @param array $values
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function whereRowValues($columns, $operator, $values, $boolean = 'and')
@@ -19334,7 +19338,7 @@ namespace  {
              * @param \Closure|Builder|\Illuminate\Database\Query\Builder|Expression|string $column
              * @param string $direction
              * @return \Illuminate\Database\Query\Builder 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function orderBy($column, $direction = 'asc')
@@ -19913,7 +19917,7 @@ namespace  {
              * @param array $bindings
              * @param string $type
              * @return \Illuminate\Database\Query\Builder 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function setBindings($bindings, $type = 'where')
@@ -19928,7 +19932,7 @@ namespace  {
              * @param mixed $value
              * @param string $type
              * @return \Illuminate\Database\Query\Builder 
-             * @throws \InvalidArgumentException
+             * @throws InvalidArgumentException
              * @static 
              */ 
             public static function addBinding($value, $type = 'where')
