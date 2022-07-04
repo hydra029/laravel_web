@@ -38,4 +38,5 @@ class Role extends Model
    {
         return number_format((float)($this->pay_rate)) . ' đ';
    }
+
 }

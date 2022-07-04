@@ -17,7 +17,7 @@
                 background-color: bisque;
             }
 
-            .btn-add-pay-rate {
+            .btn-add-roles {
                 margin-left: 48%;
                 margin-top: 10px;
             }
@@ -234,12 +234,11 @@
             </span>
             back
         </button>
-        <div class="col-12 p-2 border border-1 border-light dept-name bg-dark">
+        <div class="col-12 border border-1 border-light dept-name bg-dark">
             <table class=" text-white  w-100">
                 <tr>
                     <td class="col-4">
                         <h4>Departments</h4>
-                        <br>
                         <span class="text-warning dept-name-roles"></span>
                     </td>
                     <td class="col-8">
@@ -248,10 +247,30 @@
                 </tr>
             </table>
         </div>
-        <div class="col-12 p-2 border border-1 border-light pay-rate">
+        <div class="col-12  border border-1 border-light pay-rate">
         </div>
-        <div class="btn btn-add-pay-rate btn-success "><i class="fa-solid fa-circle-plus"></i> Add</div>
-        <div class="div-inp-add-pay-rate"></div>
+        <div class="btn btn-add-roles btn-success "><i class="fa-solid fa-circle-plus"></i> Add</div>
+        <div class="div-inp-add-roles col-8">
+            <form action="" method="post">
+                @csrf
+                <table class="table">
+                    <tr>
+                        <td>
+                            <span>Name: </span>
+                            <input type="text" name="name" class="inp-role-name">
+                            <input type="hidden" name="inp-dept-role-id">
+                        </td>
+                        <td>
+                            <span>Pay rate: </span>
+                            <input type="text" name="pay_rate" class="inp-role-pay_rate">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-save-add-role" >Save</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>
 
     {{-- profile --}}
@@ -349,6 +368,8 @@
                 $('.dept-roles').removeClass('d-none');
                 let dept_id = $(this).parents('tr').find('.dept-id').text();
                 let pay_rate = $('.pay-rate');
+                let dept_name = $(this).parents('tr').find('.dept-name').text();
+                $('.dept-name-roles').text(dept_name);
                 if (roles_list.indexOf(dept_id) == -1) {
                     roles_list.push(dept_id);
                     $.ajax({
@@ -362,8 +383,8 @@
 
                             pay_rate.html('');
                             pay_rate.append(
-                                '<table class="table table-striped table-centered table-sm table-bordered  student-table-index">' +
-                                '<thead class="thead-dark">' +
+                                '<table class="table table-striped  table-sm table-bordered  student-table-index">' +
+                                '<thead class="">' +
                                 '<tr>' +
                                 '<th class=" col-1 ">#</th>' +
                                 '<th class=" col-1 ">Roles</th>' +
@@ -373,7 +394,7 @@
                                 '</thead>')
                             $.each(response, function(index, value) {
                                 pay_rate.append(
-                                    '<tr>' +
+                                    '<tr >' +
                                     '<form id="form-payRate-change" method="post">' +
                                     '<td class=" col-1 text-danger">' +
                                     '<div class =" form-group ">' + (index + 1) +
@@ -410,6 +431,8 @@
                                     '</div>' +
                                     '</td>' +
                                     '</form>' +
+                                    '</tr>' +
+                                    '<tr>' +
                                     '</tr>' +
                                     '</table>')
                             });
@@ -488,7 +511,10 @@
                                 '<thead class="">' +
                                 '<tr>' +
                                 '<th class=" col-1 ">#</th>' +
-                                '<th class=" col-1 ">Name</th>' +
+                                '<th class=" col-3 ">Name</th>' +
+                                '<th class=" col-1 ">Gender</th>' +
+                                '<th class=" col-2 ">Birth date</th>' +
+                                '<th class=" col-3 ">email</th>' +
                                 '<th class=" col-1 ">Role</th>' +
                                 '<th class=" col-1 ">Action</th>' +
                                 '</tr>' +
@@ -501,17 +527,24 @@
                                 $('.department_employees').append(
                                     '<tr>' +
                                     '<td class=" col-1 ">' +
-                                    '<div class="form-group text-danger">' + (
-                                        index + 1) + '.' + '</div>' +
+                                    '<div class="form-group text-danger">' + (index + 1) + '.' + '</div>' +
                                     '</td>' +
-                                    '<td class=" col-1 ">' +
+                                    '<td class=" col-3 ">' +
                                     '<div class="form-group">' +
-                                    '<a class="employee-name">' + value.full_name + '</a>' +
+                                    '<a class="employee-name ">' + value.full_name + '</a>' +
                                     '</div>' +
                                     '</td>' +
                                     '<td class=" col-1 ">' +
-                                    '<div class="form-group">' + value.role_name +
-                                    '</div>' +
+                                    '<div class="form-group">' + value.gender_name + '</div>' +
+                                    '</td>' +
+                                    '<td class=" col-2 ">' +
+                                    '<div class="form-group">' + value.date_of_birth + '</div>' +
+                                    '</td>' +
+                                    '<td class=" col-3 ">' +
+                                    '<div class="form-group">' + value.email + '</div>' +
+                                    '</td>' +
+                                    '<td class=" col-1 ">' +
+                                    '<div class="form-group">' + value.role_name + '</div>' +
                                     '</td>' +
                                     '<td class=" col-1 ">' +
                                     '<button class="btn btn-primary btn-sm employee_infor" data-id="' +
@@ -534,21 +567,7 @@
             });
 
             function show_infor() {
-                $('.employee_infor').click(function() {
-                    let employee_id = $(this).data('id');
-                    console.log(employee_id);
-                    $.ajax({
-                        url: "{{ route('ceo.information') }}",
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            id: employee_id,
-                        },
-                        success: function(response) {
-                            console.log(1);
-                        }
-                    })
-                })
+                console.log('1');
             }
             // change department
             $('.change-dept').click(function() {
@@ -596,7 +615,7 @@
                 // values: e.clientX, e.clientY, e.pageX, e.pageY
                 // over
                 var relativeYPosition = (e.pageY - this.offsetTop) - 250;
-
+                $('.profile-card')[0].style.right = '0' + 'px';;
                 $('.profile-card')[0].style.top = relativeYPosition + 'px';
                 var id_manager = $(this).parents('tr').find('.manager-id').text();
                 var name_manager = $(this).parents('tr').find('.manager-name').text();
@@ -605,11 +624,9 @@
                 var email_manager = $(this).parents('tr').find('.manager-email').text();
                 var id_role_manager = $(this).parents('tr').find('.manager-role').text();
                 $('.profile-card').find('.profile-card-info').find('.profile-card-name').text(name_manager);
-                $('.profile-card').find('.profile-card-info').find('.profile-card-gender').text(
-                    gender_manager);
+                $('.profile-card').find('.profile-card-info').find('.profile-card-gender').text(gender_manager);
                 $('.profile-card').find('.profile-card-info').find('.profile-card-dob').text(dob_manager);
-                $('.profile-card').find('.profile-card-info').find('.profile-card-email').text(
-                    email_manager);
+                $('.profile-card').find('.profile-card-info').find('.profile-card-email').text(email_manager);
                 $.ajax({
                     url: "{{ route('ceo.department.manager_role') }}",
                     type: 'POST',
@@ -618,8 +635,8 @@
                         role_id: id_role_manager,
                     },
                     success: function(response) {
-                        $('.profile-card').find('.profile-card-roles').find(
-                            '.profile-card-role').text(response[0]['name']);
+                        $('.profile-card').find('.profile-card-roles').find('.profile-card-role').text(response[0]['name']);
+                        $('.profile-card').find('.profile-card-roles').find('.profile-card-department').text();
                     }
                 })
 

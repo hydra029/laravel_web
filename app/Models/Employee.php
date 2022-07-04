@@ -74,6 +74,11 @@ class Employee extends Model
 		return date_diff(date_create($this->dob), date_create())->y;
 	}
 
+    public function getDateOfBirthAttribute(): string
+    {
+        return date_format(date_create($this->dob),"d/m/Y");
+    }
+
 	public function getDateAttribute(): string
 	{
 		return date_format(date_create(), 'D d-m-Y');
