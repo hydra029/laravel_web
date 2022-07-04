@@ -52,7 +52,7 @@ class CeoController extends Controller
 	    $data = Employee::whereStatus(1)
 		    ->with(['roles','departments'])
 		    ->paginate($limit, $fields);
-	    return view('test',([
+	    return view('ceo.index',([
 		    'data' => $data,
 	    ]));
     }

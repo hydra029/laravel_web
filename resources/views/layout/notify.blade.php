@@ -4,7 +4,8 @@
             $.notify('{{session('error')}}', 'error');
             {{session()-> forget('error')}};
         }
-        if ({{!session('success')}}) {
+
+        if ({{session()->has('success') }}) {
             $.notify('{{session('success')}}', 'success');
             {{session()-> forget('success')}};
         }

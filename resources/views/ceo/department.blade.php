@@ -6,7 +6,7 @@
             href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <style>
-            a:hover {
+            .dept, .dept-list a:hover {
                 text-decoration: underline !important;
                 cursor: pointer;
             }
@@ -104,14 +104,7 @@
         <br>
         <div class="col-12 p-2 border border-1 border-light dept-list">
             <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th colspan="7">
-                            <h4 class="text-white">Departments list</h4>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+
                     <tr class="text-primary">
                         <td class="col-1"><span>#</span></td>
                         <td><span>Name</span></td>
@@ -180,7 +173,6 @@
                                 </div>
                         </tr>
                     @endforeach
-                </tbody>
             </table>
         </div>
     </div>
@@ -511,8 +503,8 @@
                                 '<thead class="">' +
                                 '<tr>' +
                                 '<th class=" col-1 ">#</th>' +
-                                '<th class=" col-3 ">Name</th>' +
-                                '<th class=" col-1 ">Gender</th>' +
+                                '<th class=" col-2 ">Name</th>' +
+                                '<th class=" col-2 ">Gender</th>' +
                                 '<th class=" col-2 ">Birth date</th>' +
                                 '<th class=" col-3 ">email</th>' +
                                 '<th class=" col-1 ">Role</th>' +
@@ -529,12 +521,12 @@
                                     '<td class=" col-1 ">' +
                                     '<div class="form-group text-danger">' + (index + 1) + '.' + '</div>' +
                                     '</td>' +
-                                    '<td class=" col-3 ">' +
+                                    '<td class=" col-2 ">' +
                                     '<div class="form-group">' +
                                     '<a class="employee-name ">' + value.full_name + '</a>' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td class=" col-1 ">' +
+                                    '<td class=" col-2 ">' +
                                     '<div class="form-group">' + value.gender_name + '</div>' +
                                     '</td>' +
                                     '<td class=" col-2 ">' +

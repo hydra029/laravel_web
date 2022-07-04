@@ -85,10 +85,12 @@ class LoginController extends Controller
 			session()->put('email', $user->email);
 			session()->put('password', $user->password);
 			session()->put('level', 4);
-			session()->put('success', 'Sign in successfully');
+			session()->flash('success', 'Sign in successfully');
 			return redirect()->route('ceo.index');
 		}
-		return back()->with('msg', 'The Message');
+		return back()->withErrors([
+            'email' => 'Wrong email or password.',
+        ]);
 	}
 
 	public function logout(): RedirectResponse

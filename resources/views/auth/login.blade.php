@@ -9,6 +9,7 @@
 
     <!-- App css -->
     <link href="{{ asset('css/icons.min.css' )}}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('css/app.css' )}}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/app-modern.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
 
 </head>
@@ -29,6 +30,17 @@
                 <h4 class="mt-0">Sign In</h4>
                 <p class="text-muted mb-4">Enter your email address and password to access account.</p>
 
+                {{-- error --}}
+                @if ($errors->any())
+                <div class="form-group alert-danger p-1">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
                 <!-- form -->
                 <form action="{{ route('process_login') }}" method="post">
                     @csrf
@@ -41,7 +53,7 @@
                         <a href="#" class="text-muted float-right"><small>Forgot your password?</small></a>
                         <label for="password">Password</label>
                         <input class="form-control" type="password" name="password" required="" id="password"
-                               placeholder="Enter your password">
+                               placeholder="Enter your password" >
                     </div>
                     <div class="form-group mb-3">
                         <div class="custom-control custom-checkbox">
