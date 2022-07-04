@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', [HomeController::class, 'test'])->name('test');
-Route::post('/test', [HomeController::class, 'processLogin1'])->name('process_login1');
+//Route::post('/test', [HomeController::class, 'process'])->name('process');
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -35,6 +35,7 @@ Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->na
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
+Route::post('/ceo/time_save/', [CeoController::class, 'time_save'])->name('ceo.time_save');
 // Change money
 Route::get('/ceo/fines', [FinesController::class, 'index'])->name('ceo.fines');
 Route::post('/ceo/fines_store', [FinesController::class, 'store'])->name('ceo.fines_store');
@@ -50,7 +51,7 @@ Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->na
 Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
 Route::post('/ceo/department/manager_role', [DepartmentController::class, 'manager_role'])->name('ceo.department.manager_role');
 // get information
-Route::post('/ceo/infomation', [DepartmentController::class, 'infomation'])->name('ceo.infomation');
+Route::post('/ceo/information', [DepartmentController::class, 'information'])->name('ceo.information');
 
 
 

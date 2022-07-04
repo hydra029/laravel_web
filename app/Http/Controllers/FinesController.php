@@ -24,19 +24,19 @@ class FinesController extends Controller
 
     public function index()
     {
-        $fines = $this->model->get();
+        $fines = $this->model::get();
         return view('ceo.fines', [
             'fines' => $fines,
         ]);
     }
 
 
-    public function store(Request $request)
+    public function store(Request $request): array
     {
         $name = $request->name;
         $fines = $request->fines;
         $deduction = $request->deduction;
-        return $this->model->create([
+        return $this->model::create([
             'id',
             'name' => $name,
             'fines' => $fines,
@@ -52,8 +52,7 @@ class FinesController extends Controller
         $name = $request->name;
         $fines = $request->fines;
         $deduction = $request->deduction;
-        $this->model
-        ->where('id', $id)
+        $this->model::where('id', $id)
         ->update([
             'name' => $name,
             'fines' => $fines,

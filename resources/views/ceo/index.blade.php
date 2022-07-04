@@ -44,10 +44,10 @@
                     {{$each -> email}}
                 </td>
                 <td>
-                    {{$each -> dept_name}}
+                    {{$each -> departments -> name}}
                 </td>
                 <td>
-                    {{$each -> role_name}}
+                    {{$each -> roles -> name}}
                 </td>
             </tr>
         @endforeach
@@ -62,11 +62,9 @@
 @endsection
 @push('js')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#home').attr('style', 'color: #3d73dd!important');
-            if ({{session()->has('aaa')}}) {
-                console.log('aaa');
-            }
+
         });
     </script>
 @endpush

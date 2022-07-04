@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $check_in_start
  * @property string $check_in_end
+ * @property string $check_in_late_1
+ * @property string $check_in_late_2
+ * @property string $check_out_early_1
+ * @property string $check_out_early_2
  * @property string $check_out_start
  * @property string $check_out_end
  * @property int $status
@@ -41,7 +45,20 @@ use Illuminate\Database\Eloquent\Model;
 class AttendanceShiftTime extends Model
 {
 	use HasFactory;
+
 	public $timestamps = false;
+	protected $fillable = [
+		'id',
+		'check_in_start',
+		'check_in_end',
+		'check_in_late_1',
+		'check_in_late_2',
+		'check_out_early_1',
+		'check_out_early_2',
+		'check_out_start',
+		'check_out_end',
+		'status',
+	];
 
 	public function getShiftNameAttribute(): string
 	{
@@ -61,6 +78,26 @@ class AttendanceShiftTime extends Model
 	public function getInEndAttribute(): string
 	{
 		return date('H:i', strtotime($this->check_in_end));
+	}
+
+	public function getInLate1Attribute(): string
+	{
+		return date('H:i', strtotime($this->check_in_late_1));
+	}
+
+	public function getInLate2Attribute(): string
+	{
+		return date('H:i', strtotime($this->check_in_late_2));
+	}
+
+	public function getOutEarly1Attribute(): string
+	{
+		return date('H:i', strtotime($this->check_out_early_1));
+	}
+
+	public function getOutEarly2Attribute(): string
+	{
+		return date('H:i', strtotime($this->check_out_early_2));
 	}
 
 	public function getOutStartAttribute(): string

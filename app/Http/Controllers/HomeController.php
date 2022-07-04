@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Request;
 
 class HomeController extends Controller
 {
@@ -16,21 +16,26 @@ class HomeController extends Controller
 	 *
 	 * @return Renderable
 	 */
-	public function test(): Renderable
+	public function test()
 	{
-		return view('test');
-	}
-
-	public function processLogin1(Request $request): RedirectResponse
-	{
-		dd($request);
-		session()->put('email', $request->email);
-		session()->put('password', $request->password);
-		session()->put('remember', $request->checkbox-signin);
-		session()->put('ad', 'a email or password');
-		session()->put('aaa', 'Wrong email or password');
-
-//		return back()->with('msg', 'The Message');
+		$limit = 25;
+		$fields = [
+			'id',
+			'fname',
+			'lname',
+			'gender',
+			'dob',
+			'email',
+			'role_id',
+			'dept_id',
+		];
+		$data = Employee::whereStatus(1)
+			->with(['roles','departments'])
+			->paginate($limit, $fields);
+		return view('test',([
+			'data' => $data,
+			'title' => 'Test'
+		]));
 	}
 
 

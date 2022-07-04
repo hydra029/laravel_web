@@ -37,64 +37,65 @@ class LoginController extends Controller
 
 	public function processLogin(Request $request): RedirectResponse
 	{
-		session()->put('email', $request->email);
-		session()->put('password', $request->password);
-		session()->put('ad', 'Wrong email or password');
-		session()->put('aaa', 'Wrong email or password');
+		$email = $request->get('email');
+		$password = $request->get('password');
+		session()->put('email', $email);
+		session()->put('password', $password);
+		session()->put('remember', 0);
+		if ($request->has('checkbox_signin')) {
+			session()->put('remember', 1);
+		}
+
 		if ($emp = Employee::query()
-			->where('email', $request->get('email'))
-			->where('password', $request->get('password'))
+			->where('email', $email)
+			->where('password', $password)
 			->first()) {
 			session()->put('id', $emp->id);
-			session()->put('email', $emp->email);
-			session()->put('password', $emp->password);
 			session()->put('level', 1);
-			session()->put('success', 'Sign in successfully');
+			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('employees.index');
 		}
 
 		if ($mgr = Manager::query()
-			->where('email', $request->get('email'))
-			->where('password', $request->get('password'))
+			->where('email', $email)
+			->where('password', $password)
 			->first()) {
 			session()->put('id', $mgr->id);
-			session()->put('email', $mgr->email);
-			session()->put('password', $mgr->password);
 			session()->put('level', 2);
-			session()->put('success', 'Sign in successfully');
+			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('managers.index');
 		}
 
 		if ($user = Accountant::query()
-			->where('email', $request->get('email'))
-			->where('password', $request->get('password'))
+			->where('email', $email)
+			->where('password', $password)
 			->first()) {
 			session()->put('id', $user->id);
-			session()->put('email', $user->email);
-			session()->put('password', $user->password);
 			session()->put('level', 3);
-			session()->put('success', 'Sign in successfully');
+			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('accountants.index');
 		}
 
 		if ($user = Ceo::query()
-			->where('email', $request->get('email'))
-			->where('password', $request->get('password'))
+			->where('email', $email)
+			->where('password', $password)
 			->first()) {
 			session()->put('id', $user->id);
-			session()->put('email', $user->email);
-			session()->put('password', $user->password);
 			session()->put('level', 4);
-			session()->put('success', 'Sign in successfully');
+			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('ceo.index');
 		}
-		return back()->with('msg', 'The Message');
+		return back()->with('noti.error', 'Wrong password or email');
 	}
 
 	public function logout(): RedirectResponse
 	{
-		session()->flush();
+		if (session('remember') !== 1) {
+			session()->flush();
+		}
+		session()->forget(['id', 'level',]);
+		session()->flash('success', 'Log out successfully');
 
-		return redirect()->route('login')->with('success','Log out');
+		return redirect()->route('login');
 	}
 }

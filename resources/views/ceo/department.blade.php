@@ -538,7 +538,7 @@
                     let employee_id = $(this).data('id');
                     console.log(employee_id);
                     $.ajax({
-                        url: "{{ route('ceo.infomation') }}",
+                        url: "{{ route('ceo.information') }}",
                         type: 'POST',
                         dataType: 'json',
                         data: {

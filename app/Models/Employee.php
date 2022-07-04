@@ -89,19 +89,19 @@ class Employee extends Model
 		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
 
-	public function getDeptNameAttribute(): string
-	{
-		$dept_id = $this->dept_id;
-		$dept_name = Department::whereId($dept_id)->get('name');
-		return $dept_name[0]['name'];
-	}
-
-	public function getRoleNameAttribute(): string
-	{
-		$role_id = $this->role_id;
-		$role_name = Department::whereId($role_id)->get('name');
-		return $role_name[0]['name'];
-	}
+//	public function getDeptNameAttribute(): string
+//	{
+//		$dept_id = $this->dept_id;
+//		$dept_name = Department::whereId($dept_id)->get('name');
+//		return $dept_name[0]['name'];
+//	}
+//
+//	public function getRoleNameAttribute(): string
+//	{
+//		$role_id = $this->role_id;
+//		$role_name = Department::whereId($role_id)->get('name');
+//		return $role_name[0]['name'];
+//	}
 
 	public function getShiftStatusAttribute(): string
 	{
@@ -157,7 +157,7 @@ class Employee extends Model
 	public function departments(): BelongsTo
 	{
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
-			->select(['id', 'name as dept_name'])
+			->select(['id', 'name'])
 			->where('status', '=', 1);
 	}
 
