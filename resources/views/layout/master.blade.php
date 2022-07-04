@@ -47,8 +47,9 @@
 <script src="{{ asset('js/app.min.js' )}}"></script>
 <script src="{{ asset('js/jquery.min.js' )}}"></script>
 <script src="{{ asset('js/notify.min.js' )}}"></script>
+{{--@include('layout.notify')--}}
 <script src="https://kit.fontawesome.com/b0fe355241.js" crossorigin="anonymous"></script>
-@include('layout.notify')
+
 @stack('js')
 </body>
 </html>
