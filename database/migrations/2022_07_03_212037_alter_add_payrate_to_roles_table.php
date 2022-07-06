@@ -11,12 +11,12 @@ class AlterAddPayrateToRolesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->unsignedBigInteger('dept_id');
-            $table->string('name');
-            $table->integer('pay_rate');
+        Schema::table('roles', static function (Blueprint $table) {
+            $table->unsignedBigInteger('dept_id')->after('id');
+            $table->integer('pay_rate')->after('name');
+	        $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
         });
     }
 
@@ -25,9 +25,9 @@ class AlterAddPayrateToRolesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('roles', function (Blueprint $table) {
+        Schema::table('roles', static function (Blueprint $table) {
             $table->dropColumn('dept_id');
             $table->dropColumn('name');
             $table->dropColumn('pay_rate');

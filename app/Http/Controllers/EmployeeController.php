@@ -69,9 +69,9 @@ class EmployeeController extends Controller
 	 * Store a newly created resource in storage.
 	 *
 	 * @param StoreEmployeeRequest $request
-	 * @return string
+	 * @return RedirectResponse
 	 */
-	public function store(StoreEmployeeRequest $request): string
+	public function store(StoreEmployeeRequest $request): RedirectResponse
 	{
 		$users = Employee::get('id');
 
@@ -82,7 +82,6 @@ class EmployeeController extends Controller
 				Attendance::create($data);
 			}
 		}
-
 		return redirect()->route('employees.index');
 	}
 

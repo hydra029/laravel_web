@@ -39,6 +39,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static Builder|Manager whereRoleId($value)
  * @method static Builder|Manager whereStatus($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Department|null $department
+ * @property-read string $date_of_birth
+ * @property-read \App\Models\Role|null $role
  */
 class Manager extends Model
 {

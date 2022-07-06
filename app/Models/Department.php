@@ -21,6 +21,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Department whereName($value)
  * @method static Builder|Department whereStatus($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Manager|null $manager
+ * @property-read \App\Models\Employee|null $members
+ * @property-read \App\Models\Role|null $roles
  */
 class Department extends Model
 {

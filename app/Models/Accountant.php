@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static Builder|Accountant whereRoleId($value)
  * @method static Builder|Accountant whereStatus($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Department|null $department
+ * @property-read \App\Models\Role|null $role
  */
 class Accountant extends Model
 {
