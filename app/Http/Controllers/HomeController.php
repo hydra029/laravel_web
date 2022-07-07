@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
 use App\Models\Employee;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\RedirectResponse;
 
 class HomeController extends Controller
 {
@@ -16,7 +13,7 @@ class HomeController extends Controller
 	 *
 	 * @return Renderable
 	 */
-	public function test()
+	public function test(): Renderable
 	{
 		$limit = 25;
 		$fields = [
@@ -30,13 +27,27 @@ class HomeController extends Controller
 			'dept_id',
 		];
 		$data = Employee::whereStatus(1)
-			->with(['roles','departments'])
+			->with(['roles', 'departments'])
 			->paginate($limit, $fields);
-		return view('test',([
+		$id = session('id');
+		$attendance = Employee::with('attendance')
+			->where('id', '=', $id)
+			->first();
+		return view('test', ([
 			'data' => $data,
+			'attendance' => $attendance,
 			'title' => 'Test'
 		]));
 	}
 
-
+	/**
+	 * @throws \JsonException
+	 */
+	public function api()
+	{
+		$a = Employee::with('attendance')
+			->where('id', '=', session('id'))
+			->first('id');
+		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
+	}
 }
