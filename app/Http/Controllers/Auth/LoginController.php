@@ -82,10 +82,10 @@ class LoginController extends Controller
 			->first()) {
 			session()->put('id', $user->id);
 			session()->put('level', 4);
-			session()->flash('success', 'Sign in successfully');
+			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('ceo.index');
 		}
-
+		session()->flash('noti.error', 'Wrong email or password');
 		return back()->withErrors([
             'error' => 'Wrong email or password.',
         ]);

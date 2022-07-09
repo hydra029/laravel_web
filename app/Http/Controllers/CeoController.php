@@ -190,7 +190,7 @@ class CeoController extends Controller
 		])->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
-	public function fines_update(Request $request)
+	public function fines_update(Request $request): array
 	{
 		$id = $request->id;
 		$name = $request->name;

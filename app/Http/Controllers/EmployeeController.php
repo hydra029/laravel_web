@@ -7,10 +7,10 @@ use App\Enums\ShiftStatusEnum;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Attendance;
-use App\Models\Attendance_shiftTime;
 use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -56,6 +56,43 @@ class EmployeeController extends Controller
 		]);
 	}
 
+	public function attendance(): Renderable
+	{
+		$limit = 25;
+		$fields = [
+			'id',
+			'fname',
+			'lname',
+			'gender',
+			'dob',
+			'email',
+			'role_id',
+			'dept_id',
+		];
+		$data = Employee::whereStatus(1)
+			->with(['roles', 'departments'])
+			->paginate($limit, $fields);
+		$id = session('id');
+		$attendance = Employee::with('attendance')
+			->where('id', '=', $id)
+			->first();
+		return view('employees.month_attendance', ([
+			'data' => $data,
+			'attendance' => $attendance,
+		]));
+	}
+
+	/**
+	 * @throws \JsonException
+	 */
+	public function attendance_api()
+	{
+		$a = Employee::with('attendance')
+			->where('id', '=', session('id'))
+			->first('id');
+		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -75,9 +112,8 @@ class EmployeeController extends Controller
 	public function store(StoreEmployeeRequest $request): RedirectResponse
 	{
 		$users = Employee::get('id');
-
 		foreach ($users as $each) {
-			$date = date('Y-m-d', mktime(0,0,0,7,5,2022));
+			$date = date('Y-m-d', mktime(0, 0, 0, 7, 9, 2022));
 			for ($i = 1; $i <= 3; $i++) {
 				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
 				Attendance::create($data);

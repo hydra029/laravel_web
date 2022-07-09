@@ -32,9 +32,7 @@
                 <div class="card position-relative">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12">
                                 @yield('content')
-                            </div>
                         </div>
                     </div>
                 </div>
