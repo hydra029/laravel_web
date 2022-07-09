@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Attendance;
 use App\Models\Attendance_shiftTime;
+use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -69,20 +70,19 @@ class EmployeeController extends Controller
 	 * Store a newly created resource in storage.
 	 *
 	 * @param StoreEmployeeRequest $request
-	 * @return string
+	 * @return RedirectResponse
 	 */
-	public function store(StoreEmployeeRequest $request): string
+	public function store(StoreEmployeeRequest $request): RedirectResponse
 	{
 		$users = Employee::get('id');
 
 		foreach ($users as $each) {
-			$date = date('Y-m-d');
+			$date = date('Y-m-d', mktime(0,0,0,7,5,2022));
 			for ($i = 1; $i <= 3; $i++) {
 				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
 				Attendance::create($data);
 			}
 		}
-
 		return redirect()->route('employees.index');
 	}
 
@@ -112,8 +112,8 @@ class EmployeeController extends Controller
 	{
 		$date = date('H:i');
 		$status = ShiftStatusEnum::Active;
-		$start_time = Attendance_shiftTime::where('id', '=', $status)->get('check_in_start');
-		$end_time = Attendance_shiftTime::where('id', '=', $status)->get('check_in_end');
+		$start_time = AttendanceShiftTime::where('id', '=', $status)->get('check_in_start');
+		$end_time = AttendanceShiftTime::where('id', '=', $status)->get('check_in_end');
 		if ($date >= $start_time && $date <= $end_time) {
 			Attendance::where('emp_id', '=', session('id'))
 				->where('shift', '=', 2)
@@ -126,8 +126,8 @@ class EmployeeController extends Controller
 	{
 		$date = date('H:i');
 		$shift = Attendance::where('status', '=', 2)->get('id');
-		$start_time = Attendance_shiftTime::where('id', '=', $shift)->get('check_out_start');
-		$end_time = Attendance_shiftTime::where('id', '=', $shift)->get('check_out_end');
+		$start_time = AttendanceShiftTime::where('id', '=', $shift)->get('check_out_start');
+		$end_time = AttendanceShiftTime::where('id', '=', $shift)->get('check_out_end');
 		if ($date >= $start_time && $date <= $end_time) {
 			Attendance::where('emp_id', '=', session('id'))
 				->where('shift', '=', $shift)

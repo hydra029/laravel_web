@@ -18,9 +18,15 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Fines newQuery()
  * @method static Builder|Fines Query()
  * @mixin Eloquent
- *
  * @property-read string $fines_time
- *
+ * @property-read mixed $deduction_detail
+ * @property-read mixed $fines_id
+ * @method static \Database\Factories\FinesFactory factory(...$parameters)
+ * @method static Builder|Fines query()
+ * @method static Builder|Fines whereDeduction($value)
+ * @method static Builder|Fines whereFines($value)
+ * @method static Builder|Fines whereId($value)
+ * @method static Builder|Fines whereName($value)
  */
 
 class Fines extends Model

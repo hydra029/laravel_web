@@ -9,14 +9,19 @@ use App\Http\Controllers\AttendanceShiftTimeController;
 use Database\Factories\AttendanceFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Attendance
  *
  * @property string $date
+ * @property string $emp
+ * @property string $fname
+ * @property string $lname
  * @property int $emp_id
  * @property int $shift_id
  * @property int $shift
@@ -39,10 +44,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Attendance whereEmpRole($value)
  * @property-read string $shift_name
  * @property-read string $shift_status
+ * @property-read Accountant|null $acct
+ * @property-read string $full_name
+ * @property-read Manager|null $mgr
  */
 class Attendance extends Model
 {
-    use HasFactory;
+	use HasFactory;
+
 	public $timestamps = false;
 	protected $fillable = [
 		'emp_id',
@@ -62,33 +71,39 @@ class Attendance extends Model
 
 	public function getShiftStatusAttribute(): string
 	{
-
 		return ShiftStatusEnum::getKey($this->status);
 	}
+
 	public function getCheckInStatusAttribute(): string
 	{
 		return AttendanceEnum::getKey($this->check_in);
 	}
+
 	public function getCheckOutStatusAttribute(): string
 	{
 		return AttendanceEnum::getKey($this->check_out);
 	}
 
-	public function emp(): HasMany
+
+	public function emp(): BelongsTo
 	{
-		return $this->hasMany(Employee::class, 'emp_id');
+		return $this->BelongsTo(Employee::class, 'emp_id')
+			->select(['id', 'fname', 'lname', 'gender', 'dob', 'email', 'dept_id', 'role_id']);
 	}
-	public function mgr(): HasMany
+
+	public function mgr(): BelongsTo
 	{
-		return $this->hasMany(Manager::class, 'emp_id');
+		return $this->BelongsTo(Manager::class, 'emp_id');
 	}
-	public function acct(): HasMany
+
+	public function acct(): BelongsTo
 	{
-		return $this->hasMany(Accountant::class, 'emp_id');
+		return $this->BelongsTo(Accountant::class, 'emp_id');
 	}
-	public function shift(): HasMany
+
+	public function shift(): BelongsTo
 	{
-		return $this->hasMany(Attendance_shiftTime::class, 'shift');
+		return $this->BelongsTo(AttendanceShiftTime::class, 'shift');
 	}
 
 }

@@ -38,14 +38,14 @@
                         <label for="emailaddress">Email</label>
                         <input class="form-control" type="email" id="emailaddress" required="" name="email"
                                placeholder="Enter your email"
-                               @if(session()->has('email') && session()->get('remember') === 1) value="{{session('email')}}" @endif>
+                               @if(session()->has('email') && session()->has('remember')) value="{{session('email')}}" @endif>
                     </div>
                     <div class="form-group">
                         <a href="#" class="text-muted float-right"><small>Forgot your password?</small></a>
                         <label for="password">Password</label>
                         <input class="form-control" type="password" required="" id="password" name="password"
                                placeholder="Enter your password"
-                               @if(session()->has('password') && session()->get('remember') === 1) value="{{session('password')}}" @endif>
+                               @if(session()->has('password') && session()->has('remember')) value="{{session('password')}}" @endif>
                     </div>
                     <div class="form-group mb-3">
                         <div class="custom-control custom-checkbox">
@@ -102,13 +102,6 @@
 <script src="{{ asset('js/vendor.min.js' )}}"></script>
 <script src="{{ asset('js/app.min.js' )}}"></script>
 <script src="{{ asset('js/notify.min.js' )}}"></script>
-<script>
-    $(document).ready(function () {
-        if ($('#checkbox-signin').is(':checked')) {
-            $('#email').val("{{session('email')}}");
-            $('#password').val("{{session('password')}}");
-        }
-    })
-</script>
+@include('layout.notify')
 </body>
 </html>

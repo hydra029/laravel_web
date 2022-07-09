@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static Builder|Ceo whereLname($value)
  * @method static Builder|Ceo wherePassword($value)
  * @mixin Eloquent
+ * @property-read \App\Models\Department|null $department
+ * @property-read \App\Models\Role|null $role
  */
 class Ceo extends Model
 {

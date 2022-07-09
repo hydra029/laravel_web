@@ -2,14 +2,14 @@
     <div class="container-fluid">
 
         <!-- LOGO -->
-        <a href="index.html" class="topnav-logo">
-            <span class="topnav-logo-lg">
-                <img src="assets/images/logo-light.png" alt="" height="16">
-            </span>
-            <span class="topnav-logo-sm">
-                <img src="assets/images/logo_sm.png" alt="" height="16">
-            </span>
-        </a>
+{{--        <a href="index.html" class="topnav-logo">--}}
+{{--            <span class="topnav-logo-lg">--}}
+{{--                <img src="assets/images/logo-light.png" alt="" height="16">--}}
+{{--            </span>--}}
+{{--            <span class="topnav-logo-sm">--}}
+{{--                <img src="assets/images/logo_sm.png" alt="" height="16">--}}
+{{--            </span>--}}
+{{--        </a>--}}
 
         <ul class="list-unstyled topbar-right-menu float-right mb-0">
 
@@ -70,7 +70,7 @@
                             <div class="notify-icon bg-primary">
                                 <i class="mdi mdi-comment-account-outline"></i>
                             </div>
-                            <p class="notify-details">Caleb Flakelar commented on Admin
+                            <p class="notify-details">Alo
                                 <small class="text-muted">1 min ago</small>
                             </p>
                         </a>

@@ -33,9 +33,7 @@ class CreateRelationsTable extends Migration
 		    $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
 		    $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 	    });
-	    Schema::table('roles', static function($table) {
-		    $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
-	    });
+
 	    Schema::table('attendances', static function ($table) {
 		    $table->foreign('shift')->references('id')->on('attendance_shift_times')->onDelete('cascade');
 	    });

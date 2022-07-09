@@ -92,11 +92,11 @@ class LoginController extends Controller
 
 	public function logout(): RedirectResponse
 	{
-		if (session('remember') !== 1) {
+		if (session()->missing('remember')) {
 			session()->flush();
 		}
-		session()->forget(['id', 'level',]);
-		session()->flash('success', 'Log out successfully');
+		session()->forget(['id', 'level', 'noti']);
+		session()->flash('noti.success', 'Log out successfully');
 
 		return redirect()->route('login');
 	}

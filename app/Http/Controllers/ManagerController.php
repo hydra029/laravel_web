@@ -14,6 +14,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use stdClass;
 
 class ManagerController extends Controller
 {
@@ -30,7 +31,6 @@ class ManagerController extends Controller
 		View::share('title', $title);
 	}
 
-
 	public function index()
 	{
 		$date = date('Y-m-d');
@@ -44,7 +44,7 @@ class ManagerController extends Controller
 		$data = Attendance::where('emp_id', '=', session('id'))
 			->where('date', '=', $date)
 			->where('emp_role', '=', $emp_role)
-			->leftJoin('attendance_shift_times', 'attendances.shift','=','attendance_shift_times.id')
+			->leftJoin('attendance_shift_times', 'attendances.shift', '=', 'attendance_shift_times.id')
 			->get($query);
 		return view('managers.index', [
 			'data' => $data,
@@ -60,42 +60,14 @@ class ManagerController extends Controller
 	{
 		$limit = 10;
 		$date = date('Y-m-d');
-		$dept_id = Manager::where('id', '=', session('id'))
+		$dept = Manager::where('id', '=', session('id'))
 			->get('dept_id');
-		$data = Employee::addSelect(['employees.lname', 'employees.fname', 'roles.name as role_name'])
-			->addSelect(['check_in_1' => Attendance::select('check_in')
-				->whereColumn('attendances.emp_id', 'employees.id')
-				->where('attendances.emp_role', '=', EmpRoleEnum::Employee)
-				->where('attendances.shift', '=', ShiftEnum::Morning)
-				->where('attendances.date', '=', $date)])
-			->addSelect(['check_out_1' => Attendance::select('check_out')
-				->whereColumn('attendances.emp_id', '=', 'employees.id')
-				->where('attendances.emp_role', '=', EmpRoleEnum::Employee)
-				->where('attendances.shift', '=', ShiftEnum::Morning)
-				->where('attendances.date', '=', $date)])
-			->addSelect(['check_in_2' => Attendance::select('check_in')
-				->whereColumn('attendances.emp_id', '=', 'employees.id')
-				->where('attendances.emp_role', '=', EmpRoleEnum::Employee)
-				->where('attendances.shift', '=', ShiftEnum::Afternoon)
-				->where('attendances.date', '=', $date)])
-			->addSelect(['check_out_2' => Attendance::select('check_out')
-				->whereColumn('attendances.emp_id', '=', 'employees.id')
-				->where('attendances.emp_role', '=', EmpRoleEnum::Employee)
-				->where('attendances.shift', '=', ShiftEnum::Afternoon)
-				->where('attendances.date', '=', $date)])
-			->addSelect(['check_in_3' => Attendance::select('check_in')
-				->whereColumn('attendances.emp_id', '=', 'employees.id')
-				->where('attendances.emp_role', '=', EmpRoleEnum::Employee)
-				->where('attendances.shift', '=', ShiftEnum::Evening)
-				->where('attendances.date', '=', $date)])
-			->addSelect(['check_out_3' => Attendance::select('check_out')
-				->whereColumn('attendances.emp_id', '=', 'employees.id')
-				->where('attendances.emp_role', '=', EmpRoleEnum::Employee)
-				->where('attendances.shift', '=', ShiftEnum::Evening)
-				->where('attendances.date', '=', $date)])
-			->where('employees.status', '=', 1)
-			->where('employees.dept_id', '=', $dept_id->count())
-			->leftJoin('roles as roles', 'employees.role_id', '=', 'roles.id')
+		$dept_id = $dept[0]['dept_id'];
+		$data = Employee::with(['attendance' => function ($query) use ($date) {
+			$query->where('date', '=', $date);
+		}, 'roles'])
+			->where('dept_id','=',$dept_id)
+			->where('status','=',1)
 			->paginate($limit);
 		$shifts = ShiftEnum::getKeys();
 		return view('managers.attendance', [

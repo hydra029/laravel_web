@@ -5,9 +5,11 @@ namespace App\Models;
 use Database\Factories\EmployeeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Employee
@@ -49,6 +51,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string $check_out_1
  * @property-read string $check_out_2
  * @property-read string $check_out_3
+ * @property string|null $avatar
+ * @property-read Collection|Attendance[] $attendance
+ * @property-read int|null $attendance_count
+ * @property-read Department $departments
+ * @property-read string $check1
+ * @property-read string $check2
+ * @property-read string $check3
+ * @property-read string $date_of_birth
+ * @property-read Role $roles
+ * @method static Builder|Employee whereAvatar($value)
  */
 class Employee extends Model
 {
@@ -74,10 +86,10 @@ class Employee extends Model
 		return date_diff(date_create($this->dob), date_create())->y;
 	}
 
-    public function getDateOfBirthAttribute(): string
-    {
-        return date_format(date_create($this->dob),"d/m/Y");
-    }
+	public function getDateOfBirthAttribute(): string
+	{
+		return date_format(date_create($this->dob), "d/m/Y");
+	}
 
 	public function getDateAttribute(): string
 	{
@@ -89,24 +101,33 @@ class Employee extends Model
 		return $this->fname . ' ' . $this->lname;
 	}
 
+	public function getRoleNameAttribute(): string
+	{
+		return $this->roles->name;
+	}
+
 	public function getGenderNameAttribute(): string
 	{
 		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
 
-//	public function getDeptNameAttribute(): string
-//	{
-//		$dept_id = $this->dept_id;
-//		$dept_name = Department::whereId($dept_id)->get('name');
-//		return $dept_name[0]['name'];
-//	}
-//
-//	public function getRoleNameAttribute(): string
-//	{
-//		$role_id = $this->role_id;
-//		$role_name = Department::whereId($role_id)->get('name');
-//		return $role_name[0]['name'];
-//	}
+	public function getCheck1Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		return ($this->attendance[0]->check_in === 1 ? ($this->attendance[0]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+
+	public function getCheck2Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		return ($this->attendance[1]->check_in === 1 ? ($this->attendance[1]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+
+	public function getCheck3Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		return ($this->attendance[2]->check_in === 1 ? ($this->attendance[2]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
 
 	public function getShiftStatusAttribute(): string
 	{
@@ -138,39 +159,22 @@ class Employee extends Model
 		return $status;
 	}
 
-	public function getCheck1Attribute(): string
-	{
-		/** @noinspection NestedTernaryOperatorInspection */
-		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
-		return ($this->check_in_1 === 1 ? ($this->check_out_1 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
-	}
-
-	public function getCheck2Attribute(): string
-	{
-		/** @noinspection NestedTernaryOperatorInspection */
-		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
-		return ($this->check_in_2 === 1 ? ($this->check_out_2 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
-	}
-
-	public function getCheck3Attribute(): string
-	{
-		/** @noinspection NestedTernaryOperatorInspection */
-		/** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
-		return ($this->check_in_3 === 1 ? ($this->check_out_3 === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
-	}
-
 	public function departments(): BelongsTo
 	{
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
-			->select(['id', 'name'])
-			->where('status', '=', 1);
+			->select(['id', 'name']);
 	}
 
 	public function roles(): BelongsTo
 	{
 		return $this->BelongsTo(Role::class, 'role_id', 'id')
-			->select(['id', 'name'])
-			->where('status', '=', 1);
+			->select(['id', 'name']);
+	}
+
+	public function attendance(): HasMany
+	{
+		return $this->HasMany(Attendance::class, 'emp_id', 'id')
+			->where('emp_role', '=', 1);
 	}
 
 	public $timestamps = false;

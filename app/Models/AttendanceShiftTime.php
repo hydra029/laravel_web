@@ -41,6 +41,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $out_start
  * @property-read string $shift_name
  * @property-read string $shift_status
+ * @property-read string $in_late1
+ * @property-read string $in_late2
+ * @property-read string $out_early1
+ * @property-read string $out_early2
+ * @method static \Database\Factories\AttendanceShiftTimeFactory factory(...$parameters)
+ * @method static Builder|AttendanceShiftTime whereCheckInLate1($value)
+ * @method static Builder|AttendanceShiftTime whereCheckInLate2($value)
+ * @method static Builder|AttendanceShiftTime whereCheckOutEarly1($value)
+ * @method static Builder|AttendanceShiftTime whereCheckOutEarly2($value)
  */
 class AttendanceShiftTime extends Model
 {

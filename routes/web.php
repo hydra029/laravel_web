@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', [HomeController::class, 'test'])->name('test');
+Route::post('/test', [HomeController::class, 'api'])->name('api');
 //Route::post('/test', [HomeController::class, 'process'])->name('process');
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
@@ -31,8 +32,10 @@ Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name
 Route::put('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
 Route::put('/managers/checkout', [ManagerController::class, 'checkout'])->name('managers.checkout');
 Route::get('/managers/attendance', [ManagerController::class, 'attendance'])->name('managers.attendance');
+
 Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
+
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
 Route::post('/ceo/time_save/', [CeoController::class, 'time_save'])->name('ceo.time_save');

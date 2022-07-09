@@ -21,6 +21,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Role whereName($value)
  * @method static Builder|Role whereStatus($value)
  * @mixin \Eloquent
+ * @property int $dept_id
+ * @property int $pay_rate
+ * @property-read string $pay_rate_money
+ * @method static Builder|Role whereDeptId($value)
+ * @method static Builder|Role wherePayRate($value)
  */
 class Role extends Model
 {
