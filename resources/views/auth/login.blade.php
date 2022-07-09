@@ -5,6 +5,7 @@
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/icons.min.css' )}}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('css/app.css' )}}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/app-modern.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
 </head>
 <body class="authentication-bg pb-0" data-layout-config='{"darkMode":false}'>
@@ -17,7 +18,20 @@
                                alt="Logo"></span>
                 </div>
                 <h4 class="mt-0">Sign In</h4>
-                <p class="text-muted mb-4">Enter your email address password to access account.</p>
+                <p class="text-muted mb-4">Enter your email address and password to access account.</p>
+
+                {{-- error --}}
+                @if ($errors->any())
+                <div class="form-group alert-danger p-1">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <!-- form -->
                 <form action="{{ route('process_login') }}" method="post">
                     @csrf
                     <div class="form-group">

@@ -6,7 +6,7 @@
             href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <style>
-            a:hover {
+             .dept-list a:hover {
                 text-decoration: underline !important;
                 cursor: pointer;
             }
@@ -29,7 +29,7 @@
                 padding: 0;
                 top: 100px;
                 right: 10px;
-                width: 500px;
+                width: 600px;
                 height: 250px;
                 animation-name: show_file;
             }
@@ -42,12 +42,18 @@
 
             .profile-card-img {
                 width: 35%;
-                height: 75%;
+                height: 100%;
             }
 
             .profile-card-info {
                 width: 65%;
+                height: 100%;
+            }
+            .profile-card-info-basic {
                 height: 75%;
+            }
+            .profile-card-roles {
+                height: 25%;
             }
         </style>
     @endpush
@@ -69,28 +75,23 @@
             back
         </button>
         <br>
-        <div class="col-12 p-2 border border-1 border-light bg-dark">
-            <table class=" text-white  w-100">
-                <tr>
-                    <td class="col-9">
-                        <form id="form-change-dept" method="post">
-                            <div class="w-40">
-                                <span>Departments</span>
 
-                            </div>
-                            <input type="hidden" name="dept_id" class="dept-id">
-                            <span class="dept-name-detail text-warning"></span>
-                        </form>
-                    </td>
-                    <td class="col-3">
-                        <span class="tittle-pay-rate">Manager</span>
-                        <br>
-                        <span class="manager-name-detail text-warning"></span>
-                    </td>
-                </tr>
-            </table>
-        </div>
         <div class="col-12 p-2 border border-1 border-light department_employees ">
+            <table class="table table-striped table-bordere " id="table-department-employees">
+                <thead class="bg-light">
+                <tr>
+                <th >#</th>
+                <th >Name</th>
+                <th >Gender</th>
+                <th >Birth date</th>
+                <th >Email</th>
+                <th >Number phone</th>
+                <th >Role</th>
+                <th >Action</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
     {{-- // department list table --}}
@@ -104,18 +105,11 @@
         <br>
         <div class="col-12 p-2 border border-1 border-light dept-list">
             <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th colspan="7">
-                            <h4 class="text-white">Departments list</h4>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+
                     <tr class="text-primary">
                         <td class="col-1"><span>#</span></td>
                         <td><span>Name</span></td>
-                        <td><a class="members-department">Members</a></td>
+                        <td><span>Members</span></td>
                         <td><span>Manager</span></td>
                         <td><span>Roles / Pay rate</span></td>
                         <td><span>Status</span></td>
@@ -132,16 +126,12 @@
                                 <div>
                                     <form class="form-change-dept" method="post">
                                         <span class="dept-name ">{{ $each->name }}</span>
-                                        <span class="change-dept float-right"><i
-                                                class="fa-solid fa-pen-to-square"></i></span>
-                                        <span class="exit-change-dept d-none"><i
-                                                class="fa-solid fa-circle-xmark"></i></span>
+                                        <span class="change-dept float-right"><i class="fa-solid fa-pen-to-square"></i></span>
+                                        <span class="exit-change-dept d-none"><i class="fa-solid fa-circle-xmark"></i></span>
                                         <br>
                                         <input type="hidden" name="dept_id" class="dept-id" value="{{ $each->id }}">
-                                        <input type="text" name="name" value=" {{ $each->name }} "
-                                            class="d-none inp-dept">
-                                        <button class="btn-change-dept d-none ">
-                                            <i class="fa-solid fa-pen-to-square"></i></button>
+                                        <input type="text" name="name" value=" {{ $each->name }} " class="d-none inp-dept">
+                                        <button class="btn-change-dept d-none "><i class="fa-solid fa-pen-to-square"></i></button>
                                     </form>
                                 </div>
                             </td>
@@ -172,7 +162,17 @@
                             </td>
                             <td>
                                 <div>
-                                    <span class="dept-status ">{{ $each->status }}</span>
+                                    <span class="dept-status ">
+
+                                        @if ($each->status == 0)
+                                            <i class="fa-solid fa-circle-dot  text-success "></i> <span class="text-success" >Active</span>
+                                        @elseif ($each->status == 1)
+                                            <i class="fa-solid fa-circle-dot text-warning "></i> <span class="text-warning" >Pause activity</span>
+                                        @else
+                                            <i class="fa-solid fa-circle-dot text-danger "></i> <span class="text-danger" >Decommissioning</span>
+                                        @endif
+
+                                    </Active>
                                 </div>
                             </td>
                             <td>
@@ -180,7 +180,6 @@
                                 </div>
                         </tr>
                     @endforeach
-                </tbody>
             </table>
         </div>
     </div>
@@ -234,38 +233,36 @@
             </span>
             back
         </button>
-        <div class="col-12 border border-1 border-light dept-name bg-dark">
-            <table class=" text-white  w-100">
-                <tr>
-                    <td class="col-4">
-                        <h4>Departments</h4>
-                        <span class="text-warning dept-name-roles"></span>
-                    </td>
-                    <td class="col-8">
 
-                    </td>
-                </tr>
+        <div class="col-12 p-2 border border-1 border-light pay-rate">
+
+            <table class="table table-striped table-bordered " id="table-pay-rate">
+                <thead>
+                    <th class="col-2">#</th>
+                    <th class="col-4">Roles</th>
+                    <th class="col-4">Pay rate</th>
+                    <th class="col-2">Action</th>
+                </thead>
+                <tbody></tbody>
             </table>
         </div>
-        <div class="col-12  border border-1 border-light pay-rate">
-        </div>
         <div class="btn btn-add-roles btn-success "><i class="fa-solid fa-circle-plus"></i> Add</div>
-        <div class="div-inp-add-roles col-8">
-            <form action="" method="post">
+        <div class="div-inp-add-roles d-none col-8">
+            <form class="form-add-roles" action="" method="post">
                 @csrf
                 <table class="table">
                     <tr>
                         <td>
                             <span>Name: </span>
                             <input type="text" name="name" class="inp-role-name">
-                            <input type="hidden" name="inp-dept-role-id">
+                            <input type="hidden" name="dept_id" class="inp-dept-role-id">
                         </td>
                         <td>
                             <span>Pay rate: </span>
                             <input type="text" name="pay_rate" class="inp-role-pay_rate">
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-save-add-role" >Save</button>
+                            <button type="submit" name="" class="btn btn-primary btn-save-add-role" >Save</button>
                         </td>
                     </tr>
                 </table>
@@ -282,48 +279,50 @@
                     alt="Logo"></span>
         </div>
         <div class="profile-card-info float-left">
-            <table class="table">
-                <tr>
-                    <td class="col-5">Name:</td>
-                    <td><span class="profile-card-name "></span></td>
-                </tr>
-                <tr>
-                    <td>Gender:</td>
-                    <td><span class="profile-card-gender"></span></td>
-                </tr>
-                <tr>
-                    <td> Date of birth:</td>
-                    <td><span class="profile-card-dob"></span></td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td><span class="profile-card-email"></span></td>
-                </tr>
-                <tr>
-                    <td>Number phone:</td>
-                    <td><span class="profile-card-number-phone"></span></td>
-                </tr>
-            </table>
-        </div>
-        <div class="profile-card-roles ">
-            <table class="table">
-                <tr>
-                    <th>
-                        <span>department</span>
-                        <span class="profile-card-department"></span>
-                    </th>
-                    <th>
-                        <span>role</span>
-                        <span class="profile-card-role"></span>
-                    </th>
-                </tr>
-            </table>
+            <div class="profile-card-info-basic">
+                <table class="table">
+                    <tr>
+                        <td class="col-5">Name:</td>
+                        <td><span class="profile-card-name "></span></td>
+                    </tr>
+                    <tr>
+                        <td>Gender:</td>
+                        <td><span class="profile-card-gender"></span></td>
+                    </tr>
+                    <tr>
+                        <td> Date of birth:</td>
+                        <td><span class="profile-card-dob"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><span class="profile-card-email"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Number phone:</td>
+                        <td><span class="profile-card-number-phone"></span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="profile-card-roles ">
+                <table class="table">
+                    <tr>
+                        <th>
+                            <span>department</span>
+                            <span class="profile-card-department"></span>
+                        </th>
+                        <th>
+                            <span>role</span>
+                            <span class="profile-card-role"></span>
+                        </th>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    // searching by department
+
     <script type="text/javascript">
         $(document).ready(function() {
             $.ajaxSetup({
@@ -363,6 +362,7 @@
             // show roles list
             var roles_list = [];
             $('.roles-department').click(function(event) {
+                $('#table-pay-rate').find('tbody').empty();
                 $('.title-name').text(' > Department roles');
                 $('.dept-list').addClass('d-none');
                 $('.dept-roles').removeClass('d-none');
@@ -370,8 +370,7 @@
                 let pay_rate = $('.pay-rate');
                 let dept_name = $(this).parents('tr').find('.dept-name').text();
                 $('.dept-name-roles').text(dept_name);
-                if (roles_list.indexOf(dept_id) == -1) {
-                    roles_list.push(dept_id);
+                    $('.inp-dept-role-id').val(dept_id);
                     $.ajax({
                         url: '{{ route('ceo.pay_rate_api') }}',
                         type: 'POST',
@@ -381,68 +380,37 @@
                         },
                         success: function(response) {
 
-                            pay_rate.html('');
-                            pay_rate.append(
-                                '<table class="table table-striped  table-sm table-bordered  student-table-index">' +
-                                '<thead class="">' +
-                                '<tr>' +
-                                '<th class=" col-1 ">#</th>' +
-                                '<th class=" col-1 ">Roles</th>' +
-                                '<th class=" col-1 text-center">Pay rate</th>' +
-                                '<th class=" col-1 text-center">Change</th>' +
-                                '</tr>' +
-                                '</thead>')
-                            $.each(response, function(index, value) {
-                                pay_rate.append(
-                                    '<tr >' +
-                                    '<form id="form-payRate-change" method="post">' +
-                                    '<td class=" col-1 text-danger">' +
-                                    '<div class =" form-group ">' + (index + 1) +
-                                    '.' + '</div>' +
-                                    '</td>' +
-                                    '<td class="col-1">' +
-                                    '<div class="role-name  form-group">' +
-                                    value.name +
-                                    '</div>' +
-                                    '<label class="role-name-inp d-none">' +
-                                    '<input type="text" name="role_id" class="form-control " value="' +
-                                    value.id + '">' +
-                                    '</label>' +
-                                    '</td>' +
-                                    '<td class="col-1">' +
-                                    '<div class="pay-rate text-center">' +
-                                    value.pay_rate_money +
-                                    '</div>' +
-                                    '<label class="pay-rate-inp d-none">' +
-                                    '<input type="text" name="pay_rate" class="form-control " value="' +
-                                    value.pay_rate + '">' +
-                                    '</label>' +
-                                    '</td>' +
-                                    '<td class="col-1 ">' +
-                                    '<div align="center" class="">' +
-                                    '<button type="button" class="btn btn-primary btn-change">' +
-                                    'Change' +
-                                    '</button>' +
-                                    '<button type="button" class="btn btn-primary btn-save d-none"  data-pay_rate="' +
-                                    value.pay_rate + '" data-id ="' + value.id +
-                                    '">' +
-                                    'Save' +
-                                    '</button>' +
-                                    '</div>' +
-                                    '</td>' +
-                                    '</form>' +
-                                    '</tr>' +
-                                    '<tr>' +
-                                    '</tr>' +
-                                    '</table>')
+                            $.each(response.data.data, function(index, value) {
+                                $('#table-pay-rate').append($('<tr>')
+                                    .append($('<td>').append( (index + 1) + '.'))
+                                    .append($('<td>').append('<span class="role-name ">' + value.name + '</span>' +
+                                                            '<label class="role-name-inp d-none">' +
+                                                            '<input type="text" name="role_id" class="form-control " value="' + value.id + '">' +
+                                                            '</label>'))
+                                    .append($('<td>').append('<span class="pay-rate ">' + value.pay_rate + '</span>' +
+                                                            '<label class="pay-rate-inp d-none">' +
+                                                            '<input type="text" name="pay_rate" class="form-control " value="' + value.pay_rate + '">' +
+                                                            '</label>'))
+                                    .append($('<td>').append('<button type="button" class="btn btn-primary btn-change">' + 'Change' + '</button>' +
+                                                            '<button type="button" class="btn btn-primary btn-save d-none"  data-pay_rate="' +  value.pay_rate + '" data-id ="' + value.id + '">' +
+                                                            'Save' + '</button>' ))
+                                )
                             });
+                            // renderPagination(response.data.pagination);
                             change();
+                            add_role();
                         }
                     });
-                } else {
-                    change();
-                }
             });
+            function renderPagination(links) {
+                $('#pagination').empty();
+                links.forEach(function(each) {
+                    $('#pagination').append($('<li>')).attr('class', 'page-item').append(`<a href="${each.url}" class="page-link ${each.active ? 'active' : ''} " >
+                                ${each.label}
+                            </a>`)
+
+                });
+            }
 
             function change() {
                 $('.btn-change').click(function(event) {
@@ -482,7 +450,43 @@
 
                 });
             }
-
+            $('.btn-add-roles').click(function(){
+                $(this).addClass('d-none');
+                $('.div-inp-add-roles').removeClass('d-none');
+            });
+            function add_role() {
+                $('.form-add-roles').submit(function(e){
+                    e.preventDefault();
+                    var form = $(this);
+                    let pay_rate = $('.div-add-roles');
+                    $.ajax({
+                        url: "{{ route('ceo.pay_rate_store') }}",
+                        method: "POST",
+                        datatype: 'json',
+                        data: form.serialize(),
+                        success: function(response) {
+                            $('#table-pay-rate').find('tbody').empty();
+                            $.each(response, function(index, value) {
+                                $('#table-pay-rate').append($('<tr>')
+                                    .append($('<td>').append( (index + 1) + '.'))
+                                    .append($('<td>').append('<span class="role-name ">' + value.name + '</span>' +
+                                                            '<label class="role-name-inp d-none">' +
+                                                            '<input type="text" name="role_id" class="form-control " value="' + value.id + '">' +
+                                                            '</label>'))
+                                    .append($('<td>').append('<span class="pay-rate ">' + value.pay_rate_money + '</span>' +
+                                                            '<label class="pay-rate-inp d-none">' +
+                                                            '<input type="text" name="pay_rate" class="form-control " value="' + value.pay_rate + '">' +
+                                                            '</label>'))
+                                    .append($('<td>').append('<button type="button" class="btn btn-primary btn-change">' + 'Change' + '</button>' +
+                                                            '<button type="button" class="btn btn-primary btn-save d-none"  data-pay_rate="' +  value.pay_rate + '" data-id ="' + value.id + '">' +
+                                                            'Save' + '</button>' ))
+                                )
+                            });
+                                change();
+                        }
+                    });
+                });
+            }
             // show the members list
             var dept_list = [];
             $('.members-department').click(function() {
@@ -494,9 +498,7 @@
                 var manager_name = $(this).parents('tr').find('.manager-name').text();
                 $('.dept-name-detail').text(dept_name);
                 $('.manager-name-detail').text(manager_name);
-                if (dept_list.indexOf(dept_id) == -1) {
-                    dept_list.push(dept_id);
-
+                    $('#table-department-employees').find('tbody').empty();
                     $.ajax({
                         url: "{{ route('ceo.department_employees') }}",
                         method: "POST",
@@ -505,65 +507,22 @@
                             dept_id: dept_id
                         },
                         success: function(response) {
-                            $('.department_employees').html('');
-                            $('.department_employees').append(
-                                '<table class="table table-striped table-bordere table-hover table-sm">' +
-                                '<thead class="">' +
-                                '<tr>' +
-                                '<th class=" col-1 ">#</th>' +
-                                '<th class=" col-3 ">Name</th>' +
-                                '<th class=" col-1 ">Gender</th>' +
-                                '<th class=" col-2 ">Birth date</th>' +
-                                '<th class=" col-3 ">email</th>' +
-                                '<th class=" col-1 ">Role</th>' +
-                                '<th class=" col-1 ">Action</th>' +
-                                '</tr>' +
-                                '</thead>' +
-                                '<tbody>' +
-                                '<div class="col-12">'
-                            );
 
                             $.each(response, function(index, value) {
-                                $('.department_employees').append(
-                                    '<tr>' +
-                                    '<td class=" col-1 ">' +
-                                    '<div class="form-group text-danger">' + (index + 1) + '.' + '</div>' +
-                                    '</td>' +
-                                    '<td class=" col-3 ">' +
-                                    '<div class="form-group">' +
-                                    '<a class="employee-name ">' + value.full_name + '</a>' +
-                                    '</div>' +
-                                    '</td>' +
-                                    '<td class=" col-1 ">' +
-                                    '<div class="form-group">' + value.gender_name + '</div>' +
-                                    '</td>' +
-                                    '<td class=" col-2 ">' +
-                                    '<div class="form-group">' + value.date_of_birth + '</div>' +
-                                    '</td>' +
-                                    '<td class=" col-3 ">' +
-                                    '<div class="form-group">' + value.email + '</div>' +
-                                    '</td>' +
-                                    '<td class=" col-1 ">' +
-                                    '<div class="form-group">' + value.role_name + '</div>' +
-                                    '</td>' +
-                                    '<td class=" col-1 ">' +
-                                    '<button class="btn btn-primary btn-sm employee_infor" data-id="' +
-                                    value.id + '">Details</button>' +
-                                    '</td>' +
-                                    '</tr>'
-                                );
+                                $('#table-department-employees').append($('<tr>')
+                                    .append($('<td>').append( (index + 1) + '.'))
+                                    .append($('<td>').append(value.full_name))
+                                    .append($('<td>').append(value.gender_name))
+                                    .append($('<td>').append(value.date_of_birth))
+                                    .append($('<td>').append(value.email))
+                                    .append($('<td>').append())
+                                    .append($('<td>').append(value.role_name))
+                                    .append($('<td>').append())
+                                )
                             });
-                            $('.department_employees').append(
-                                '</div>' +
-                                '</tbody>' +
-                                '</table>'
-                            );
                             show_infor();
                         }
                     });
-                } else {
-                    show_infor();
-                }
             });
 
             function show_infor() {

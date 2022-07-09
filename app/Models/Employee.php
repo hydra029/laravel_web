@@ -163,10 +163,12 @@ class Employee extends Model
 	{
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
 			->select(['id', 'name']);
+
 	}
 
 	public function roles(): BelongsTo
 	{
+
 		return $this->BelongsTo(Role::class, 'role_id', 'id')
 			->select(['id', 'name']);
 	}
@@ -175,6 +177,7 @@ class Employee extends Model
 	{
 		return $this->HasMany(Attendance::class, 'emp_id', 'id')
 			->where('emp_role', '=', 1);
+
 	}
 
 	public $timestamps = false;

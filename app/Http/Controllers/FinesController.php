@@ -24,7 +24,7 @@ class FinesController extends Controller
 
     public function index()
     {
-        $fines = $this->model::get();
+        $fines = $this->model->get();
         return view('ceo.fines', [
             'fines' => $fines,
         ]);
