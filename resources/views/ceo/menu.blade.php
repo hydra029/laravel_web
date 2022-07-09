@@ -17,12 +17,12 @@
             <span> Department </span>
         </a>
     </li>
-    {{-- <li class="side-nav-item">
-        <a href="{{route('ceo.fines')}}" class="side-nav-link">
+    <li class="side-nav-item">
+        <a href="{{route('ceo.create_emp')}}" class="side-nav-link">
             <i class="uil-home-alt"></i>
-            <span> Fines </span>
+            <span> Add employee </span>
         </a>
-    </li> --}}
+    </li>
     <li class="side-nav-item">
         <a href="#" class="side-nav-link">
             <i class="uil-calender"></i>

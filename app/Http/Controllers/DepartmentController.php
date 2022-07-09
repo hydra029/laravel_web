@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Manager;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -30,7 +31,7 @@ class DepartmentController extends Controller
     }
     public function index()
     {
-       $dept = $this->models->with('manager')->withCount(['members','roles'])->get();
+       $dept = $this->models->with('manager')->withCount(['members','roles'])->orderByRaw('status ASC')->get();
        return view('ceo.department', [
            'dept' => $dept,
        ]);

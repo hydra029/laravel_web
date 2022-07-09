@@ -45,7 +45,7 @@ Route::post('/ceo/fines_store', [FinesController::class, 'store'])->name('ceo.fi
 Route::post('/ceo/fines_update', [FinesController::class, 'update'])->name('ceo.fines_update');
 Route::post('/ceo/pay_rate_api', [CeoController::class, 'pay_rate_api'])->name('ceo.pay_rate_api');
 Route::post('/ceo/pay_rate_change/', [CeoController::class, 'pay_rate_change'])->name('ceo.pay_rate_change');
-// Route::post('/ceo/pay_rate_store/', [CeoController::class, 'pay_rate_store'])->name('ceo.pay_rate_store');
+Route::post('/ceo/pay_rate_store/', [CeoController::class, 'pay_rate_store'])->name('ceo.pay_rate_store');
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
 // Department
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
@@ -56,7 +56,7 @@ Route::post('/ceo/department/manager_role', [DepartmentController::class, 'manag
 // get information
 Route::post('/ceo/information', [DepartmentController::class, 'information'])->name('ceo.information');
 
-
+Route::get('/ceo/create_emp', [CeoController::class, 'create_emp'])->name('ceo.create_emp');
 
 
 Route::resource('employees', EmployeeController::class)->except([
