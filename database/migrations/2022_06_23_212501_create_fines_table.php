@@ -11,9 +11,9 @@ class CreateFinesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('fines', function (Blueprint $table) {
+        Schema::create('fines', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('fines');
@@ -26,7 +26,7 @@ class CreateFinesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('fines');
     }

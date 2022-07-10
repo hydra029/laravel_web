@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Manager;
 use Illuminate\Contracts\Support\Renderable;
 
 class HomeController extends Controller
@@ -45,9 +47,15 @@ class HomeController extends Controller
 	 */
 	public function api()
 	{
+		$id = session('id');
+		$dept = Manager::whereId($id)
+			->first('dept_id');
+		/** @noinspection NullPointerExceptionInspection */
+		$dept_id = ($dept->toArray())['dept_id'];
 		$a = Employee::with('attendance')
-			->where('id', '=', session('id'))
-			->first('id');
+			->where('dept_id', '=', $dept_id)
+			->get(['id','lname','fname']);
+//		dd($a->toArray());
 		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
 	}
 }

@@ -161,7 +161,6 @@ class Employee extends Model
 
 	public function departments(): BelongsTo
 	{
-
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
 			->select(['id', 'name']);
 

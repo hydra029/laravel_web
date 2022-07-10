@@ -24,22 +24,28 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', [HomeController::class, 'test'])->name('test');
 Route::post('/test', [HomeController::class, 'api'])->name('api');
 //Route::post('/test', [HomeController::class, 'process'])->name('process');
+
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/employees/attendance', [EmployeeController::class, 'attendance'])->name('employees.attendance');
+Route::post('/employees/attendance_api', [EmployeeController::class, 'attendance_api'])->name('employees.attendance_api');
+Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
+
 Route::put('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
 Route::put('/managers/checkout', [ManagerController::class, 'checkout'])->name('managers.checkout');
 Route::get('/managers/attendance', [ManagerController::class, 'attendance'])->name('managers.attendance');
 
 Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
+Route::get('/accountants/attendance', [AccountantController::class, 'attendance'])->name('accountants.attendance');
 
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
 Route::post('/ceo/time_save/', [CeoController::class, 'time_save'])->name('ceo.time_save');
-// Change money
 Route::get('/ceo/fines', [FinesController::class, 'index'])->name('ceo.fines');
 Route::post('/ceo/fines_store', [FinesController::class, 'store'])->name('ceo.fines_store');
 Route::post('/ceo/fines_update', [FinesController::class, 'update'])->name('ceo.fines_update');
@@ -47,29 +53,23 @@ Route::post('/ceo/pay_rate_api', [CeoController::class, 'pay_rate_api'])->name('
 Route::post('/ceo/pay_rate_change/', [CeoController::class, 'pay_rate_change'])->name('ceo.pay_rate_change');
 Route::post('/ceo/pay_rate_store/', [CeoController::class, 'pay_rate_store'])->name('ceo.pay_rate_store');
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
-// Department
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
 Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
 Route::post('/ceo/department/manager_role', [DepartmentController::class, 'manager_role'])->name('ceo.department.manager_role');
-// get information
 Route::post('/ceo/information', [DepartmentController::class, 'information'])->name('ceo.information');
-
 Route::get('/ceo/create_emp', [CeoController::class, 'create_emp'])->name('ceo.create_emp');
 
 
 Route::resource('employees', EmployeeController::class)->except([
     'show',
 ]);
-
 Route::resource('accountants', AccountantController::class)->except([
     'show',
 ]);
-
 Route::resource('managers', ManagerController::class)->except([
     'show',
-
 ]);
 Route::resource('ceo', CeoController::class)->except([
     'show',

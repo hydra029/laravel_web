@@ -19,7 +19,9 @@ class CreateEmployeesTable extends Migration
 			$table->string('lname');
 			$table->boolean('gender');
 			$table->timestamp('dob');
+			$table->string('avatar')->nullable();
 			$table->string('email');
+			$table->string('phone');
 			$table->string('password');
 			$table->unsignedBigInteger('dept_id');
 			$table->unsignedBigInteger('role_id');
