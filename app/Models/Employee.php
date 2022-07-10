@@ -161,19 +161,15 @@ class Employee extends Model
 
 	public function departments(): BelongsTo
 	{
-<<<<<<< Updated upstream
+
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
 			->select(['id', 'name']);
-=======
-		return $this->BelongsTo(Department::class, 'dept_id', 'id');
-			// ->select(['id', 'name'])
-			// ->where('status', '=', 1);
->>>>>>> Stashed changes
+
 	}
 
 	public function roles(): BelongsTo
 	{
-<<<<<<< Updated upstream
+
 		return $this->BelongsTo(Role::class, 'role_id', 'id')
 			->select(['id', 'name']);
 	}
@@ -182,11 +178,7 @@ class Employee extends Model
 	{
 		return $this->HasMany(Attendance::class, 'emp_id', 'id')
 			->where('emp_role', '=', 1);
-=======
-		return $this->BelongsTo(Role::class, 'role_id', 'id');
-			// ->select(['id', 'name'])
-			// ->where('status', '=', 1);
->>>>>>> Stashed changes
+
 	}
 
 	public $timestamps = false;

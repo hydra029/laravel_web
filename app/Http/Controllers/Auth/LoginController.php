@@ -85,9 +85,8 @@ class LoginController extends Controller
 			session()->flash('success', 'Sign in successfully');
 			return redirect()->route('ceo.index');
 		}
-		return back()->withErrors([
-            'error' => 'Wrong email or password.',
-        ]);
+		session()->flash('noti.error', 'Wrong email or password');
+		return back();
 	}
 
 	public function logout(): RedirectResponse
