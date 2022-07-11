@@ -94,10 +94,16 @@
                    href="#" role="button" aria-haspopup="true"
                    aria-expanded="false">
     <span class="account-user-avatar">
-        <img src="{{ asset('img/hydra_sport_and_esport_logo_template_4x.webp') }}" alt="user-image" class="rounded-circle">
+        <img src="
+            @if(session('avatar') === null)
+            {{ asset('img/istockphoto-1223671392-612x612.jpg') }}
+            @else
+            {{ asset('') }}img/{{ session('avatar') }}
+            @endif
+        " alt="user-image" class="rounded-circle">
     </span>
                     <span>
-        <span class="account-user-name">Hydra</span>
+        <span class="account-user-name">{{ session('name') }}</span>
         <span class="account-position">Founder</span>
     </span>
                 </a>
@@ -144,6 +150,6 @@
                 <span></span>
             </div>
         </a>
-        
+
     </div>
 </div>

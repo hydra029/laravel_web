@@ -14,13 +14,14 @@ class CreateRolesTable extends Migration
 	public function up(): void
 	{
 		Schema::create('roles', static function (Blueprint $table) {
-			$table->unsignedBigInteger('id');
-			$table->unsignedBigInteger('dept_id');
+            $table->id();
+			$table->foreignId('dept_id')->constrained('departments')->onDelete('cascade');
+			// $table->unsignedBigInteger('dept_id');
 			$table->integer('pay_rate');
 			$table->string('name');
 			$table->boolean('status');
-			$table->primary(['id', 'dept_id']);
-			$table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
+			// $table->primary(['id', 'dept_id']);
+			// $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
 		});
 	}
 

@@ -71,10 +71,15 @@ class Employee extends Model
 		'lname',
 		'gender',
 		'dob',
+        'avatar',
+        'city',
+        'phone',
+        'district',
 		'email',
 		'password',
 		'dept_id',
 		'role_id',
+        'status',
 	];
 
 	/**
@@ -85,6 +90,11 @@ class Employee extends Model
 	{
 		return date_diff(date_create($this->dob), date_create())->y;
 	}
+
+    public function getAddressAttribute(): string
+    {
+        return $this->district . ' ' . $this->city ;
+    }
 
 	public function getDateOfBirthAttribute(): string
 	{

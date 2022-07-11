@@ -52,14 +52,24 @@ class Manager extends Model
 		'lname',
 		'gender',
 		'dob',
+        'avatar',
+        'phone',
+        'city',
+        'district',
 		'email',
 		'password',
 		'dept_id',
 		'role_id',
+        'status',
 	];
     public function getDateOfBirthAttribute(): string
     {
         return date_format(date_create($this->dob),"d/m/Y");
+    }
+
+    public function getAddressAttribute(): string
+    {
+        return $this->district . ' ' . $this->city ;
     }
 
 	public function getAgeAttribute(): string

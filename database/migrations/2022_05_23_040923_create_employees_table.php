@@ -20,12 +20,14 @@ class CreateEmployeesTable extends Migration
 			$table->boolean('gender');
 			$table->timestamp('dob');
 			$table->string('avatar')->nullable();
-			$table->string('email');
+            $table->string('city');
+            $table->string('district');
 			$table->string('phone');
+			$table->string('email');
 			$table->string('password');
 			$table->unsignedBigInteger('dept_id');
 			$table->unsignedBigInteger('role_id');
-			$table->boolean('status');
+			$table->boolean('status')->default(1);
 		});
 
 

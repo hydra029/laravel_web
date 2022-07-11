@@ -40,7 +40,7 @@
         </div>
     @endif
 
-    <div class="fines">
+    <div class="fines col-12">
         <div class="col-12 p-2 border border-1 border-light bg-dark text-white ">
             <div >
                 <h4 class="tittle-pay-rate ">Fines</h4>

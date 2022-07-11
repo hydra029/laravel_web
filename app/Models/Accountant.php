@@ -43,6 +43,101 @@ class Accountant extends Model
 {
     use HasFactory;
 
+	protected $fillable = [
+		'fname',
+		'lname',
+		'gender',
+		'dob',
+        'avatar',
+        'phone',
+        'city',
+        'district',
+		'email',
+		'password',
+		'dept_id',
+		'role_id',
+        'status',
+	];
+
+    public function getAddressAttribute(): string
+    {
+        return $this->district . ' ' . $this->city ;
+    }
+
+	public function getDateOfBirthAttribute(): string
+	{
+		return date_format(date_create($this->dob), "d/m/Y");
+	}
+
+	public function getDateAttribute(): string
+	{
+		return date_format(date_create(), 'D d-m-Y');
+	}
+
+	public function getFullNameAttribute(): string
+	{
+		return $this->fname . ' ' . $this->lname;
+	}
+
+	public function getRoleNameAttribute(): string
+	{
+		return $this->roles->name;
+	}
+
+	public function getGenderNameAttribute(): string
+	{
+		return ($this->gender === 1 ? 'Male' : 'Female');
+	}
+
+	public function getCheck1Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		return ($this->attendance[0]->check_in === 1 ? ($this->attendance[0]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+
+	public function getCheck2Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		return ($this->attendance[1]->check_in === 1 ? ($this->attendance[1]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+
+	public function getCheck3Attribute(): string
+	{
+		/** @noinspection NestedTernaryOperatorInspection */
+		return ($this->attendance[2]->check_in === 1 ? ($this->attendance[2]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
+	}
+
+	public function getShiftStatusAttribute(): string
+	{
+		$status = "";
+		$date = date('Y-m-d');
+		$shift_status = AttendanceShiftTime::get('id');
+		foreach ($shift_status as $each) {
+			$shift = $each->id;
+			$emp_id = $this->id;
+			$attendances = Attendance::where('date', '=', $date)
+				->where('shift', '=', $shift)
+				->where('emp_role', '=', 1)
+				->where('emp_id', '=', $emp_id)
+				->get();
+			foreach ($attendances as $attendance) {
+				$check_in = $attendance->check_in;
+				$check_out = $attendance->check_out;
+				if ($check_in !== 1) {
+					if ($check_out !== 1) {
+						$status = 'Not checked yet';
+					} else {
+						$status = 'Checked out';
+					}
+				} else {
+					$status = 'Checked in';
+				}
+			}
+		}
+		return $status;
+	}
+
+
 	public function department(): HasOne
 	{
 		return $this->hasOne(Department::class, 'dept_id');

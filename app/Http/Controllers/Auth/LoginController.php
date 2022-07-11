@@ -35,7 +35,7 @@ class LoginController extends Controller
 		return view('auth.login');
 	}
 
-	public function processLogin(Request $request): RedirectResponse
+	public function processLogin(Request $request)
 	{
 		$email = $request->get('email');
 		$password = $request->get('password');
@@ -46,21 +46,25 @@ class LoginController extends Controller
 			session()->put('remember', 1);
 		}
 
-		if ($emp = Employee::query()
+		if ($user = Employee::query()
 			->where('email', $email)
 			->where('password', $password)
 			->first()) {
-			session()->put('id', $emp->id);
+			session()->put('id', $user->id);
+			session()->put('name', $user->fname );
+			session()->put('name', $user->avatar );
 			session()->put('level', 1);
 			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('employees.index');
 		}
 
-		if ($mgr = Manager::query()
+		if ($user = Manager::query()
 			->where('email', $email)
 			->where('password', $password)
 			->first()) {
-			session()->put('id', $mgr->id);
+			session()->put('id', $user->id);
+			session()->put('name', $user->fname );
+			session()->put('avatar', $user->avatar );
 			session()->put('level', 2);
 			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('managers.index');
@@ -71,6 +75,7 @@ class LoginController extends Controller
 			->where('password', $password)
 			->first()) {
 			session()->put('id', $user->id);
+			session()->put('name', $user->fname );
 			session()->put('level', 3);
 			session()->flash('noti.success', 'Sign in successfully');
 			return redirect()->route('accountants.index');
@@ -81,8 +86,12 @@ class LoginController extends Controller
 			->where('password', $password)
 			->first()) {
 			session()->put('id', $user->id);
+			session()->put('name', $user->fname );
+			session()->put('avatar', $user->avatar );
 			session()->put('level', 4);
 			session()->flash('noti.success', 'Sign in successfully');
+            // $data = session()->all();
+            // return $data;
 			return redirect()->route('ceo.index');
 		}
 		session()->flash('noti.error', 'Wrong email or password');

@@ -31,7 +31,7 @@ class DepartmentController extends Controller
     }
     public function index()
     {
-       $dept = $this->models->with('manager')->withCount(['members','roles'])->orderByRaw('status ASC')->get();
+       $dept = $this->models->with('manager')->withCount(['members','roles'])->get();
        return view('ceo.department', [
            'dept' => $dept,
        ]);
@@ -46,7 +46,7 @@ class DepartmentController extends Controller
         ->select('employees.*', 'departments.name as dept_name', 'roles.name as role_name')
         ->where('employees.dept_id', '=', $dept_id)
         ->get();
-        return $employee_dept->append(['full_name','date_of_birth','gender_name']);
+        return $employee_dept->append(['full_name','date_of_birth','gender_name','address']);
     }
 
     public function manager_role(Request $request)
