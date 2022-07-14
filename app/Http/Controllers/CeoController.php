@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ShiftEnum;
+use App\Http\Requests\StoreAccountantRequest;
 use App\Models\AttendanceShiftTime;
 use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\StoreFinesRequest;
+use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateCeoRequest;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Manager;
@@ -208,7 +213,41 @@ class CeoController extends Controller
 
     public function create_emp()
     {
-        return view('ceo.create');
+        $dept = Department::get();
+        return view('ceo.create',[
+            'dept' => $dept,
+        ]);
+    }
+
+    public function select_role(Request $Request)
+    {
+        $dept_id = $Request->dept_id;
+        return Role::query()->where('dept_id', $dept_id)->get();
+    }
+
+    public function store_emp(StoreEmployeeRequest $storeEmployeeRequest)
+    {
+        $arr = $storeEmployeeRequest->validated();
+        return Employee::query()->create($arr)->append(['full_name','date_of_birth','gender_name','address'])->toArray();
+
+    }
+
+    public function update_emp(StoreEmployeeRequest $storeEmployeeRequest)
+    {
+
+        $arr = $storeEmployeeRequest->validated();
+        Employee::query()->update($arr);
+
+    }
+
+    public function store_attr(StoreAccountantRequest $storeAccountantRequest)
+    {
+        //
+    }
+
+    public function store_mgr(StoreManagerRequest $storeManagerRequest)
+    {
+        //
     }
 	/**
 	 * Show the form for creating a new resource.

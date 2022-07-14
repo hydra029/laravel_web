@@ -37,13 +37,53 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Ceo extends Model
 {
     use HasFactory;
-	public function department(): HasOne
+
+	protected $fillable = [
+		'fname',
+		'lname',
+		'gender',
+        'avatar',
+        'phone',
+		'dob',
+        'city',
+        'district',
+		'email',
+		'password',
+	];
+
+    public function getAgeAttribute(): string
 	{
-		return $this->hasOne(Department::class, 'dept_id');
+		return date_diff(date_create($this->dob), date_create())->y;
 	}
-	public function role(): HasOne
+
+    public function getAddressAttribute(): string
+    {
+        return $this->district . ' ' . $this->city ;
+    }
+
+	public function getDateOfBirthAttribute(): string
 	{
-		return $this->hasOne(Role::class, 'role_id');
+		return date_format(date_create($this->dob), "d/m/Y");
+	}
+
+	public function getDateAttribute(): string
+	{
+		return date_format(date_create(), 'D d-m-Y');
+	}
+
+	public function getFullNameAttribute(): string
+	{
+		return $this->fname . ' ' . $this->lname;
+	}
+
+	public function getRoleNameAttribute(): string
+	{
+		return $this->roles->name;
+	}
+
+	public function getGenderNameAttribute(): string
+	{
+		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
 
 	public $timestamps = false;

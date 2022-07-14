@@ -58,8 +58,14 @@ Route::post('/ceo/department_employees', [DepartmentController::class, 'departme
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
 Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
 Route::post('/ceo/department/manager_role', [DepartmentController::class, 'manager_role'])->name('ceo.department.manager_role');
-Route::post('/ceo/information', [DepartmentController::class, 'information'])->name('ceo.information');
 Route::get('/ceo/create_emp', [CeoController::class, 'create_emp'])->name('ceo.create_emp');
+Route::post('/ceo/store_emp', [CeoController::class, 'store_emp'])->name('ceo.store_emp');
+Route::post('/ceo/store_attr', [CeoController::class, 'store_attr'])->name('ceo.store_attr');
+Route::post('/ceo/store_mgr', [CeoController::class, 'store_mgr'])->name('ceo.store_mgr');
+Route::post('/ceo/select_role', [CeoController::class, 'select_role'])->name('ceo.select_role');
+Route::post('/ceo/update_emp', [CeoController::class, 'update_emp'])->name('ceo.update_emp');
+
+
 
 
 Route::resource('employees', EmployeeController::class)->except([

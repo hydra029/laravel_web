@@ -30,7 +30,7 @@
                 top: 100px;
                 right: 10px;
                 width: 600px;
-                height: 250px;
+                height: 300px;
                 animation-name: show_file;
             }
 
@@ -67,7 +67,7 @@
         </div>
     @endif
     {{-- // department_employees --}}
-    <div class="dept d-none">
+    <div class="dept col-12 d-none">
         <button class="btn-warning btn-back rounded-pill " type="button">
             <span class="btn-label">
                 <i class="fa-solid fa-circle-arrow-left"></i>
@@ -86,6 +86,7 @@
                 <th >Birth date</th>
                 <th >Email</th>
                 <th >Number phone</th>
+                <th >Address</th>
                 <th >Role</th>
                 <th >Action</th>
                 </tr>
@@ -95,7 +96,7 @@
         </div>
     </div>
     {{-- // department list table --}}
-    <div class="dept-list">
+    <div class="dept-list col-12">
         <button class="btn-success rounded-pill btn-add-dept " type="button">
             Add
             <span class="btn-label">
@@ -112,7 +113,6 @@
                         <td><span>Members</span></td>
                         <td><span>Manager</span></td>
                         <td><span>Roles / Pay rate</span></td>
-                        <td><span>Status</span></td>
                         <td> <span>Action</span></td>
                     </tr>
                     @foreach ($dept as $each)
@@ -149,7 +149,10 @@
                                         <span class="manager-gender d-none">{{ $each->manager->gender_name }}</span>
                                         <span class="manager-dob d-none">{{ $each->manager->date_of_birth }}</span>
                                         <span class="manager-email d-none">{{ $each->manager->email }}</span>
+                                        <span class="manager-phone d-none">{{ $each->manager->phone }}</span>
+                                        <span class="manager-address d-none">{{ $each->manager->address }}</span>
                                         <span class="manager-role d-none">{{ $each->manager->role_id }}</span>
+                                        <span class="manager-avatar d-none">{{ $each->manager->avatar }}</span>
                                         <a class="manager-name ">{{ $each->manager->full_name }}</a>
                                     @endif
 
@@ -160,21 +163,7 @@
                                     <a class="roles-department ">{{ $each->roles_count }} roles</a>
                                 </div>
                             </td>
-                            <td>
-                                <div>
-                                    <span class="dept-status ">
 
-                                        @if ($each->status == 0)
-                                            <i class="fa-solid fa-circle-dot  text-success "></i> <span class="text-success" >Active</span>
-                                        @elseif ($each->status == 1)
-                                            <i class="fa-solid fa-circle-dot text-warning "></i> <span class="text-warning" >Pause activity</span>
-                                        @else
-                                            <i class="fa-solid fa-circle-dot text-danger "></i> <span class="text-danger" >Decommissioning</span>
-                                        @endif
-
-                                    </Active>
-                                </div>
-                            </td>
                             <td>
                                 <div>
                                 </div>
@@ -184,7 +173,7 @@
         </div>
     </div>
     {{-- form add department --}}
-    <div class="add-dept-div  d-none  ">
+    <div class="add-dept-div col-12 d-none  ">
         <div class="add-dept col-6">
             <button class="btn-warning btn-form-back rounded-pill " type="button">
                 <span class="btn-label">
@@ -226,7 +215,7 @@
         </div>
     </div>
     {{-- roles --}}
-    <div class="dept-roles d-none">
+    <div class="dept-roles col-12 d-none">
         <button class="btn-warning btn-back-roles rounded-pill " type="button">
             <span class="btn-label">
                 <i class="fa-solid fa-circle-arrow-left"></i>
@@ -275,7 +264,8 @@
     <div class="profile-card col-6 d-none">
         <span class="profile-close float-left"	><i class="fa-solid fa-circle-xmark"></i></span>
         <div class="profile-card-img float-left ">
-            <span><img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%"
+
+            <span><img src="" width="100%"
                     alt="Logo"></span>
         </div>
         <div class="profile-card-info float-left">
@@ -290,7 +280,7 @@
                         <td><span class="profile-card-gender"></span></td>
                     </tr>
                     <tr>
-                        <td> Date of birth:</td>
+                        <td>Date of birth:</td>
                         <td><span class="profile-card-dob"></span></td>
                     </tr>
                     <tr>
@@ -300,6 +290,10 @@
                     <tr>
                         <td>Number phone:</td>
                         <td><span class="profile-card-number-phone"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Address:</td>
+                        <td><span class="profile-card-address"></span></td>
                     </tr>
                 </table>
             </div>
@@ -515,7 +509,8 @@
                                     .append($('<td>').append(value.gender_name))
                                     .append($('<td>').append(value.date_of_birth))
                                     .append($('<td>').append(value.email))
-                                    .append($('<td>').append())
+                                    .append($('<td>').append(value.phone))
+                                    .append($('<td>').append(value.address))
                                     .append($('<td>').append(value.role_name))
                                     .append($('<td>').append())
                                 )
@@ -581,11 +576,23 @@
                 var gender_manager = $(this).parents('tr').find('.manager-gender').text();
                 var dob_manager = $(this).parents('tr').find('.manager-dob').text();
                 var email_manager = $(this).parents('tr').find('.manager-email').text();
+                var phone_manager = $(this).parents('tr').find('.manager-phone').text();
+                var address_manager = $(this).parents('tr').find('.manager-address').text();
                 var id_role_manager = $(this).parents('tr').find('.manager-role').text();
+                var avatar_manager = $(this).parents('tr').find('.manager-avatar').text();
                 $('.profile-card').find('.profile-card-info').find('.profile-card-name').text(name_manager);
                 $('.profile-card').find('.profile-card-info').find('.profile-card-gender').text(gender_manager);
                 $('.profile-card').find('.profile-card-info').find('.profile-card-dob').text(dob_manager);
                 $('.profile-card').find('.profile-card-info').find('.profile-card-email').text(email_manager);
+                $('.profile-card').find('.profile-card-info').find('.profile-card-number-phone').text(phone_manager);
+                $('.profile-card').find('.profile-card-info').find('.profile-card-address').text(address_manager);
+                if( avatar_manager === '' ) {
+                $('.profile-card').find('.profile-card-img').find('img').attr('src', '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}');
+                }else{
+                    var src = '{{ asset('')}}';
+                    var img = src + 'img/' + avatar_manager;
+                    $('.profile-card').find('.profile-card-img').find('img').attr('src', img );
+                }
                 $.ajax({
                     url: "{{ route('ceo.department.manager_role') }}",
                     type: 'POST',

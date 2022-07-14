@@ -18,6 +18,9 @@ class CeoFactory extends Factory
 	        'lname' => $this->faker->lastName,
 	        'gender' => $this->faker->boolean,
 	        'dob' => $this->faker->date(),
+            'phone' => $this->faker->numerify('0#########'),
+            'city' => $this->faker->city,
+            'district' => $this->faker->streetName,
 	        'email' => $this->faker->email,
 	        'password' => $this->faker->password,
         ];
