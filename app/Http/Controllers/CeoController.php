@@ -21,6 +21,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
 
@@ -137,13 +138,11 @@ class CeoController extends Controller
 
 		$dept_id = $request->get('dept_id');
 		$data = Role::query()
-			->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
-			->select('roles.*', 'departments.name as dept_name')
 			->where('dept_id', '=', $dept_id)
 			->paginate();
 		// return $data->append('pay_rate_money');
         foreach ($data as $each){
-            $each->pay_rate = $each->pay_rate_money;
+            $each->pay_rate_money = $each->pay_rate_money;
         }
         $arr['data'] = $data->getCollection();
         $arr['pagination'] = $data->linkCollection();
@@ -228,8 +227,24 @@ class CeoController extends Controller
     public function store_emp(StoreEmployeeRequest $storeEmployeeRequest)
     {
         $arr = $storeEmployeeRequest->validated();
-        return Employee::query()->create($arr)->append(['full_name','date_of_birth','gender_name','address'])->toArray();
+        if($storeEmployeeRequest->get('avatar') != null){
+            $path = Storage::disk('public')->putFile('img', $storeEmployeeRequest->file('avatar'));
+            $arr['avatar'] = $path;
+        }
+        $role_id = $storeEmployeeRequest->get('role_id');
+        $role = Role::query()->with('departments')->where('id', $role_id)->get();
 
+        $emp =  Employee::query()->create($arr)->append(['full_name','date_of_birth','gender_name','address'])->toArray();
+        $data = [$role,$emp];
+        return $data;
+
+    }
+
+    public function employee_infor(Request $request)
+    {
+        $id = $request->get('id');
+        $data = Employee::query()->with(['roles','departments'])->whereId($id)->get()->append(['full_name','date_of_birth','gender_name','address'])->toArray();
+        return $data;
     }
 
     public function update_emp(StoreEmployeeRequest $storeEmployeeRequest)
@@ -239,6 +254,13 @@ class CeoController extends Controller
         Employee::query()->update($arr);
 
     }
+
+    public function delete_emp(Request $request ){
+        $id = $request->get('id');
+        Employee::query()->whereId($id)->delete();
+        return 'success';
+    }
+
 
     public function store_attr(StoreAccountantRequest $storeAccountantRequest)
     {

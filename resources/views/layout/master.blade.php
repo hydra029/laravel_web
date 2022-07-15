@@ -20,7 +20,7 @@
     <div class="wrapper">
         @include('layout.sidebar')
         <div class="content-page">
-            <div class="content">
+            <div class="content" id="content">
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">

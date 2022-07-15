@@ -12,10 +12,10 @@
         }
 
         /* @property --rotate {
-                        syntax: "<angle>";
-                        initial-value: 132deg;
-                        inherits: false;
-                        } */
+                            syntax: "<angle>";
+                            initial-value: 132deg;
+                            inherits: false;
+                            } */
         :root {
             --card-height: 65vh;
             --card-width: calc(var(--card-height) / 1.5);
@@ -87,7 +87,7 @@
             back
         </button>
         <br>
-        <form action="" id="form-create" method="post">
+        <form action="" id="form-create" method="post"  enctype="multipart/form-data">
             @csrf
             <div class="profile-card col-12">
                 <div class="profile-card-img float-left ">
@@ -97,7 +97,7 @@
                             <span>Click here to chage avatar</span>
                         </label>
 
-                        <input id="file-input" type="file" />
+                        <input type="file" name="avatar" id="file-input">
                     </div>
                 </div>
                 <div class="profile-card-info float-left">
@@ -105,14 +105,16 @@
                         <table class="table">
                             <tr>
                                 <td class="col-6">
-                                    <span class="error-message-fname text-danger"> </span>
-                                    First Name: <input type="text" name="fname" class="form-control inp-fname"
-                                        placeholder="First Name">
+                                    First Name:
+                                    <br>
+                                    <span class="error-message-fname text-danger"> </span><input type="text"
+                                        name="fname" class="form-control inp-fname" placeholder="First Name">
                                 </td>
                                 <td>
-                                    <span class="error-message-lname text-danger"> </span>
-                                    Last Name: <input type="text" name="lname" class="form-control inp-lname "
-                                        placeholder="Last Name">
+                                    Last Name:
+                                    <br>
+                                    <span class="error-message-lname text-danger"> </span><input type="text"
+                                        name="lname" class="form-control inp-lname " placeholder="Last Name">
                                 </td>
                             </tr>
                             <tr>
@@ -128,48 +130,59 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-dob text-danger"> </span>
-                                    Date of birth: <input type="date" name="dob" id="date"
-                                        class="form-control inp-dob" style="width: 100%; display: inline;" required
-                                        value="" placeholder="Date of birth">
+                                    Date of birth:
+                                    <br>
+                                    <span class="error-message-dob text-danger"> </span> <input type="date"
+                                        name="dob" id="date" class="form-control inp-dob"
+                                        style="width: 100%; display: inline;" required value=""
+                                        placeholder="Date of birth">
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="error-message-city text-danger"> </span>
-                                    City: <select name="city" id="select-city" class="form-control"></select>
+                                    City:
+                                    <br>
+                                    <span class="error-message-city text-danger"> </span><select name="city"
+                                        id="select-city" class="form-control"></select>
                                 </td>
                                 <td>
-                                    <span class="error-message-district text-danger"> </span>
-                                    District: <select name="district" id="select-district" class="form-control"></select>
+                                    District:
+                                    <br>
+                                    <span class="error-message-district text-danger"> </span><select name="district"
+                                        id="select-district" class="form-control"></select>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-phone text-danger"> </span>
-                                    Number phone: <input type="number" name="phone" value=""
-                                        placeholder="Number phone" class="form-control inp-phone">
+                                    Number phone:
+                                    <br>
+                                    <span class="error-message-phone text-danger"> </span> <input type="number"
+                                        name="phone" value="" placeholder="Number phone"
+                                        class="form-control inp-phone">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-email text-danger"> </span>
-                                    Email: <input type="email" name="email" value="" placeholder="Email"
-                                        class="form-control inp-email">
+                                    Email:
+                                    <br>
+                                    <span class="error-message-email text-danger"> </span><input type="email"
+                                        name="email" value="" placeholder="Email" class="form-control inp-email">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-password text-danger"> </span>
-                                    Password: <input type="text" name="password" value="" placeholder="Password"
-                                        class="form-control inp-password">
+                                    Password:
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+                                    <span class="error-message-password text-danger"> </span> <input type="password"
+                                        name="password" value="" placeholder="Password"
+                                        class="form-control inp-password" id="pass_log_id" >
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="error-message-dept_id text-danger"> </span>
                                     <span>department</span>
+                                    <span class="error-message-dept_id text-danger"> </span>
                                     <select id="select-department" name="dept_id" class="form-control inp-dept_id">
                                         @foreach ($dept as $each)
                                             <option value="{{ $each->id }}">{{ $each->name }}</option>
@@ -177,8 +190,8 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <span class="error-message-role_id text-danger"> </span>
                                     <span>role</span>
+                                    <span class="error-message-role_id text-danger"> </span>
                                     <select id="select-role" name="role_id" class="form-control inp-role_id"></select>
                                 </td>
                             </tr>
@@ -211,7 +224,7 @@
             Close
         </button>
         <br>
-        <form action="" id="form-update" method="post">
+        <form action="" id="form-update" method="post"  enctype="multipart/form-data">
             @csrf
             <div class="profile-card col-12 table-profile-success">
                 <div class="profile-card-img float-left ">
@@ -285,7 +298,7 @@
                             <img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
                             <span>Click here to chage avatar</span>
                         </label>
-                        <input id="file-input" type="file" />
+                        <input id="file-input" type="file" name="avatar" />
                     </div>
                 </div>
                 <div class="profile-card-info float-left">
@@ -293,30 +306,35 @@
                         <table class="table">
                             <tr>
                                 <td class="col-6">
-                                    <span class="error-message-fname text-danger"> </span>
-                                    <input type="text" name="fname" class="form-control inp-fname"
-                                        placeholder="First Name">
+                                    First Name:
+                                    <br>
+                                    <span class="error-message-fname text-danger"> </span><input type="text"
+                                        name="fname" class="form-control inp-fname" placeholder="First Name">
                                 </td>
                                 <td>
-                                    <span class="error-message-lname text-danger"> </span>
-                                    <input type="text" name="lname" class="form-control inp-lname "
-                                        placeholder="Last Name">
+                                    Last Name:
+                                    <br>
+                                    <span class="error-message-lname text-danger"> </span><input type="text"
+                                        name="lname" class="form-control inp-lname " placeholder="Last Name">
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="center">
-                                    <input type="radio" name="gender" value="1" class="inp-gender">
-                                    Male
+                                <td>
+                                    Gender:
+                                </td>
+                                <td>
+                                    <input type="radio" name="gender" value="1" class="inp-gender"> Male
                                     <span> / </span>
-                                    <input type="radio" name="gender" value="0" class="inp-gender">
-                                    Female
+                                    <input type="radio" name="gender" value="0" class="inp-gender"> Female
                                     <span class="error-message-gender text-danger "> </span>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-dob text-danger"> </span>
-                                    <input type="date" name="dob" id="date" class="form-control inp-dob"
+                                    Date of birth:
+                                    <br>
+                                    <span class="error-message-dob text-danger"> </span> <input type="date"
+                                        name="dob" id="date" class="form-control inp-dob"
                                         style="width: 100%; display: inline;" required value=""
                                         placeholder="Date of birth">
                                 </td>
@@ -324,39 +342,49 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="error-message-city text-danger"> </span>
-                                    <select name="city" id="select-city" class="form-control"></select>
+                                    City:
+                                    <br>
+                                    <span class="error-message-city text-danger"> </span><select name="city"
+                                        id="select-city" class="form-control"></select>
                                 </td>
                                 <td>
-                                    <span class="error-message-district text-danger"> </span>
-                                    <select name="district" id="select-district" class="form-control"></select>
+                                    District:
+                                    <br>
+                                    <span class="error-message-district text-danger"> </span><select name="district"
+                                        id="select-district" class="form-control"></select>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-phone text-danger"> </span>
-                                    <input type="number" name="phone" value="" placeholder="Number phone"
+                                    Number phone:
+                                    <br>
+                                    <span class="error-message-phone text-danger"> </span> <input type="number"
+                                        name="phone" value="" placeholder="Number phone"
                                         class="form-control inp-phone">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-email text-danger"> </span>
-                                    <input type="email" name="email" value="" placeholder="Email"
+                                    Email:
+                                    <br>
+                                    <span class="error-message-email text-danger"> </span><input type="email"
+                                        name="email" value="" placeholder="Email"
                                         class="form-control inp-email">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <span class="error-message-password text-danger"> </span>
-                                    <input type="text" name="password" value="" placeholder="Password"
+                                    Password:
+                                    <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+                                    <span class="error-message-password text-danger"> </span> <input type="password"
+                                        name="password" value="" placeholder="Password"
                                         class="form-control inp-password">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="error-message-dept_id text-danger"> </span>
                                     <span>department</span>
+                                    <span class="error-message-dept_id text-danger"> </span>
                                     <select id="select-department" name="dept_id" class="form-control inp-dept_id">
                                         @foreach ($dept as $each)
                                             <option value="{{ $each->id }}">{{ $each->name }}</option>
@@ -364,8 +392,8 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <span class="error-message-role_id text-danger"> </span>
                                     <span>role</span>
+                                    <span class="error-message-role_id text-danger"> </span>
                                     <select id="select-role" name="role_id" class="form-control inp-role_id"></select>
                                 </td>
                             </tr>
@@ -383,7 +411,7 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>,
     <script type="text/javascript">
         $(document).ready(async function() {
             $.ajaxSetup({
@@ -394,7 +422,6 @@
 
             $('.choose-card').click(function() {
                 var choose = $(this).data('id');
-                console.log(choose);
                 $('.choose-card').addClass('d-none');
                 $('.div-form-create').removeClass('d-none');
                 create(choose);
@@ -406,19 +433,16 @@
                 $('.div-form-create').addClass('d-none');
                 $('.div-profile-success').addClass('d-none');
             });
-            $('.btn-update').click(function() {
-                $('.title-name').text('');
-                $(this).addClass('d-none');
-                $('.table-profile-update').removeClass('d-none');
-                $('.table-profile-success').addClass('d-none');
-                $('.btn-close-update').removeClass('d-none');
-            });
-            $('.btn-close-update').click(function() {
-                $('.title-name').text('');
-                $(this).addClass('d-none');
-                $('.table-profile-update').addClass('d-none');
-                $('.table-profile-success').removeClass('d-none');
-                $('.btn-update').removeClass('d-none');
+            $(document).on('click','.toggle-password',function(){
+                $(this).toggleClass("fa-eye fa-eye-slash");
+
+                var input = $("#pass_log_id");
+
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
             });
 
             var array = [
@@ -439,20 +463,26 @@
             })
 
             function create(choose) {
+                console.log(choose);
                 $('#form-create').submit(function(e) {
                     e.preventDefault();
                     var form = $(this);
-                    // if(choose == 1){
-                    //     var url =   "{{ route('ceo.store_emp') }}";
-                    // }elseif(choose == 2){
-                    //     var url =   "{{ route('ceo.store_mgr') }}";
-                    // }else( choose == 3){
-                    //     var url = "{{ route('ceo.store_attr') }}";
-                    // }
-                    console.log(1);
+                    var url;
+                    switch(choose) {
+                            case 1:
+                                url =  "{{ route('ceo.store_emp') }}";
+                                break;
+                            case 2:
+                                url = "{{ route('ceo.store_mgr') }}";
+                                break;
+                            case 3:
+                                url = "{{ route('ceo.store_attr') }}";
+                                break;
+                            }
+                    console.log(choose);
                     $.ajax({
-                        url: "{{ route('ceo.store_emp') }}",
                         type: 'post',
+                        url: url,
                         data: form.serialize(),
                         dataType: 'json',
                         success: function(response) {
@@ -460,23 +490,34 @@
                             $('.div-form-create').addClass('d-none');
                             $('.div-profile-success').removeClass('d-none');
                             $('.div-profile-success').find('.name-profile-success').text(
-                                response['full_name']);
+                                response[1]['full_name']);
                             $('.div-profile-success').find('.gender-profile-success').text(
-                                response['gender_name']);
+                                response[1]['gender_name']);
                             $('.div-profile-success').find('.dob-profile-success').text(
-                                response['date_of_birth']);
+                                response[1]['date_of_birth']);
                             $('.div-profile-success').find('.address-profile-success').text(
-                                response['address']);
+                                response[1]['address']);
                             $('.div-profile-success').find('.phone-profile-success').text(
-                                response['phone']);
+                                response[1]['phone']);
                             $('.div-profile-success').find('.email-profile-success').text(
-                                response['email']);
+                                response[1]['email']);
                             $('.div-profile-success').find('.password-profile-success')
-                                .text(response['password']);
-                            $('.div-profile-success').find('.dept-profile-success').text(response['departments']['name']);
-                            $('.div-profile-success').find('.role-profile-success').text(response['roles']['name']);
+                                .text(response[1]['password']);
+                            $('.div-profile-success').find('.dept-profile-success').text(
+                                response[0][0]['departments']['name']);
+                            $('.div-profile-success').find('.role-profile-success').text(
+                                response[0][0]['name']);
 
-                            form.reset();
+                            $('#form-create')[0].reset();
+                            $('#form-create').find('select').prop('selectedIndex',0);
+
+                            $('.div-profile-success').find('input[name="fname"]').val(response[1]['fname']);
+                            $('.div-profile-success').find('input[name="lname"]').val(response[1]['lname']);
+                            $('.div-profile-success').find('input[name="dob"]').val(response[1]['dob']);
+                            $('.div-profile-success').find('input[name="phone"]').val(response[1]['phone']);
+                            $('.div-profile-success').find('input[name="email"]').val(response[1]['email']);
+                            $('.div-profile-success').find('input[name="password"]').val(response[1]['password']);
+
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             var err = JSON.parse(xhr.responseText);
@@ -538,6 +579,21 @@
                     }
                 });
             }
+            $('.btn-update').click(function() {
+                $('.title-name').text('');
+                $(this).addClass('d-none');
+                $('.table-profile-update').removeClass('d-none');
+                $('.table-profile-success').addClass('d-none');
+                $('.btn-close-update').removeClass('d-none');
+
+            });
+            $('.btn-close-update').click(function() {
+                $('.title-name').text('');
+                $(this).addClass('d-none');
+                $('.table-profile-update').addClass('d-none');
+                $('.table-profile-success').removeClass('d-none');
+                $('.btn-update').removeClass('d-none');
+            });
 
             $('#form-update').submit(function(e) {
                 e.preventDefault();
@@ -547,7 +603,7 @@
                     url: "{{ route('ceo.update_emp') }}",
                     data: formUpdate.serialize(),
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
 
                     }
                 });

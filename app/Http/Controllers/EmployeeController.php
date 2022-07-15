@@ -12,7 +12,9 @@ use App\Models\Employee;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -20,6 +22,7 @@ use Illuminate\Support\Facades\View;
 class EmployeeController extends Controller
 {
 
+    use ResponseTrait;
 	public function __construct()
 	{
 		$this->middleware('employee');
@@ -55,6 +58,12 @@ class EmployeeController extends Controller
 			'data' => $data,
 		]);
 	}
+
+    public function employee_infor(Request $request)
+    {
+        $id = $request->get('id');
+        return Employee::query()->whereId($id)->first();
+    }
 
 	public function attendance(): Renderable
 	{

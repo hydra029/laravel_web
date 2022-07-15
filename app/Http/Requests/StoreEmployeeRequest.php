@@ -50,7 +50,6 @@ class StoreEmployeeRequest extends FormRequest
             ],
             'avatar' => [
                 'image',
-                'mimes:jpeg,png',
                 'max:2048',
             ],
             'city' => [

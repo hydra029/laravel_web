@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Accountant
@@ -41,7 +42,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Accountant extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
 	protected $fillable = [
 		'fname',
@@ -61,7 +62,7 @@ class Accountant extends Model
 
     public function getAddressAttribute(): string
     {
-        return $this->district . ' ' . $this->city ;
+        return $this->district . ' - ' . $this->city ;
     }
 
 	public function getDateOfBirthAttribute(): string
@@ -147,5 +148,5 @@ class Accountant extends Model
 		return $this->hasOne(Role::class, 'role_id');
 	}
 
-	public $timestamps = false;
+	public $timestamps = true;
 }

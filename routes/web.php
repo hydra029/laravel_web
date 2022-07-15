@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FinesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +65,8 @@ Route::post('/ceo/store_attr', [CeoController::class, 'store_attr'])->name('ceo.
 Route::post('/ceo/store_mgr', [CeoController::class, 'store_mgr'])->name('ceo.store_mgr');
 Route::post('/ceo/select_role', [CeoController::class, 'select_role'])->name('ceo.select_role');
 Route::post('/ceo/update_emp', [CeoController::class, 'update_emp'])->name('ceo.update_emp');
+Route::delete('/ceo/delete_emp/', [CeoController::class, 'delete_emp'])->name('ceo.delete_emp');
+Route::post('/ceo/employee_infor', [CeoController::class, 'employee_infor'])->name('ceo.employee_infor');
 
 
 

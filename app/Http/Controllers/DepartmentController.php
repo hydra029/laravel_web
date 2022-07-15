@@ -18,6 +18,7 @@ class DepartmentController extends Controller
 {
     private Builder $models;
 
+    use ResponseTrait;
     public function __construct()
     {
 		$this->middleware('ceo');
@@ -37,16 +38,22 @@ class DepartmentController extends Controller
        ]);
     }
 
-    public function department_employees(Request $request)
+    public function department_employees(Request $request): JsonResponse
     {
         $dept_id = $request->get('dept_id');
-        $employee_dept = Employee::query()
-        ->leftJoin('departments', 'employees.dept_id', '=', 'departments.id')
-        ->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
-        ->select('employees.*', 'departments.name as dept_name', 'roles.name as role_name')
+        $data = Employee::query()->with('departments', 'roles')
         ->where('employees.dept_id', '=', $dept_id)
-        ->get();
-        return $employee_dept->append(['full_name','date_of_birth','gender_name','address']);
+        ->paginate(10);
+        foreach ($data as $each){
+            $each->full_name = $each->full_name ;
+            $each->gender_name = $each->gender_name ;
+            $each->address = $each->address ;
+            $each->date_of_birth = $each->date_of_birth ;
+        }
+        $arr['data'] = $data->getCollection();
+        $arr['pagination'] = $data->linkCollection();
+        return $this->successResponse($arr);
+
     }
 
     public function manager_role(Request $request)

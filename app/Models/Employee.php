@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Employee
@@ -64,7 +65,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Employee extends Model
 {
-	use HasFactory;
+    use HasFactory, SoftDeletes;
 
 	protected $fillable = [
 		'fname',
@@ -93,7 +94,7 @@ class Employee extends Model
 
     public function getAddressAttribute(): string
     {
-        return $this->district . ' ' . $this->city ;
+        return $this->district . ' - ' . $this->city ;
     }
 
 	public function getDateOfBirthAttribute(): string
@@ -190,5 +191,5 @@ class Employee extends Model
 
 	}
 
-	public $timestamps = false;
+	public $timestamps = true;
 }
