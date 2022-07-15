@@ -8,7 +8,6 @@ use App\Models\AttendanceShiftTime;
 use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\StoreFinesRequest;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateCeoRequest;
 use App\Models\Department;
@@ -17,16 +16,15 @@ use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
-
 class CeoController extends Controller
 {
-    use ResponseTrait;
+	use ResponseTrait;
+
 	public function __construct()
 	{
 		$this->middleware('ceo');
@@ -115,7 +113,7 @@ class CeoController extends Controller
 		$check_out_start = $request->get('out_start');
 		$check_out_end = $request->get('out_end');
 		$name = $request->get('name');
-		$id =ShiftEnum::getValue($name);
+		$id = ShiftEnum::getValue($name);
 		AttendanceShiftTime::whereId($id)
 			->update([
 				'check_in_start' => $check_in_start,
@@ -133,23 +131,20 @@ class CeoController extends Controller
 
 	public function pay_rate_api(Request $request): JsonResponse
 	{
-
-
 		$dept_id = $request->get('dept_id');
 		$data = Role::query()
 			->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
-			->select('roles.*', 'departments.name as dept_name')
+			->select(['roles.*', 'departments.name as dept_name'])
 			->where('dept_id', '=', $dept_id)
 			->paginate();
 		// return $data->append('pay_rate_money');
-        foreach ($data as $each){
-            $each->pay_rate = $each->pay_rate_money;
-        }
-        $arr['data'] = $data->getCollection();
-        $arr['pagination'] = $data->linkCollection();
+		foreach ($data as $each) {
+			$each->pay_rate = $each->pay_rate_money;
+		}
+		$arr['data'] = $data->getCollection();
+		$arr['pagination'] = $data->linkCollection();
 
-        return $this->successResponse($arr);
-
+		return $this->successResponse($arr);
 	}
 
 	public function pay_rate_change(Request $request): array
@@ -164,24 +159,24 @@ class CeoController extends Controller
 		return Role::whereId($id)->get()->append('pay_rate_money')->toArray();
 	}
 
-    public function role_store(Request $request)
-    {
-        $name = $request->name;
-        $dept_id = $request->dept_id;
-        $pay_rate = $request->pay_rate;
-         Role::create([
-            'name' => $name,
-            'dept_id' => $dept_id,
-            'pay_rate' => $pay_rate,
-            'status' => '1',
-         ]);
-        $roles = Role::query()
-        ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
-        ->select('roles.*', 'departments.name as dept_name')
-        ->where('dept_id', '=', $dept_id)
-        ->get();
-        return $roles->append('pay_rate_money')->toArray();
-    }
+	public function role_store(Request $request): array
+	{
+		$name = $request->name;
+		$dept_id = $request->dept_id;
+		$pay_rate = $request->pay_rate;
+		Role::create([
+			'name' => $name,
+			'dept_id' => $dept_id,
+			'pay_rate' => $pay_rate,
+			'status' => '1',
+		]);
+		$roles = Role::query()
+			->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
+			->select(['roles.*', 'departments.name as dept_name'])
+			->where('dept_id', '=', $dept_id)
+			->get();
+		return $roles->append('pay_rate_money')->toArray();
+	}
 
 	public function fines_store(Request $request): array
 	{
@@ -211,44 +206,42 @@ class CeoController extends Controller
 		return Fines::whereId($id)->get()->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
-    public function create_emp()
-    {
-        $dept = Department::get();
-        return view('ceo.create',[
-            'dept' => $dept,
-        ]);
-    }
+	public function create_emp()
+	{
+		$dept = Department::get();
+		return view('ceo.create', [
+			'dept' => $dept,
+		]);
+	}
 
-    public function select_role(Request $Request)
-    {
-        $dept_id = $Request->dept_id;
-        return Role::query()->where('dept_id', $dept_id)->get();
-    }
+	public function select_role(Request $Request)
+	{
+		$dept_id = $Request->dept_id;
+		return Role::query()->where('dept_id', $dept_id)->get();
+	}
 
-    public function store_emp(StoreEmployeeRequest $storeEmployeeRequest)
-    {
-        $arr = $storeEmployeeRequest->validated();
-        return Employee::query()->create($arr)->append(['full_name','date_of_birth','gender_name','address'])->toArray();
+	public function store_emp(StoreEmployeeRequest $storeEmployeeRequest): array
+	{
+		$arr = $storeEmployeeRequest->validated();
+		return Employee::query()->create($arr)->append(['full_name', 'date_of_birth', 'gender_name', 'address'])->toArray();
+	}
 
-    }
+	public function update_emp(StoreEmployeeRequest $storeEmployeeRequest): void
+	{
+		$arr = $storeEmployeeRequest->validated();
+		Employee::query()->update($arr);
+	}
 
-    public function update_emp(StoreEmployeeRequest $storeEmployeeRequest)
-    {
+	public function store_attr(StoreAccountantRequest $storeAccountantRequest): void
+	{
+		//
+	}
 
-        $arr = $storeEmployeeRequest->validated();
-        Employee::query()->update($arr);
+	public function store_mgr(StoreManagerRequest $storeManagerRequest): void
+	{
+		//
+	}
 
-    }
-
-    public function store_attr(StoreAccountantRequest $storeAccountantRequest)
-    {
-        //
-    }
-
-    public function store_mgr(StoreManagerRequest $storeManagerRequest)
-    {
-        //
-    }
 	/**
 	 * Show the form for creating a new resource.
 	 *

@@ -42,13 +42,35 @@
     </style>
 @endpush
 @section('content')
-    <div class="col-12">
+    <div class="col-1 p-1">
+        <div id='external-events'>
+            <p class="text-center">
+                <strong>Detail</strong>
+            </p>
+            <div class='fc-event fc-h-event fc-daygrid-block-event'>
+                <div class='fc-event-main'>My Event 1</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event'>
+                <div class='fc-event-main'>My Event 2</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event'>
+                <div class='fc-event-main'>My Event 3</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event'>
+                <div class='fc-event-main'>My Event 4</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event'>
+                <div class='fc-event-main'>My Event 5</div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-11 p-1">
         <div id="calendar"></div>
     </div>
 @endsection
 @push('js')
     <script src="{{ asset('js/main.min.js' )}}"></script>
-    <!--suppress JSJQueryEfficiency -->
     <script>
         $(document).ready(function () {
             $.ajaxSetup({
@@ -92,43 +114,54 @@
                     goto: {
                         text: 'Go to',
                         click: function () {
-                            del()
+                            del();
                             let year = $('#sl-1').children(':selected').val();
                             let month = $('#sl-2').children(':selected').val();
                             let day = $('#sl-3').children(':selected').val();
                             let date = new Date(Date.UTC(year, month - 1, day));
                             calendar.gotoDate(date);
                             emp();
-                            let d = Date.prototype.getDay(date)
-                            loadAttendance(new Date(date.setDate(d + 7)))
+                            loadAttendance(date);
                         }
                     },
                     prevYear: {
                         click: function () {
-                            del()
+                            calendar.removeAllEvents();
+                            del();
                             calendar.prevYear();
                             emp();
+                            let date = calendar.getDate();
+                            loadAttendance(date);
                         }
                     },
                     nextYear: {
                         click: function () {
+                            calendar.removeAllEvents();
                             del()
                             calendar.nextYear();
                             emp();
+                            let date = calendar.getDate();
+                            loadAttendance(date);
                         }
                     },
                     prev: {
                         click: function () {
-                            del()
+                            calendar.removeAllEvents();
+                            del();
                             calendar.prev();
                             emp();
+                            let date = calendar.getDate();
+                            loadAttendance(date);
                         }
                     },
                     next: {
                         click: function () {
-                            del()
+                            calendar.removeAllEvents();
+                            del();
                             calendar.next();
                             emp();
+                            let date = calendar.getDate();
+                            loadAttendance(date);
                         }
                     },
                 },
@@ -140,69 +173,99 @@
             });
             calendar.render();
             emp();
-            loadAttendance(new Date());
+            loadAttendance(today);
 
             function loadAttendance(d) {
+                let m = getMon(d).toISOString().slice(0, 10);
+                let s = getSun(d).toISOString().slice(0, 10);
+
                 $.ajax({
                     url: '{{route('api')}}',
                     type: 'POST',
                     dataType: 'json',
+                    data: {m: m, s: s},
                 })
                     .done(function (response) {
-                        let m = getMon(d);
-                        let s = getSun(d);
                         let emp_num = response.length;
                         let emp_id = 0;
+                        let e_num = 0;
                         let num = 9998;
+                        let text_color;
                         for (let i = 0; i < emp_num; i++) {
                             let length = response[i]['attendance'].length;
                             let eventSource = [];
                             for (let j = 0; j < length; j++) {
                                 let date = response[i]['attendance'][j]['date'];
                                 date = new Date(date);
-                                if (s.getTime() >= date.getTime() && m.getTime() <= date.getTime()) {
-                                    let emp_name = response[i]['fname'] + " " + response[i]['lname'];
-                                    num--;
-                                    let shift = response[i]['attendance'][j]['shift'];
-                                    let title = 'Shift ' + shift + ': Not Checked Yet';
-                                    let color = 'linear-gradient(to right, #ff5b5b 50%, #10c469 50%)';
-                                    // let color = '#ff5b5b';
-                                    if (response[i]['attendance'][j]['check_in'] === 1) {
-                                        title = 'Shift ' + shift + ': Checked In'
-                                        color = '#35b8e0';
-                                        if (response[i]['attendance'][j]['check_out'] === 1) {
-                                            title = 'Shift ' + shift + ': Checked Out';
-                                            color = '#10c469';
-                                        }
-                                    }
-                                    let event = {
-                                        id: num,
-                                        title: title,
-                                        start: date,
-                                        allDay: true,
-                                        overlap: false,
-                                        background: color,
-                                    }
-                                    eventSource.push(event);
-                                    if (emp_id !== response[i]['id']) {
-                                        emp_id = response[i]['id'];
-                                        $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child').append($('<div>')
-                                            .attr('style', 'height: 82px; padding: 22px 0')
-                                            .addClass('text-center')
-                                            .append($('<b>')
-                                                .append($('<p>')
-                                                    .addClass('emp-name text-center')
-                                                    .attr('style', 'font-size: 15px')
-                                                    .text(emp_name)
-                                                )
-                                            )
-                                        )
+
+                                let emp_name = response[i]['fname'] + " " + response[i]['lname'];
+                                num--;
+                                let shift = response[i]['attendance'][j]['shift'];
+                                let check_in = response[i]['attendance'][j]['check_in'].slice(0, 5);
+                                let check_out = response[i]['attendance'][j]['check_out'].slice(0, 5);
+                                let title = check_in + Array(10).fill('\xa0').join('') + check_out;
+                                let color_1 = '#35b8e0';
+                                let color_2 = '#10c469';
+                                let color = 'linear-gradient(to right, ' + color_1 + ' 50%, ' + color_2 + ' 50%)';
+                                if (response[i]['attendance'][j]['check_in'] === 1) {
+                                    title = check_in + Array(10).fill('\xa0').join('') + check_out;
+                                    color = '#35b8e0';
+                                    if (response[i]['attendance'][j]['check_out'] === 1) {
+                                        title = check_in + Array(10).fill('\xa0').join('') + check_out;
+                                        color = '#10c469';
                                     }
                                 }
+                                if (emp_id !== response[i]['id']) {
+                                    emp_id = response[i]['id'];
+                                    e_num++;
+                                    if (e_num % 2 === 0) {
+                                        $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
+
+                                            .append($('<div>')
+                                                .attr('style', 'height: 82px; padding: 22px 0; background: #F0F8FF')
+                                                .addClass('text-center div-name')
+                                                .append($('<b>')
+                                                    .append($('<p>')
+                                                        .addClass('emp-name text-center')
+                                                        .attr('style', 'font-size: 15px')
+                                                        .text(emp_name)
+                                                    )
+                                                )
+                                            )
+                                        text_color = '#000000';
+                                    } else {
+                                        $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
+                                            .append($('<div>')
+                                                .attr('style', 'height: 82px; padding: 22px 0')
+                                                .addClass('text-center div-name')
+                                                .append($('<b>')
+                                                    .append($('<p>')
+                                                        .addClass('emp-name text-center')
+                                                        .attr('style', 'font-size: 15px')
+                                                        .text(emp_name)
+                                                    )
+                                                )
+                                            )
+                                        text_color = '#ffffff';
+                                    }
+                                }
+                                let event = {
+                                    id: num,
+                                    title: title,
+                                    start: date,
+                                    allDay: true,
+                                    overlap: false,
+                                    background: color,
+                                    textColor: text_color,
+                                }
+                                eventSource.push(event);
+
 
                             }
                             calendar.addEventSource(eventSource);
                         }
+
+
                     })
             }
 

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $gender
  * @property string $dob
  * @property string $email
+ * @property string|null $avatar
  * @property string $password
  * @property int $dept_id
  * @property int $role_id

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Attendance_shiftTime;
+use App\Models\AttendanceShiftTime;
+use Illuminate\Http\Response;
 use App\Http\Requests\StoreAttendanceShiftTimeRequest;
 use App\Http\Requests\UpdateAttendanceShiftTimeRequest;
 
@@ -11,7 +12,7 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -21,7 +22,7 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -32,7 +33,7 @@ class AttendanceShiftTimeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreAttendanceShiftTimeRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreAttendanceShiftTimeRequest $request)
     {
@@ -42,10 +43,10 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Attendance_shiftTime  $attendance_shift_time
-     * @return \Illuminate\Http\Response
+     * @param AttendanceShiftTime $attendance_shift_time
+     * @return Response
      */
-    public function show(Attendance_shiftTime $attendance_shift_time)
+    public function show(AttendanceShiftTime $attendance_shift_time)
     {
         //
     }
@@ -53,10 +54,10 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Attendance_shiftTime  $attendance_shift_time
-     * @return \Illuminate\Http\Response
+     * @param AttendanceShiftTime $attendance_shift_time
+     * @return Response
      */
-    public function edit(Attendance_shiftTime $attendance_shift_time)
+    public function edit(AttendanceShiftTime $attendance_shift_time)
     {
         //
     }
@@ -64,11 +65,11 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAttendanceShiftTimeRequest  $request
-     * @param  \App\Models\Attendance_shiftTime  $attendance_shift_time
-     * @return \Illuminate\Http\Response
+     * @param UpdateAttendanceShiftTimeRequest $request
+     * @param AttendanceShiftTime $attendance_shift_time
+     * @return Response
      */
-    public function update(UpdateAttendanceShiftTimeRequest $request, Attendance_shiftTime $attendance_shift_time)
+    public function update(UpdateAttendanceShiftTimeRequest $request, AttendanceShiftTime $attendance_shift_time)
     {
         //
     }
@@ -76,10 +77,10 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Attendance_shiftTime  $attendance_shift_time
-     * @return \Illuminate\Http\Response
+     * @param AttendanceShiftTime $attendance_shift_time
+     * @return Response
      */
-    public function destroy(Attendance_shiftTime $attendance_shift_time)
+    public function destroy(AttendanceShiftTime $attendance_shift_time)
     {
         //
     }

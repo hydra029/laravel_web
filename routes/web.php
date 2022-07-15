@@ -34,6 +34,7 @@ Route::post('/employees/attendance_api', [EmployeeController::class, 'attendance
 Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
+Route::post('/employees/add', [EmployeeController::class, 'add'])->name('employees.add');
 
 Route::put('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
 Route::put('/managers/checkout', [ManagerController::class, 'checkout'])->name('managers.checkout');
@@ -65,18 +66,15 @@ Route::post('/ceo/store_mgr', [CeoController::class, 'store_mgr'])->name('ceo.st
 Route::post('/ceo/select_role', [CeoController::class, 'select_role'])->name('ceo.select_role');
 Route::post('/ceo/update_emp', [CeoController::class, 'update_emp'])->name('ceo.update_emp');
 
-
-
-
 Route::resource('employees', EmployeeController::class)->except([
-    'show',
+	'show',
 ]);
 Route::resource('accountants', AccountantController::class)->except([
-    'show',
+	'show',
 ]);
 Route::resource('managers', ManagerController::class)->except([
-    'show',
+	'show',
 ]);
 Route::resource('ceo', CeoController::class)->except([
-    'show',
+	'show',
 ]);

@@ -317,6 +317,7 @@
                     $.notify('Input Format Error', 'error');
                 }
             });
+
         });
     </script>
 @endpush
