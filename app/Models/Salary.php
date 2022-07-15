@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Database\Factories\SalaryFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -40,11 +41,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Salary whereWorkDay($value)
  * @method static Builder|Salary whereYear($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Accountant[] $acct
+ * @property-read Collection|Accountant[] $acct
  * @property-read int|null $acct_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employee[] $emp
+ * @property-read Collection|Employee[] $emp
  * @property-read int|null $emp_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Manager[] $mgr
+ * @property-read Collection|Manager[] $mgr
  * @property-read int|null $mgr_count
  * @property-read int|null $pay_rate_count
  */

@@ -1,7 +1,7 @@
 @extends('layout.master')
 @include('employees.menu')
 @section('content')
-    <form action="{{ route('employees.store') }}" method="post">
+    <form action="{{ route('employees.add') }}" method="post">
         @csrf
         <button class="btn btn-secondary"> Add</button>
     </form>

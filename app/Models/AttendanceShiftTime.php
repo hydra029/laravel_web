@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ShiftEnum;
 use App\Enums\ShiftStatusEnum;
+use Database\Factories\AttendanceShiftTimeFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,7 +46,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $in_late2
  * @property-read string $out_early1
  * @property-read string $out_early2
- * @method static \Database\Factories\AttendanceShiftTimeFactory factory(...$parameters)
+ * @method static AttendanceShiftTimeFactory factory(...$parameters)
  * @method static Builder|AttendanceShiftTime whereCheckInLate1($value)
  * @method static Builder|AttendanceShiftTime whereCheckInLate2($value)
  * @method static Builder|AttendanceShiftTime whereCheckOutEarly1($value)

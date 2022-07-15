@@ -181,6 +181,7 @@
                             </tr>
                             <tr>
                                 <td>
+                                    <span class="error-message-dept_id text-danger"> </span>
                                     <span>department</span>
                                     <span class="error-message-dept_id text-danger"> </span>
                                     <select id="select-department" name="dept_id" class="form-control inp-dept_id">
@@ -190,6 +191,7 @@
                                     </select>
                                 </td>
                                 <td>
+                                    <span class="error-message-role_id text-danger"> </span>
                                     <span>role</span>
                                     <span class="error-message-role_id text-danger"> </span>
                                     <select id="select-role" name="role_id" class="form-control inp-role_id"></select>
@@ -433,16 +435,19 @@
                 $('.div-form-create').addClass('d-none');
                 $('.div-profile-success').addClass('d-none');
             });
-            $(document).on('click','.toggle-password',function(){
-                $(this).toggleClass("fa-eye fa-eye-slash");
-
-                var input = $("#pass_log_id");
-
-                if (input.attr("type") === "password") {
-                    input.attr("type", "text");
-                } else {
-                    input.attr("type", "password");
-                }
+            $('.btn-update').click(function() {
+                $('.title-name').text('');
+                $(this).addClass('d-none');
+                $('.table-profile-update').removeClass('d-none');
+                $('.table-profile-success').addClass('d-none');
+                $('.btn-close-update').removeClass('d-none');
+            });
+            $('.btn-close-update').click(function() {
+                $('.title-name').text('');
+                $(this).addClass('d-none');
+                $('.table-profile-update').addClass('d-none');
+                $('.table-profile-success').removeClass('d-none');
+                $('.btn-update').removeClass('d-none');
             });
 
             var array = [

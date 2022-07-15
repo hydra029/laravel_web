@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\FinesFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Eloquent;
@@ -21,8 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property-read string $fines_time
  * @property-read mixed $deduction_detail
  * @property-read mixed $fines_id
- * @method static \Database\Factories\FinesFactory factory(...$parameters)
- * @method static Builder|Fines query()
+ * @method static FinesFactory factory(...$parameters)
  * @method static Builder|Fines whereDeduction($value)
  * @method static Builder|Fines whereFines($value)
  * @method static Builder|Fines whereId($value)

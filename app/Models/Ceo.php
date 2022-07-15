@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $lname
  * @property int $gender
  * @property string $dob
+ * @property string|null $avatar
  * @property string $email
  * @property string $password
  * @method static CeoFactory factory(...$parameters)
@@ -32,8 +33,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder|Ceo whereLname($value)
  * @method static Builder|Ceo wherePassword($value)
  * @mixin Eloquent
- * @property-read \App\Models\Department|null $department
- * @property-read \App\Models\Role|null $role
+ * @property-read Department|null $department
+ * @property-read Role|null $role
  */
 class Ceo extends Model
 {
@@ -55,6 +56,36 @@ class Ceo extends Model
     public function getAgeAttribute(): string
 	{
 		return date_diff(date_create($this->dob), date_create())->y;
+	}
+
+    public function getAddressAttribute(): string
+    {
+        return $this->district . ' ' . $this->city ;
+    }
+
+	public function getDateOfBirthAttribute(): string
+	{
+		return date_format(date_create($this->dob), "d/m/Y");
+	}
+
+	public function getDateAttribute(): string
+	{
+		return date_format(date_create(), 'D d-m-Y');
+	}
+
+	public function getFullNameAttribute(): string
+	{
+		return $this->fname . ' ' . $this->lname;
+	}
+
+	public function getRoleNameAttribute(): string
+	{
+		return $this->roles->name;
+	}
+
+	public function getGenderNameAttribute(): string
+	{
+		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
 
     public function getAddressAttribute(): string

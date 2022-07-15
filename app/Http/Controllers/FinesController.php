@@ -13,7 +13,7 @@ class FinesController extends Controller
     public function __construct()
 	{
 		$this->middleware('ceo');
-		$this->model = Fines::query();
+		$this->model = new Fines();
 		$routeName = Route::currentRouteName();
 		$arr = explode('.', $routeName);
 		$arr = array_map('ucfirst', $arr);
@@ -24,7 +24,7 @@ class FinesController extends Controller
 
     public function index()
     {
-        $fines = $this->model->get();
+        $fines = $this->model::get();
         return view('ceo.fines', [
             'fines' => $fines,
         ]);
@@ -58,6 +58,6 @@ class FinesController extends Controller
             'fines' => $fines,
             'deduction' => $deduction,
         ]);
-        return $this->model->whereId($id)->get()->append(['fines_time','deduction_detail'])->toArray();
+        return $this->model::whereId($id)->get()->append(['fines_time','deduction_detail'])->toArray();
     }
 }

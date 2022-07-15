@@ -17,17 +17,16 @@ use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
-
 class CeoController extends Controller
 {
-    use ResponseTrait;
+	use ResponseTrait;
+
 	public function __construct()
 	{
 		$this->middleware('ceo');
@@ -116,7 +115,7 @@ class CeoController extends Controller
 		$check_out_start = $request->get('out_start');
 		$check_out_end = $request->get('out_end');
 		$name = $request->get('name');
-		$id =ShiftEnum::getValue($name);
+		$id = ShiftEnum::getValue($name);
 		AttendanceShiftTime::whereId($id)
 			->update([
 				'check_in_start' => $check_in_start,
@@ -134,8 +133,6 @@ class CeoController extends Controller
 
 	public function pay_rate_api(Request $request): JsonResponse
 	{
-
-
 		$dept_id = $request->get('dept_id');
 		$data = Role::query()
 			->where('dept_id', '=', $dept_id)
@@ -148,7 +145,6 @@ class CeoController extends Controller
         $arr['pagination'] = $data->linkCollection();
 
         return $this->successResponse($arr);
-
 	}
 
 	public function pay_rate_change(Request $request): array
@@ -163,24 +159,24 @@ class CeoController extends Controller
 		return Role::whereId($id)->get()->append('pay_rate_money')->toArray();
 	}
 
-    public function role_store(Request $request)
-    {
-        $name = $request->name;
-        $dept_id = $request->dept_id;
-        $pay_rate = $request->pay_rate;
-         Role::create([
-            'name' => $name,
-            'dept_id' => $dept_id,
-            'pay_rate' => $pay_rate,
-            'status' => '1',
-         ]);
-        $roles = Role::query()
-        ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
-        ->select('roles.*', 'departments.name as dept_name')
-        ->where('dept_id', '=', $dept_id)
-        ->get();
-        return $roles->append('pay_rate_money')->toArray();
-    }
+	public function role_store(Request $request): array
+	{
+		$name = $request->name;
+		$dept_id = $request->dept_id;
+		$pay_rate = $request->pay_rate;
+		Role::create([
+			'name' => $name,
+			'dept_id' => $dept_id,
+			'pay_rate' => $pay_rate,
+			'status' => '1',
+		]);
+		$roles = Role::query()
+			->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
+			->select(['roles.*', 'departments.name as dept_name'])
+			->where('dept_id', '=', $dept_id)
+			->get();
+		return $roles->append('pay_rate_money')->toArray();
+	}
 
 	public function fines_store(Request $request): array
 	{

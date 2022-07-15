@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\Manager;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Renderable;
 
 class HomeController extends Controller
@@ -17,7 +17,6 @@ class HomeController extends Controller
 	 */
 	public function test(): Renderable
 	{
-		$limit = 25;
 		$fields = [
 			'id',
 			'fname',
@@ -29,14 +28,22 @@ class HomeController extends Controller
 			'dept_id',
 		];
 		$data = Employee::whereStatus(1)
-			->with(['roles', 'departments'])
-			->paginate($limit, $fields);
+			->with([
+				'roles',
+				'departments' => function ($query) {
+					$query->where('id', '=', session('dept_id'));
+				}
+			])
+			->get($fields);
 		$id = session('id');
 		$attendance = Employee::with('attendance')
 			->where('id', '=', $id)
-			->first();
+			->where('status', '=', 1)
+			->get();
+		$dept = Department::all();
 		return view('test', ([
 			'data' => $data,
+			'dept' => $dept,
 			'attendance' => $attendance,
 			'title' => 'Test'
 		]));
@@ -44,18 +51,19 @@ class HomeController extends Controller
 
 	/**
 	 * @throws \JsonException
+	 * @noinspection PhpMultipleClassDeclarationsInspection
 	 */
-	public function api()
+	public function api(Request $request)
 	{
-		$id = session('id');
-		$dept = Manager::whereId($id)
-			->first('dept_id');
-		/** @noinspection NullPointerExceptionInspection */
-		$dept_id = ($dept->toArray())['dept_id'];
-		$a = Employee::with('attendance')
+		$s = $request->s;
+		$m = $request->m;
+		$dept_id = session('dept_id');
+		$a = Employee::with(['attendance' => function ($query) use ($s, $m) {
+			$query->where('date', '<=', $s)->where('date', '>=', $m);
+		}])
 			->where('dept_id', '=', $dept_id)
-			->get(['id','lname','fname']);
-//		dd($a->toArray());
+			->where('status', '=', 1)
+			->get(['id', 'lname', 'fname']);
 		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
 	}
 }

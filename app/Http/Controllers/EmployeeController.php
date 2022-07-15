@@ -120,9 +120,14 @@ class EmployeeController extends Controller
 	 */
 	public function store(StoreEmployeeRequest $request): RedirectResponse
 	{
+
+	}
+
+	public function add(): RedirectResponse
+	{
 		$users = Employee::get('id');
 		foreach ($users as $each) {
-			$date = date('Y-m-d', mktime(0, 0, 0, 7, 9, 2022));
+			$date = date('Y-m-d', mktime(0, 0, 0, 7, 15, 2022));
 			for ($i = 1; $i <= 3; $i++) {
 				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
 				Attendance::create($data);
