@@ -24,10 +24,12 @@ class CreateAccountantsTable extends Migration
             $table->string('district');
 			$table->string('phone');
 			$table->string('email');
-			$table->string('password');
+			$table->string('password')->nullable();
 			$table->unsignedBigInteger('dept_id')->default('1');
 			$table->unsignedBigInteger('role_id');
 			$table->boolean('status')->default(1);
+            $table->timestamps();
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
 		});
 	}
 

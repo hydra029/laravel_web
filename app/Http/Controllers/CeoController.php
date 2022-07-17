@@ -11,6 +11,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\StoreFinesRequest;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateCeoRequest;
+use App\Imports\EmployeesImport;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
@@ -19,9 +20,11 @@ use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CeoController extends Controller
 {
@@ -206,6 +209,16 @@ class CeoController extends Controller
 		return Fines::whereId($id)->get()->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
+    public function import_employee(Request $request){
+        $request->validate([
+            'file' => 'required|max:10000|mimes:xlsx,xls',
+        ]);
+
+        $path = $request->file('import-csv');
+
+        Excel::import(new EmployeesImport,$path );
+    }
+
     public function create_emp()
     {
         $dept = Department::get();
@@ -223,13 +236,16 @@ class CeoController extends Controller
     public function store_emp(StoreEmployeeRequest $storeEmployeeRequest)
     {
         $arr = $storeEmployeeRequest->validated();
-        if($storeEmployeeRequest->get('avatar') != null){
-            $path = Storage::disk('public')->putFile('img', $storeEmployeeRequest->file('avatar'));
-            $arr['avatar'] = $path;
+        if($storeEmployeeRequest->file('avatar')){
+            $avatar = $storeEmployeeRequest->file('avatar');
+            $avatarName = date('YmdHi').$avatar->getClientOriginalName();
+            $avatar->move(public_path('img'),$avatarName);
+            $arr['avatar'] = $avatarName;
         }
+        $hashPassword = Hash::make($storeEmployeeRequest->get('password'));
+        $arr['password'] = $hashPassword;
         $role_id = $storeEmployeeRequest->get('role_id');
         $role = Role::query()->with('departments')->where('id', $role_id)->get();
-
         $emp =  Employee::query()->create($arr)->append(['full_name','date_of_birth','gender_name','address'])->toArray();
         $data = [$role,$emp];
         return $data;

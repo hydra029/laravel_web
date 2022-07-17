@@ -435,8 +435,9 @@
                             <tr>
                                 <td colspan="2">
                                     Password:
+                                    <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
                                     <br>
-                                    <span class="error-message-password text-danger"> </span> <input type="text"
+                                    <span class="error-message-password text-danger"> </span> <input type="password"
                                         name="password" value="" placeholder="Password"
                                         class="form-control inp-password">
                                 </td>
@@ -763,12 +764,13 @@
 
                             $.each(response.data.data, function(index, value) {
                                 $('#table-department-employees').append($(
-                                        '<tr class="employee-row">')
+                                        `<tr class="employee-row" data-id="${value.id}">`
+                                            )
                                     .append($('<td class="align-middle">')
                                         .append((index + 1) + '.'))
                                     .append($('<td class="align-middle">')
                                         .append(
-                                            `<img  src="{{ asset('') }}img/${value.avatar} " class="rounded" width="100px" />`
+                                            `<img  src="{{ asset('') }}img/${value.avatar}" class="rounded" width="100px" />`
                                             ))
                                     .append($('<td class="align-middle">')
                                         .append(value.full_name))
@@ -778,10 +780,10 @@
                                         .append(value.roles.name))
                                     .append($('<td class="align-middle">')
                                         .append(`
-                                                        <i class="fa-solid fa-eye btn-show-employee text-primary" data-id="${value.id}"></i>
-                                                        <i class="fa-solid fa-pen btn-edit-employee text-warning" data-id="${value.id}"></i>
-                                                        <i class="fa-solid fa-square-xmark btn-delete-employee text-danger" data-id="${value.id}"></i>
-                                                        `))
+                                            <i class="fa-solid fa-eye btn-show-employee text-primary" data-id="${value.id}"></i>
+                                            <i class="fa-solid fa-pen btn-edit-employee text-warning" data-id="${value.id}"></i>
+                                            <i class="fa-solid fa-square-xmark btn-delete-employee text-danger" data-id="${value.id}"></i>
+                                            `))
                                 )
                             });
                             $('#employees-pagination').empty();
@@ -857,13 +859,23 @@
                         dataType: "json",
                         success: function(response) {
                             console.log(response);
-                             $('.profile-card-edit').find('.profile-card-info').find('.inp-fname').val(response[0].fname);
-                             $('.profile-card-edit').find('.profile-card-info').find('.inp-dob').val(response[0].dob);
-                             $('.profile-card-edit').find('.profile-card-info').find('.inp-lname').val(response[0].lname);
-                             $('.profile-card-edit').find('.profile-card-info').find('.inp-phone').val(response[0].phone);
-                             $('.profile-card-edit').find('.profile-card-info').find('.inp-email').val(response[0].email);
-                             $('.profile-card-edit').find('.profile-card-info').find('.inp-password').val(response[0].password);
+                            $('.profile-card-edit').find('.profile-card-info').find('.inp-fname').val(response[0].fname);
+                            $('.profile-card-edit').find('.profile-card-info').find('.inp-dob').val(response[0].dob);
+                            $('.profile-card-edit').find('.profile-card-info').find('.inp-lname').val(response[0].lname);
+                            $('.profile-card-edit').find('.profile-card-info').find('.inp-phone').val(response[0].phone);
+                            $('.profile-card-edit').find('.profile-card-info').find('.inp-email').val(response[0].email);
+                            $('.profile-card-edit').find('.profile-card-info').find('.inp-password').val(response[0].password);
 
+                            var formatDate = (date) => {
+                            var day = getTwoDigits(date.getDate());
+                            var month = getTwoDigits(date.getMonth() + 1); // add 1 since getMonth returns 0-11 for the months
+                            var year = date.getFullYear();
+
+                            return `${day}-${month}-${year}`;
+                            }
+                            var date = response[0].dob;
+                            console.log(date);
+                            $('.profile-card-edit').find('.profile-card-info').find('.inp-dob').value = formatDate(date);
                             if (response[0].avatar == null) {
                                 $('.profile-card').find('.profile-card-img').find('img')
                                     .attr('src',
@@ -889,6 +901,7 @@
 
            function delete_emp(){
                     $('.btn-delete-employee').click(function(){
+                        var employee_delete = $(this);
                         let id = $(this).data('id');
                         console.log(id);
 
@@ -912,11 +925,15 @@
                             dataType: "json",
                             success: function (response) {
                                 console.log(response);
+                                $('#table-department-employees').find('.employee-row').matches(`[data-id="${id}"]`);
+                                if ( $('#table-department-employees').find('.employee-row').matches(`[data-id="${id}"]`)    ){
+                                            $(this).remove();
+                                    }
                             }
                         });
 
-            })
-           }
+                    })
+            }
             // change department
             $('.change-dept').click(function() {
                 $(this).addClass('d-none');
@@ -982,7 +999,7 @@
                 var form = $(this);
                 $.ajax({
                     type: 'post',
-                    url: "{{ route('ceo.store_emp') }}",
+                    url: "{{ route('ceo.update_emp') }}",
                     data: form.serialize(),
                     dataType: 'json',
                     success: function(response) {
@@ -1016,22 +1033,7 @@
                             '.profile-card-department').text(response[0].departments
                             .name);
 
-                        $('#form-create')[0].reset();
-                        $('#form-create').find('select').prop('selectedIndex', 0);
-
-                        $('.div-profile-success').find('input[name="fname"]').val(response[
-                            1]['fname']);
-                        $('.div-profile-success').find('input[name="lname"]').val(response[
-                            1]['lname']);
-                        $('.div-profile-success').find('input[name="dob"]').val(response[1][
-                            'dob'
-                        ]);
-                        $('.div-profile-success').find('input[name="phone"]').val(response[
-                            1]['phone']);
-                        $('.div-profile-success').find('input[name="email"]').val(response[
-                            1]['email']);
-                        $('.div-profile-success').find('input[name="password"]').val(
-                            response[1]['password']);
+                        $('#form-update-employees')[0].reset();
 
                     },
                     error: function(xhr, textStatus, errorThrown) {
@@ -1152,7 +1154,17 @@
             });
             $('.profile-close').click(function() {
                 $('.profile-card').addClass('d-none');
-            });
+            });$('.toggle-password').click(function(){
+                $(this).toggleClass("fa-eye fa-eye-slash");
+
+                var input = $(".inp-password");
+
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+            })
         });
     </script>
 @endpush

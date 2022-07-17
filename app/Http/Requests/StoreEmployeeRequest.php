@@ -49,6 +49,7 @@ class StoreEmployeeRequest extends FormRequest
                 'before:15 years ago',
             ],
             'avatar' => [
+                'nullable',
                 'image',
                 'max:2048',
             ],
@@ -80,13 +81,8 @@ class StoreEmployeeRequest extends FormRequest
                 'unique:App\Models\Employee,email',
             ],
             'password' => [
-                'required',
+                'nullable',
                 'string',
-                Password::min(6)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(),
             ],
             'dept_id' => [
                 'required' ,

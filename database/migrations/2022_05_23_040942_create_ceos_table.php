@@ -24,7 +24,9 @@ class CreateCeosTable extends Migration
             $table->string('district');
 			$table->string('phone');
 			$table->string('email');
-			$table->string('password');
+			$table->string('password')->nullable();
+            $table->timestamps();
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
 		});
 	}
 

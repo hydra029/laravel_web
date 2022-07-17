@@ -87,17 +87,21 @@
             back
         </button>
         <br>
+        <label for="import-csv" class="btn btn-info ">
+            Import CSV
+        </label>
+        <input type="file" name="import-csv" id="import-csv" class="d-none">
         <form action="" id="form-create" method="post"  enctype="multipart/form-data">
             @csrf
             <div class="profile-card col-12">
                 <div class="profile-card-img float-left ">
                     <div class="image-upload">
-                        <label for="file-input" class="text-center">
-                            <img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
+                        <label for="avatar-input" class="text-center">
+                            <img id="avatar_null" src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
+                            <img id="output" width="100%"/>
                             <span>Click here to chage avatar</span>
                         </label>
-
-                        <input type="file" name="avatar" id="file-input">
+                        <input type="file" name="avatar" accept="image/*" id="avatar-input" >
                     </div>
                 </div>
                 <div class="profile-card-info float-left">
@@ -144,13 +148,13 @@
                                     City:
                                     <br>
                                     <span class="error-message-city text-danger"> </span><select name="city"
-                                        id="select-city" class="form-control"></select>
+                                        id="" class="form-control select-city"></select>
                                 </td>
                                 <td>
                                     District:
                                     <br>
                                     <span class="error-message-district text-danger"> </span><select name="district"
-                                        id="select-district" class="form-control"></select>
+                                        id="" class="form-control select-district"></select>
                                 </td>
                             </tr>
                             <tr>
@@ -184,7 +188,7 @@
                                     <span class="error-message-dept_id text-danger"> </span>
                                     <span>department</span>
                                     <span class="error-message-dept_id text-danger"> </span>
-                                    <select id="select-department" name="dept_id" class="form-control inp-dept_id">
+                                    <select id="" name="dept_id" class="select-department form-control inp-dept_id">
                                         @foreach ($dept as $each)
                                             <option value="{{ $each->id }}">{{ $each->name }}</option>
                                         @endforeach
@@ -194,7 +198,7 @@
                                     <span class="error-message-role_id text-danger"> </span>
                                     <span>role</span>
                                     <span class="error-message-role_id text-danger"> </span>
-                                    <select id="select-role" name="role_id" class="form-control inp-role_id"></select>
+                                    <select id="" name="role_id" class="select-role form-control inp-role_id"></select>
                                 </td>
                             </tr>
                             <tr>
@@ -276,12 +280,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Password: </td>
-                                <td>
-                                    <span class="password-profile-success"></span>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>
                                     <span class="dept-profile-success"></span>
                                 </td>
@@ -336,7 +334,7 @@
                                     Date of birth:
                                     <br>
                                     <span class="error-message-dob text-danger"> </span> <input type="date"
-                                        name="dob" id="date" class="form-control inp-dob"
+                                        name="dob"   class="form-control inp-dob"
                                         style="width: 100%; display: inline;" required value=""
                                         placeholder="Date of birth">
                                 </td>
@@ -347,13 +345,13 @@
                                     City:
                                     <br>
                                     <span class="error-message-city text-danger"> </span><select name="city"
-                                        id="select-city" class="form-control"></select>
+                                        id="" class="form-control select-city"></select>
                                 </td>
                                 <td>
                                     District:
                                     <br>
                                     <span class="error-message-district text-danger"> </span><select name="district"
-                                        id="select-district" class="form-control"></select>
+                                        id="" class="select-district form-control"></select>
                                 </td>
                             </tr>
                             <tr>
@@ -387,7 +385,7 @@
                                 <td>
                                     <span>department</span>
                                     <span class="error-message-dept_id text-danger"> </span>
-                                    <select id="select-department" name="dept_id" class="form-control inp-dept_id">
+                                    <select id="" name="dept_id" class="form-control select-department inp-dept_id">
                                         @foreach ($dept as $each)
                                             <option value="{{ $each->id }}">{{ $each->name }}</option>
                                         @endforeach
@@ -396,7 +394,7 @@
                                 <td>
                                     <span>role</span>
                                     <span class="error-message-role_id text-danger"> </span>
-                                    <select id="select-role" name="role_id" class="form-control inp-role_id"></select>
+                                    <select id="" name="role_id" class="form-control inp-role_id select-role"></select>
                                 </td>
                             </tr>
                             <tr>
@@ -466,12 +464,24 @@
                     $(`.error-message-${each}`).empty();
                 });
             })
+            $('#avatar-input').change(function(event) {
+                $('#avatar_null').addClass('d-none');
+
+                var output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+                }
+            })
 
             function create(choose) {
                 console.log(choose);
+                // $('#avatar-input').change(function(event) {
+                //     const { avatar } = event.target;
+                // });
                 $('#form-create').submit(function(e) {
                     e.preventDefault();
-                    var form = $(this);
+                    var formData = new FormData($(this)[0]);
                     var url;
                     switch(choose) {
                             case 1:
@@ -488,10 +498,13 @@
                     $.ajax({
                         type: 'post',
                         url: url,
-                        data: form.serialize(),
-                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        dataType: "json",
+
                         success: function(response) {
-                            $.notify('success', 'Add new success');
+                            $.notify('Add new success', 'success');
                             $('.div-form-create').addClass('d-none');
                             $('.div-profile-success').removeClass('d-none');
                             $('.div-profile-success').find('.name-profile-success').text(
@@ -506,8 +519,6 @@
                                 response[1]['phone']);
                             $('.div-profile-success').find('.email-profile-success').text(
                                 response[1]['email']);
-                            $('.div-profile-success').find('.password-profile-success')
-                                .text(response[1]['password']);
                             $('.div-profile-success').find('.dept-profile-success').text(
                                 response[0][0]['departments']['name']);
                             $('.div-profile-success').find('.role-profile-success').text(
@@ -515,13 +526,11 @@
 
                             $('#form-create')[0].reset();
                             $('#form-create').find('select').prop('selectedIndex',0);
-
                             $('.div-profile-success').find('input[name="fname"]').val(response[1]['fname']);
                             $('.div-profile-success').find('input[name="lname"]').val(response[1]['lname']);
                             $('.div-profile-success').find('input[name="dob"]').val(response[1]['dob']);
                             $('.div-profile-success').find('input[name="phone"]').val(response[1]['phone']);
                             $('.div-profile-success').find('input[name="email"]').val(response[1]['email']);
-                            $('.div-profile-success').find('input[name="password"]').val(response[1]['password']);
 
                         },
                         error: function(xhr, textStatus, errorThrown) {
@@ -533,42 +542,69 @@
                     });
                 });
             }
-            $('#select-city').select2();
+
+            $('#import-csv').change(function(event) {
+                var formData = new FormData();
+                formData.append('file', $(this)[0].files[0]);
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('ceo.import_employee') }}",
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    dataType: "json",
+                    success: function (response) {
+                        $.toast({
+                            heading: "Import CSV Success",
+                            text: "Your CSV file has been successfully",
+                            showHidetransition:'slide',
+                            position: 'button-right',
+                            icon: 'success',
+                        })
+                    }
+
+                });
+            });
+
+            $('.select-city').select2();
             const response = await fetch('{{ asset('locations/index.json') }}');
             const cities = await response.json();
             $.each(cities, function(index, each) {
-                $('#select-city').append(
+                $('.select-city').append(
                     `<option value='${each.code}' data-path='${each.file_path}'>${index}</option>`);
             });
-            $('#select-city').change(function() {
+            $('.select-city').change(function() {
                 loadDistrict();
             })
             loadDistrict();
-            $('#select-district').select2();
-            async function loadDistrict() {
-                $('#select-district').empty();
-                const path = $("#select-city option:selected").data('path');
-                const response = await fetch('{{ asset('locations/') }}' + path);
-                const districts = await response.json();
-                $.each(districts.district, function(index, each) {
-                    if (each.pre === "Quận" || each.pre === "Huyện") {
-                        $('#select-district').append(`
-                            <option>
-                                ${each.name}
-                            </option>`);
-                    }
-                });
+            $('.select-district').select2();
+                async function loadDistrict() {
+                    $('.select-district').empty();
+                    const path = $(".select-city option:selected").data('path');
+                    const response = await fetch('{{ asset('locations/') }}' + path);
+                    const districts = await response.json();
+                    $.each(districts.district, function(index, each) {
+                        if (each.pre === "Quận" || each.pre === "Huyện") {
+                            $('.select-district').append(`
+                                <option>
+                                    ${each.name}
+                                </option>`);
+                        }
+                    });
             }
 
-            var dept_id = $("#select-department").val();
+            var dept_id = $(".select-department").val();
             select_role(dept_id);
-            $("#select-department").change(function() {
+            $(".select-department").change(function() {
                 var dept_id = $(this).val();
                 select_role(dept_id);
             });
 
             function select_role(dept_id) {
-                $("#select-role").empty();
+                $(".select-role").empty();
                 $.ajax({
                     type: "post",
                     url: "{{ route('ceo.select_role') }}",
@@ -578,7 +614,7 @@
                     dataType: "json",
                     success: function(response) {
                         $.each(response, function(index, value) {
-                            $("#select-role").append($('<option value="' + value.id + '">' +
+                            $(".select-role").append($('<option value="' + value.id + '">' +
                                 value.name + '</option>'))
                         })
                     }
@@ -606,12 +642,28 @@
                 $.ajax({
                     type: "post",
                     url: "{{ route('ceo.update_emp') }}",
-                    data: formUpdate.serialize(),
                     dataType: 'json',
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    data: formUpdate.serialize(),
                     success: function(response) {
-
+                        console.log(response);
                     }
                 });
+            })
+
+            $('.toggle-password').click(function(){
+                $(this).toggleClass("fa-eye fa-eye-slash");
+
+                var input = $("#pass_log_id");
+
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+}
             })
         });
     </script>

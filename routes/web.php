@@ -68,6 +68,8 @@ Route::post('/ceo/select_role', [CeoController::class, 'select_role'])->name('ce
 Route::post('/ceo/update_emp', [CeoController::class, 'update_emp'])->name('ceo.update_emp');
 Route::delete('/ceo/delete_emp/', [CeoController::class, 'delete_emp'])->name('ceo.delete_emp');
 Route::post('/ceo/employee_infor', [CeoController::class, 'employee_infor'])->name('ceo.employee_infor');
+Route::post('/ceo/import_employee', [CeoController::class, 'import_employee'])->name('ceo.import_employee');
+Route::post('/ceo/input_avatar', [CeoController::class, 'input_avatar'])->name('ceo.input_avatar');
 
 
 

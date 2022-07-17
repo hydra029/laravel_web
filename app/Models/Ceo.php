@@ -88,35 +88,5 @@ class Ceo extends Model
 		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
 
-    public function getAddressAttribute(): string
-    {
-        return $this->district . ' - ' . $this->city ;
-    }
-
-	public function getDateOfBirthAttribute(): string
-	{
-		return date_format(date_create($this->dob), "d/m/Y");
-	}
-
-	public function getDateAttribute(): string
-	{
-		return date_format(date_create(), 'D d-m-Y');
-	}
-
-	public function getFullNameAttribute(): string
-	{
-		return $this->fname . ' ' . $this->lname;
-	}
-
-	public function getRoleNameAttribute(): string
-	{
-		return $this->roles->name;
-	}
-
-	public function getGenderNameAttribute(): string
-	{
-		return ($this->gender === 1 ? 'Male' : 'Female');
-	}
-
 	public $timestamps = true;
 }

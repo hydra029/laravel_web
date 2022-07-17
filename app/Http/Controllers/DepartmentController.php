@@ -22,7 +22,7 @@ class DepartmentController extends Controller
     public function __construct()
     {
 		$this->middleware('ceo');
-		$this->model = new Department();
+		$this->models = new Department();
 		$routeName = Route::currentRouteName();
 		$arr = explode('.', $routeName);
 		$arr = array_map('ucfirst', $arr);
@@ -56,17 +56,6 @@ class DepartmentController extends Controller
 
     }
 
-	public function department_employees(Request $request)
-	{
-		$dept_id = $request->get('dept_id');
-		$employee_dept = Employee::query()
-			->leftJoin('departments', 'employees.dept_id', '=', 'departments.id')
-			->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
-			->select('employees.*', 'departments.name as dept_name', 'roles.name as role_name')
-			->where('employees.dept_id', '=', $dept_id)
-			->get();
-		return $employee_dept->append(['full_name', 'date_of_birth', 'gender_name', 'address']);
-	}
 
 	public function manager_role(Request $request)
 	{
