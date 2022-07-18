@@ -864,7 +864,6 @@
                             $('.profile-card-edit').find('.profile-card-info').find('.inp-lname').val(response[0].lname);
                             $('.profile-card-edit').find('.profile-card-info').find('.inp-phone').val(response[0].phone);
                             $('.profile-card-edit').find('.profile-card-info').find('.inp-email').val(response[0].email);
-                            $('.profile-card-edit').find('.profile-card-info').find('.inp-password').val(response[0].password);
 
                             var formatDate = (date) => {
                             var day = getTwoDigits(date.getDate());

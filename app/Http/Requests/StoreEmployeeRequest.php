@@ -95,62 +95,6 @@ class StoreEmployeeRequest extends FormRequest
 
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'fname' => [
-                'required' => 'We need to know  :attribute ',
-                'max:10' => ' :attribute  must be at least 10 characters',
-                'min:2' => ' :attribute  must have at least 2 characters',
-            ],
-            'lname' => [
-                'required' => 'We need to know  :attribute ',
-                'max:10' => ' :attribute  must be at least 10 characters',
-                'min:2' => ' :attribute  must have at least 2 characters',
-            ],
-            'gender' => [
-                'required' => 'We need to know  :attribute ',
-            ],
-            'dob' => [
-                'required' => 'We need to know :attribute ',
-                'before:15 years ago' => 'it is not old enough to work.',
-            ],
-            'avatar' => [
-                'image',
-                'mimes:jpeg,png' => 'Incorrect file format',
-                'max:2048' => ':attribute too long',
-            ],
-            'city' => [
-                'required' => 'We need to know  :attribute ',
-                'min:10' => ' :attribute too long',
-                'max:200' => ':attribute too short',
-            ],
-            'district' => [
-                'required' => 'We need to know  :attribute ',
-                'min:10' => ' :attribute too long',
-                'max:200' => ':attribute too short',
-            ],
-            'phone' => [
-                'required' => 'We need to know  :attribute ',
-                'regex:/(0)[0-9]{9}/' => 'Incorrect  :attribute  format',
-            ],
-            'email' => [
-                'required' => 'We need to know  :attribute ',
-                'email:rfc,dns' => 'Incorrect  :attribute  format',
-            ],
-            'password' => [
-                'required',
-                Password::min(6)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(),
-            ],
-
-        ];
-    }
-
     public function attributes(): array
     {
         return [

@@ -90,7 +90,7 @@
         <label for="import-csv" class="btn btn-info ">
             Import CSV
         </label>
-        <input type="file" name="import-csv" id="import-csv" class="d-none">
+        <input type="file" name="import_csv" id="import-csv" class="d-none">
         <form action="" id="form-create" method="post"  enctype="multipart/form-data">
             @csrf
             <div class="profile-card col-12">
@@ -479,21 +479,51 @@
                 // $('#avatar-input').change(function(event) {
                 //     const { avatar } = event.target;
                 // });
+                switch(choose) {
+                            case 1:
+                                url =  "{{ route('ceo.store_emp') }}";
+                                urlImport =  "{{ route('ceo.import_employee') }}";
+                                break;
+                            case 2:
+                                url = "{{ route('ceo.store_acct') }}";
+                                urlImport =  "{{ route('ceo.import_acct') }}";
+                                break;
+                            case 3:
+                                url = "{{ route('ceo.store_mgr') }}";
+                                urlImport =  "{{ route('ceo.import_mgr') }}";
+                                break;
+                            }
+                $('#import-csv').change(function(event) {
+                    var formData = new FormData();
+                    formData.append('file', $(this)[0].files[0]);
+
+
+                    $.ajax({
+                        type: "post",
+                        url:urlImport,
+                        data: formData,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        enctype: 'multipart/form-data',
+                        processData: false,
+                        success: function (response) {
+                            $.toast({
+                                heading: "Import CSV Success",
+                                text: "Your CSV file has been successfully",
+                                showHidetransition:'slide',
+                                position: 'button-right',
+                                icon: 'success',
+                            })
+                        }
+
+                    });
+                });
                 $('#form-create').submit(function(e) {
                     e.preventDefault();
                     var formData = new FormData($(this)[0]);
                     var url;
-                    switch(choose) {
-                            case 1:
-                                url =  "{{ route('ceo.store_emp') }}";
-                                break;
-                            case 2:
-                                url = "{{ route('ceo.store_mgr') }}";
-                                break;
-                            case 3:
-                                url = "{{ route('ceo.store_attr') }}";
-                                break;
-                            }
+
                     console.log(choose);
                     $.ajax({
                         type: 'post',
@@ -543,31 +573,7 @@
                 });
             }
 
-            $('#import-csv').change(function(event) {
-                var formData = new FormData();
-                formData.append('file', $(this)[0].files[0]);
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('ceo.import_employee') }}",
-                    data: formData,
-                    async: false,
-                    cache: false,
-                    contentType: false,
-                    enctype: 'multipart/form-data',
-                    processData: false,
-                    dataType: "json",
-                    success: function (response) {
-                        $.toast({
-                            heading: "Import CSV Success",
-                            text: "Your CSV file has been successfully",
-                            showHidetransition:'slide',
-                            position: 'button-right',
-                            icon: 'success',
-                        })
-                    }
 
-                });
-            });
 
             $('.select-city').select2();
             const response = await fetch('{{ asset('locations/index.json') }}');

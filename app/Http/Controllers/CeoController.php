@@ -11,7 +11,10 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\StoreFinesRequest;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateCeoRequest;
+use App\Imports\AccountantsImport;
 use App\Imports\EmployeesImport;
+use App\Imports\ManagersImport;
+use App\Models\Accountant;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
@@ -213,10 +216,25 @@ class CeoController extends Controller
         $request->validate([
             'file' => 'required|max:10000|mimes:xlsx,xls',
         ]);
+        $path = $request->file;
 
-        $path = $request->file('import-csv');
+         Excel::import(new EmployeesImport,$path );
+    }
+    public function import_acct(Request $request){
+        $request->validate([
+            'file' => 'required|max:10000|mimes:xlsx,xls',
+        ]);
+        $path = $request->file;
 
-        Excel::import(new EmployeesImport,$path );
+         Excel::import(new AccountantsImport,$path );
+    }
+    public function import_mgr(Request $request){
+        $request->validate([
+            'file' => 'required|max:10000|mimes:xlsx,xls',
+        ]);
+        $path = $request->file;
+
+         Excel::import(new  ManagersImport,$path );
     }
 
     public function create_emp()
@@ -274,14 +292,40 @@ class CeoController extends Controller
     }
 
 
-    public function store_attr(StoreAccountantRequest $storeAccountantRequest)
+    public function store_acct(StoreAccountantRequest $storeAccountantRequest)
     {
-        //
+        $arr = $storeAccountantRequest->validated();
+        if($storeAccountantRequest->file('avatar')){
+            $avatar = $storeAccountantRequest->file('avatar');
+            $avatarName = date('YmdHi').$avatar->getClientOriginalName();
+            $avatar->move(public_path('img'),$avatarName);
+            $arr['avatar'] = $avatarName;
+        }
+        $hashPassword = Hash::make($storeAccountantRequest->get('password'));
+        $arr['password'] = $hashPassword;
+        $role_id = $storeAccountantRequest->get('role_id');
+        $role = Role::query()->with('departments')->where('id', $role_id)->get();
+        $emp =  Accountant::query()->create($arr)->append(['full_name','date_of_birth','gender_name','address'])->toArray();
+        $data = [$role,$emp];
+        return $data;
     }
 
     public function store_mgr(StoreManagerRequest $storeManagerRequest)
     {
-        //
+        $arr = $storeManagerRequest->validated();
+        if($storeManagerRequest->file('avatar')){
+            $avatar = $storeManagerRequest->file('avatar');
+            $avatarName = date('YmdHi').$avatar->getClientOriginalName();
+            $avatar->move(public_path('img'),$avatarName);
+            $arr['avatar'] = $avatarName;
+        }
+        $hashPassword = Hash::make($storeManagerRequest->get('password'));
+        $arr['password'] = $hashPassword;
+        $role_id = $storeManagerRequest->get('role_id');
+        $role = Role::query()->with('departments')->where('id', $role_id)->get();
+        $emp =  Manager::query()->create($arr)->append(['full_name','date_of_birth','gender_name','address'])->toArray();
+        $data = [$role,$emp];
+        return $data;
     }
 	/**
 	 * Show the form for creating a new resource.

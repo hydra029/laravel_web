@@ -2,14 +2,14 @@
 
 namespace App\Imports;
 
-use App\Models\Employee;
+use App\Models\Manager;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
-class EmployeesImport implements ToArray, WithHeadingRow
+class ManagersImport implements ToArray, WithHeadingRow
 {
 
     public function array(array $array): void
@@ -24,7 +24,7 @@ class EmployeesImport implements ToArray, WithHeadingRow
         $dept_id = $array['dept_id'];
         $role_id = $array['role_id'];
         $status = $array['status'];
-        Employee::create([
+        Manager::create([
             'fname' => $fname,
             'lname' => $lname,
             'gender' => $gender,
