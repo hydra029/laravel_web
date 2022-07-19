@@ -71,8 +71,7 @@ Route::post('/ceo/employee_infor', [CeoController::class, 'employee_infor'])->na
 Route::post('/ceo/import_employee', [CeoController::class, 'import_employee'])->name('ceo.import_employee');
 Route::post('/ceo/import_acct', [CeoController::class, 'import_acct'])->name('ceo.import_acct');
 Route::post('/ceo/import_mgr', [CeoController::class, 'import_mgr'])->name('ceo.import_mgr');
-
-
+Route::get('/ceo/get_infor', [CeoController::class, 'get_infor'])->name('ceo.get_infor');
 
 
 Route::resource('employees', EmployeeController::class)->except([

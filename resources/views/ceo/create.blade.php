@@ -87,7 +87,7 @@
             back
         </button>
         <br>
-        <label for="import-csv" class="btn btn-info ">
+        <label for="import-csv" class="btn btn-info float-right">
             Import CSV
         </label>
         <input type="file" name="import_csv" id="import-csv" class="d-none">
@@ -235,8 +235,9 @@
             <div class="profile-card col-12 table-profile-success">
                 <div class="profile-card-img float-left ">
                     <div class="image-upload">
-                        <label for="file-input" class="text-center">
-                            <img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
+                        <label  class="text-center">
+                            <img class="avatar-alter-add-null" src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
+                            <img class="avatar-alter-add"  width="100%">
                         </label>
                     </div>
                 </div>
@@ -295,7 +296,8 @@
                 <div class="profile-card-img float-left ">
                     <div class="image-upload">
                         <label for="file-input" class="text-center">
-                            <img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
+                            <img class="avatar-alter-add-null" src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
+                            <img class="avatar-alter-add"  width="100%">
                             <span>Click here to chage avatar</span>
                         </label>
                         <input id="file-input" type="file" name="avatar" />
@@ -479,6 +481,7 @@
                 // $('#avatar-input').change(function(event) {
                 //     const { avatar } = event.target;
                 // });
+                var url, urlImport;
                 switch(choose) {
                             case 1:
                                 url =  "{{ route('ceo.store_emp') }}";
@@ -522,7 +525,6 @@
                 $('#form-create').submit(function(e) {
                     e.preventDefault();
                     var formData = new FormData($(this)[0]);
-                    var url;
 
                     console.log(choose);
                     $.ajax({
@@ -553,6 +555,10 @@
                                 response[0][0]['departments']['name']);
                             $('.div-profile-success').find('.role-profile-success').text(
                                 response[0][0]['name']);
+                                if(response[1]['avatar'] != null) {
+                                    $(".avatar-alter-add-null").addClass('d-none');
+                                    $(".avatar-alter-add").attr('src',`{{ asset('')}}/img/${response[1]['avatar']}  `);
+                                }
 
                             $('#form-create')[0].reset();
                             $('#form-create').find('select').prop('selectedIndex',0);

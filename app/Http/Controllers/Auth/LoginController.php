@@ -7,6 +7,7 @@ use App\Models\Accountant;
 use App\Models\Ceo;
 use App\Models\Employee;
 use App\Models\Manager;
+use App\Models\Role;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -51,6 +52,7 @@ class LoginController extends Controller
         ->where('email', $email)
         ->first()){
             if($emp->password == null){
+                $role_name = Role::query()->select('name')->whereId($emp->role_id)->first();
                 $password = Hash::make($password);
                 Employee::query()
                 ->where('email', $email)
@@ -58,16 +60,17 @@ class LoginController extends Controller
                 session()->put('id', $emp->id);
                 session()->put('name', $emp->fname);
                 session()->put('avatar', $emp->avatar);
-                session()->put('dept_id', $emp->dept_id);
+                session()->put('role_name',$role_name->name);
                 session()->put('level', 1);
                 session()->flash('noti.success', 'Sign in successfully');
                 return redirect()->route('employees.index');
             }else{
                 if ( $emp && Hash::check($password, $emp->password)) {
+                    $role_name = Role::query()->select('name')->whereId($emp->role_id)->first();
                             session()->put('id', $emp->id);
                             session()->put('name', $emp->fname);
                             session()->put('avatar', $emp->avatar);
-                            session()->put('dept_id', $emp->dept_id);
+                            session()->put('role_name', $role_name->name);
                             session()->put('level', 1);
                             session()->flash('noti.success', 'Sign in successfully');
                             return redirect()->route('employees.index');
@@ -79,6 +82,7 @@ class LoginController extends Controller
         ->where('email', $email)
         ->first()){
             if($mgr->password == null){
+                $role_name = Role::query()->select('name')->whereId($emp->role_id)->first();
                 $password = Hash::make($password);
                 Manager::query()
                 ->where('email', $email)
@@ -86,17 +90,18 @@ class LoginController extends Controller
                 session()->put('id', $mgr->id);
                 session()->put('name', $mgr->fname);
                 session()->put('avatar', $mgr->avatar);
-                session()->put('dept_id', $mgr->dept_id);
+                session()->put('role_name', $role_name->name);
                 session()->put('level', 2);
                 session()->flash('noti.success', 'Sign in successfully');
                 return redirect()->route('managers.index');
             }else{
 
                 if ($mgr && Hash::check($password, $mgr->password)) {
+                    $role_name = Role::query()->select('name')->whereId($emp->role_id)->first();
                     session()->put('id', $mgr->id);
                     session()->put('name', $mgr->fname);
                     session()->put('avatar', $mgr->avatar);
-                    session()->put('dept_id', $mgr->dept_id);
+                    session()->put('role_name', $role_name->name);
                     session()->put('level', 2);
                     session()->flash('noti.success', 'Sign in successfully');
                     return redirect()->route('managers.index');
@@ -107,6 +112,7 @@ class LoginController extends Controller
         ->where('email', $email)
         ->first()){
             if($acct->password == null){
+                $role_name = Role::query()->select('name')->whereId($emp->role_id)->first();
                 $password = Hash::make($password);
                 Accountant::query()
                 ->where('email', $email)
@@ -114,17 +120,18 @@ class LoginController extends Controller
                 session()->put('id', $acct->id);
                 session()->put('name', $acct->fname);
                 session()->put('avatar', $acct->avatar);
-                session()->put('dept_id', $acct->dept_id);
+                session()->put('role_name', $role_name->name);
                 session()->put('level', 3);
                 session()->flash('noti.success', 'Sign in successfully');
                 return redirect()->route('accountants.index');
             }else{
 
                 if ($acct && Hash::check($password, $acct->password)) {
+                    $role_name = Role::query()->select('name')->whereId($emp->role_id)->first();
                     session()->put('id', $acct->id);
                     session()->put('name', $acct->fname);
                     session()->put('avatar', $acct->avatar);
-                    session()->put('dept_id', $acct->dept_id);
+                    session()->put('role_name', $role_name->name);
                     session()->put('level', 3);
                     session()->flash('noti.success', 'Sign in successfully');
                     return redirect()->route('accountants.index');
@@ -143,6 +150,7 @@ class LoginController extends Controller
                 session()->put('id', $ceo->id);
                 session()->put('name', $ceo->fname);
                 session()->put('avatar', $ceo->avatar);
+                session()->put('role_name', 'Ceo');
                 session()->put('level', 4);
                 session()->flash('noti.success', 'Sign in successfully');
                 // $data = session()->all();
@@ -153,6 +161,7 @@ class LoginController extends Controller
                     session()->put('id', $ceo->id);
                     session()->put('name', $ceo->fname);
                     session()->put('avatar', $ceo->avatar);
+                    session()->put('role_name', 'Ceo');
                     session()->put('level', 4);
                     session()->flash('noti.success', 'Sign in successfully');
                     // $data = session()->all();

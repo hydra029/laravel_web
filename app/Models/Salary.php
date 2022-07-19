@@ -56,7 +56,7 @@ class Salary extends Model
 
 	public function emp(): HasMany
 	{
-		return $this->hasMany(Employee::class, 'emp_id');
+		return $this->hasMany(Employee::class, 'id' ,'emp_id');
 	}
 	public function mgr(): HasMany
 	{

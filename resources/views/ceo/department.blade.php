@@ -866,8 +866,8 @@
                             $('.profile-card-edit').find('.profile-card-info').find('.inp-email').val(response[0].email);
 
                             var formatDate = (date) => {
-                            var day = getTwoDigits(date.getDate());
-                            var month = getTwoDigits(date.getMonth() + 1); // add 1 since getMonth returns 0-11 for the months
+                            var day = padTo2Digits(date.getDate());
+                            var month = padTo2Digits(date.getMonth() + 1); // add 1 since getMonth returns 0-11 for the months
                             var year = date.getFullYear();
 
                             return `${day}-${month}-${year}`;

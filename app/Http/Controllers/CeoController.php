@@ -70,6 +70,17 @@ class CeoController extends Controller
 		]));
 	}
 
+    public function get_infor(){
+        $id = session('id');
+        $data = Ceo::whereId($id)->first();
+
+        $dept = Department::get();
+        return view('ceo.profile',[
+            'data' => $data,
+            'dept' => $dept,
+        ]);
+    }
+
 	public function time()
 	{
 //		dd(Schema::getColumnListing('attendance_shift_times'));
