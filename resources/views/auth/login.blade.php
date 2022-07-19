@@ -19,18 +19,6 @@
                 </div>
                 <h4 class="mt-0">Sign In</h4>
                 <p class="text-muted mb-4">Enter your email address and password to access account.</p>
-
-                {{-- error --}}
-                @if ($errors->any())
-                <div class="form-group alert-danger p-1">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-
                 <!-- form -->
                 <form action="{{ route('process_login') }}" method="post">
                     @csrf

@@ -1,5 +1,5 @@
 @extends('layout.master')
-@include('employees.menu')
+@include('managers.menu')
 @push('css')
     <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
     <style>
@@ -210,7 +210,7 @@
                 let m = getMon(d).toISOString().slice(0, 10);
                 let s = getSun(d).toISOString().slice(0, 10);
                 $.ajax({
-                    url: '{{route('api')}}',
+                    url: '{{route('managers.employee_api')}}',
                     type: 'POST',
                     dataType: 'json',
                     data: {m: m, s: s},

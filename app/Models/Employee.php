@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\Employee
@@ -71,15 +72,15 @@ class Employee extends Model
 		'lname',
 		'gender',
 		'dob',
-        'avatar',
-        'city',
-        'phone',
-        'district',
+		'avatar',
+		'city',
+		'phone',
+		'district',
 		'email',
 		'password',
 		'dept_id',
 		'role_id',
-        'status',
+		'status',
 	];
 
 	/**
@@ -91,10 +92,10 @@ class Employee extends Model
 		return date_diff(date_create($this->dob), date_create())->y;
 	}
 
-    public function getAddressAttribute(): string
-    {
-        return $this->district . ' ' . $this->city ;
-    }
+	public function getAddressAttribute(): string
+	{
+		return $this->district . ' ' . $this->city;
+	}
 
 	public function getDateOfBirthAttribute(): string
 	{
@@ -173,12 +174,10 @@ class Employee extends Model
 	{
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
 			->select(['id', 'name']);
-
 	}
 
 	public function roles(): BelongsTo
 	{
-
 		return $this->BelongsTo(Role::class, 'role_id', 'id')
 			->select(['id', 'name']);
 	}
@@ -187,7 +186,6 @@ class Employee extends Model
 	{
 		return $this->HasMany(Attendance::class, 'emp_id', 'id')
 			->where('emp_role', '=', 1);
-
 	}
 
 	public $timestamps = false;

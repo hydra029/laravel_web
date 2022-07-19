@@ -12,6 +12,7 @@ use App\Models\Employee;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -58,40 +59,22 @@ class EmployeeController extends Controller
 
 	public function attendance(): Renderable
 	{
-		$limit = 25;
-		$fields = [
-			'id',
-			'fname',
-			'lname',
-			'gender',
-			'dob',
-			'email',
-			'role_id',
-			'dept_id',
-		];
-		$data = Employee::whereStatus(1)
-			->with(['roles', 'departments'])
-			->paginate($limit, $fields);
-		$id = session('id');
-		$attendance = Employee::with('attendance')
-			->where('id', '=', $id)
-			->first();
-		return view('employees.month_attendance', ([
-			'data' => $data,
-			'attendance' => $attendance,
-		]));
+		return view('employees.month_attendance');
 	}
 
-	/**
-	 * @throws \JsonException
-	 */
-	public function attendance_api()
+
+	public function attendance_api(Request $request)
 	{
-		$a = Employee::with('attendance')
-			->where('id', '=', session('id'))
-			->first('id');
-		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
+		$f = $request->f;
+		$l = $request->l;
+		return Attendance::with('shift')
+			->where('date', '<=', $l)
+			->where('date', '>=', $f)
+			->where('emp_id', '=', session('id'))
+			->where('emp_role', '=', session('level'))
+			->get();
 	}
+
 
 	/**
 	 * Show the form for creating a new resource.
