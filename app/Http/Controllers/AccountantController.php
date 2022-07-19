@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\UpdateAccountantRequest;
 use App\Models\Employee;
 use App\Models\Manager;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -43,6 +44,43 @@ class AccountantController extends Controller
 		return view('ceo.index', [
 			'data' => $data,
 		]);
+	}
+
+	public function attendance(): Renderable
+	{
+		$limit = 25;
+		$fields = [
+			'id',
+			'fname',
+			'lname',
+			'gender',
+			'dob',
+			'email',
+			'role_id',
+			'dept_id',
+		];
+		$data = Employee::whereStatus(1)
+			->with(['roles', 'departments'])
+			->paginate($limit, $fields);
+		$id = session('id');
+		$attendance = Employee::with('attendance')
+			->where('id', '=', $id)
+			->first();
+		return view('accountants.month_attendance', ([
+			'data' => $data,
+			'attendance' => $attendance,
+		]));
+	}
+
+	/**
+	 * @throws \JsonException
+	 */
+	public function attendance_api()
+	{
+		$a = Employee::with('attendance')
+			->where('id', '=', session('id'))
+			->first('id');
+		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
 	}
 
 

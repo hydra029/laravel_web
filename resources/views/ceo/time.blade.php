@@ -2,7 +2,7 @@
 @include('ceo.menu')
 @section('content')
     @push('css')
-        <style type="text/css">
+        <style>
             td {
                 height: 100px;
             }
@@ -19,7 +19,7 @@
             </ul>
         </div>
     @endif
-    <table class="table table-striped table-centered mb-20 table-bordered text-center" id="student-table-index">
+    <table class="table table-striped table-centered mb-20 table-bordered text-center" style="border-color: crimson !important;" id="student-table-index">
         <thead>
         <tr>
             <th rowspan="2">Shift</th>

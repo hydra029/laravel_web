@@ -1,8 +1,8 @@
 @extends('layout.master')
 @include('employees.menu')
 @push('css')
-    <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-    <style>
+	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<style>
         .fc-daygrid-event {
             margin: 0;
         }
@@ -66,42 +66,42 @@
         .emp-name {
             margin: 8px 0;
         }
-    </style>
+	</style>
 @endpush
 @section('content')
-    <div class="col-1 p-1">
-        <div id='external-events'>
-            <p class="text-center">
-                <strong>Detail</strong>
-            </p>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-1'>
-                <div class='fc-event-main tc'>Early Type 1</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-2'>
-                <div class='fc-event-main tc'>Early Type 2</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-3'>
-                <div class='fc-event-main tc'>On Time</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-4'>
-                <div class='fc-event-main tc'>Late Type 1</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-5'>
-                <div class='fc-event-main tc'>Late Type 2</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-6'>
-                <div class='fc-event-main tc'>Off Work</div>
-            </div>
+	<div class="col-1 p-1">
+		<div id='external-events'>
+			<p class="text-center">
+				<strong>Detail</strong>
+			</p>
+			<div class='fc-event fc-h-event fc-daygrid-block-event event-1'>
+				<div class='fc-event-main tc'>Early Type 1</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-block-event event-2'>
+				<div class='fc-event-main tc'>Early Type 2</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-block-event event-3'>
+				<div class='fc-event-main tc'>On Time</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-block-event event-4'>
+				<div class='fc-event-main tc'>Late Type 1</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-block-event event-5'>
+				<div class='fc-event-main tc'>Late Type 2</div>
+			</div>
+			<div class='fc-event fc-h-event fc-daygrid-block-event event-6'>
+				<div class='fc-event-main tc'>Off Work</div>
+			</div>
 
-        </div>
-    </div>
-    <div class="col-11 p-1">
-        <div id="calendar"></div>
-    </div>
+		</div>
+	</div>
+	<div class="col-11 p-1">
+		<div id="calendar"></div>
+	</div>
 @endsection
 @push('js')
-    <script src="{{ asset('js/main.min.js' )}}"></script>
-    <script>
+	<script src="{{ asset('js/main.min.js' )}}"></script>
+	<script>
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -225,9 +225,9 @@
             loadAttendance(today);
 
             $(".fc-goto-button")
-                    .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
-                    .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
-                    .addClass('d-none');
+                .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
+                .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
+                .addClass('d-none');
 
             const sl1 = $('#sl-1');
             const sl2 = $('#sl-2');
@@ -236,9 +236,9 @@
 
             for (let i = crYear; i >= 2020; i--) {
                 sl1.append($('<option>')
-                        .attr('value', i)
-                        .text(i)
-                        .addClass('y-opt')
+                    .attr('value', i)
+                    .text(i)
+                    .addClass('y-opt')
                 )
             }
 
@@ -249,9 +249,9 @@
                     j
                 }
                 sl2.append($('<option>')
-                        .attr('value', i)
-                        .text(j)
-                        .addClass('m-opt')
+                    .attr('value', i)
+                    .text(j)
+                    .addClass('m-opt')
                 )
             }
 
@@ -266,50 +266,50 @@
                     dataType: 'json',
                     data: {f: f, l: l},
                 })
-                        .done(function (response) {
-                            let emp_num = response.length;
-                            for (let i = 0; i <= emp_num; i++) {
-                                let date = response[i]['date'];
-                                let check_in = response[i]['check_in'].slice(0, 5);
-                                let check_out = response[i]['check_out'].slice(0, 5);
-                                let check_in_start = response[i]['shift']['check_in_start'].slice(0, 5);
-                                let check_in_end = response[i]['shift']['check_in_end'].slice(0, 5);
-                                let check_in_late_1 = response[i]['shift']['check_in_late_1'].slice(0, 5);
-                                let check_in_late_2 = response[i]['shift']['check_in_late_2'].slice(0, 5);
-                                let check_out_start = response[i]['shift']['check_out_start'].slice(0, 5);
-                                let check_out_end = response[i]['shift']['check_out_end'].slice(0, 5);
-                                let check_out_early_1 = response[i]['shift']['check_out_early_1'].slice(0, 5);
-                                let check_out_early_2 = response[i]['shift']['check_out_early_2'].slice(0, 5);
-                                let title = check_in + Array(20).fill('\xa0').join('') + check_out;
-                                let color_1 = '#f03e44';
-                                let color_2 = '#f03e44';
-                                if (check_in >= check_in_start && check_in <= check_in_end) {
-                                    color_1 = '#00c67f';
-                                } else if (check_in > check_in_end && check_in <= check_in_late_1) {
-                                    color_1 = '#f07171';
-                                } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
-                                    color_1 = '#f57542';
-                                }
-
-                                if (check_out >= check_out_start && check_out <= check_out_end) {
-                                    color_2 = '#00c67f';
-                                } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
-                                    color_2 = '#8ca5ff';
-                                } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
-                                    color_2 = '#9761ed';
-                                }
-
-                                let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
-                                let event = {
-                                    title: title,
-                                    start: date,
-                                    allDay: true,
-                                    overlap: false,
-                                    background: color,
-                                }
-                                calendar.addEvent(event);
+                    .done(function (response) {
+                        let emp_num = response.length;
+                        for (let i = 0; i <= emp_num; i++) {
+                            let date = response[i]['date'];
+                            let check_in = response[i]['check_in'].slice(0, 5);
+                            let check_out = response[i]['check_out'].slice(0, 5);
+                            let check_in_start = response[i]['shift']['check_in_start'].slice(0, 5);
+                            let check_in_end = response[i]['shift']['check_in_end'].slice(0, 5);
+                            let check_in_late_1 = response[i]['shift']['check_in_late_1'].slice(0, 5);
+                            let check_in_late_2 = response[i]['shift']['check_in_late_2'].slice(0, 5);
+                            let check_out_start = response[i]['shift']['check_out_start'].slice(0, 5);
+                            let check_out_end = response[i]['shift']['check_out_end'].slice(0, 5);
+                            let check_out_early_1 = response[i]['shift']['check_out_early_1'].slice(0, 5);
+                            let check_out_early_2 = response[i]['shift']['check_out_early_2'].slice(0, 5);
+                            let title = check_in + Array(20).fill('\xa0').join('') + check_out;
+                            let color_1 = '#f03e44';
+                            let color_2 = '#f03e44';
+                            if (check_in >= check_in_start && check_in <= check_in_end) {
+                                color_1 = '#00c67f';
+                            } else if (check_in > check_in_end && check_in <= check_in_late_1) {
+                                color_1 = '#f07171';
+                            } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
+                                color_1 = '#f57542';
                             }
-                        })
+
+                            if (check_out >= check_out_start && check_out <= check_out_end) {
+                                color_2 = '#00c67f';
+                            } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
+                                color_2 = '#8ca5ff';
+                            } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
+                                color_2 = '#9761ed';
+                            }
+
+                            let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                            let event = {
+                                title: title,
+                                start: date,
+                                allDay: true,
+                                overlap: false,
+                                background: color,
+                            }
+                            calendar.addEvent(event);
+                        }
+                    })
             }
 
             sl2.change(function () {
@@ -336,5 +336,5 @@
                 return new Date(l.setDate(0));
             }
         });
-    </script>
+	</script>
 @endpush
