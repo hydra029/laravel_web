@@ -1,61 +1,42 @@
 @extends('layout.master')
-@include('employees.menu')
+@include('managers.menu')
 @push('css')
     <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-       .div-form-create table tr td {
-            border: 0;
+        .fc-daygrid-event {
+            margin: 0;
         }
 
-        /* @property --rotate {
-                            syntax: "<angle>";
-                            initial-value: 132deg;
-                            inherits: false;
-                            } */
-        :root {
-            --card-height: 65vh;
-            --card-width: calc(var(--card-height) / 1.5);
+        #calendar .fc-day-today {
+            background: #F8F8FF !important
         }
 
-        .choose-card {
-            width: var(--card-width);
-            height: var(--card-height);
-            padding: 3px;
-            margin: 3%;
-            position: relative;
-            border-radius: 6px;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            display: flex;
-            font-size: 1.5em;
+        #calendar .fc-daygrid-event {
+            padding: 2px !important;
+        }
+
+        #calendar .fc-header-toolbar {
+            margin: 0 !important;
+        }
+
+        #calendar .page-title-box {
+            height: 60px;
+        }
+
+        #calendar .fc-daygrid {
+            margin-top: 10px;
+        }
+
+        #calendar .fc-daygrid-day-top {
+            height: 25px;
+        }
+
+        #external-events .fc-event:hover {
             cursor: pointer;
-            font-family: cursive;
         }
 
-
-
-        .image-upload>input {
-            display: none;
-        }
-
-        .profile-card-img {
-            width: 30%;
-            height: 100%;
-        }
-
-        .profile-card-info {
-            width: 70%;
-            height: 100%;
-        }
-
-        .profile-card-info-basic {
-            height: 75%;
-        }
-
-        .profile-card-roles {
-            height: 25%;
+        select {
+            margin: 0 1px;
         }
 
         .event-1 {
@@ -112,15 +93,14 @@
                 <div class='fc-event-main tc'>Off Work</div>
             </div>
 
-
         </div>
-        <button type="submit">ok</button>
-    </form>
-
+    </div>
+    <div class="col-11 p-1">
+        <div id="calendar"></div>
+    </div>
 @endsection
 @push('js')
     <script src="{{ asset('js/main.min.js' )}}"></script>
-
     <script>
         $(document).ready(function () {
             $.ajaxSetup({
@@ -230,7 +210,7 @@
                 let m = getMon(d).toISOString().slice(0, 10);
                 let s = getSun(d).toISOString().slice(0, 10);
                 $.ajax({
-                    url: '{{route('api')}}',
+                    url: '{{route('managers.employee_api')}}',
                     type: 'POST',
                     dataType: 'json',
                     data: {m: m, s: s},
@@ -343,10 +323,7 @@
                         .text(i)
                         .addClass('y-opt')
                     )
-
             }
-        });
-
 
             for (let i = 12; i >= 1; i--) {
                 $("#sl-2").append($('<option>')
@@ -373,7 +350,67 @@
                 $('table.fc-col-header  thead tr:first-child > :first-child').remove();
             }
 
+            function emp() {
+                $('table.fc-col-header  > thead > tr:first-child')
+                    .prepend($('<th>')
+                        .attr('role', 'columnheader')
+                        .addClass('fc-col-header-cell fc-day')
+                        .append($('<div>')
+                            .text('Employee')
+                        )
+                    );
+                $('table.fc-scrollgrid-sync-table tbody tr')
+                    .prepend($('<td>')
+                        .addClass('fc-grid-day fc-day emp_td')
+                        .attr('role', 'gridcell')
+                        .append($('<div>')
+                            .addClass('fc-daygrid-day-frame fc-scrollgrid-sync-inner')
+                            .attr('id', 'emp_name_col')
+                            .append($('<h5>')
+                                .addClass('text-center m-0 p-1')
+                                .attr({
+                                    style: 'height: 25px; font-style: italic; background-color: #F0F8FF;',
+                                    id: 'emp_name'
+                                })
+                                .text('Name')
+                            )
+                        )
+                    );
 
+            }
+
+            function getDays(y, m) {
+                return new Date(y, m, 0).getDate()
+            }
+
+            function loadDay() {
+                $('#sl-3').empty();
+                $('#sl-3').append($('<option>').text('Day'));
+                let y = $('#sl-1').children(':selected').val();
+                let m = $('#sl-2').children(':selected').val();
+                let d = getDays(y, m);
+                for (let i = d; i >= 1; i--) {
+                    $("#sl-3").append($('<option>')
+                        .attr('value', i)
+                        .text(i)
+                        .addClass('d-opt')
+                    )
+                }
+            }
+
+            function getSun(d) {
+                d = new Date(d);
+                let day = d.getDay(),
+                    diff = d.getDate() - day + 7;
+                return new Date(d.setDate(diff));
+            }
+
+            function getMon(d) {
+                d = new Date(d);
+                let day = d.getDay(),
+                    diff = d.getDate() - day + (day === 0 ? -6 : 1);
+                return new Date(d.setDate(diff));
+            }
 
             function checkDay(d) {
                 d = new Date(d);
@@ -383,6 +420,5 @@
                 return date.getDay();
             }
         });
-
     </script>
 @endpush

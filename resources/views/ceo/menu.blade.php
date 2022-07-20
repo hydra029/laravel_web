@@ -6,6 +6,12 @@
         </a>
     </li>
     <li class="side-nav-item">
+        <a href="{{route('ceo.attendance')}}" class="side-nav-link">
+            <i class="uil-home-alt"></i>
+            <span> Attendance </span>
+        </a>
+    </li>
+    <li class="side-nav-item">
         <a href="{{route('ceo.fines')}}" class="side-nav-link">
             <i class="uil-home-alt"></i>
             <span> Fines </span>

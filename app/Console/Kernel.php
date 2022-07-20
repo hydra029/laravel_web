@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
 	 * @var array
 	 */
 	protected $commands = [
-		//
+
 	];
 
 	/**
@@ -31,7 +31,6 @@ class Kernel extends ConsoleKernel
 	protected function schedule(Schedule $schedule): void
 	{
 		$shifts = AttendanceShiftTime::get();
-
 		foreach ($shifts as $shift) {
 			$schedule->call(function () use ($shift) {
 				$users = Employee::query()->get('id');
@@ -49,34 +48,34 @@ class Kernel extends ConsoleKernel
 					$acct = array('emp_id' => $each->id, 'date' => date('Y-m-d'), 'shift' => $shift->id, 'emp_role' => 3);
 					DB::table('attendances')->insert($acct);
 				}
-			})->daily();
-
-			$check_in_start = date('H:i', strtotime($shift->check_in_start));
-			$check_in_end = date('H:i', strtotime($shift->check_in_end));
-			$check_out_start = date('H:i', strtotime($shift->check_out_start));
-			$check_out_end = date('H:i', strtotime($shift->check_out_end));
-			$shift_id = $shift->id;
-			$schedule->call(function () use ($shift_id) {
-				AttendanceShiftTime::where('id', '=', $shift_id)
-					->update(['status' => ShiftStatusEnum::Active]);
-			})->dailyAt($check_in_start);
-			$schedule->call(function () use ($shift_id) {
-				AttendanceShiftTime::where('id', '=', $shift_id)
-					->update(['status' => ShiftStatusEnum::TimeOut]);
-			})->dailyAt($check_in_end);
-			$schedule->call(function () use ($shift_id) {
-				AttendanceShiftTime::where('id', '=', $shift_id)
-					->update(['status' => ShiftStatusEnum::Active]);
-			})->dailyAt($check_out_start);
-			$schedule->call(function () use ($shift_id) {
-				AttendanceShiftTime::where('id', '=', $shift_id)
-					->update(['status' => ShiftStatusEnum::TimeOut]);
-			})->dailyAt($check_out_end);
-			$schedule->call(function () use ($shift_id) {
-				AttendanceShiftTime::where('id', '=', $shift_id)
-					->update(['status' => ShiftStatusEnum::Inactive]);
-			})->daily();
+			})->days([1, 2, 3, 4, 5, 6])->daily();
 		}
+		$schedule->call(function () {
+			AttendanceShiftTime::where('id', '=', 1)
+				->update(['status' => ShiftStatusEnum::Active]);
+		})->dailyAt('06:00');
+		$schedule->call(function () {
+			AttendanceShiftTime::where('id', '=', 1)
+				->update(['status' => ShiftStatusEnum::Inactive]);
+		})->dailyAt('12:00');
+
+		$schedule->call(function () {
+			AttendanceShiftTime::where('id', '=', 2)
+				->update(['status' => ShiftStatusEnum::Active]);
+		})->dailyAt('12:00');
+		$schedule->call(function () {
+			AttendanceShiftTime::where('id', '=', 2)
+				->update(['status' => ShiftStatusEnum::Inactive]);
+		})->dailyAt('19:00');
+
+		$schedule->call(function () {
+			AttendanceShiftTime::where('id', '=', 3)
+				->update(['status' => ShiftStatusEnum::Active]);
+		})->dailyAt('16:30');
+		$schedule->call(function () {
+			AttendanceShiftTime::where('id', '=', 3)
+				->update(['status' => ShiftStatusEnum::Inactive]);
+		})->dailyAt('23:30');
 	}
 
 	/**

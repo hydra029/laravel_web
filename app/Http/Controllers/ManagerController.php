@@ -9,12 +9,11 @@ use App\Http\Requests\UpdateManagerRequest;
 use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Manager;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
-use stdClass;
 
 class ManagerController extends Controller
 {
@@ -51,12 +50,7 @@ class ManagerController extends Controller
 		]);
 	}
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Application|Factory
-	 */
-	public function attendance()
+	public function today_attendance()
 	{
 		$limit = 10;
 		$date = date('Y-m-d');
@@ -66,8 +60,8 @@ class ManagerController extends Controller
 		$data = Employee::with(['attendance' => function ($query) use ($date) {
 			$query->where('date', '=', $date);
 		}, 'roles'])
-			->where('dept_id','=',$dept_id)
-			->where('status','=',1)
+			->where('dept_id', '=', $dept_id)
+			->where('status', '=', 1)
 			->paginate($limit);
 		$shifts = ShiftEnum::getKeys();
 		return view('managers.attendance', [
@@ -75,6 +69,44 @@ class ManagerController extends Controller
 			'num' => 1,
 			'shifts' => $shifts,
 		]);
+	}
+
+	public function attendance(): Renderable
+	{
+		return view('managers.month_attendance');
+	}
+
+	public function attendance_api(Request $request): array
+	{
+		$f = $request->f;
+		$l = $request->l;
+		return Attendance::with('shift')
+			->where('date', '<=', $l)
+			->where('date', '>=', $f)
+			->where('emp_role', '=', session('level'))
+			->get()
+			->toArray();
+	}
+
+	public function employee_attendance(): Renderable
+	{
+		return view('managers.employee_attendance');
+	}
+
+	public function employee_api(Request $request)
+	{
+		$s = $request->s;
+		$m = $request->m;
+		$dept_id = session('dept_id');
+		return Employee::with([
+			'attendance' => function ($query) use ($s, $m) {
+				$query->where('date', '<=', $s)->where('date', '>=', $m);
+			},
+			'attendance.shift'
+		])
+			->where('dept_id', '=', $dept_id)
+			->where('status', '=', 1)
+			->get(['id', 'lname', 'fname']);
 	}
 
 	/**

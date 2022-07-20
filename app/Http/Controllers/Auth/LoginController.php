@@ -10,7 +10,7 @@ use App\Models\Manager;
 use App\Models\Role;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -41,6 +41,7 @@ class LoginController extends Controller
 	public function processLogin(Request $request)
 	{
 		$email = $request->get('email');
+//		$password = Hash::make($request->get('password'));
 		$password = $request->get('password');
 		session()->put('email', $email);
 		session()->put('password', $password);
@@ -171,6 +172,7 @@ class LoginController extends Controller
             }
         }
 
+
 		session()->flash('noti.error', 'Wrong email or password');
 		return back();
 	}
@@ -180,9 +182,9 @@ class LoginController extends Controller
 		if (session()->missing('remember')) {
 			session()->flush();
 		}
-		session()->forget(['id', 'level', 'noti']);
-		session()->flash('noti.success', 'Log out successfully');
 
+		session()->forget(['id', 'level', 'noti', 'dept_id']);
+		session()->flash('noti.success', 'Log out successfully');
 		return redirect()->route('login');
 	}
 }

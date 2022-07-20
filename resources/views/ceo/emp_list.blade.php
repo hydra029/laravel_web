@@ -1,4 +1,5 @@
 @extends('layout.master')
+@include('ceo.menu')
 @section('content')
     @push('css')
         <link rel="stylesheet" type="text/css"

@@ -20,6 +20,7 @@ use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Role;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -146,6 +147,47 @@ class CeoController extends Controller
 			]);
 
 		return AttendanceShiftTime::whereId($id)->get();
+	}
+
+	public function attendance(): Renderable
+	{
+		return view('ceo.attendance');
+	}
+
+	/**
+	 * @throws \JsonException
+	 */
+	public function attendance_api(Request $request)
+	{
+		$s = $request->s;
+		$m = $request->m;
+		$dept_id = $request->dept_id;
+		if ($dept_id === 'all') {
+			$arr = Employee::with([
+				'attendance' => function ($query) use ($s, $m) {
+					$query->where('date', '<=', $s)->where('date', '>=', $m);
+				},
+				'attendance.shift'
+			])
+				->where('status', '=', 1)
+				->get(['id', 'lname', 'fname']);
+		} else {
+			$arr = Employee::with([
+				'attendance' => function ($query) use ($s, $m) {
+					$query->where('date', '<=', $s)->where('date', '>=', $m);
+				},
+				'attendance.shift'
+			])
+				->where('dept_id', '=', $dept_id)
+				->where('status', '=', 1)
+				->get(['id', 'lname', 'fname']);
+		}
+		return $arr;
+	}
+
+	public function department_api()
+	{
+		return Department::get();
 	}
 
 	public function pay_rate_api(Request $request): JsonResponse
