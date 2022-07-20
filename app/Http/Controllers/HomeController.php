@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -39,4 +40,10 @@ class HomeController extends Controller
 			->where('status', '=', 1)
 			->get(['id', 'lname', 'fname']);
 	}
+
+    public function input_avatar(Request $request){
+        $path = Storage::disk('public')->putFile('img', $request->file('avatar'));
+        $arr['avatar'] = $path;
+        return $arr;
+    }
 }

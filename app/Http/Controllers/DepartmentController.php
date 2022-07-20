@@ -18,37 +18,44 @@ use Illuminate\Support\Facades\View;
 class DepartmentController extends Controller
 {
 
-	public function __construct()
-	{
+    use ResponseTrait;
+    public function __construct()
+    {
 		$this->middleware('ceo');
-		$this->model = new Department();
+		$this->models = new Department();
 		$routeName = Route::currentRouteName();
 		$arr = explode('.', $routeName);
 		$arr = array_map('ucfirst', $arr);
 		$title = implode(' - ', $arr);
 
 		View::share('title', $title);
-	}
+    }
+    public function index()
+    {
+       $dept = $this->models->with('manager')->withCount(['members','roles'])->get();
+       return view('ceo.department', [
+           'dept' => $dept,
+       ]);
+    }
 
-	public function index()
-	{
-		$dept = $this->model->with('manager')->withCount(['members', 'roles'])->get();
-		return view('ceo.department', [
-			'dept' => $dept,
-		]);
-	}
+    public function department_employees(Request $request): JsonResponse
+    {
+        $dept_id = $request->get('dept_id');
+        $data = Employee::query()->with('departments', 'roles')
+        ->where('employees.dept_id', '=', $dept_id)
+        ->paginate(10);
+        foreach ($data as $each){
+            $each->full_name = $each->full_name ;
+            $each->gender_name = $each->gender_name ;
+            $each->address = $each->address ;
+            $each->date_of_birth = $each->date_of_birth ;
+        }
+        $arr['data'] = $data->getCollection();
+        $arr['pagination'] = $data->linkCollection();
+        return $this->successResponse($arr);
 
-	public function department_employees(Request $request)
-	{
-		$dept_id = $request->get('dept_id');
-		$employee_dept = Employee::query()
-			->leftJoin('departments', 'employees.dept_id', '=', 'departments.id')
-			->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
-			->select('employees.*', 'departments.name as dept_name', 'roles.name as role_name')
-			->where('employees.dept_id', '=', $dept_id)
-			->get();
-		return $employee_dept->append(['full_name', 'date_of_birth', 'gender_name', 'address']);
-	}
+    }
+
 
 	public function manager_role(Request $request)
 	{

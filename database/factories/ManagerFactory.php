@@ -22,7 +22,6 @@ class ManagerFactory extends Factory
             'city' => $this->faker->city,
             'district' => $this->faker->streetName,
 	        'email' => $this->faker->email,
-	        'password' => $this->faker->password,
 	        'dept_id' => $this->faker->unique()->numberBetween(1, 10),
 	        'role_id' => 1,
 	        'status' => $this->faker->boolean,

@@ -6,6 +6,7 @@ use Database\Factories\RoleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Role
@@ -39,9 +40,16 @@ class Role extends Model
        'status',
    ];
 
-   public function getPayRateMoneyAttribute(): string
+   public function getPayRateMoneyAttribute()
    {
         return number_format((float)($this->pay_rate)) . ' đ';
    }
+
+	public function departments(): BelongsTo
+	{
+		return $this->BelongsTo(Department::class, 'dept_id', 'id')
+			->select(['id', 'name']);
+
+	}
 
 }

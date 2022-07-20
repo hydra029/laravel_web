@@ -22,7 +22,6 @@ class CeoFactory extends Factory
             'city' => $this->faker->city,
             'district' => $this->faker->streetName,
 	        'email' => $this->faker->email,
-	        'password' => $this->faker->password,
         ];
     }
 }

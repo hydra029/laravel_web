@@ -22,7 +22,6 @@ class AccountantFactory extends Factory
             'city' => $this->faker->city,
             'district' => $this->faker->streetName,
 			'email' => $this->faker->email,
-			'password' => $this->faker->password,
 			'dept_id' => 1,
 			'role_id' => $this->faker->numberBetween(1, 5),
 			'status' => $this->faker->boolean,

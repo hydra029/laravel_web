@@ -22,7 +22,6 @@ class EmployeeFactory extends Factory
             'city' => $this->faker->city,
             'district' => $this->faker->streetName,
 	        'email' => $this->faker->email,
-	        'password' => $this->faker->password,
 	        'dept_id' => $this->faker->numberBetween(2, 10),
 	        'role_id' => $this->faker->numberBetween(2, 10),
 	        'status' => $this->faker->boolean,

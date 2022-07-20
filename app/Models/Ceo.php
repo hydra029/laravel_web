@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Ceo
@@ -37,7 +38,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Ceo extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
 	protected $fillable = [
 		'fname',
@@ -87,5 +88,5 @@ class Ceo extends Model
 		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
 
-	public $timestamps = false;
+	public $timestamps = true;
 }

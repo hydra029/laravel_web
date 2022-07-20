@@ -104,7 +104,7 @@
     </span>
                     <span>
         <span class="account-user-name">{{ session('name') }}</span>
-        <span class="account-position">Founder</span>
+        <span class="account-position">{{ session('role_name') }}</span>
     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown"
@@ -115,7 +115,7 @@
                     </div>
 
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <a href="{{ route('ceo.get_infor') }}" id="get-infor" class="dropdown-item notify-item">
                         <i class="mdi mdi-account-circle mr-1"></i>
                         <span>My Account</span>
                     </a>

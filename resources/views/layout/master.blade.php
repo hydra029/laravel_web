@@ -11,6 +11,7 @@
     {{-- css --}}
     <link href="{{ asset('css/icons.min.css' )}}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/app-modern.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+    <link href="{{ asset('css/app.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
     @stack('css')
 </head>
 <body class="loading" data-layout="detached"
@@ -20,7 +21,7 @@
     <div class="wrapper">
         @include('layout.sidebar')
         <div class="content-page">
-            <div class="content">
+            <div class="content" id="content">
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
@@ -47,6 +48,7 @@
 <script src="{{ asset('js/notify.min.js' )}}"></script>
 @include('layout.notify')
 <script src="https://kit.fontawesome.com/b0fe355241.js" crossorigin="anonymous"></script>
+<script src="{{asset('js/getInfor.js')}}" crossorigin="anonymous"></script>
 
 @stack('js')
 </body>

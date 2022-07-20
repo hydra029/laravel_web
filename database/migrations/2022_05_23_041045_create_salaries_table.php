@@ -21,12 +21,14 @@ class CreateSalariesTable extends Migration
 			$table->string('role_name');
 			$table->unsignedTinyInteger('work_day');
 			$table->unsignedInteger('pay_rate');
+			$table->unsignedInteger('deduction');
 			$table->unsignedInteger('salary');
 			$table->unsignedBigInteger('mgr_id');
-			$table->unsignedBigInteger('acct_id');
-			$table->boolean('ceo_sign');
-			$table->boolean('status');
+			$table->unsignedBigInteger('acct_id')->nullable();
+			$table->boolean('ceo_sign')->nullable();
+			$table->boolean('status')->default(1);
 			$table->primary(['emp_id', 'month', 'year']);
+            $table->timestamps();
 		});
 	}
 
