@@ -10,6 +10,7 @@ use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Manager;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -32,22 +33,15 @@ class ManagerController extends Controller
 
 	public function index()
 	{
-		$date = date('Y-m-d');
-		$emp_role = EmpRoleEnum::Manager;
-		$query = [
-			'attendances.check_in as check_in',
-			'attendances.check_out as check_out',
-			'attendance_shift_times.id as shift_id',
-			'attendance_shift_times.status as status'
-		];
-		$data = Attendance::where('emp_id', '=', session('id'))
-			->where('date', '=', $date)
-			->where('emp_role', '=', $emp_role)
-			->leftJoin('attendance_shift_times', 'attendances.shift', '=', 'attendance_shift_times.id')
-			->get($query);
-		return view('managers.index', [
-			'data' => $data,
-		]);
+        $date = date('Y-m-d');
+        $data = Attendance::with('shifts')
+            ->where('emp_id', '=', session('id'))
+            ->where('date', '=', $date)
+            ->where('emp_role', '=', session('level'))
+            ->get();
+        return view('managers.index', [
+            'data' => $data,
+        ]);
 	}
 
 	public function today_attendance()
@@ -108,6 +102,26 @@ class ManagerController extends Controller
 			->where('status', '=', 1)
 			->get(['id', 'lname', 'fname']);
 	}
+
+    public function checkin(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::Manager)
+            ->where('date','=', date('Y-m-d'))
+            ->where('shift','=', $request->get('shift'))
+            ->update(['check_in' => date('H:i')]);
+        return redirect()->route('managers.index');
+    }
+
+    public function checkout(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::Manager)
+            ->where('date','=', date('Y-m-d'))
+            ->where('shift','=', $request->get('shift'))
+            ->update(['check_out' => date('H:i')]);
+        return redirect()->route('managers.index');
+    }
 
 	/**
 	 * Show the form for creating a new resource.

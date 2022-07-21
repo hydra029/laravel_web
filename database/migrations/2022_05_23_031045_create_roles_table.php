@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,14 +15,12 @@ class CreateRolesTable extends Migration
 	public function up(): void
 	{
 		Schema::create('roles', static function (Blueprint $table) {
-            $table->id();
+			$table->id();
 			$table->foreignId('dept_id')->constrained('departments')->onDelete('cascade');
-			// $table->unsignedBigInteger('dept_id');
-			$table->integer('pay_rate');
 			$table->string('name');
+            $table->integer('pay_rate');
 			$table->boolean('status');
-			// $table->primary(['id', 'dept_id']);
-			// $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->unique(['dept_id', 'name']);
 		});
 	}
 

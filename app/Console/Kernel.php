@@ -56,7 +56,7 @@ class Kernel extends ConsoleKernel
 		})->dailyAt('06:00');
 		$schedule->call(function () {
 			AttendanceShiftTime::where('id', '=', 1)
-				->update(['status' => ShiftStatusEnum::Inactive]);
+				->update(['status' => ShiftStatusEnum::TimeOut]);
 		})->dailyAt('12:00');
 
 		$schedule->call(function () {
@@ -65,7 +65,7 @@ class Kernel extends ConsoleKernel
 		})->dailyAt('12:00');
 		$schedule->call(function () {
 			AttendanceShiftTime::where('id', '=', 2)
-				->update(['status' => ShiftStatusEnum::Inactive]);
+				->update(['status' => ShiftStatusEnum::TimeOut]);
 		})->dailyAt('19:00');
 
 		$schedule->call(function () {
@@ -74,8 +74,12 @@ class Kernel extends ConsoleKernel
 		})->dailyAt('16:30');
 		$schedule->call(function () {
 			AttendanceShiftTime::where('id', '=', 3)
-				->update(['status' => ShiftStatusEnum::Inactive]);
+				->update(['status' => ShiftStatusEnum::TimeOut]);
 		})->dailyAt('23:30');
+        $schedule->call(function () {
+			AttendanceShiftTime::query()
+                ->update(['status' => ShiftStatusEnum::Inactive]);
+		})->daily();
 	}
 
 	/**

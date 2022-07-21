@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $lname
  * @property int $gender
  * @property string $dob
+ * @property string $dept_id
  * @property string|null $avatar
  * @property string $email
  * @property string $password

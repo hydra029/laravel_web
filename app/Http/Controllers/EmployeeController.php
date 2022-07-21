@@ -24,41 +24,35 @@ class EmployeeController extends Controller
 {
 
     use ResponseTrait;
-	public function __construct()
-	{
-		$this->middleware('employee');
-		$routeName = Route::currentRouteName();
-		$arr = explode('.', $routeName);
-		$arr = array_map('ucfirst', $arr);
-		$title = implode(' - ', $arr);
 
-		View::share('title', $title);
-	}
+    public function __construct()
+    {
+        $this->middleware('employee');
+        $routeName = Route::currentRouteName();
+        $arr = explode('.', $routeName);
+        $arr = array_map('ucfirst', $arr);
+        $title = implode(' - ', $arr);
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Application|Factory  \Contracts\View\View
-	 */
-	public function index()
-	{
-		$date = date('Y-m-d');
-		$emp_role = EmpRoleEnum::Employee;
-		$query = [
-			'attendances.check_in as check_in',
-			'attendances.check_out as check_out',
-			'attendance_shift_times.id as shift_id',
-			'attendance_shift_times.status as status'
-		];
-		$data = Attendance::where('emp_id', '=', session('id'))
-			->where('date', '=', $date)
-			->where('emp_role', '=', $emp_role)
-			->leftJoin('attendance_shift_times', 'attendances.shift', '=', 'attendance_shift_times.id')
-			->get($query);
-		return view('employees.index', [
-			'data' => $data,
-		]);
-	}
+        View::share('title', $title);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Application|Factory  \Contracts\View\View
+     */
+    public function index()
+    {
+        $date = date('Y-m-d');
+        $data = Attendance::with('shifts')
+            ->where('emp_id', '=', session('id'))
+            ->where('date', '=', $date)
+            ->where('emp_role', '=', session('level'))
+            ->get();
+        return view('employees.index', [
+            'data' => $data,
+        ]);
+    }
 
     public function employee_infor(Request $request)
     {
@@ -66,128 +60,117 @@ class EmployeeController extends Controller
         return Employee::query()->whereId($id)->first();
     }
 
-	public function attendance(): Renderable
-	{
-		return view('employees.month_attendance');
-	}
+    public function attendance(): Renderable
+    {
+        return view('employees.month_attendance');
+    }
 
+    public function attendance_api(Request $request)
+    {
+        $f = $request->f;
+        $l = $request->l;
+        return Attendance::with('shifts')
+            ->where('date', '<=', $l)
+            ->where('date', '>=', $f)
+            ->where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', session('level'))
+            ->get();
+    }
 
-	public function attendance_api(Request $request)
-	{
-		$f = $request->f;
-		$l = $request->l;
-		return Attendance::with('shift')
-			->where('date', '<=', $l)
-			->where('date', '>=', $f)
-			->where('emp_id', '=', session('id'))
-			->where('emp_role', '=', session('level'))
-			->get();
-	}
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create(): Response
+    {
+        //
+    }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param StoreEmployeeRequest $request
+     * @return RedirectResponse
+     */
+    public function store(StoreEmployeeRequest $request): RedirectResponse
+    {
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create(): Response
-	{
-		//
-	}
+    public function add(): RedirectResponse
+    {
+        $users = Employee::get('id');
+        foreach ($users as $each) {
+            $date = date('Y-m-d', mktime(0, 0, 0, 7, 21, 2022));
+            for ($i = 1; $i <= 3; $i++) {
+                $data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
+                Attendance::create($data);
+            }
+        }
+        return redirect()->route('employees.index');
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param StoreEmployeeRequest $request
-	 * @return RedirectResponse
-	 */
-	public function store(StoreEmployeeRequest $request): RedirectResponse
-	{
+    /**
+     * Display the specified resource.
+     *
+     * @param Employee $employee
+     * @return void
+     */
+    public function show(Employee $employee): void
+    {
+        //
+    }
 
-	}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Employee $employee
+     * @return void
+     */
+    public function edit(Employee $employee): void
+    {
+        //
+    }
 
-	public function add(): RedirectResponse
-	{
-		$users = Employee::get('id');
-		foreach ($users as $each) {
-			$date = date('Y-m-d', mktime(0, 0, 0, 7, 15, 2022));
-			for ($i = 1; $i <= 3; $i++) {
-				$data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
-				Attendance::create($data);
-			}
-		}
-		return redirect()->route('employees.index');
-	}
+    public function checkin(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::Employee)
+            ->where('date','=', date('Y-m-d'))
+            ->where('shift','=', $request->get('shift'))
+            ->update(['check_in' => date('H:i')]);
+        return redirect()->route('employees.index');
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param Employee $employee
-	 * @return void
-	 */
-	public function show(Employee $employee): void
-	{
-		//
-	}
+    public function checkout(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::Employee)
+            ->where('date','=', date('Y-m-d'))
+            ->where('shift','=', $request->get('shift'))
+            ->update(['check_out' => date('H:i')]);
+        return redirect()->route('employees.index');
+    }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param Employee $employee
-	 * @return void
-	 */
-	public function edit(Employee $employee): void
-	{
-		//
-	}
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdateEmployeeRequest $request
+     * @param Employee $employee
+     * @return void
+     */
+    public function update(UpdateEmployeeRequest $request, Employee $employee): void
+    {
+    }
 
-	public function checkin(): RedirectResponse
-	{
-		$date = date('H:i');
-		$status = ShiftStatusEnum::Active;
-		$start_time = AttendanceShiftTime::where('id', '=', $status)->get('check_in_start');
-		$end_time = AttendanceShiftTime::where('id', '=', $status)->get('check_in_end');
-		if ($date >= $start_time && $date <= $end_time) {
-			Attendance::where('emp_id', '=', session('id'))
-				->where('shift', '=', 2)
-				->update(['check_in' => 1]);
-		}
-		return redirect()->route('employees.index');
-	}
-
-	public function checkout(): RedirectResponse
-	{
-		$date = date('H:i');
-		$shift = Attendance::where('status', '=', 2)->get('id');
-		$start_time = AttendanceShiftTime::where('id', '=', $shift)->get('check_out_start');
-		$end_time = AttendanceShiftTime::where('id', '=', $shift)->get('check_out_end');
-		if ($date >= $start_time && $date <= $end_time) {
-			Attendance::where('emp_id', '=', session('id'))
-				->where('shift', '=', $shift)
-				->update(['check_out' => 1]);
-		}
-		return redirect()->route('employees.index');
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param UpdateEmployeeRequest $request
-	 * @param Employee $employee
-	 * @return void
-	 */
-	public function update(UpdateEmployeeRequest $request, Employee $employee): void
-	{
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param Employee $employee
-	 * @return Response
-	 */
-	public function destroy(Employee $employee): Response
-	{
-		//
-	}
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Employee $employee
+     * @return Response
+     */
+    public function destroy(Employee $employee): Response
+    {
+        //
+    }
 }
