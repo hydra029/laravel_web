@@ -63,22 +63,22 @@ class Attendance extends Model
 
 	public function getShiftNameAttribute(): string
 	{
-		return ShiftEnum::getKey($this->shift_id);
+		return ShiftEnum::getKey($this->shift);
 	}
 
 	public function getShiftStatusAttribute(): string
 	{
-		return ShiftStatusEnum::getKey($this->status);
+		return ShiftStatusEnum::getKey($this->shifts->status);
 	}
 
-	public function getCheckInStatusAttribute(): string
+	public function getCheckInTimeAttribute(): string
 	{
-		return AttendanceEnum::getKey($this->check_in);
+		return substr($this->check_in,0,5);
 	}
 
-	public function getCheckOutStatusAttribute(): string
+	public function getCheckOutTimeAttribute(): string
 	{
-		return AttendanceEnum::getKey($this->check_out);
+        return substr($this->check_out,0,5);
 	}
 
 
@@ -98,9 +98,10 @@ class Attendance extends Model
 		return $this->BelongsTo(Accountant::class, 'emp_id');
 	}
 
-	public function shift(): BelongsTo
+	public function shifts(): BelongsTo
 	{
 		return $this->BelongsTo(AttendanceShiftTime::class, 'shift');
 	}
+
 
 }

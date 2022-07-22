@@ -1,5 +1,5 @@
 @extends('layout.master')
-@include('employees.menu')
+@include('managers.menu')
 @push('css')
     <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
     <style>

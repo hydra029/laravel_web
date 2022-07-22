@@ -14,6 +14,8 @@
 
     namespace Illuminate\Support\Facades {
 
+	    use Closure;
+	    use Illuminate\Foundation\Application;
 	    use Illuminate\Routing\Router;
 	    use Illuminate\Session\SessionManager;
 	    use Illuminate\Session\Store;
@@ -30,9 +32,9 @@
          * @return string 
          * @static 
          */ 
-        public static function version()
+        public static function version(): string
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->version();
         }
                     /**
@@ -42,47 +44,47 @@
          * @return void 
          * @static 
          */ 
-        public static function bootstrapWith($bootstrappers)
+        public static function bootstrapWith(array $bootstrappers): void
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->bootstrapWith($bootstrappers);
         }
                     /**
          * Register a callback to run after loading the environment.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
-        public static function afterLoadingEnvironment($callback)
+        public static function afterLoadingEnvironment(Closure $callback): void
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->afterLoadingEnvironment($callback);
         }
                     /**
          * Register a callback to run before a bootstrapper.
          *
          * @param string $bootstrapper
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
-        public static function beforeBootstrapping($bootstrapper, $callback)
+        public static function beforeBootstrapping(string $bootstrapper, Closure $callback)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->beforeBootstrapping($bootstrapper, $callback);
         }
                     /**
          * Register a callback to run after a bootstrapper.
          *
          * @param string $bootstrapper
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
         public static function afterBootstrapping($bootstrapper, $callback)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->afterBootstrapping($bootstrapper, $callback);
         }
                     /**
@@ -93,19 +95,19 @@
          */ 
         public static function hasBeenBootstrapped()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->hasBeenBootstrapped();
         }
                     /**
          * Set the base path for the application.
          *
          * @param string $basePath
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function setBasePath($basePath)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->setBasePath($basePath);
         }
                     /**
@@ -117,19 +119,19 @@
          */ 
         public static function path($path = '')
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->path($path);
         }
                     /**
          * Set the application directory.
          *
          * @param string $path
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function useAppPath($path)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->useAppPath($path);
         }
                     /**
@@ -141,7 +143,7 @@
          */ 
         public static function basePath($path = '')
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->basePath($path);
         }
                     /**
@@ -153,7 +155,7 @@
          */ 
         public static function bootstrapPath($path = '')
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->bootstrapPath($path);
         }
                     /**
@@ -165,7 +167,7 @@
          */ 
         public static function configPath($path = '')
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->configPath($path);
         }
                     /**
@@ -177,19 +179,19 @@
          */ 
         public static function databasePath($path = '')
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->databasePath($path);
         }
                     /**
          * Set the database directory.
          *
          * @param string $path
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function useDatabasePath($path)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->useDatabasePath($path);
         }
                     /**
@@ -200,19 +202,19 @@
          */ 
         public static function langPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->langPath();
         }
                     /**
          * Set the language file directory.
          *
          * @param string $path
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function useLangPath($path)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->useLangPath($path);
         }
                     /**
@@ -223,7 +225,7 @@
          */ 
         public static function publicPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->publicPath();
         }
                     /**
@@ -234,19 +236,19 @@
          */ 
         public static function storagePath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->storagePath();
         }
                     /**
          * Set the storage directory.
          *
          * @param string $path
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function useStoragePath($path)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->useStoragePath($path);
         }
                     /**
@@ -258,7 +260,7 @@
          */ 
         public static function resourcePath($path = '')
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->resourcePath($path);
         }
                     /**
@@ -272,7 +274,7 @@
          */ 
         public static function viewPath($path = '')
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->viewPath($path);
         }
                     /**
@@ -283,31 +285,31 @@
          */ 
         public static function environmentPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->environmentPath();
         }
                     /**
          * Set the directory for the environment file.
          *
          * @param string $path
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function useEnvironmentPath($path)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->useEnvironmentPath($path);
         }
                     /**
          * Set the environment file to be loaded during bootstrapping.
          *
          * @param string $file
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function loadEnvironmentFrom($file)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->loadEnvironmentFrom($file);
         }
                     /**
@@ -318,7 +320,7 @@
          */ 
         public static function environmentFile()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->environmentFile();
         }
                     /**
@@ -329,7 +331,7 @@
          */ 
         public static function environmentFilePath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->environmentFilePath();
         }
                     /**
@@ -341,7 +343,7 @@
          */ 
         public static function environment(...$environments)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->environment(...$environments);
         }
                     /**
@@ -352,7 +354,7 @@
          */ 
         public static function isLocal()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isLocal();
         }
                     /**
@@ -363,19 +365,19 @@
          */ 
         public static function isProduction()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isProduction();
         }
                     /**
          * Detect the application's current environment.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return string 
          * @static 
          */ 
         public static function detectEnvironment($callback)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->detectEnvironment($callback);
         }
                     /**
@@ -386,7 +388,7 @@
          */ 
         public static function runningInConsole()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->runningInConsole();
         }
                     /**
@@ -397,7 +399,7 @@
          */ 
         public static function runningUnitTests()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->runningUnitTests();
         }
                     /**
@@ -408,7 +410,7 @@
          */ 
         public static function hasDebugModeEnabled()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->hasDebugModeEnabled();
         }
                     /**
@@ -419,7 +421,7 @@
          */ 
         public static function registerConfiguredProviders()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->registerConfiguredProviders();
         }
                     /**
@@ -432,7 +434,7 @@
          */ 
         public static function register($provider, $force = false)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->register($provider, $force);
         }
                     /**
@@ -444,7 +446,7 @@
          */ 
         public static function getProvider($provider)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getProvider($provider);
         }
                     /**
@@ -456,7 +458,7 @@
          */ 
         public static function getProviders($provider)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getProviders($provider);
         }
                     /**
@@ -468,7 +470,7 @@
          */ 
         public static function resolveProvider($provider)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->resolveProvider($provider);
         }
                     /**
@@ -479,7 +481,7 @@
          */ 
         public static function loadDeferredProviders()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->loadDeferredProviders();
         }
                     /**
@@ -491,7 +493,7 @@
          */ 
         public static function loadDeferredProvider($service)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->loadDeferredProvider($service);
         }
                     /**
@@ -504,7 +506,7 @@
          */ 
         public static function registerDeferredProvider($provider, $service = null)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->registerDeferredProvider($provider, $service);
         }
                     /**
@@ -517,7 +519,7 @@
          */ 
         public static function make($abstract, $parameters = [])
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->make($abstract, $parameters);
         }
                     /**
@@ -529,7 +531,7 @@
          */ 
         public static function bound($abstract)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->bound($abstract);
         }
                     /**
@@ -540,7 +542,7 @@
          */ 
         public static function isBooted()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isBooted();
         }
                     /**
@@ -551,7 +553,7 @@
          */ 
         public static function boot()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->boot();
         }
                     /**
@@ -563,7 +565,7 @@
          */ 
         public static function booting($callback)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->booting($callback);
         }
                     /**
@@ -575,7 +577,7 @@
          */ 
         public static function booted($callback)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->booted($callback);
         }
                     /**
@@ -586,7 +588,7 @@
          */ 
         public static function handle($request, $type = 1, $catch = true)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->handle($request, $type, $catch);
         }
                     /**
@@ -597,7 +599,7 @@
          */ 
         public static function shouldSkipMiddleware()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->shouldSkipMiddleware();
         }
                     /**
@@ -608,7 +610,7 @@
          */ 
         public static function getCachedServicesPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getCachedServicesPath();
         }
                     /**
@@ -619,7 +621,7 @@
          */ 
         public static function getCachedPackagesPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getCachedPackagesPath();
         }
                     /**
@@ -630,7 +632,7 @@
          */ 
         public static function configurationIsCached()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->configurationIsCached();
         }
                     /**
@@ -641,7 +643,7 @@
          */ 
         public static function getCachedConfigPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getCachedConfigPath();
         }
                     /**
@@ -652,7 +654,7 @@
          */ 
         public static function routesAreCached()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->routesAreCached();
         }
                     /**
@@ -663,7 +665,7 @@
          */ 
         public static function getCachedRoutesPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getCachedRoutesPath();
         }
                     /**
@@ -674,7 +676,7 @@
          */ 
         public static function eventsAreCached()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->eventsAreCached();
         }
                     /**
@@ -685,19 +687,19 @@
          */ 
         public static function getCachedEventsPath()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getCachedEventsPath();
         }
                     /**
          * Add new prefix to list of absolute path prefixes.
          *
          * @param string $prefix
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function addAbsoluteCachePathPrefix($prefix)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->addAbsoluteCachePathPrefix($prefix);
         }
                     /**
@@ -708,7 +710,7 @@
          */ 
         public static function isDownForMaintenance()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isDownForMaintenance();
         }
                     /**
@@ -724,19 +726,19 @@
          */ 
         public static function abort($code, $message = '', $headers = [])
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->abort($code, $message, $headers);
         }
                     /**
          * Register a terminating callback with the application.
          *
          * @param callable|string $callback
-         * @return \Illuminate\Foundation\Application 
+         * @return Application
          * @static 
          */ 
         public static function terminating($callback)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->terminating($callback);
         }
                     /**
@@ -747,7 +749,7 @@
          */ 
         public static function terminate()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->terminate();
         }
                     /**
@@ -758,7 +760,7 @@
          */ 
         public static function getLoadedProviders()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getLoadedProviders();
         }
                     /**
@@ -770,7 +772,7 @@
          */ 
         public static function providerIsLoaded($provider)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->providerIsLoaded($provider);
         }
                     /**
@@ -781,7 +783,7 @@
          */ 
         public static function getDeferredServices()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getDeferredServices();
         }
                     /**
@@ -793,7 +795,7 @@
          */ 
         public static function setDeferredServices($services)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->setDeferredServices($services);
         }
                     /**
@@ -805,7 +807,7 @@
          */ 
         public static function addDeferredServices($services)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->addDeferredServices($services);
         }
                     /**
@@ -817,7 +819,7 @@
          */ 
         public static function isDeferredService($service)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isDeferredService($service);
         }
                     /**
@@ -829,7 +831,7 @@
          */ 
         public static function provideFacades($namespace)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->provideFacades($namespace);
         }
                     /**
@@ -840,7 +842,7 @@
          */ 
         public static function getLocale()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getLocale();
         }
                     /**
@@ -851,7 +853,7 @@
          */ 
         public static function currentLocale()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->currentLocale();
         }
                     /**
@@ -862,7 +864,7 @@
          */ 
         public static function getFallbackLocale()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getFallbackLocale();
         }
                     /**
@@ -874,7 +876,7 @@
          */ 
         public static function setLocale($locale)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->setLocale($locale);
         }
                     /**
@@ -886,7 +888,7 @@
          */ 
         public static function setFallbackLocale($fallbackLocale)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->setFallbackLocale($fallbackLocale);
         }
                     /**
@@ -898,7 +900,7 @@
          */ 
         public static function isLocale($locale)
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isLocale($locale);
         }
                     /**
@@ -909,7 +911,7 @@
          */ 
         public static function registerCoreContainerAliases()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->registerCoreContainerAliases();
         }
                     /**
@@ -920,7 +922,7 @@
          */ 
         public static function flush()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->flush();
         }
                     /**
@@ -932,7 +934,7 @@
          */ 
         public static function getNamespace()
         {
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getNamespace();
         }
                     /**
@@ -944,7 +946,7 @@
          */ 
         public static function when($concrete)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->when($concrete);
         }
                     /**
@@ -962,7 +964,7 @@
          */ 
         public static function has($id)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->has($id);
         }
                     /**
@@ -974,7 +976,7 @@
          */ 
         public static function resolved($abstract)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->resolved($abstract);
         }
                     /**
@@ -986,7 +988,7 @@
          */ 
         public static function isShared($abstract)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isShared($abstract);
         }
                     /**
@@ -998,14 +1000,14 @@
          */ 
         public static function isAlias($name)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->isAlias($name);
         }
                     /**
          * Register a binding with the container.
          *
          * @param string $abstract
-         * @param \Closure|string|null $concrete
+         * @param Closure|string|null $concrete
          * @param bool $shared
          * @return void 
          * @throws \TypeError
@@ -1013,7 +1015,7 @@
          */ 
         public static function bind($abstract, $concrete = null, $shared = false)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->bind($abstract, $concrete, $shared);
         }
                     /**
@@ -1025,20 +1027,20 @@
          */ 
         public static function hasMethodBinding($method)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->hasMethodBinding($method);
         }
                     /**
          * Bind a callback to resolve with Container::call.
          *
          * @param array|string $method
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
         public static function bindMethod($method, $callback)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->bindMethod($method, $callback);
         }
                     /**
@@ -1051,7 +1053,7 @@
          */ 
         public static function callMethodBinding($method, $instance)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->callMethodBinding($method, $instance);
         }
                     /**
@@ -1059,93 +1061,93 @@
          *
          * @param string $concrete
          * @param string $abstract
-         * @param \Closure|string $implementation
+         * @param Closure|string $implementation
          * @return void 
          * @static 
          */ 
         public static function addContextualBinding($concrete, $abstract, $implementation)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->addContextualBinding($concrete, $abstract, $implementation);
         }
                     /**
          * Register a binding if it hasn't already been registered.
          *
          * @param string $abstract
-         * @param \Closure|string|null $concrete
+         * @param Closure|string|null $concrete
          * @param bool $shared
          * @return void 
          * @static 
          */ 
         public static function bindIf($abstract, $concrete = null, $shared = false)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->bindIf($abstract, $concrete, $shared);
         }
                     /**
          * Register a shared binding in the container.
          *
          * @param string $abstract
-         * @param \Closure|string|null $concrete
+         * @param Closure|string|null $concrete
          * @return void 
          * @static 
          */ 
         public static function singleton($abstract, $concrete = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->singleton($abstract, $concrete);
         }
                     /**
          * Register a shared binding if it hasn't already been registered.
          *
          * @param string $abstract
-         * @param \Closure|string|null $concrete
+         * @param Closure|string|null $concrete
          * @return void 
          * @static 
          */ 
         public static function singletonIf($abstract, $concrete = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->singletonIf($abstract, $concrete);
         }
                     /**
          * Register a scoped binding in the container.
          *
          * @param string $abstract
-         * @param \Closure|string|null $concrete
+         * @param Closure|string|null $concrete
          * @return void 
          * @static 
          */ 
         public static function scoped($abstract, $concrete = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->scoped($abstract, $concrete);
         }
                     /**
          * Register a scoped binding if it hasn't already been registered.
          *
          * @param string $abstract
-         * @param \Closure|string|null $concrete
+         * @param Closure|string|null $concrete
          * @return void 
          * @static 
          */ 
         public static function scopedIf($abstract, $concrete = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->scopedIf($abstract, $concrete);
         }
                     /**
          * "Extend" an abstract type in the container.
          *
          * @param string $abstract
-         * @param \Closure $closure
+         * @param Closure $closure
          * @return void 
          * @throws \InvalidArgumentException
          * @static 
          */ 
         public static function extend($abstract, $closure)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->extend($abstract, $closure);
         }
                     /**
@@ -1158,7 +1160,7 @@
          */ 
         public static function instance($abstract, $instance)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->instance($abstract, $instance);
         }
                     /**
@@ -1171,7 +1173,7 @@
          */ 
         public static function tag($abstracts, $tags)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->tag($abstracts, $tags);
         }
                     /**
@@ -1183,7 +1185,7 @@
          */ 
         public static function tagged($tag)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->tagged($tag);
         }
                     /**
@@ -1197,20 +1199,20 @@
          */ 
         public static function alias($abstract, $alias)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->alias($abstract, $alias);
         }
                     /**
          * Bind a new callback to an abstract's rebind event.
          *
          * @param string $abstract
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return mixed 
          * @static 
          */ 
         public static function rebinding($abstract, $callback)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->rebinding($abstract, $callback);
         }
                     /**
@@ -1224,20 +1226,20 @@
          */ 
         public static function refresh($abstract, $target, $method)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->refresh($abstract, $target, $method);
         }
                     /**
          * Wrap the given closure such that its dependencies will be injected when executed.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @param array $parameters
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function wrap($callback, $parameters = [])
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->wrap($callback, $parameters);
         }
                     /**
@@ -1252,19 +1254,19 @@
          */ 
         public static function call($callback, $parameters = [], $defaultMethod = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->call($callback, $parameters, $defaultMethod);
         }
                     /**
          * Get a closure to resolve the given type from the container.
          *
          * @param string $abstract
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function factory($abstract)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->factory($abstract);
         }
                     /**
@@ -1278,7 +1280,7 @@
          */ 
         public static function makeWith($abstract, $parameters = [])
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->makeWith($abstract, $parameters);
         }
                     /**
@@ -1293,13 +1295,13 @@
          */ 
         public static function get($id)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->get($id);
         }
                     /**
          * Instantiate a concrete instance of the given type.
          *
-         * @param \Closure|string $concrete
+         * @param Closure|string $concrete
          * @return mixed 
          * @throws \Illuminate\Contracts\Container\BindingResolutionException
          * @throws \Illuminate\Contracts\Container\CircularDependencyException
@@ -1307,46 +1309,46 @@
          */ 
         public static function build($concrete)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->build($concrete);
         }
                     /**
          * Register a new before resolving callback for all types.
          *
-         * @param \Closure|string $abstract
-         * @param \Closure|null $callback
+         * @param Closure|string $abstract
+         * @param Closure|null $callback
          * @return void 
          * @static 
          */ 
         public static function beforeResolving($abstract, $callback = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->beforeResolving($abstract, $callback);
         }
                     /**
          * Register a new resolving callback.
          *
-         * @param \Closure|string $abstract
-         * @param \Closure|null $callback
+         * @param Closure|string $abstract
+         * @param Closure|null $callback
          * @return void 
          * @static 
          */ 
         public static function resolving($abstract, $callback = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->resolving($abstract, $callback);
         }
                     /**
          * Register a new after resolving callback for all types.
          *
-         * @param \Closure|string $abstract
-         * @param \Closure|null $callback
+         * @param Closure|string $abstract
+         * @param Closure|null $callback
          * @return void 
          * @static 
          */ 
         public static function afterResolving($abstract, $callback = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->afterResolving($abstract, $callback);
         }
                     /**
@@ -1357,7 +1359,7 @@
          */ 
         public static function getBindings()
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getBindings();
         }
                     /**
@@ -1369,7 +1371,7 @@
          */ 
         public static function getAlias($abstract)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->getAlias($abstract);
         }
                     /**
@@ -1381,7 +1383,7 @@
          */ 
         public static function forgetExtenders($abstract)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->forgetExtenders($abstract);
         }
                     /**
@@ -1393,7 +1395,7 @@
          */ 
         public static function forgetInstance($abstract)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->forgetInstance($abstract);
         }
                     /**
@@ -1404,7 +1406,7 @@
          */ 
         public static function forgetInstances()
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->forgetInstances();
         }
                     /**
@@ -1415,7 +1417,7 @@
          */ 
         public static function forgetScopedInstances()
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->forgetScopedInstances();
         }
                     /**
@@ -1426,7 +1428,7 @@
          */ 
         public static function getInstance()
         {            //Method inherited from \Illuminate\Container\Container         
-                        return \Illuminate\Foundation\Application::getInstance();
+                        return Application::getInstance();
         }
                     /**
          * Set the shared instance of the container.
@@ -1437,7 +1439,7 @@
          */ 
         public static function setInstance($container = null)
         {            //Method inherited from \Illuminate\Container\Container         
-                        return \Illuminate\Foundation\Application::setInstance($container);
+                        return Application::setInstance($container);
         }
                     /**
          * Determine if a given offset exists.
@@ -1448,7 +1450,7 @@
          */ 
         public static function offsetExists($key)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->offsetExists($key);
         }
                     /**
@@ -1460,7 +1462,7 @@
          */ 
         public static function offsetGet($key)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         return $instance->offsetGet($key);
         }
                     /**
@@ -1473,7 +1475,7 @@
          */ 
         public static function offsetSet($key, $value)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->offsetSet($key, $value);
         }
                     /**
@@ -1485,7 +1487,7 @@
          */ 
         public static function offsetUnset($key)
         {            //Method inherited from \Illuminate\Container\Container         
-                        /** @var \Illuminate\Foundation\Application $instance */
+                        /** @var Application $instance */
                         $instance->offsetUnset($key);
         }
          
@@ -1526,7 +1528,7 @@
          * Register a Closure based command with the application.
          *
          * @param string $signature
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Foundation\Console\ClosureCommand 
          * @static 
          */ 
@@ -1720,7 +1722,7 @@
                     /**
          * Get the user resolver callback.
          *
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function userResolver()
@@ -1731,7 +1733,7 @@
                     /**
          * Set the callback to be used to resolve users.
          *
-         * @param \Closure $userResolver
+         * @param Closure $userResolver
          * @return \Illuminate\Auth\AuthManager 
          * @static 
          */ 
@@ -1744,7 +1746,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Auth\AuthManager 
          * @static 
          */ 
@@ -1757,7 +1759,7 @@
          * Register a custom provider creator Closure.
          *
          * @param string $name
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Auth\AuthManager 
          * @static 
          */ 
@@ -2850,7 +2852,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Broadcasting\BroadcastManager 
          * @static 
          */ 
@@ -3054,7 +3056,7 @@
                     /**
          * Assert if a job was dispatched based on a truth-test callback.
          *
-         * @param string|\Closure $command
+         * @param string|Closure $command
          * @param callable|int|null $callback
          * @return void 
          * @static 
@@ -3080,7 +3082,7 @@
                     /**
          * Determine if a job was dispatched based on a truth-test callback.
          *
-         * @param string|\Closure $command
+         * @param string|Closure $command
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -3104,7 +3106,7 @@
                     /**
          * Assert if a job was explicitly dispatched synchronously based on a truth-test callback.
          *
-         * @param string|\Closure $command
+         * @param string|Closure $command
          * @param callable|int|null $callback
          * @return void 
          * @static 
@@ -3130,7 +3132,7 @@
                     /**
          * Determine if a job was dispatched based on a truth-test callback.
          *
-         * @param string|\Closure $command
+         * @param string|Closure $command
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -3143,7 +3145,7 @@
                     /**
          * Assert if a job was dispatched after the response was sent based on a truth-test callback.
          *
-         * @param string|\Closure $command
+         * @param string|Closure $command
          * @param callable|int|null $callback
          * @return void 
          * @static 
@@ -3169,7 +3171,7 @@
                     /**
          * Determine if a job was dispatched based on a truth-test callback.
          *
-         * @param string|\Closure $command
+         * @param string|Closure $command
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -3194,7 +3196,7 @@
                     /**
          * Assert if a job was dispatched with an empty chain based on a truth-test callback.
          *
-         * @param string|\Closure $command
+         * @param string|Closure $command
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -3434,7 +3436,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Cache\CacheManager 
          * @static 
          */ 
@@ -3646,8 +3648,8 @@
          * Get an item from the cache, or execute the given Closure and store the result.
          *
          * @param string $key
-         * @param \Closure|\DateTimeInterface|\DateInterval|int|null $ttl
-         * @param \Closure $callback
+         * @param Closure|\DateTimeInterface|\DateInterval|int|null $ttl
+         * @param Closure $callback
          * @return mixed 
          * @static 
          */ 
@@ -3660,7 +3662,7 @@
          * Get an item from the cache, or execute the given Closure and store the result forever.
          *
          * @param string $key
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return mixed 
          * @static 
          */ 
@@ -3673,7 +3675,7 @@
          * Get an item from the cache, or execute the given Closure and store the result forever.
          *
          * @param string $key
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return mixed 
          * @static 
          */ 
@@ -4698,7 +4700,7 @@
                     /**
          * Begin a fluent query against a database table.
          *
-         * @param \Closure|\Illuminate\Database\Query\Builder|string $table
+         * @param Closure|\Illuminate\Database\Query\Builder|string $table
          * @param string|null $as
          * @return \Illuminate\Database\Query\Builder 
          * @static 
@@ -4854,7 +4856,7 @@
                     /**
          * Execute the given callback in "dry run" mode.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return array 
          * @static 
          */ 
@@ -4905,7 +4907,7 @@
                     /**
          * Register a hook to be run just before a database query is executed.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Database\MySqlConnection 
          * @static 
          */ 
@@ -4917,7 +4919,7 @@
                     /**
          * Register a database query listener with the connection.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
@@ -5056,7 +5058,7 @@
                     /**
          * Get the current PDO connection parameter without executing any reconnect logic.
          *
-         * @return \PDO|\Closure|null 
+         * @return \PDO|Closure|null
          * @static 
          */ 
         public static function getRawPdo()
@@ -5078,7 +5080,7 @@
                     /**
          * Get the current read PDO connection parameter without executing any reconnect logic.
          *
-         * @return \PDO|\Closure|null 
+         * @return \PDO|Closure|null
          * @static 
          */ 
         public static function getRawReadPdo()
@@ -5089,7 +5091,7 @@
                     /**
          * Set the PDO connection.
          *
-         * @param \PDO|\Closure|null $pdo
+         * @param \PDO|Closure|null $pdo
          * @return \Illuminate\Database\MySqlConnection 
          * @static 
          */ 
@@ -5101,7 +5103,7 @@
                     /**
          * Set the PDO connection used for reading.
          *
-         * @param \PDO|\Closure|null $pdo
+         * @param \PDO|Closure|null $pdo
          * @return \Illuminate\Database\MySqlConnection 
          * @static 
          */ 
@@ -5421,7 +5423,7 @@
          * Register a connection resolver.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
@@ -5443,7 +5445,7 @@
                     /**
          * Execute a Closure within a transaction.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @param int $attempts
          * @return mixed 
          * @throws \Throwable
@@ -5526,8 +5528,8 @@
                     /**
          * Register an event listener with the dispatcher.
          *
-         * @param \Closure|string|array $events
-         * @param \Closure|string|array|null $listener
+         * @param Closure|string|array $events
+         * @param Closure|string|array|null $listener
          * @return void 
          * @static 
          */ 
@@ -5639,9 +5641,9 @@
                     /**
          * Register an event listener with the dispatcher.
          *
-         * @param \Closure|string|array $listener
+         * @param Closure|string|array $listener
          * @param bool $wildcard
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function makeListener($listener, $wildcard = false)
@@ -5654,7 +5656,7 @@
          *
          * @param string $listener
          * @param bool $wildcard
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function createClassListener($listener, $wildcard = false)
@@ -5759,7 +5761,7 @@
                     /**
          * Assert if an event was dispatched based on a truth-test callback.
          *
-         * @param string|\Closure $event
+         * @param string|Closure $event
          * @param callable|int|null $callback
          * @return void 
          * @static 
@@ -5785,7 +5787,7 @@
                     /**
          * Determine if an event was dispatched based on a truth-test callback.
          *
-         * @param string|\Closure $event
+         * @param string|Closure $event
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -6460,7 +6462,7 @@
                     /**
          * Perform an on-demand authorization check. Throw an authorization exception if the condition or callback is false.
          *
-         * @param \Illuminate\Auth\Access\Response|\Closure|bool $condition
+         * @param \Illuminate\Auth\Access\Response|Closure|bool $condition
          * @param string|null $message
          * @param string|null $code
          * @return \Illuminate\Auth\Access\Response 
@@ -6475,7 +6477,7 @@
                     /**
          * Perform an on-demand authorization check. Throw an authorization exception if the condition or callback is true.
          *
-         * @param \Illuminate\Auth\Access\Response|\Closure|bool $condition
+         * @param \Illuminate\Auth\Access\Response|Closure|bool $condition
          * @param string|null $message
          * @param string|null $code
          * @return \Illuminate\Auth\Access\Response 
@@ -6862,7 +6864,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Hashing\HashManager 
          * @static 
          */ 
@@ -7500,7 +7502,7 @@
      * @method static \Illuminate\Log\Logger withContext(array $context = [])
      * @method static \Illuminate\Log\Logger withoutContext()
      * @method static void write(string $level, string $message, array $context = [])
-     * @method static void listen(\Closure $callback)
+     * @method static void listen(Closure $callback)
      * @see \Illuminate\Log\Logger
      */ 
         class Log {
@@ -7580,7 +7582,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Log\LogManager 
          * @static 
          */ 
@@ -7834,7 +7836,7 @@
          * Register a custom transport creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Mail\MailManager 
          * @static 
          */ 
@@ -7880,7 +7882,7 @@
                     /**
          * Assert if a mailable was sent based on a truth-test callback.
          *
-         * @param string|\Closure $mailable
+         * @param string|Closure $mailable
          * @param callable|int|null $callback
          * @return void 
          * @static 
@@ -7893,7 +7895,7 @@
                     /**
          * Determine if a mailable was not sent or queued to be sent based on a truth-test callback.
          *
-         * @param string|\Closure $mailable
+         * @param string|Closure $mailable
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -7906,7 +7908,7 @@
                     /**
          * Determine if a mailable was not sent based on a truth-test callback.
          *
-         * @param string|\Closure $mailable
+         * @param string|Closure $mailable
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -7941,7 +7943,7 @@
                     /**
          * Assert if a mailable was queued based on a truth-test callback.
          *
-         * @param string|\Closure $mailable
+         * @param string|Closure $mailable
          * @param callable|int|null $callback
          * @return void 
          * @static 
@@ -7954,7 +7956,7 @@
                     /**
          * Determine if a mailable was not queued based on a truth-test callback.
          *
-         * @param string|\Closure $mailable
+         * @param string|Closure $mailable
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -7978,7 +7980,7 @@
                     /**
          * Get all of the mailables matching a truth-test callback.
          *
-         * @param string|\Closure $mailable
+         * @param string|Closure $mailable
          * @param callable|null $callback
          * @return \Illuminate\Support\Collection 
          * @static 
@@ -8003,7 +8005,7 @@
                     /**
          * Get all of the queued mailables matching a truth-test callback.
          *
-         * @param string|\Closure $mailable
+         * @param string|Closure $mailable
          * @param callable|null $callback
          * @return \Illuminate\Support\Collection 
          * @static 
@@ -8053,7 +8055,7 @@
          * Send a new message with only a raw text part.
          *
          * @param string $text
-         * @param \Closure|string $callback
+         * @param Closure|string $callback
          * @return void 
          * @static 
          */ 
@@ -8067,7 +8069,7 @@
          *
          * @param \Illuminate\Contracts\Mail\Mailable|string|array $view
          * @param array $data
-         * @param \Closure|string|null $callback
+         * @param Closure|string|null $callback
          * @return void 
          * @static 
          */ 
@@ -8224,7 +8226,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Notifications\ChannelManager 
          * @static 
          */ 
@@ -8281,7 +8283,7 @@
                     /**
          * Assert if a notification was sent on-demand based on a truth-test callback.
          *
-         * @param string|\Closure $notification
+         * @param string|Closure $notification
          * @param callable|null $callback
          * @return void 
          * @throws \Exception
@@ -8296,7 +8298,7 @@
          * Assert if a notification was sent based on a truth-test callback.
          *
          * @param mixed $notifiable
-         * @param string|\Closure $notification
+         * @param string|Closure $notification
          * @param callable|null $callback
          * @return void 
          * @throws \Exception
@@ -8338,7 +8340,7 @@
          * Determine if a notification was sent based on a truth-test callback.
          *
          * @param mixed $notifiable
-         * @param string|\Closure $notification
+         * @param string|Closure $notification
          * @param callable|null $callback
          * @return void 
          * @throws \Exception
@@ -8465,8 +8467,8 @@
             /**
      * 
      *
-     * @method static mixed reset(array $credentials, \Closure $callback)
-     * @method static string sendResetLink(array $credentials, \Closure $callback = null)
+     * @method static mixed reset(array $credentials, Closure $callback)
+     * @method static string sendResetLink(array $credentials, Closure $callback = null)
      * @method static \Illuminate\Contracts\Auth\CanResetPassword getUser(array $credentials)
      * @method static string createToken(\Illuminate\Contracts\Auth\CanResetPassword $user)
      * @method static void deleteToken(\Illuminate\Contracts\Auth\CanResetPassword $user)
@@ -8619,7 +8621,7 @@
          * Add a queue connection resolver.
          *
          * @param string $driver
-         * @param \Closure $resolver
+         * @param Closure $resolver
          * @return void 
          * @static 
          */ 
@@ -8632,7 +8634,7 @@
          * Add a queue connection resolver.
          *
          * @param string $driver
-         * @param \Closure $resolver
+         * @param Closure $resolver
          * @return void 
          * @static 
          */ 
@@ -8702,7 +8704,7 @@
                     /**
          * Assert if a job was pushed based on a truth-test callback.
          *
-         * @param string|\Closure $job
+         * @param string|Closure $job
          * @param callable|int|null $callback
          * @return void 
          * @static 
@@ -8716,7 +8718,7 @@
          * Assert if a job was pushed based on a truth-test callback.
          *
          * @param string $queue
-         * @param string|\Closure $job
+         * @param string|Closure $job
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -8756,7 +8758,7 @@
                     /**
          * Determine if a job was pushed based on a truth-test callback.
          *
-         * @param string|\Closure $job
+         * @param string|Closure $job
          * @param callable|null $callback
          * @return void 
          * @static 
@@ -9716,7 +9718,7 @@
                     /**
          * Get the user resolver callback.
          *
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function getUserResolver()
@@ -9727,7 +9729,7 @@
                     /**
          * Set the user resolver callback.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Http\Request 
          * @static 
          */ 
@@ -9739,7 +9741,7 @@
                     /**
          * Get the route resolver callback.
          *
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function getRouteResolver()
@@ -9750,7 +9752,7 @@
                     /**
          * Set the route resolver callback.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Http\Request 
          * @static 
          */ 
@@ -11434,7 +11436,7 @@
                     /**
          * Create a new streamed response instance.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @param int $status
          * @param array $headers
          * @return \Symfony\Component\HttpFoundation\StreamedResponse 
@@ -11448,7 +11450,7 @@
                     /**
          * Create a new streamed response instance as a file download.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @param string|null $name
          * @param array $headers
          * @param string|null $disposition
@@ -11845,7 +11847,7 @@
          * Create a route group with shared attributes.
          *
          * @param array $attributes
-         * @param \Closure|string $routes
+         * @param Closure|string $routes
          * @return void 
          * @static 
          */ 
@@ -12136,7 +12138,7 @@
          *
          * @param string $key
          * @param string $class
-         * @param \Closure|null $callback
+         * @param Closure|null $callback
          * @return void 
          * @static 
          */ 
@@ -12149,7 +12151,7 @@
          * Get the binding callback for a given binding.
          *
          * @param string $key
-         * @return \Closure|null 
+         * @return Closure|null
          * @static 
          */ 
         public static function getBindingCallback($key)
@@ -12673,7 +12675,7 @@
          * Modify a table on the schema.
          *
          * @param string $table
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
@@ -12686,7 +12688,7 @@
          * Create a new table on the schema.
          *
          * @param string $table
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
@@ -12819,7 +12821,7 @@
                     /**
          * Set the Schema Blueprint resolver callback.
          *
-         * @param \Closure $resolver
+         * @param Closure $resolver
          * @return void 
          * @static 
          */ 
@@ -12910,7 +12912,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return SessionManager
          * @static 
          */ 
@@ -13136,7 +13138,7 @@
          * Get an item from the session, or store the default value.
          *
          * @param string $key
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return mixed 
          * @static 
          */ 
@@ -13652,7 +13654,7 @@
          * Register a custom driver creator Closure.
          *
          * @param string $driver
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Filesystem\FilesystemManager 
          * @static 
          */ 
@@ -14119,7 +14121,7 @@
                     /**
          * Define a custom temporary URL builder callback.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return void 
          * @static 
          */ 
@@ -14535,7 +14537,7 @@
                     /**
          * Set a callback to be used to format the host of generated URLs.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Routing\UrlGenerator 
          * @static 
          */ 
@@ -14547,7 +14549,7 @@
                     /**
          * Set a callback to be used to format the path of generated URLs.
          *
-         * @param \Closure $callback
+         * @param Closure $callback
          * @return \Illuminate\Routing\UrlGenerator 
          * @static 
          */ 
@@ -14559,7 +14561,7 @@
                     /**
          * Get the path formatter being used by the URL generator.
          *
-         * @return \Closure 
+         * @return Closure
          * @static 
          */ 
         public static function pathFormatter()
@@ -14727,7 +14729,7 @@
          * Register a custom validator extension.
          *
          * @param string $rule
-         * @param \Closure|string $extension
+         * @param Closure|string $extension
          * @param string|null $message
          * @return void 
          * @static 
@@ -14741,7 +14743,7 @@
          * Register a custom implicit validator extension.
          *
          * @param string $rule
-         * @param \Closure|string $extension
+         * @param Closure|string $extension
          * @param string|null $message
          * @return void 
          * @static 
@@ -14755,7 +14757,7 @@
          * Register a custom dependent validator extension.
          *
          * @param string $rule
-         * @param \Closure|string $extension
+         * @param Closure|string $extension
          * @param string|null $message
          * @return void 
          * @static 
@@ -14769,7 +14771,7 @@
          * Register a custom validator message replacer.
          *
          * @param string $rule
-         * @param \Closure|string $replacer
+         * @param Closure|string $replacer
          * @return void 
          * @static 
          */ 
@@ -14792,7 +14794,7 @@
                     /**
          * Set the Validator instance resolver.
          *
-         * @param \Closure $resolver
+         * @param Closure $resolver
          * @return void 
          * @static 
          */ 
@@ -15105,7 +15107,7 @@
          *
          * @param string $extension
          * @param string $engine
-         * @param \Closure|null $resolver
+         * @param Closure|null $resolver
          * @return void 
          * @static 
          */ 
@@ -15311,7 +15313,7 @@
                     /**
          * Start a component rendering process.
          *
-         * @param \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string $view
+         * @param \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|Closure|string $view
          * @param array $data
          * @return void 
          * @static 
@@ -15387,7 +15389,7 @@
          * Register a view creator event.
          *
          * @param array|string $views
-         * @param \Closure|string $callback
+         * @param Closure|string $callback
          * @return array 
          * @static 
          */ 
@@ -15412,7 +15414,7 @@
          * Register a view composer event.
          *
          * @param array|string $views
-         * @param \Closure|string $callback
+         * @param Closure|string $callback
          * @return array 
          * @static 
          */ 

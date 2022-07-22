@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EmpRoleEnum;
 use App\Models\Accountant;
 use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\UpdateAccountantRequest;
+use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Manager;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -32,18 +36,15 @@ class AccountantController extends Controller
 	 */
 	public function index()
 	{
-		$limit = 20;
-		$fields = array('employees.*', 'departments.name as dept_name', 'roles.name as role_name');
-		$data = Employee::where('employees.status','=','1')
-			->where('departments.status','=','1')
-			->where('roles.status','=','1')
-			->leftJoin('departments', 'employees.dept_id', '=', 'departments.id')
-			->leftJoin('roles', 'employees.role_id', '=', 'roles.id')
-			->paginate($limit, $fields);
-
-		return view('ceo.index', [
-			'data' => $data,
-		]);
+        $date = date('Y-m-d');
+        $data = Attendance::with('shifts')
+            ->where('emp_id', '=', session('id'))
+            ->where('date', '=', $date)
+            ->where('emp_role', '=', session('level'))
+            ->get();
+        return view('accountants.index', [
+            'data' => $data,
+        ]);
 	}
 
 	public function attendance(): Renderable
@@ -83,7 +84,25 @@ class AccountantController extends Controller
 		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
 	}
 
+    public function checkin(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::Accountant)
+            ->where('date','=', date('Y-m-d'))
+            ->where('shift','=', $request->get('shift'))
+            ->update(['check_in' => date('H:i')]);
+        return redirect()->route('accountants.index');
+    }
 
+    public function checkout(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::Accountant)
+            ->where('date','=', date('Y-m-d'))
+            ->where('shift','=', $request->get('shift'))
+            ->update(['check_out' => date('H:i')]);
+        return redirect()->route('accountants.index');
+    }
 	/**
      * Show the form for creating a new resource.
      *

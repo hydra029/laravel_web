@@ -25,11 +25,11 @@ class CreateEmployeesTable extends Migration
 			$table->string('phone');
 			$table->string('email');
 			$table->string('password')->nullable();
-			$table->unsignedBigInteger('dept_id');
-			$table->unsignedBigInteger('role_id');
+			$table->foreignId('dept_id')->constrained('departments');
+			$table->foreignId('role_id')->constrained('roles');
 			$table->boolean('status')->default(1);
             $table->timestamps();
-            $table->softDeletes($column = 'deleted_at', $precision = 0);
+            $table->softDeletes();
 		});
 
 

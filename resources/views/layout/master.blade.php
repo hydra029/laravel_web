@@ -7,7 +7,6 @@
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description"/>
     <meta content="Coderthemes" name="author"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     {{-- css --}}
     <link href="{{ asset('css/icons.min.css' )}}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/app-modern.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
@@ -49,7 +48,6 @@
 @include('layout.notify')
 <script src="https://kit.fontawesome.com/b0fe355241.js" crossorigin="anonymous"></script>
 <script src="{{asset('js/getInfor.js')}}" crossorigin="anonymous"></script>
-
 @stack('js')
 </body>
 </html>

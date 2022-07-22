@@ -166,42 +166,42 @@
                     </td>
                     <td>
                         <label class="shift-in-start-inp">
-                            <input type="text" name="in_start" class="form-control text-center">
+                            <input type="text" name="in_start" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
                         <label class="shift-in-end-inp">
-                            <input type="text" name="in_end" class="form-control text-center">
+                            <input type="text" name="in_end" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
                         <label class="shift-in-late-1-inp">
-                            <input type="text" name="in_late_1" class="form-control text-center">
+                            <input type="text" name="in_late_1" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
                         <label class="shift-in-late-2-inp">
-                            <input type="text" name="in_late_2" class="form-control text-center">
+                            <input type="text" name="in_late_2" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
                         <label class="shift-out-early-1-inp">
-                            <input type="text" name="out_early_1" class="form-control text-center">
+                            <input type="text" name="out_early_1" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
                         <label class="shift-out-early-2-inp">
-                            <input type="text" name="out_early_2" class="form-control text-center">
+                            <input type="text" name="out_early_2" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
                         <label class="shift-out-start-inp">
-                            <input type="text" name="out_start" class="form-control text-center">
+                            <input type="text" name="out_start" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
                         <label class="shift-out-end-inp">
-                            <input type="text" name="out_end" class="form-control text-center">
+                            <input type="text" name="out_end" class="form-control text-center" value="00:00">
                         </label>
                     </td>
                     <td>
@@ -308,7 +308,7 @@
                         data: form.serializeArray(),
                     })
                         .done(function (response) {
-                            location.reload();
+                            // location.reload();
                         })
                         .fail(function () {
                             $.notify('Input Format Error', 'error');

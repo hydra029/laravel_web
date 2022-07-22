@@ -14,7 +14,7 @@ class CreateSalariesTable extends Migration
 	public function up(): void
 	{
 		Schema::create('salaries', static function (Blueprint $table) {
-			$table->unsignedBigInteger('emp_id');
+			$table->foreignId('emp_id')->constrained('employees');
 			$table->unsignedTinyInteger('month');
 			$table->integer('year');
 			$table->string('dept_name');
@@ -23,8 +23,8 @@ class CreateSalariesTable extends Migration
 			$table->unsignedInteger('pay_rate');
 			$table->unsignedInteger('deduction');
 			$table->unsignedInteger('salary');
-			$table->unsignedBigInteger('mgr_id');
-			$table->unsignedBigInteger('acct_id')->nullable();
+			$table->foreignId('mgr_id')->constrained('managers');
+			$table->foreignId('acct_id')->constrained('accountants')->nullable();
 			$table->boolean('ceo_sign')->nullable();
 			$table->boolean('status')->default(1);
 			$table->primary(['emp_id', 'month', 'year']);

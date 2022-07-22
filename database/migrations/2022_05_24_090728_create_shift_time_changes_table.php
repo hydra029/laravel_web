@@ -11,9 +11,9 @@ class CreateShiftTimeChangesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('shift_time_changes', function (Blueprint $table) {
+        Schema::create('shift_time_changes', static function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -24,7 +24,7 @@ class CreateShiftTimeChangesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('shift_time_changes');
     }
