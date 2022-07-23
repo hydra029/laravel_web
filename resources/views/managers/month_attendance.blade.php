@@ -92,7 +92,6 @@
             <div class='fc-event fc-h-event fc-daygrid-block-event event-6'>
                 <div class='fc-event-main tc'>Off Work</div>
             </div>
-
         </div>
     </div>
     <div class="col-11 p-1">
@@ -260,7 +259,7 @@
                 let f = getFDay(d).toISOString().slice(0, 10);
                 let l = getLDay(d).toISOString().slice(0, 10);
                 $.ajax({
-                    url: '{{route('employees.attendance_api')}}',
+                    url: '{{route('managers.attendance_api')}}',
                     type: 'POST',
                     dataType: 'json',
                     data: {f: f, l: l},
@@ -271,14 +270,14 @@
                                 let date = response[i]['date'];
                                 let check_in = response[i]['check_in'].slice(0, 5);
                                 let check_out = response[i]['check_out'].slice(0, 5);
-                                let check_in_start = response[i]['shift']['check_in_start'].slice(0, 5);
-                                let check_in_end = response[i]['shift']['check_in_end'].slice(0, 5);
-                                let check_in_late_1 = response[i]['shift']['check_in_late_1'].slice(0, 5);
-                                let check_in_late_2 = response[i]['shift']['check_in_late_2'].slice(0, 5);
-                                let check_out_start = response[i]['shift']['check_out_start'].slice(0, 5);
-                                let check_out_end = response[i]['shift']['check_out_end'].slice(0, 5);
-                                let check_out_early_1 = response[i]['shift']['check_out_early_1'].slice(0, 5);
-                                let check_out_early_2 = response[i]['shift']['check_out_early_2'].slice(0, 5);
+                                let check_in_start = response[i]['shifts']['check_in_start'].slice(0, 5);
+                                let check_in_end = response[i]['shifts']['check_in_end'].slice(0, 5);
+                                let check_in_late_1 = response[i]['shifts']['check_in_late_1'].slice(0, 5);
+                                let check_in_late_2 = response[i]['shifts']['check_in_late_2'].slice(0, 5);
+                                let check_out_start = response[i]['shifts']['check_out_start'].slice(0, 5);
+                                let check_out_end = response[i]['shifts']['check_out_end'].slice(0, 5);
+                                let check_out_early_1 = response[i]['shifts']['check_out_early_1'].slice(0, 5);
+                                let check_out_early_2 = response[i]['shifts']['check_out_early_2'].slice(0, 5);
                                 let title = check_in + Array(20).fill('\xa0').join('') + check_out;
                                 let color_1 = '#f03e44';
                                 let color_2 = '#f03e44';

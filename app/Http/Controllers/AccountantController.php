@@ -91,6 +91,12 @@ class AccountantController extends Controller
             ->where('date','=', date('Y-m-d'))
             ->where('shift','=', $request->get('shift'))
             ->update(['check_in' => date('H:i')]);
+        session()->flash('noti', [
+            'heading' => 'Check in successfully',
+            'text' => 'You\'ve checked in shift ' . $request->get('shift') . ' successfully',
+            'icon' => 'success',
+        ]);
+
         return redirect()->route('accountants.index');
     }
 
@@ -101,6 +107,12 @@ class AccountantController extends Controller
             ->where('date','=', date('Y-m-d'))
             ->where('shift','=', $request->get('shift'))
             ->update(['check_out' => date('H:i')]);
+        session()->flash('noti', [
+            'heading' => 'Check out successfully',
+            'text' => 'You\'ve checked out shift ' . $request->get('shift') . ' successfully',
+            'icon' => 'success',
+        ]);
+
         return redirect()->route('accountants.index');
     }
 	/**

@@ -30,7 +30,6 @@ Route::post('/', [LoginController::class, 'processLogin'])->name('process_login'
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
-Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
 Route::post('/employees/add', [EmployeeController::class, 'add'])->name('employees.add');
 Route::get('/employees/attendance', [EmployeeController::class, 'attendance'])->name('employees.attendance');

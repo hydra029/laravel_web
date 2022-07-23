@@ -1,11 +1,18 @@
 <script type="text/javascript">
     $(document).ready(function () {
-        @if(session()->has('noti'))
-        @foreach(session('noti') as $key => $value)
-        $.notify('{{$value}}', '{{$key}}', {
-            position: 'bottom left'
+        @if(session('noti'))
+        $.toast({
+            heading: '{{session('noti')['heading']}}',
+            text: '{{session('noti')['text']}}',
+            icon: '{{session('noti')['icon']}}',
+            showHideTransition: 'slide',
+            allowToastClose: false,
+            hideAfter: 3000,
+            stack: 5,
+            position: 'top-right',
+            textAlign: 'left',
+            loader: true,
         });
-        @endforeach
         @endif
     })
 </script>

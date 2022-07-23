@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
-
 /**
  * App\Models\Employee
  *
@@ -71,126 +70,132 @@ class Employee extends Model
 {
     use HasFactory, SoftDeletes;
 
-	protected $fillable = [
-		'fname',
-		'lname',
-		'gender',
-		'dob',
-		'avatar',
-		'city',
-		'phone',
-		'district',
-		'email',
-		'password',
-		'dept_id',
-		'role_id',
-		'status',
-	];
+    protected $fillable = [
+        'fname',
+        'lname',
+        'gender',
+        'dob',
+        'avatar',
+        'city',
+        'phone',
+        'district',
+        'email',
+        'password',
+        'dept_id',
+        'role_id',
+        'status',
+    ];
 
-	/**
-	 *
-	 * @return string
-	 */
-	public function getAgeAttribute(): string
-	{
-		return date_diff(date_create($this->dob), date_create())->y;
-	}
+    /**
+     *
+     * @return string
+     */
+    public function getAgeAttribute(): string
+    {
+        return date_diff(date_create($this->dob), date_create())->y;
+    }
 
     public function getAddressAttribute(): string
     {
-        return $this->district . ' - ' . $this->city ;
+        return $this->district . ' - ' . $this->city;
     }
 
-	public function getDateOfBirthAttribute(): string
-	{
-		return date_format(date_create($this->dob), "d/m/Y");
-	}
+    public function getDateOfBirthAttribute(): string
+    {
+        return date_format(date_create($this->dob), "d/m/Y");
+    }
 
-	public function getDateAttribute(): string
-	{
-		return date_format(date_create(), 'D d-m-Y');
-	}
+    public function getDateAttribute(): string
+    {
+        return date_format(date_create(), 'D d-m-Y');
+    }
 
-	public function getFullNameAttribute(): string
-	{
-		return $this->fname . ' ' . $this->lname;
-	}
+    public function getFullNameAttribute(): string
+    {
+        return $this->fname . ' ' . $this->lname;
+    }
 
-	public function getRoleNameAttribute(): string
-	{
-		return $this->roles->name;
-	}
+    public function getRoleNameAttribute(): string
+    {
+        return $this->roles->name;
+    }
 
-	public function getGenderNameAttribute(): string
-	{
-		return ($this->gender === 1 ? 'Male' : 'Female');
-	}
+    public function getGenderNameAttribute(): string
+    {
+        return ($this->gender === 1 ? 'Male' : 'Female');
+    }
 
-	public function getCheck1Attribute(): string
-	{
-		/** @noinspection NestedTernaryOperatorInspection */
-		return ($this->attendance[0]->check_in === 1 ? ($this->attendance[0]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
-	}
+    public function getCheck1Attribute(): string
+    {
+        $in = substr($this->attendance[0]->check_in, 0,5);
+        $out = substr($this->attendance[0]->check_in, 0,5);
+        /** @noinspection NestedTernaryOperatorInspection */
+        return ($in !== "00:00" ? ($out !== '00:00' ? $out . ' - Checked Out' : $in . ' - Checked In') : '00:00 - Not Checked');
+    }
 
-	public function getCheck2Attribute(): string
-	{
-		/** @noinspection NestedTernaryOperatorInspection */
-		return ($this->attendance[1]->check_in === 1 ? ($this->attendance[1]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
-	}
+    public function getCheck2Attribute(): string
+    {
+        $in = substr($this->attendance[1]->check_in, 0,5);
+        $out = substr($this->attendance[1]->check_in, 0,5);
+        /** @noinspection NestedTernaryOperatorInspection */
+        return ($in !== '00:00' ? ($out !== '00:00' ? $out . ' - Checked Out' : $in . ' - Checked In') : '00:00 - Not Checked');
+    }
 
-	public function getCheck3Attribute(): string
-	{
-		/** @noinspection NestedTernaryOperatorInspection */
-		return ($this->attendance[2]->check_in === 1 ? ($this->attendance[2]->check_out === 1 ? 'Checked Out' : 'Checked In') : 'Not Checked');
-	}
+    public function getCheck3Attribute(): string
+    {
+        $in = substr($this->attendance[2]->check_in, 0,5);
+        $out = substr($this->attendance[2]->check_in, 0,5);
+        /** @noinspection NestedTernaryOperatorInspection */
+        return ($in !== '00:00' ? ($out !== '00:00' ? $out . ' - Checked Out' : $in . ' - Checked In') : '00:00 - Not Checked');
+    }
 
-	public function getShiftStatusAttribute(): string
-	{
-		$status = "";
-		$date = date('Y-m-d');
-		$shift_status = AttendanceShiftTime::get('id');
-		foreach ($shift_status as $each) {
-			$shift = $each->id;
-			$emp_id = $this->id;
-			$attendances = Attendance::where('date', '=', $date)
-				->where('shift', '=', $shift)
-				->where('emp_role', '=', 1)
-				->where('emp_id', '=', $emp_id)
-				->get();
-			foreach ($attendances as $attendance) {
-				$check_in = $attendance->check_in;
-				$check_out = $attendance->check_out;
-				if ($check_in !== 1) {
-					if ($check_out !== 1) {
-						$status = 'Not checked yet';
-					} else {
-						$status = 'Checked out';
-					}
-				} else {
-					$status = 'Checked in';
-				}
-			}
-		}
-		return $status;
-	}
+    public function getShiftStatusAttribute(): string
+    {
+        $status = "";
+        $date = date('Y-m-d');
+        $shift_status = AttendanceShiftTime::get('id');
+        foreach ($shift_status as $each) {
+            $shift = $each->id;
+            $emp_id = $this->id;
+            $attendances = Attendance::where('date', '=', $date)
+                ->where('shift', '=', $shift)
+                ->where('emp_role', '=', 1)
+                ->where('emp_id', '=', $emp_id)
+                ->get();
+            foreach ($attendances as $attendance) {
+                $check_in = $attendance->check_in;
+                $check_out = $attendance->check_out;
+                if ($check_in !== 1) {
+                    if ($check_out !== 1) {
+                        $status = 'Not checked yet';
+                    } else {
+                        $status = 'Checked out';
+                    }
+                } else {
+                    $status = 'Checked in';
+                }
+            }
+        }
+        return $status;
+    }
 
-	public function departments(): BelongsTo
-	{
-		return $this->BelongsTo(Department::class, 'dept_id', 'id')
-			->select(['id', 'name']);
-	}
+    public function departments(): BelongsTo
+    {
+        return $this->BelongsTo(Department::class, 'dept_id', 'id')
+            ->select(['id', 'name']);
+    }
 
-	public function roles(): BelongsTo
-	{
-		return $this->BelongsTo(Role::class, 'role_id', 'id')
-			->select(['id', 'name']);
-	}
+    public function roles(): BelongsTo
+    {
+        return $this->BelongsTo(Role::class, 'role_id', 'id')
+            ->select(['id', 'name']);
+    }
 
-	public function attendance(): HasMany
-	{
-		return $this->HasMany(Attendance::class, 'emp_id', 'id')
-			->where('emp_role', '=', 1);
-	}
+    public function attendance(): HasMany
+    {
+        return $this->HasMany(Attendance::class, 'emp_id', 'id')
+            ->where('emp_role', '=', 1);
+    }
 
-	public $timestamps = true;
+    public $timestamps = true;
 }

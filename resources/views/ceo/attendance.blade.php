@@ -1,8 +1,8 @@
 @extends('layout.master')
 @include('ceo.menu')
 @push('css')
-	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-	<style>
+    <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+    <style>
         .fc-daygrid-event {
             margin: 0;
         }
@@ -66,42 +66,42 @@
         .emp-name {
             margin: 8px 0;
         }
-	</style>
+    </style>
 @endpush
 @section('content')
-	<div class="col-1 p-1">
-		<div id='external-events'>
-			<p class="text-center">
-				<strong>Detail</strong>
-			</p>
-			<div class='fc-event fc-h-event fc-daygrid-block-event event-1'>
-				<div class='fc-event-main tc'>Early Type 1</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-block-event event-2'>
-				<div class='fc-event-main tc'>Early Type 2</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-block-event event-3'>
-				<div class='fc-event-main tc'>On Time</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-block-event event-4'>
-				<div class='fc-event-main tc'>Late Type 1</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-block-event event-5'>
-				<div class='fc-event-main tc'>Late Type 2</div>
-			</div>
-			<div class='fc-event fc-h-event fc-daygrid-block-event event-6'>
-				<div class='fc-event-main tc'>Off Work</div>
-			</div>
+    <div class="col-1 p-1">
+        <div id='external-events'>
+            <p class="text-center">
+                <strong>Detail</strong>
+            </p>
+            <div class='fc-event fc-h-event fc-daygrid-block-event event-1'>
+                <div class='fc-event-main tc'>Early Type 1</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event event-2'>
+                <div class='fc-event-main tc'>Early Type 2</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event event-3'>
+                <div class='fc-event-main tc'>On Time</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event event-4'>
+                <div class='fc-event-main tc'>Late Type 1</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event event-5'>
+                <div class='fc-event-main tc'>Late Type 2</div>
+            </div>
+            <div class='fc-event fc-h-event fc-daygrid-block-event event-6'>
+                <div class='fc-event-main tc'>Off Work</div>
+            </div>
 
-		</div>
-	</div>
-	<div class="col-11 p-1">
-		<div id="calendar"></div>
-	</div>
+        </div>
+    </div>
+    <div class="col-11 p-1">
+        <div id="calendar"></div>
+    </div>
 @endsection
 @push('js')
-	<script src="{{ asset('js/main.min.js' )}}"></script>
-	<script>
+    <script src="{{ asset('js/main.min.js' )}}"></script>
+    <script>
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -129,18 +129,12 @@
                 eventOrderStrict: true,
                 progressiveEventRendering: true,
                 eventOrder: "-id",
-
                 customButtons: {
                     today: {
                         text: 'Today',
                         click: function () {
-                            calendar.removeAllEvents();
-                            del();
                             let date = new Date();
-                            calendar.gotoDate(date);
-                            emp();
-                            loadAttendance(date);
-                            loadDate();
+                            loadDate(date);
                         }
                     },
                     goto: {
@@ -311,15 +305,16 @@
 
             for (let i = 12; i >= 1; i--) {
                 let j = i;
-                if(i < 10){
+                if (i < 10) {
                     j = '0' + i;
                 }
                 sl2.append($('<option>')
-                        .attr('value', i)
-                        .text(j)
-                        .addClass('m-opt')
+                    .attr('value', i)
+                    .text(j)
+                    .addClass('m-opt')
                 )
             }
+
 
             function loadAttendance(d) {
                 let dept_id = $('#department').children(':selected').val();
@@ -384,10 +379,13 @@
                                             .append($('<div>')
                                                 .attr('style', 'height: 82.2px; padding: 22px 0; background: #F0F8FF')
                                                 .addClass('text-center div-name')
-                                                .append($('<b>')
-                                                    .append($('<p>')
+                                                .append($('<a>')
+                                                    .append($('<b>')
                                                         .addClass('emp-name text-center')
-                                                        .attr('style', 'font-size: 15px')
+                                                        .attr({
+                                                            style: 'font-size: 15px',
+                                                            val: emp_id
+                                                        })
                                                         .text(emp_name)
                                                     )
                                                 )
@@ -396,12 +394,15 @@
                                     } else {
                                         $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
                                             .append($('<div>')
-                                                .attr('style', 'height: 82px; padding: 22px 0')
+                                                .attr('style', 'height: 82.2px; padding: 22px 0')
                                                 .addClass('text-center div-name')
-                                                .append($('<b>')
-                                                    .append($('<p>')
+                                                .append($('<a>')
+                                                    .append($('<b>')
                                                         .addClass('emp-name text-center')
-                                                        .attr('style', 'font-size: 15px')
+                                                        .attr({
+                                                            style: 'font-size: 15px',
+                                                            val: emp_id
+                                                        })
                                                         .text(emp_name)
                                                     )
                                                 )
@@ -421,11 +422,16 @@
                                 eventSource.push(event);
                             }
                             calendar.addEventSource(eventSource);
+
                         }
+                        $(".div-name").click(function () {
+                            console.log($(this).attr('val'));
+                        });
                     })
             }
 
-            loadDate();
+            let d = calendar.getDate();
+            loadDate(d);
             sl1.change(function () {
                 loadWeek();
                 $('#sl-3 :nth-child(2)').prop('selected', true);
@@ -442,6 +448,7 @@
                 $(".fc-goto-button").click();
             })
 
+
             $('#department').change(function () {
                 calendar.removeAllEvents();
                 del();
@@ -452,8 +459,7 @@
             })
 
 
-            function loadDate() {
-                let d = calendar.getDate();
+            function loadDate(d) {
                 let dd = d.getDay();
                 let cd = d.getDate();
                 let cm = d.getMonth() + 1;
@@ -586,7 +592,7 @@
             function getSun(d) {
                 d = new Date(d);
                 let day = d.getDay(),
-                    diff = d.getDate() - day + 7;
+                    diff = d.getDate() + (day === 0 ? 0 : 7 - day);
                 return new Date(d.setDate(diff));
             }
 
@@ -596,6 +602,8 @@
                     diff = d.getDate() - day + (day === 0 ? -6 : 1);
                 return new Date(d.setDate(diff));
             }
+
+
         })
-	</script>
+    </script>
 @endpush

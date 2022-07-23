@@ -101,7 +101,7 @@ class EmployeeController extends Controller
     {
         $users = Employee::get('id');
         foreach ($users as $each) {
-            $date = date('Y-m-d', mktime(0, 0, 0, 7, 21, 2022));
+            $date = date('Y-m-d', mktime(0, 0, 0, 7, 22, 2022));
             for ($i = 1; $i <= 3; $i++) {
                 $data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
                 Attendance::create($data);
@@ -136,9 +136,14 @@ class EmployeeController extends Controller
     {
         Attendance::where('emp_id', '=', session('id'))
             ->where('emp_role', '=', EmpRoleEnum::Employee)
-            ->where('date','=', date('Y-m-d'))
-            ->where('shift','=', $request->get('shift'))
+            ->where('date', '=', date('Y-m-d'))
+            ->where('shift', '=', $request->get('shift'))
             ->update(['check_in' => date('H:i')]);
+        session()->flash('noti', [
+            'heading' => 'Check in successfully',
+            'text' => 'You\'ve checked in shift ' . $request->get('shift') . ' successfully',
+            'icon' => 'success',
+        ]);
         return redirect()->route('employees.index');
     }
 
@@ -146,9 +151,14 @@ class EmployeeController extends Controller
     {
         Attendance::where('emp_id', '=', session('id'))
             ->where('emp_role', '=', EmpRoleEnum::Employee)
-            ->where('date','=', date('Y-m-d'))
-            ->where('shift','=', $request->get('shift'))
+            ->where('date', '=', date('Y-m-d'))
+            ->where('shift', '=', $request->get('shift'))
             ->update(['check_out' => date('H:i')]);
+        session()->flash('noti', [
+            'heading' => 'Check out successfully',
+            'text' => 'You\'ve checked out shift ' . $request->get('shift') . ' successfully',
+            'icon' => 'success',
+        ]);
         return redirect()->route('employees.index');
     }
 
