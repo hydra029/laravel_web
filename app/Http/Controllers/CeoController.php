@@ -93,24 +93,27 @@ class CeoController extends Controller
         ]);
     }
 
-    public function time_save(Request $request): Request
-    {
-        AttendanceShiftTime::create([
-            'id' => $request->get('id'),
-            'check_in_start' => $request->get('in_start'),
-            'check_in_end' => $request->get('in_end'),
-            'check_in_late_1' => $request->get('in_late_1'),
-            'check_in_late_2' => $request->get('in_late_2'),
-            'check_out_early_1' => $request->get('out_early_1'),
-            'check_out_early_2' => $request->get('out_early_2'),
-            'check_out_start' => $request->get('out_start'),
-            'check_out_end' => $request->get('out_end'),
-            'status' => $request->get('status'),
-        ]);
-
+//    public function time_save(Request $request)
+//    {
+//        AttendanceShiftTime::create([
+//            'id' => $request->get('id'),
+//            'check_in_start' => $request->get('in_start'),
+//            'check_in_end' => $request->get('in_end'),
+//            'check_in_late_1' => $request->get('in_late_1'),
+//            'check_in_late_2' => $request->get('in_late_2'),
+//            'check_out_early_1' => $request->get('out_early_1'),
+//            'check_out_early_2' => $request->get('out_early_2'),
+//            'check_out_start' => $request->get('out_start'),
+//            'check_out_end' => $request->get('out_end'),
+//            'status' => $request->get('status'),
+//        ]);
+//        session()->flash('noti', [
+//            'heading' => 'Action successfully',
+//            'text'=>'You\'ve created new shift\'s time successfully',
+//            'icon'=>'success',
+//        ]);
 //        return AttendanceShiftTime::whereId($request->get('id'))->get();
-        return $request;
-    }
+//    }
 
     public function time_change(Request $request)
     {
@@ -126,6 +129,11 @@ class CeoController extends Controller
                 'check_out_start' => $request->get('out_start'),
                 'check_out_end' => $request->get('out_end'),
             ]);
+        session()->flash('noti', [
+            'heading' => 'Action successfully',
+            'text'=>'You\'ve changed the shift\'s time successfully',
+            'icon'=>'success',
+        ]);
         return AttendanceShiftTime::whereId($id)->get();
     }
 

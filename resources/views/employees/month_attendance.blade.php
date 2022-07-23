@@ -126,14 +126,13 @@
                 contentHeight: 100,
                 dayMaxEvents: true,
                 initialView: 'dayGridMonth',
+                eventOrder: "-id",
                 customButtons: {
                     today: {
                         text: 'Today',
                         click: function () {
-                            calendar.removeAllEvents();
                             let date = new Date();
-                            calendar.gotoDate(date);
-                            loadAttendance(date)
+                            loadDate(date)
                         }
                     },
                     goto: {
@@ -157,7 +156,11 @@
                             let idM = sl2.children(':selected').index();
                             let idY = sl1.children(':selected').index();
                             if (idY === fY) {
-                                $.notify('There is no more data', 'warn');
+                                $.toast({
+                                    heading: 'Something went wrong',
+                                    text: 'There is no more data available',
+                                    icon: 'info',
+                                });
                             } else {
                                 $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
                                 $('#sl-2 :nth-child(' + (idM + 1) + ')').prop('selected', true).change();
@@ -169,8 +172,10 @@
                             let idM = sl2.children(':selected').index();
                             let idY = sl1.children(':selected').index();
                             if (idY === 1) {
-                                $.notify('There is no more data', 'warn', {
-                                    globalPosition: 'bottom left'
+                                $.toast({
+                                    heading: 'Something went wrong',
+                                    text: 'There is no more data available',
+                                    icon: 'info',
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
@@ -185,7 +190,11 @@
                             let idY = sl1.children(':selected').index();
                             if (idM === 12) {
                                 if (idY === fY) {
-                                    $.notify('There is no more data', 'warn',);
+                                    $.toast({
+                                        heading: 'Something went wrong',
+                                        text: 'There is no more data available',
+                                        icon: 'info',
+                                    });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
                                     $('#sl-2 :nth-child(2)').prop('selected', true).change();
@@ -201,7 +210,11 @@
                             let idY = sl1.children(':selected').index();
                             if (idM === 1) {
                                 if (idY === 1) {
-                                    $.notify('There is no more data', 'warn');
+                                    $.toast({
+                                        heading: 'Something went wrong',
+                                        text: 'There is no more data available',
+                                        icon: 'info',
+                                    });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY) + ')').prop('selected', true).change();
                                     $('#sl-2 :last-child').prop('selected', true).change();
@@ -224,9 +237,9 @@
             loadAttendance(today);
 
             $(".fc-goto-button")
-                    .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
-                    .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
-                    .addClass('d-none');
+                .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
+                .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
+                .addClass('d-none');
 
             const sl1 = $('#sl-1');
             const sl2 = $('#sl-2');
@@ -235,9 +248,9 @@
 
             for (let i = crYear; i >= 2020; i--) {
                 sl1.append($('<option>')
-                        .attr('value', i)
-                        .text(i)
-                        .addClass('y-opt')
+                    .attr('value', i)
+                    .text(i)
+                    .addClass('y-opt')
                 )
             }
 
@@ -248,75 +261,78 @@
                     j
                 }
                 sl2.append($('<option>')
-                        .attr('value', i)
-                        .text(j)
-                        .addClass('m-opt')
+                    .attr('value', i)
+                    .text(j)
+                    .addClass('m-opt')
                 )
             }
 
-            loadDate();
+            let d = calendar.getDate();
+            loadDate(d);
 
             function loadAttendance(d) {
                 let f = getFDay(d).toISOString().slice(0, 10);
                 let l = getLDay(d).toISOString().slice(0, 10);
+                let num = 9998;
                 $.ajax({
                     url: '{{route('employees.attendance_api')}}',
                     type: 'POST',
                     dataType: 'json',
                     data: {f: f, l: l},
                 })
-                        .done(function (response) {
-                            let emp_num = response.length;
-                            for (let i = 0; i <= emp_num; i++) {
-                                let date = response[i]['date'];
-                                let check_in = response[i]['check_in'].slice(0, 5);
-                                let check_out = response[i]['check_out'].slice(0, 5);
-                                let check_in_start = response[i]['shifts']['check_in_start'].slice(0, 5);
-                                let check_in_end = response[i]['shifts']['check_in_end'].slice(0, 5);
-                                let check_in_late_1 = response[i]['shifts']['check_in_late_1'].slice(0, 5);
-                                let check_in_late_2 = response[i]['shifts']['check_in_late_2'].slice(0, 5);
-                                let check_out_start = response[i]['shifts']['check_out_start'].slice(0, 5);
-                                let check_out_end = response[i]['shifts']['check_out_end'].slice(0, 5);
-                                let check_out_early_1 = response[i]['shifts']['check_out_early_1'].slice(0, 5);
-                                let check_out_early_2 = response[i]['shifts']['check_out_early_2'].slice(0, 5);
-                                let title = check_in + Array(20).fill('\xa0').join('') + check_out;
-                                let color_1 = '#f03e44';
-                                let color_2 = '#f03e44';
-                                if (check_in >= check_in_start && check_in <= check_in_end) {
-                                    color_1 = '#00c67f';
-                                } else if (check_in > check_in_end && check_in <= check_in_late_1) {
-                                    color_1 = '#f07171';
-                                } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
-                                    color_1 = '#f57542';
-                                }
-
-                                if (check_out >= check_out_start && check_out <= check_out_end) {
-                                    color_2 = '#00c67f';
-                                } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
-                                    color_2 = '#8ca5ff';
-                                } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
-                                    color_2 = '#9761ed';
-                                }
-
-                                let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
-                                let event = {
-                                    title: title,
-                                    start: date,
-                                    allDay: true,
-                                    overlap: false,
-                                    background: color,
-                                }
-                                calendar.addEvent(event);
+                    .done(function (response) {
+                        let emp_num = response.length;
+                        for (let i = 0; i <= emp_num; i++) {
+                            num--;
+                            let date = response[i]['date'];
+                            let check_in = response[i]['check_in'].slice(0, 5);
+                            let check_out = response[i]['check_out'].slice(0, 5);
+                            let check_in_start = response[i]['shifts']['check_in_start'].slice(0, 5);
+                            let check_in_end = response[i]['shifts']['check_in_end'].slice(0, 5);
+                            let check_in_late_1 = response[i]['shifts']['check_in_late_1'].slice(0, 5);
+                            let check_in_late_2 = response[i]['shifts']['check_in_late_2'].slice(0, 5);
+                            let check_out_start = response[i]['shifts']['check_out_start'].slice(0, 5);
+                            let check_out_end = response[i]['shifts']['check_out_end'].slice(0, 5);
+                            let check_out_early_1 = response[i]['shifts']['check_out_early_1'].slice(0, 5);
+                            let check_out_early_2 = response[i]['shifts']['check_out_early_2'].slice(0, 5);
+                            let title = check_in + Array(20).fill('\xa0').join('') + check_out;
+                            let color_1 = '#f03e44';
+                            let color_2 = '#f03e44';
+                            if (check_in >= check_in_start && check_in <= check_in_end) {
+                                color_1 = '#00c67f';
+                            } else if (check_in > check_in_end && check_in <= check_in_late_1) {
+                                color_1 = '#f07171';
+                            } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
+                                color_1 = '#f57542';
                             }
-                        })
+
+                            if (check_out >= check_out_start && check_out <= check_out_end) {
+                                color_2 = '#00c67f';
+                            } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
+                                color_2 = '#8ca5ff';
+                            } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
+                                color_2 = '#9761ed';
+                            }
+
+                            let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                            let event = {
+                                id: num,
+                                title: title,
+                                start: date,
+                                allDay: true,
+                                overlap: false,
+                                background: color,
+                            }
+                            calendar.addEvent(event);
+                        }
+                    })
             }
 
             sl2.change(function () {
                 $(".fc-goto-button").click();
             })
 
-            function loadDate() {
-                let d = calendar.getDate();
+            function loadDate(d) {
                 let cm = d.getMonth() + 1;
                 let cy = d.getFullYear();
                 sl1.val(cy).change();

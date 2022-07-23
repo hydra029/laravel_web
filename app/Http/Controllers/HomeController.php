@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
@@ -17,10 +16,13 @@ class HomeController extends Controller
     public function test()
     {
         $dept_id = session('dept_id');
-        $data = Employee::with(['attendance','attendance.shift'])
-            ->where('dept_id', '=', 2)
-            ->where('status', '=', 1)
-            ->get(['id', 'lname', 'fname']);
+        $data = Attendance::with('shifts')
+            ->where('date', '<=', "2022-07-31")
+            ->where('date', '>=', '2022-07-01')
+            ->where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', session('level'))
+            ->get()
+            ->toArray();
         dd($data);
         return view('test', [
             'data' => $data,

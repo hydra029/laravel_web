@@ -53,12 +53,19 @@ class LoginController extends Controller
             ->where('email', $email)
             ->first()) {
             $role_name = Role::query()->select('name')->whereId($user->role_id)->first();
-            session()->put('id', $user->id);
-            session()->put('name', $user->fname);
-            session()->put('avatar', $user->avatar);
-            session()->put('role_name', $role_name->name);
-            session()->put('level', 1);
-            session()->flash('noti.success', 'Sign in successfully');
+            session()->put([
+                'id' => $user->id,
+                'name' => $user->fname,
+                'avatar' => $user->avatar,
+                'dept_id' => $user->dept_id,
+                'role_name' => $role_name->name,
+                'level' => 1,
+            ]);
+            session()->flash('noti', [
+                'heading' => 'Login successfully',
+                'text' => 'You are now logged into system',
+                'icon' => 'success',
+            ]);
             if ($user->password === null) {
                 $password = Hash::make($password);
                 Employee::query()
@@ -75,21 +82,31 @@ class LoginController extends Controller
                 session()->flush();
             }
 
-            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name','name','avatar']);
-            session()->flash('noti.error', 'Wrong email or password');
+            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
+            session()->flash('noti', [
+                'heading' => 'Wrong information',
+                'text' => 'Your email or password is incorrect. Please try again.',
+                'icon' => 'error',
+            ]);
             return back();
         }
 
         if ($user = Manager::where('email', $email)
             ->first()) {
             $role_name = Role::query()->select('name')->whereId($user->role_id)->first();
-            session()->put('id', $user->id);
-            session()->put('name', $user->fname);
-            session()->put('avatar', $user->avatar);
-            session()->put('dept_id', $user->dept_id);
-            session()->put('role_name', $role_name->name);
-            session()->put('level', 2);
-            session()->flash('noti.success', 'Sign in successfully');
+            session()->put([
+                'id' => $user->id,
+                'name' => $user->fname,
+                'avatar' => $user->avatar,
+                'dept_id' => $user->dept_id,
+                'role_name' => $role_name->name,
+                'level' => 2,
+            ]);
+            session()->flash('noti', [
+                'heading' => 'Login successfully',
+                'text' => 'You are now logged into system',
+                'icon' => 'success',
+            ]);
             if ($user->password === null) {
                 $password = Hash::make($password);
                 Manager::where('email', $email)
@@ -103,26 +120,35 @@ class LoginController extends Controller
                 session()->flush();
             }
 
-            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name','name','avatar']);
-            session()->flash('noti.error', 'Wrong email or password');
+            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
+            session()->flash('noti', [
+                'heading' => 'Wrong information',
+                'text' => 'Your email or password is incorrect. Please try again.',
+                'icon' => 'error',
+            ]);
             return back();
         }
+
         if ($user = Accountant::where('email', $email)
             ->first()) {
-            $role_name = Role::query()->select('name')->whereId($user->role_id)->first();
-            session()->put('id', $user->id);
-            session()->put('name', $user->fname);
-            session()->put('avatar', $user->avatar);
-            session()->put('dept_id', $user->dept_id);
-            session()->put('role_name', $role_name->name);
-            session()->put('level', 3);
-            session()->flash('noti.success', 'Sign in successfully');
+            session()->put([
+                'id' => $user->id,
+                'name' => $user->fname,
+                'avatar' => $user->avatar,
+                'dept_id' => $user->dept_id,
+                'role_name' => 'Accountant',
+                'level' => 3,
+            ]);
+            session()->flash('noti', [
+                'heading' => 'Login successfully',
+                'text' => 'You are now logged into system',
+                'icon' => 'success',
+            ]);
             if ($user->password === null) {
                 $password = Hash::make($password);
                 Accountant::where('email', $email)
                     ->update(['password' => $password]);
-                session()->put('level', 3);
-                session()->flash('noti.success', 'Sign in successfully');
+
                 return redirect()->route('accountants.index');
             }
 
@@ -134,19 +160,30 @@ class LoginController extends Controller
                 session()->flush();
             }
 
-            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name','name','avatar']);
-            session()->flash('noti.error', 'Wrong email or password');
+            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
+            session()->flash('noti', [
+                'heading' => 'Wrong information',
+                'text' => 'Your email or password is incorrect. Please try again.',
+                'icon' => 'error',
+            ]);
             return back();
         }
 
         if ($user = Ceo::where('email', $email)
             ->first()) {
-            session()->put('id', $user->id);
-            session()->put('name', $user->fname);
-            session()->put('avatar', $user->avatar);
-            session()->put('role_name', 'Ceo');
-            session()->put('level', 4);
-            session()->flash('noti.success', 'Sign in successfully');
+            session()->put([
+                'id' => $user->id,
+                'name' => $user->fname,
+                'avatar' => $user->avatar,
+                'dept_id' => $user->dept_id,
+                'role_name' => 'CEO',
+                'level' => 4,
+            ]);
+            session()->flash('noti', [
+                'heading' => 'Login successfully',
+                'text' => 'You are now logged into system',
+                'icon' => 'success',
+            ]);
             if ($user->password === null) {
                 $password = Hash::make($password);
                 Ceo::where('email', $email)
@@ -160,12 +197,20 @@ class LoginController extends Controller
                 session()->flush();
             }
 
-            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name','name','avatar']);
-            session()->flash('noti.error', 'Wrong email or password');
+            session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
+            session()->flash('noti', [
+                'heading' => 'Wrong information',
+                'text' => 'Your email or password is incorrect. Please try again.',
+                'icon' => 'error',
+            ]);
             return back();
         }
 
-        session()->flash('noti.error', 'Wrong email or password');
+        session()->flash('noti', [
+            'heading' => 'Wrong information',
+            'text' => 'Your email or password is incorrect. Please try again.',
+            'icon' => 'error',
+        ]);
         return back();
     }
 
@@ -175,8 +220,12 @@ class LoginController extends Controller
             session()->flush();
         }
 
-        session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name','name','avatar']);
-        session()->flash('noti.success', 'Log out successfully');
+        session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
+        session()->flash('noti', [
+            'heading' => 'Log out successfully',
+            'text' => 'You are now logged out',
+            'icon' => 'success',
+        ]);
         return redirect()->route('login');
     }
 }
