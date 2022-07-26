@@ -17,7 +17,7 @@ class CreateAttendanceTable extends Migration
 		Schema::create('attendances', static function (Blueprint $table) {
 			$table->date('date');
 			$table->unsignedBigInteger('emp_id');
-			$table->unsignedTinyInteger('emp_role')->default(EmpRoleEnum::Employee);
+			$table->unsignedTinyInteger('emp_role')->default(EmpRoleEnum::EMPLOYEE);
 			$table->unsignedBigInteger('shift');
 			$table->time('check_in')->default('00:00');
 			$table->time('check_out')->default('00:00');

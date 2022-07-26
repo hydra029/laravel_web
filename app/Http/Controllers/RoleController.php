@@ -58,7 +58,6 @@ class RoleController extends Controller
             'name' => $name,
             'dept_id' => $dept_id,
             'pay_rate' => $pay_rate,
-            'status' => '1',
          ]);
         $roles = Role::query()
         ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Department;
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,12 @@ class CreateDepartmentsTable extends Migration
     public function up(): void
     {
         Schema::create('departments', static function (Blueprint $table) {
-	        $table->id();
-	        $table->string('name');
-	        $table->boolean('status')->default(1);
+            $table->id();
+            $table->string('name');
+            $table->softDeletes();
         });
         Department::insert(['name' => 'Accountant']);
+
     }
 
     /**

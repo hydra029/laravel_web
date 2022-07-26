@@ -11,7 +11,7 @@ use BenSampo\Enum\Enum;
  */
 final class DepartmentEnum extends Enum
 {
-    const OptionOne =   0;
-    const OptionTwo =   1;
-    const OptionThree = 2;
+    public const OPTION_ONE =   0;
+    public const OPTION_TWO =   1;
+    public const OPTION_THREE = 2;
 }

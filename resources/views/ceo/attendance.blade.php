@@ -100,6 +100,7 @@
     </div>
 @endsection
 @push('js')
+
     <script src="{{ asset('js/main.min.js' )}}"></script>
     <script>
         $(document).ready(function () {
@@ -128,7 +129,6 @@
                 dayMaxEvents: true,
                 eventOrderStrict: true,
                 progressiveEventRendering: true,
-                eventOrder: "-id",
                 customButtons: {
                     today: {
                         text: 'Today',
@@ -155,7 +155,13 @@
                             let idM = sl2.children(':selected').index();
                             let idY = sl1.children(':selected').index();
                             if (idY === fY) {
-                                $.notify('There is no more data', 'warn');
+                                $.toast({
+                                    heading: 'Something went wrong',
+                                    text: 'There is no more data available',
+                                    icon: 'info',
+                                    position: 'top-right',
+                                    hideAfter: 2000,
+                                });
                             } else {
                                 $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
                                 $('#sl-2 :nth-child(' + (idM + 1) + ')').prop('selected', true).change();
@@ -168,7 +174,13 @@
                             let idM = sl2.children(':selected').index();
                             let idY = sl1.children(':selected').index();
                             if (idY === 1) {
-                                $.notify('There is no more data', 'warn');
+                                $.toast({
+                                    heading: 'Something went wrong',
+                                    text: 'There is no more data available',
+                                    icon: 'info',
+                                    position: 'top-right',
+                                    hideAfter: 2000,
+                                });
                             } else {
                                 $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
                                 $('#sl-2 :nth-child(' + (idM + 1) + ')').prop('selected', true).change();
@@ -184,16 +196,23 @@
                             let idY = sl1.children(':selected').index();
                             let slDate = sl3.children(':selected').val();
                             let fSun = new Date(slDate).getDate();
+                            console.log(fSun);
                             if (idD === 1) {
-                                if (idY === fY && idM === 1) {
-                                    $.notify('There is no more data', 'warn');
+                                if (idY === fY && idM === 12) {
+                                    $.toast({
+                                        heading: 'Something went wrong',
+                                        text: 'There is no more data available',
+                                        icon: 'info',
+                                        position: 'top-right',
+                                        hideAfter: 2000,
+                                    });
                                 } else {
-                                    if (fSun !== 7) {
-                                        if (idM === 1) {
+                                    if (fSun < 7) {
+                                        if (idM === 12) {
                                             $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
-                                            $('#sl-2 :last-child').prop('selected', true).change();
+                                            $('#sl-2 :nth-child(2)').prop('selected', true).change();
                                         } else {
-                                            $('#sl-2 :nth-child(' + idM + ')').prop('selected', true).change();
+                                            $('#sl-2 :nth-child(' + (idM + 2) + ')').prop('selected', true).change();
                                         }
                                         $('#sl-3 :nth-last-child(2)').prop('selected', true).change();
                                     } else {
@@ -201,7 +220,7 @@
                                             $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
                                             $('#sl-2 :last-child').prop('selected', true).change();
                                         } else {
-                                            $('#sl-2 :nth-child(' + idM + ')').prop('selected', true).change();
+                                            $('#sl-2 :nth-child(' + (idM + 2) + ')').prop('selected', true).change();
                                         }
                                         $('#sl-3 :last-child').prop('selected', true).change();
                                     }
@@ -214,19 +233,24 @@
                     next: {
                         click: function () {
                             let lW = $('#sl-3 :last-child').index();
-                            let lM = $('#sl-2 :last-child').index();
                             let idD = sl3.children(':selected').index();
                             let idM = sl2.children(':selected').index();
                             let idY = sl1.children(':selected').index();
                             let slDate = sl3.children(':selected').val();
                             let lSun = new Date(slDate).getDay();
                             if (idD === lW) {
-                                if (idM === 12) {
-                                    if (idY === 1 && idM === lM) {
-                                        $.notify('There is no more data', 'warn');
+                                if (idM === 1) {
+                                    if (idY === 1) {
+                                        $.toast({
+                                            heading: 'Something went wrong',
+                                            text: 'There is no more data available',
+                                            icon: 'info',
+                                            position: 'top-right',
+                                            hideAfter: 2000,
+                                        });
                                     } else {
                                         $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
-                                        $('#sl-2 :nth-child(2)').prop('selected', true).change();
+                                        $('#sl-2 :last-child').prop('selected', true).change();
                                         if (lSun !== 0) {
                                             $('#sl-3 :nth-child(3)').prop('selected', true).change();
                                         } else {
@@ -234,7 +258,7 @@
                                         }
                                     }
                                 } else {
-                                    $('#sl-2 :nth-child(' + (idM + 2) + ')').prop('selected', true).change();
+                                    $('#sl-2 :nth-child(' + idM + ')').prop('selected', true).change();
                                     if (lSun !== 0) {
                                         $('#sl-3 :nth-child(3)').prop('selected', true).change();
                                     } else {
@@ -257,6 +281,11 @@
 
             calendar.render();
             $(".fc-goto-button")
+                .after($('<a>').attr({
+                    id: 'emp_detail',
+                    role: 'button',
+                    href: '#'
+                }).addClass('btn btn-outline-primary disabled d-none'))
                 .after($('<select>').attr('id', 'sl-3').append($('<option>').text('Day')))
                 .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
                 .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
@@ -265,15 +294,26 @@
             let sl1 = $('#sl-1');
             let sl2 = $('#sl-2');
             let sl3 = $('#sl-3');
-            $(".fc-prevYear-button").before($('<select>')
-                .attr({
-                    id: 'department',
-                    style: 'margin: 0 3px'
-                })
-                .append($('<option>')
-                    .text('Department')
-                    .attr('value', 'all')
-                ))
+            $(".fc-prevYear-button")
+                .before($('<select>')
+                    .attr({
+                        id: 'department',
+                        style: 'margin: 0 3px'
+                    })
+                    .append($('<option>')
+                        .text('Department')
+                        .attr('value', 'all')
+                    ))
+                .before($('<button>')
+                    .attr({
+                        id: 'back',
+                        style: 'margin: 0 3px'
+                    })
+                    .addClass('btn btn-primary d-none')
+                    .text('Back')
+                )
+            let dept = $('#department');
+            let back = $("#back");
             emp();
             loadAttendance(today);
 
@@ -285,7 +325,7 @@
                 .done(function (response) {
                     let num = response.length;
                     for (let i = 0; i < num; i++) {
-                        $("#department").append($('<option>')
+                        dept.append($('<option>')
                             .attr('value', response[i]['id'])
                             .text(response[i]['name'])
                             .addClass('m-opt')
@@ -315,9 +355,8 @@
                 )
             }
 
-
             function loadAttendance(d) {
-                let dept_id = $('#department').children(':selected').val();
+                let dept_id = dept.children(':selected').val();
                 let m = getMon(d).toISOString().slice(0, 10);
                 let s = getSun(d).toISOString().slice(0, 10);
                 $.ajax({
@@ -327,106 +366,198 @@
                     data: {m: m, s: s, dept_id: dept_id},
                 })
                     .done(function (response) {
-                        let emp_num = response.length - 1;
                         let emp_id = 0;
                         let e_num = 0;
                         let num = 9998;
                         let text_color;
-                        for (let i = 0; i < emp_num; i++) {
-                            let length = response[i]['attendance'].length;
-                            let eventSource = [];
-                            for (let j = 0; j < length; j++) {
-                                let date = response[i]['attendance'][j]['date'];
-                                date = new Date(date);
-                                let emp_name = response[i]['fname'] + " " + response[i]['lname'];
-                                num--;
-                                let check_in = response[i]['attendance'][j]['check_in'].slice(0, 5);
-                                let check_out = response[i]['attendance'][j]['check_out'].slice(0, 5);
-                                let check_in_start = response[i]['attendance'][j]['shifts']['check_in_start'].slice(0, 5);
-                                let check_in_end = response[i]['attendance'][j]['shifts']['check_in_end'].slice(0, 5);
-                                let check_in_late_1 = response[i]['attendance'][j]['shifts']['check_in_late_1'].slice(0, 5);
-                                let check_in_late_2 = response[i]['attendance'][j]['shifts']['check_in_late_2'].slice(0, 5);
-                                let check_out_start = response[i]['attendance'][j]['shifts']['check_out_start'].slice(0, 5);
-                                let check_out_end = response[i]['attendance'][j]['shifts']['check_out_end'].slice(0, 5);
-                                let check_out_early_1 = response[i]['attendance'][j]['shifts']['check_out_early_1'].slice(0, 5);
-                                let check_out_early_2 = response[i]['attendance'][j]['shifts']['check_out_early_2'].slice(0, 5);
-                                let title = check_in + Array(14).fill('\xa0').join('') + check_out;
-                                let color_1 = '#f03e44';
-                                let color_2 = '#f03e44';
-
-                                if (check_in >= check_in_start && check_in <= check_in_end) {
-                                    color_1 = '#00c67f';
-                                } else if (check_in > check_in_end && check_in <= check_in_late_1) {
-                                    color_1 = '#f07171';
-                                } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
-                                    color_1 = '#f57542';
-                                }
-
-                                if (check_out >= check_out_start && check_out <= check_out_end) {
-                                    color_2 = '#00c67f';
-                                } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
-                                    color_2 = '#8ca5ff';
-                                } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
-                                    color_2 = '#9761ed';
-                                }
-
-                                let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
-                                if (emp_id !== response[i]['id']) {
-                                    emp_id = response[i]['id'];
-                                    e_num++;
-                                    if (e_num % 2 === 0) {
-                                        $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
-                                            .append($('<div>')
-                                                .attr('style', 'height: 82.2px; padding: 22px 0; background: #F0F8FF')
-                                                .addClass('text-center div-name')
-                                                .append($('<a>')
-                                                    .append($('<b>')
-                                                        .addClass('emp-name text-center')
-                                                        .attr({
-                                                            style: 'font-size: 15px',
-                                                            val: emp_id
-                                                        })
-                                                        .text(emp_name)
-                                                    )
-                                                )
-                                            )
-                                        text_color = '#000000';
-                                    } else {
-                                        $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
-                                            .append($('<div>')
-                                                .attr('style', 'height: 82.2px; padding: 22px 0')
-                                                .addClass('text-center div-name')
-                                                .append($('<a>')
-                                                    .append($('<b>')
-                                                        .addClass('emp-name text-center')
-                                                        .attr({
-                                                            style: 'font-size: 15px',
-                                                            val: emp_id
-                                                        })
-                                                        .text(emp_name)
-                                                    )
-                                                )
-                                            )
-                                        text_color = '#F5F5DC';
+                        let eventSource = [];
+                        let emp_types = response.length;
+                        for (let k = 0; k < emp_types; k++) {
+                            let emp_num = response[k].length;
+                            for (let i = 0; i < emp_num; i++) {
+                                let length = response[k][i]['attendance'].length;
+                                for (let j = 0; j < length; j++) {
+                                    let date = response[k][i]['attendance'][j]['date'];
+                                    date = new Date(date);
+                                    let emp_name = response[k][i]['fname'] + " " + response[k][i]['lname'];
+                                    let emp_dept = response[k][i]['departments']['name'];
+                                    if (k === 0) {
+                                        emp_dept += '*';
                                     }
-                                }
-                                let event = {
-                                    id: num,
-                                    title: title,
-                                    start: date,
-                                    allDay: true,
-                                    overlap: false,
-                                    background: color,
-                                    textColor: text_color,
-                                }
-                                eventSource.push(event);
-                            }
-                            calendar.addEventSource(eventSource);
+                                    num--;
+                                    let emp_role = response[k][i]['attendance'][j]['emp_role'];
+                                    let check_in = response[k][i]['attendance'][j]['check_in'].slice(0, 5);
+                                    let check_out = response[k][i]['attendance'][j]['check_out'].slice(0, 5);
+                                    let check_in_start = response[k][i]['attendance'][j]['shifts']['check_in_start'].slice(0, 5);
+                                    let check_in_end = response[k][i]['attendance'][j]['shifts']['check_in_end'].slice(0, 5);
+                                    let check_in_late_1 = response[k][i]['attendance'][j]['shifts']['check_in_late_1'].slice(0, 5);
+                                    let check_in_late_2 = response[k][i]['attendance'][j]['shifts']['check_in_late_2'].slice(0, 5);
+                                    let check_out_start = response[k][i]['attendance'][j]['shifts']['check_out_start'].slice(0, 5);
+                                    let check_out_end = response[k][i]['attendance'][j]['shifts']['check_out_end'].slice(0, 5);
+                                    let check_out_early_1 = response[k][i]['attendance'][j]['shifts']['check_out_early_1'].slice(0, 5);
+                                    let check_out_early_2 = response[k][i]['attendance'][j]['shifts']['check_out_early_2'].slice(0, 5);
+                                    let title = check_in + Array(14).fill('\xa0').join('') + check_out;
+                                    let color_1 = '#F03E44';
+                                    let color_2 = '#F03E44';
 
+                                    if (check_in >= check_in_start && check_in <= check_in_end) {
+                                        color_1 = '#00C67F';
+                                    } else if (check_in > check_in_end && check_in <= check_in_late_1) {
+                                        color_1 = '#F07171';
+                                    } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
+                                        color_1 = '#F57542';
+                                    }
+
+                                    if (check_out >= check_out_start && check_out <= check_out_end) {
+                                        color_2 = '#00C67F';
+                                    } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
+                                        color_2 = '#8CA5FF';
+                                    } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
+                                        color_2 = '#9761ED';
+                                    }
+
+                                    let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                                    if (emp_id !== response[k][i]['attendance'][j]['emp_id']) {
+                                        emp_id = response[k][i]['attendance'][j]['emp_id'];
+                                        e_num++;
+                                        if (e_num % 2 === 0) {
+                                            text_color = '#000000';
+                                            $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
+                                                .append($('<div>')
+                                                    .attr('style', 'height: 82.005px; padding: 22px 0; background: #F0F8FF')
+                                                    .addClass('text-center div-name')
+                                                    .append($('<a>')
+                                                        .append($('<b>')
+                                                            .addClass('emp-name text-center')
+                                                            .attr({
+                                                                style: 'font-size: 15px',
+                                                                "data-value": emp_id + "-" + emp_role,
+                                                            })
+                                                            .text(emp_name)
+                                                        )
+                                                        .append('<br>')
+                                                        .append($('<p>')
+                                                            .addClass('emp-dept text-center')
+                                                            .attr({
+                                                                style: 'font-size: 15px',
+                                                            })
+                                                            .text(emp_dept)
+                                                        )
+                                                    )
+                                                )
+                                        } else {
+                                            text_color = '#F5F5DC';
+                                            $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
+                                                .append($('<div>')
+                                                    .attr('style', 'height: 82.09px; padding: 22px 0')
+                                                    .addClass('text-center div-name')
+                                                    .append($('<a>')
+                                                        .append($('<b>')
+                                                            .addClass('emp-name text-center')
+                                                            .attr({
+                                                                style: 'font-size: 15px',
+                                                                "data-value": emp_id + "-" + emp_role,
+                                                            })
+                                                            .text(emp_name)
+                                                        )
+                                                        .append('<br>')
+                                                        .append($('<p>')
+                                                            .addClass('emp-dept text-center')
+                                                            .attr({
+                                                                style: 'font-size: 15px',
+                                                            })
+                                                            .text(emp_dept)
+                                                        )
+                                                    )
+                                                )
+                                        }
+                                    }
+                                    let event = {
+                                        id: num,
+                                        title: title,
+                                        start: date,
+                                        allDay: true,
+                                        overlap: false,
+                                        background: color,
+                                        textColor: text_color,
+                                    }
+                                    eventSource.push(event);
+                                }
+                            }
                         }
-                        $(".div-name").click(function () {
-                            console.log($(this).attr('val'));
+                        $(".emp-name").click(function () {
+                            let name = $(this).text();
+                            let dept = $(this).parent().find('.emp-dept').text();
+                            let text = name + ' - ' + dept;
+                            $('#emp_detail').text(text);
+                            $('#sl-1, #sl-2, #sl-3, #department, .fc-button').addClass('d-none');
+                            $('#back, #emp_detail').removeClass('d-none');
+                            calendar.removeAllEvents();
+                            del();
+                            calendar.changeView('dayGridMonth');
+                            let data = $(this).attr('data-value');
+                            data = data.split('-');
+                            let id = data[0];
+                            let role = data[1];
+                            let m = sl2.children(':selected').text();
+                            let y = sl1.children(':selected').text();
+                            let date = y + '-' + m;
+                            $.ajax({
+                                url: '{{route('ceo.emp_attendance_api')}}',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {id: id, role: role, date: date},
+                            })
+                                .done(function (response) {
+                                    let num = 9998;
+                                    let emp_num = response.length;
+                                    for (let i = 0; i <= emp_num; i++) {
+                                        s
+                                        num--;
+                                        let date = response[i]['date'];
+                                        let check_in = response[i]['check_in'].slice(0, 5);
+                                        let check_out = response[i]['check_out'].slice(0, 5);
+                                        let check_in_start = response[i]['shifts']['check_in_start'].slice(0, 5);
+                                        let check_in_end = response[i]['shifts']['check_in_end'].slice(0, 5);
+                                        let check_in_late_1 = response[i]['shifts']['check_in_late_1'].slice(0, 5);
+                                        let check_in_late_2 = response[i]['shifts']['check_in_late_2'].slice(0, 5);
+                                        let check_out_start = response[i]['shifts']['check_out_start'].slice(0, 5);
+                                        let check_out_end = response[i]['shifts']['check_out_end'].slice(0, 5);
+                                        let check_out_early_1 = response[i]['shifts']['check_out_early_1'].slice(0, 5);
+                                        let check_out_early_2 = response[i]['shifts']['check_out_early_2'].slice(0, 5);
+                                        let title = check_in + Array(20).fill('\xa0').join('') + check_out;
+                                        let color_1 = '#f03e44';
+                                        let color_2 = '#f03e44';
+                                        if (check_in >= check_in_start && check_in <= check_in_end) {
+                                            color_1 = '#00c67f';
+                                        } else if (check_in > check_in_end && check_in <= check_in_late_1) {
+                                            color_1 = '#f07171';
+                                        } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
+                                            color_1 = '#f57542';
+                                        }
+
+                                        if (check_out >= check_out_start && check_out <= check_out_end) {
+                                            color_2 = '#00c67f';
+                                        } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
+                                            color_2 = '#8ca5ff';
+                                        } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
+                                            color_2 = '#9761ed';
+                                        }
+
+                                        let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                                        let event = {
+                                            id: num,
+                                            title: title,
+                                            start: date,
+                                            allDay: true,
+                                            overlap: false,
+                                            background: color,
+                                        }
+                                        calendar.addEvent(event);
+                                    }
+                                })
                         });
+                        calendar.addEventSource(eventSource);
                     })
             }
 
@@ -448,8 +579,7 @@
                 $(".fc-goto-button").click();
             })
 
-
-            $('#department').change(function () {
+            dept.change(function () {
                 calendar.removeAllEvents();
                 del();
                 let date = calendar.getDate();
@@ -458,6 +588,14 @@
                 loadAttendance(date);
             })
 
+            back.click(function () {
+                calendar.removeAllEvents();
+                calendar.changeView('dayGridWeek');
+                $('#sl-1, #sl-2, #sl-3, #department, .fc-button').removeClass('d-none');
+                $('#back, #emp_detail').addClass('d-none');
+                emp();
+                loadAttendance(today);
+            })
 
             function loadDate(d) {
                 let dd = d.getDay();
@@ -507,9 +645,7 @@
                             )
                         )
                     );
-
             }
-
 
             function loadWeek() {
                 sl3.empty();
@@ -603,7 +739,15 @@
                 return new Date(d.setDate(diff));
             }
 
+            function loadEmpDate(d) {
+                let cm = d.getMonth() + 1;
+                let cy = d.getFullYear();
+                sl1.val(cy).change();
+                sl2.val(cm).change();
+            }
 
         })
     </script>
 @endpush
+
+

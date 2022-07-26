@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Accountant;
 use App\Models\Ceo;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Manager;
 use App\Models\Role;
@@ -52,12 +53,14 @@ class LoginController extends Controller
         if ($user = Employee::query()
             ->where('email', $email)
             ->first()) {
-            $role_name = Role::query()->select('name')->whereId($user->role_id)->first();
+            $role_name = Role::whereId($user->role_id)->first('name');
+            $dept_name = Department::whereId($user->dept_id)->first('name');
             session()->put([
                 'id' => $user->id,
                 'name' => $user->fname,
                 'avatar' => $user->avatar,
                 'dept_id' => $user->dept_id,
+                'dept_name' => $dept_name->name,
                 'role_name' => $role_name->name,
                 'level' => 1,
             ]);
@@ -93,13 +96,14 @@ class LoginController extends Controller
 
         if ($user = Manager::where('email', $email)
             ->first()) {
-            $role_name = Role::query()->select('name')->whereId($user->role_id)->first();
+            $dept_name = Department::whereId($user->dept_id)->first('name');
             session()->put([
                 'id' => $user->id,
                 'name' => $user->fname,
                 'avatar' => $user->avatar,
                 'dept_id' => $user->dept_id,
-                'role_name' => $role_name->name,
+                'dept_name' => $dept_name->name,
+                'role_name' => 'Manager',
                 'level' => 2,
             ]);
             session()->flash('noti', [
@@ -131,12 +135,14 @@ class LoginController extends Controller
 
         if ($user = Accountant::where('email', $email)
             ->first()) {
+            $role_name = Role::whereId($user->role_id)->first('name');
             session()->put([
                 'id' => $user->id,
                 'name' => $user->fname,
                 'avatar' => $user->avatar,
                 'dept_id' => $user->dept_id,
-                'role_name' => 'Accountant',
+                'dept_name' => 'Accountant',
+                'role_name' => $role_name->name,
                 'level' => 3,
             ]);
             session()->flash('noti', [
@@ -175,7 +181,6 @@ class LoginController extends Controller
                 'id' => $user->id,
                 'name' => $user->fname,
                 'avatar' => $user->avatar,
-                'dept_id' => $user->dept_id,
                 'role_name' => 'CEO',
                 'level' => 4,
             ]);

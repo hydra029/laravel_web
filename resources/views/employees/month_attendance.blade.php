@@ -160,6 +160,8 @@
                                     heading: 'Something went wrong',
                                     text: 'There is no more data available',
                                     icon: 'info',
+                                    position: 'top-right',
+                                    hideAfter: 2000,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
@@ -176,6 +178,8 @@
                                     heading: 'Something went wrong',
                                     text: 'There is no more data available',
                                     icon: 'info',
+                                    position: 'top-right',
+                                    hideAfter: 2000,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
@@ -194,6 +198,8 @@
                                         heading: 'Something went wrong',
                                         text: 'There is no more data available',
                                         icon: 'info',
+                                        position: 'top-right',
+                                        hideAfter: 2000,
                                     });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
@@ -214,6 +220,8 @@
                                         heading: 'Something went wrong',
                                         text: 'There is no more data available',
                                         icon: 'info',
+                                        position: 'top-right',
+                                        hideAfter: 2000,
                                     });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY) + ')').prop('selected', true).change();

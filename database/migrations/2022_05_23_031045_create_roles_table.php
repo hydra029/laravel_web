@@ -15,11 +15,12 @@ class CreateRolesTable extends Migration
 	public function up(): void
 	{
 		Schema::create('roles', static function (Blueprint $table) {
-			$table->id();
-			$table->foreignId('dept_id')->constrained('departments')->onDelete('cascade');
+			$table->unsignedBigInteger('id');
+			$table->unsignedBigInteger('dept_id');
 			$table->string('name');
             $table->integer('pay_rate');
-			$table->boolean('status');
+			$table->softDeletes();
+            $table->primary(['id','dept_id']);
             $table->unique(['dept_id', 'name']);
 		});
 	}

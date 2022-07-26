@@ -44,7 +44,7 @@ class SalaryFactory extends Factory
 			'mgr_id' => $this->faker->numberBetween(1, 10),
 			'acct_id' => $this->faker->numberBetween(1, 5),
 			'ceo_sign' => $this->faker->boolean,
-			'status' => $this->faker->boolean,
+			'status' => 0,
 		];
 	}
 }

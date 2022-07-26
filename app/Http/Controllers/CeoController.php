@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ShiftEnum;
 use App\Http\Requests\StoreAccountantRequest;
+use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
 use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
@@ -50,7 +51,7 @@ class CeoController extends Controller
      */
     public function index()
     {
-        $limit = 25;
+        $limit = 11;
         $fields = [
             'id',
             'fname',
@@ -61,11 +62,17 @@ class CeoController extends Controller
             'role_id',
             'dept_id',
         ];
-        $data = Employee::whereStatus(1)
+        $data = Employee::whereNull('deleted_at')
             ->with(['roles', 'departments'])
+            ->orderBy('dept_id', 'ASC')
             ->paginate($limit, $fields);
+        $acc = Accountant::whereNull('deleted_at')
+            ->with(['roles', 'departments'])
+            ->paginate(11);
         return view('ceo.index', ([
-            'data' => $data
+            'acc' => $acc,
+            'data' => $data,
+            'num' => 1,
         ]));
     }
 
@@ -93,28 +100,6 @@ class CeoController extends Controller
         ]);
     }
 
-//    public function time_save(Request $request)
-//    {
-//        AttendanceShiftTime::create([
-//            'id' => $request->get('id'),
-//            'check_in_start' => $request->get('in_start'),
-//            'check_in_end' => $request->get('in_end'),
-//            'check_in_late_1' => $request->get('in_late_1'),
-//            'check_in_late_2' => $request->get('in_late_2'),
-//            'check_out_early_1' => $request->get('out_early_1'),
-//            'check_out_early_2' => $request->get('out_early_2'),
-//            'check_out_start' => $request->get('out_start'),
-//            'check_out_end' => $request->get('out_end'),
-//            'status' => $request->get('status'),
-//        ]);
-//        session()->flash('noti', [
-//            'heading' => 'Action successfully',
-//            'text'=>'You\'ve created new shift\'s time successfully',
-//            'icon'=>'success',
-//        ]);
-//        return AttendanceShiftTime::whereId($request->get('id'))->get();
-//    }
-
     public function time_change(Request $request)
     {
         $id = ShiftEnum::getValue($request->get('name'));
@@ -131,8 +116,8 @@ class CeoController extends Controller
             ]);
         session()->flash('noti', [
             'heading' => 'Action successfully',
-            'text'=>'You\'ve changed the shift\'s time successfully',
-            'icon'=>'success',
+            'text' => 'You\'ve changed the shift\'s time successfully',
+            'icon' => 'success',
         ]);
         return AttendanceShiftTime::whereId($id)->get();
     }
@@ -145,37 +130,98 @@ class CeoController extends Controller
     /**
      * @throws \JsonException
      */
-    public function attendance_api(Request $request)
+    public function attendance_api(Request $request): array
     {
+        $dept_id = $request->dept_id;
         $s = $request->s;
         $m = $request->m;
-        $dept_id = $request->dept_id;
         if ($dept_id === 'all') {
-            $arr = Employee::with([
+            $data[] = Manager::with([
                 'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m);
+                    $query->where('date', '<=', $s)->where('date', '>=', $m)
+                        ->where('emp_role','=','2');
                 },
-                'attendance.shifts'
+                'attendance.shifts',
+                'departments',
             ])
-                ->where('status', '=', 1)
-                ->get(['id', 'lname', 'fname']);
+                ->whereNull('deleted_at')
+                ->orderBy('dept_id')
+                ->get(['id', 'lname', 'fname','dept_id']);
+            $data[] = Accountant::with([
+                'attendance' => function ($query) use ($s, $m) {
+                    $query->where('date', '<=', $s)->where('date', '>=', $m)
+                        ->where('emp_role','=','3');
+                },
+                'attendance.shifts',
+                'departments',
+            ])
+                ->whereNull('deleted_at')
+                ->get(['id', 'lname', 'fname','dept_id']);
+            $data[] = Employee::with([
+                'attendance' => function ($query) use ($s, $m) {
+                    $query->where('date', '<=', $s)->where('date', '>=', $m)
+                        ->where('emp_role','=','1');
+                },
+                'attendance.shifts',
+                'departments',
+            ])
+                ->whereNull('deleted_at')
+                ->orderBy('dept_id')
+                ->get(['id', 'lname', 'fname','dept_id']);
+        } else if ($dept_id === '1') {
+            $data[] = Accountant::with([
+                'attendance' => function ($query) use ($s, $m) {
+                    $query->where('date', '<=', $s)->where('date', '>=', $m)
+                        ->where('emp_role','=','2');
+                },
+                'attendance.shifts',
+                'departments',
+            ])
+                ->whereNull('deleted_at')
+                ->get(['id', 'lname', 'fname','dept_id']);
         } else {
-            $arr = Employee::with([
+            $data[] = Manager::with([
                 'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m);
+                    $query->where('date', '<=', $s)->where('date', '>=', $m)
+                        ->where('emp_role','=','3');
                 },
-                'attendance.shifts'
+                'attendance.shifts',
+                'departments',
             ])
-                ->where('dept_id', '=', $dept_id)
-                ->where('status', '=', 1)
-                ->get(['id', 'lname', 'fname']);
+                ->whereNull('deleted_at')
+                ->whereDeptId($dept_id)
+                ->get(['id', 'lname', 'fname','dept_id']);
+            $data[] = Employee::with([
+                'attendance' => function ($query) use ($s, $m) {
+                    $query->where('date', '<=', $s)->where('date', '>=', $m)
+                        ->where('emp_role','=','1');
+                },
+                'attendance.shifts',
+                'departments',
+            ])
+                ->whereNull('deleted_at')
+                ->whereDeptId($dept_id)
+                ->get(['id', 'lname', 'fname','dept_id']);
         }
-        return $arr;
+
+        return $data;
     }
 
     public function department_api()
     {
         return Department::get();
+    }
+
+    public function emp_attendance_api(Request $request)
+    {
+        $date = $request->get('date');
+        $emp_role = $request->get('role');
+        $emp_id = $request->get('id');
+        return Attendance::with('shifts')
+            ->where('date', 'like', "%$date%")
+            ->where('emp_role', '=', $emp_role)
+            ->where('emp_id', '=', $emp_id)
+            ->get();
     }
 
     public function pay_rate_api(Request $request): JsonResponse
@@ -215,7 +261,6 @@ class CeoController extends Controller
             'name' => $name,
             'dept_id' => $dept_id,
             'pay_rate' => $pay_rate,
-            'status' => '1',
         ]);
         $roles = Role::query()
             ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')

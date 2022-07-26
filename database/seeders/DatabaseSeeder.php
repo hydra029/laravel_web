@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder
 	public function run(): void
 	{
 		$this->call([
-			Department::factory(10)
+			Department::factory(9)
 				->create(),
-			Role::factory(50)
+			Role::factory(30)
 				->create(),
 			Employee::factory(40)
 				->create(),
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
 				->create(),
 			Ceo::factory(1)
 				->create(),
-			Manager::factory(10)
+			Manager::factory(5)
 				->create(),
 			Attendance::factory(0)
 				->create(),
