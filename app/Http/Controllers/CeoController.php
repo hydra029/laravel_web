@@ -332,7 +332,9 @@ class CeoController extends Controller
     {
         $id = $request->get('id');
         Employee::query()->whereId($id)->delete();
-        return 'success';
+        return $this->successResponse([
+            'message' => 'Delete success',
+        ]);
     }
 
     public function store_acct(StoreAccountantRequest $storeAccountantRequest)

@@ -17,7 +17,8 @@ class CreateDepartmentsTable extends Migration
         Schema::create('departments', static function (Blueprint $table) {
 	        $table->id();
 	        $table->string('name');
-	        $table->boolean('status')->default(1);
+            $table->timestamps();
+            $table->softDeletes();
         });
         Department::insert(['name' => 'Accountant']);
     }

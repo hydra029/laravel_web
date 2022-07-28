@@ -61,7 +61,8 @@ Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
-Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
+Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');	
+Route::post('/ceo/department/destroy', [DepartmentController::class, 'destroy'])->name('ceo.department.destroy');
 Route::post('/ceo/department/manager_role', [DepartmentController::class, 'manager_role'])->name('ceo.department.manager_role');
 Route::get('/ceo/create_emp', [CeoController::class, 'create_emp'])->name('ceo.create_emp');
 Route::post('/ceo/store_emp', [CeoController::class, 'store_emp'])->name('ceo.store_emp');

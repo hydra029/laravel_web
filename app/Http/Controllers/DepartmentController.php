@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Mail;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class DepartmentController extends Controller
 {
@@ -32,9 +34,11 @@ class DepartmentController extends Controller
     }
     public function index()
     {
-       $dept = $this->models->with('manager')->withCount(['members','roles'])->get();
+       $dept = $this->models->with('manager')->withCount(['members','roles'])->paginate(8);
+	   $manager = Manager::all();
        return view('ceo.department', [
            'dept' => $dept,
+		   'manager' => $manager,
        ]);
     }
 
@@ -76,9 +80,21 @@ class DepartmentController extends Controller
 	public function store(StoreDepartmentRequest $request)
 	{
 		$arr = $request->validated();
-		$this->model::create($arr);
-
-		return redirect()->route('ceo.department')->with('success', 'Đã thêm mới thành công');
+		$data['name'] = $arr['name'];	
+		 $this->models::create($data);
+		$dept_id = $this->models::max('id');
+		if($arr['manager_id'] != null){
+			$manager = Manager::find($arr['manager_id']);
+			$manager->dept_id = $dept_id;
+			$manager->save();
+		}
+		session()->flash('noti', [
+			'heading' => 'Add department successfully',
+			'text' => '',
+			'icon' => 'success',
+		]);
+		return redirect()->route('ceo.department');
+	
 	}
 
 	/**
@@ -103,12 +119,18 @@ class DepartmentController extends Controller
 		//
 	}
 
-	public function update(UpdateDepartmentRequest $request, Department $department)
-	{
-		$dept_id = $request->dept_id;
+	public function update(Request $request)
+	{	
+		$id_manager = $request->id_manager;
+		$dept_id = $request->id;
 		$dept_name = $request->name;
 		Department::where('id', $dept_id)->update(['name' => $dept_name]);
-		return Department::whereId($dept_id)->get();
+		if($id_manager != null){
+			$manager = Manager::find($id_manager);
+			$manager->dept_id = $dept_id;
+			$manager->save();
+		}
+		return Department::whereId($dept_id)->with('manager')->withCount(['members','roles'])->get();
 	}
 
 	/**
@@ -117,8 +139,11 @@ class DepartmentController extends Controller
 	 * @param Department $department
 	 * @return Response
 	 */
-	public function destroy(Department $department)
+	public function destroy(Request $request)
 	{
-		//
+		$id = $request->dept_id	;
+		$dept = Department::find($id);
+		$dept->delete();
+		return $this->successResponse(['message' => 'Delete department successfully']);
 	}
 }
