@@ -6,6 +6,8 @@ use Database\Factories\ManagerFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -89,14 +91,23 @@ class Manager extends Model
 
 		return ($this->gender === 1 ? 'Male' : 'Female');
 	}
-	public function department(): HasOne
-	{
-		return $this->hasOne(Department::class,'id', 'dept_id');
-	}
-	public function role(): HasOne
-	{
-		return $this->hasOne(Role::class,'id', 'role_id');
-	}
+    public function departments(): BelongsTo
+    {
+        return $this->BelongsTo(Department::class, 'dept_id', 'id')
+            ->select(['id', 'name']);
+    }
+
+    public function roles(): BelongsTo
+    {
+        return $this->BelongsTo(Role::class, 'role_id', 'id')
+            ->select(['id', 'name']);
+    }
+
+    public function attendance(): HasMany
+    {
+        return $this->HasMany(Attendance::class, 'emp_id', 'id')
+            ->where('emp_role', '=', 2);
+    }
 
 	public $timestamps = true;
 

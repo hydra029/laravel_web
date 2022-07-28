@@ -6,9 +6,11 @@ use App\Enums\EmpRoleEnum;
 use App\Enums\ShiftStatusEnum;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\Accountant;
 use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
+use App\Models\Manager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
@@ -43,6 +45,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+
         $date = date('Y-m-d');
         $data = Attendance::with('shifts')
             ->where('emp_id', '=', session('id'))
@@ -99,14 +102,78 @@ class EmployeeController extends Controller
 
     public function add(): RedirectResponse
     {
+        $data = [];
+        $day = mktime(0, 0, 0, 6, 30, 2022);
         $users = Employee::get('id');
         foreach ($users as $each) {
-            $date = date('Y-m-d', mktime(0, 0, 0, 7, 22, 2022));
+            $date = date('Y-m-d', $day);
             for ($i = 1; $i <= 3; $i++) {
-                $data = array('emp_id' => $each->id, 'date' => $date, 'shift' => $i);
-                Attendance::create($data);
+                $shift = [
+                    'emp_id' => $each->id,
+                    'date' => $date,
+                    'shift' => $i,
+                    'emp_role' => '1'
+                ];
+                $data[] = $shift;
             }
         }
+        $users = Manager::get('id');
+        foreach ($users as $each) {
+            $date = date('Y-m-d', $day);
+            for ($i = 1; $i <= 3; $i++) {
+                $shift = [
+                    'emp_id' => $each->id,
+                    'date' => $date,
+                    'shift' => $i,
+                    'emp_role' => '2'
+                ];
+                $data[] = $shift;
+            }
+        }
+        $users = Accountant::get('id');
+        foreach ($users as $each) {
+            $date = date('Y-m-d', $day);
+            for ($i = 1; $i <= 3; $i++) {
+                $shift = [
+                    'emp_id' => $each->id,
+                    'date' => $date,
+                    'shift' => $i,
+                    'emp_role' => '3'
+                ];
+                $data[] = $shift;
+            }
+        }
+        Attendance::insert($data);
+        return redirect()->route('employees.index');
+    }
+
+    public function checkin(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
+            ->where('date', '=', date('Y-m-d'))
+            ->where('shift', '=', $request->get('shift'))
+            ->update(['check_in' => date('H:i')]);
+        session()->flash('noti', [
+            'heading' => 'Check in successfully',
+            'text' => 'You\'ve checked in shift ' . $request->get('shift') . ' successfully',
+            'icon' => 'success',
+        ]);
+        return redirect()->route('employees.index');
+    }
+
+    public function checkout(Request $request): RedirectResponse
+    {
+        Attendance::where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
+            ->where('date', '=', date('Y-m-d'))
+            ->where('shift', '=', $request->get('shift'))
+            ->update(['check_out' => date('H:i')]);
+        session()->flash('noti', [
+            'heading' => 'Check out successfully',
+            'text' => 'You\'ve checked out shift ' . $request->get('shift') . ' successfully',
+            'icon' => 'success',
+        ]);
         return redirect()->route('employees.index');
     }
 
@@ -130,36 +197,6 @@ class EmployeeController extends Controller
     public function edit(Employee $employee): void
     {
         //
-    }
-
-    public function checkin(Request $request): RedirectResponse
-    {
-        Attendance::where('emp_id', '=', session('id'))
-            ->where('emp_role', '=', EmpRoleEnum::Employee)
-            ->where('date', '=', date('Y-m-d'))
-            ->where('shift', '=', $request->get('shift'))
-            ->update(['check_in' => date('H:i')]);
-        session()->flash('noti', [
-            'heading' => 'Check in successfully',
-            'text' => 'You\'ve checked in shift ' . $request->get('shift') . ' successfully',
-            'icon' => 'success',
-        ]);
-        return redirect()->route('employees.index');
-    }
-
-    public function checkout(Request $request): RedirectResponse
-    {
-        Attendance::where('emp_id', '=', session('id'))
-            ->where('emp_role', '=', EmpRoleEnum::Employee)
-            ->where('date', '=', date('Y-m-d'))
-            ->where('shift', '=', $request->get('shift'))
-            ->update(['check_out' => date('H:i')]);
-        session()->flash('noti', [
-            'heading' => 'Check out successfully',
-            'text' => 'You\'ve checked out shift ' . $request->get('shift') . ' successfully',
-            'icon' => 'success',
-        ]);
-        return redirect()->route('employees.index');
     }
 
     /**

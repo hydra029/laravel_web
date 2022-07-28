@@ -24,7 +24,6 @@ class AccountantFactory extends Factory
 			'email' => $this->faker->email,
 			'dept_id' => 1,
 			'role_id' => $this->faker->numberBetween(1, 5),
-			'status' => $this->faker->boolean,
 		];
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Department;
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,7 @@ class CreateDepartmentsTable extends Migration
             $table->softDeletes();
         });
         Department::insert(['name' => 'Accountant']);
+
     }
 
     /**

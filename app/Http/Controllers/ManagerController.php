@@ -53,7 +53,7 @@ class ManagerController extends Controller
             $query->where('date', '=', $date);
         }, 'roles'])
             ->where('dept_id', '=', $dept_id)
-            ->where('status', '=', 1)
+            ->whereNull('deleted_at')
             ->paginate($limit);
         $shifts = ShiftEnum::getKeys();
         return view('managers.attendance', [
@@ -99,14 +99,14 @@ class ManagerController extends Controller
             'attendance.shifts'
         ])
             ->where('dept_id', '=', $dept_id)
-            ->where('status', '=', 1)
+            ->whereNull('deleted_at')
             ->get(['id', 'lname', 'fname']);
     }
 
     public function checkin(Request $request): RedirectResponse
     {
         Attendance::where('emp_id', '=', session('id'))
-            ->where('emp_role', '=', EmpRoleEnum::Manager)
+            ->where('emp_role', '=', EmpRoleEnum::MANAGER)
             ->where('date', '=', date('Y-m-d'))
             ->where('shift', '=', $request->get('shift'))
             ->update(['check_in' => date('H:i')]);
@@ -122,7 +122,7 @@ class ManagerController extends Controller
     public function checkout(Request $request): RedirectResponse
     {
         Attendance::where('emp_id', '=', session('id'))
-            ->where('emp_role', '=', EmpRoleEnum::Manager)
+            ->where('emp_role', '=', EmpRoleEnum::MANAGER)
             ->where('date', '=', date('Y-m-d'))
             ->where('shift', '=', $request->get('shift'))
             ->update(['check_out' => date('H:i')]);

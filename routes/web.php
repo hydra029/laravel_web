@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', [HomeController::class, 'test'])->name('test');
 Route::post('/test', [HomeController::class, 'api'])->name('api');
+Route::get('/test/department_api', [HomeController::class, 'department_api'])->name('department_api');
+Route::post('/test/attendance_api', [HomeController::class, 'attendance_api'])->name('attendance_api');
 
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
@@ -50,7 +52,6 @@ Route::post('/accountants/attendance_api', [AccountantController::class, 'attend
 
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
-Route::post('/ceo/time_save/', [CeoController::class, 'time_save'])->name('ceo.time_save');
 Route::get('/ceo/fines', [FinesController::class, 'index'])->name('ceo.fines');
 Route::post('/ceo/fines_store', [FinesController::class, 'store'])->name('ceo.fines_store');
 Route::post('/ceo/fines_update', [FinesController::class, 'update'])->name('ceo.fines_update');
@@ -78,11 +79,10 @@ Route::post('/ceo/import_acct', [CeoController::class, 'import_acct'])->name('ce
 Route::post('/ceo/import_mgr', [CeoController::class, 'import_mgr'])->name('ceo.import_mgr');
 Route::get('/ceo/get_infor', [CeoController::class, 'get_infor'])->name('ceo.get_infor');
 
-
 Route::get('/ceo/attendance', [CeoController::class, 'attendance'])->name('ceo.attendance');
 Route::post('/ceo/attendance_api', [CeoController::class, 'attendance_api'])->name('ceo.attendance_api');
 Route::get('/ceo/department_api', [CeoController::class, 'department_api'])->name('ceo.department_api');
-
+Route::post('/ceo/emp_attendance_api', [CeoController::class, 'emp_attendance_api'])->name('ceo.emp_attendance_api');
 
 Route::resource('employees', EmployeeController::class)->except([
 	'show',

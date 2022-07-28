@@ -24,7 +24,6 @@ class ManagerFactory extends Factory
 	        'email' => $this->faker->email,
 	        'dept_id' => $this->faker->unique()->numberBetween(1, 10),
 	        'role_id' => 1,
-	        'status' => $this->faker->boolean,
         ];
     }
 }

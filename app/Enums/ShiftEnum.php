@@ -6,16 +6,16 @@ use BenSampo\Enum\Enum;
 
 final class ShiftEnum extends Enum
 {
-	public const Morning = 1;
-	public const Afternoon = 2;
-	public const Evening = 3;
+	public const MORNING = 1;
+	public const AFTERNOON = 2;
+	public const EVENING = 3;
 
 	public static function getArrayView(): array
 	{
 		return [
-			'Morning'  => self::Morning,
-			'Afternoon'  => self::Afternoon,
-			'Evening' => self::Evening,
+			'Morning'  => self::MORNING,
+			'Afternoon'  => self::AFTERNOON,
+			'Evening' => self::EVENING,
 		];
 	}
 

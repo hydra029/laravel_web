@@ -56,6 +56,7 @@ class Attendance extends Model
 		'date',
 		'check_in',
 		'check_out',
+		'emp_role',
 	];
 	protected $casts = [
 		'date' => 'timestamp:d-m-Y',
@@ -63,12 +64,32 @@ class Attendance extends Model
 
 	public function getShiftNameAttribute(): string
 	{
-		return ShiftEnum::getKey($this->shift);
+		return ShiftEnum::getKeybyValue($this->shift);
 	}
 
 	public function getShiftStatusAttribute(): string
 	{
-		return ShiftStatusEnum::getKey($this->shifts->status);
+		return ShiftStatusEnum::getKeybyValue($this->shifts->status);
+	}
+
+	public function getInStartAttribute(): string
+	{
+		return substr($this->shifts->check_in_start,0,5);
+	}
+
+	public function getInEndAttribute(): string
+	{
+		return substr($this->shifts->check_in_late_2,0,5);
+	}
+
+	public function getOutStartAttribute(): string
+	{
+		return substr($this->shifts->check_out_early_1,0,5);
+	}
+
+	public function getOutEndAttribute(): string
+	{
+		return substr($this->shifts->check_out_end,0,5);
 	}
 
 	public function getCheckInTimeAttribute(): string

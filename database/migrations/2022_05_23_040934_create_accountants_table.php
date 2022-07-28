@@ -27,7 +27,6 @@ class CreateAccountantsTable extends Migration
 			$table->string('password')->nullable();
 			$table->foreignId('dept_id')->constrained('departments')->default(1);
 			$table->foreignId('role_id')->constrained('roles');
-			$table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
 		});

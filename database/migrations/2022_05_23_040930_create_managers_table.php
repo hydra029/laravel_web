@@ -27,7 +27,6 @@ class CreateManagersTable extends Migration
 	        $table->string('password')->nullable();
 	        $table->foreignId('dept_id')->constrained('departments');
 	        $table->foreignId('role_id')->constrained('roles')->default(1);
-	        $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -60,7 +60,7 @@ class AccountantController extends Controller
 			'role_id',
 			'dept_id',
 		];
-		$data = Employee::whereStatus(1)
+		$data = Employee::whereNull('deleted_at')
 			->with(['roles', 'departments'])
 			->paginate($limit, $fields);
 		$id = session('id');
@@ -87,7 +87,7 @@ class AccountantController extends Controller
     public function checkin(Request $request): RedirectResponse
     {
         Attendance::where('emp_id', '=', session('id'))
-            ->where('emp_role', '=', EmpRoleEnum::Accountant)
+            ->where('emp_role', '=', EmpRoleEnum::ACCOUNTANT)
             ->where('date','=', date('Y-m-d'))
             ->where('shift','=', $request->get('shift'))
             ->update(['check_in' => date('H:i')]);
@@ -103,7 +103,7 @@ class AccountantController extends Controller
     public function checkout(Request $request): RedirectResponse
     {
         Attendance::where('emp_id', '=', session('id'))
-            ->where('emp_role', '=', EmpRoleEnum::Accountant)
+            ->where('emp_role', '=', EmpRoleEnum::ACCOUNTANT)
             ->where('date','=', date('Y-m-d'))
             ->where('shift','=', $request->get('shift'))
             ->update(['check_out' => date('H:i')]);
