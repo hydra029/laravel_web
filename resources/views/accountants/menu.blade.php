@@ -6,9 +6,15 @@
         </a>
     </li>
     <li class="side-nav-item">
-        <a href="{{route('accountants.attendance')}}" class="side-nav-link">
-            <i class="uil-home-alt"></i>
-            <span> Attendance </span>
+        <a href="{{route('accountants.attendance_history')}}" class="side-nav-link">
+            <i class="uil-calendar-alt"></i>
+            <span> Attendance History </span>
+        </a>
+    </li>
+    <li class="side-nav-item">
+        <a href="{{route('accountants.salary')}}" class="side-nav-link">
+            <i class="uil-money-bill"></i>
+            <span> Salary </span>
         </a>
     </li>
 @endsection

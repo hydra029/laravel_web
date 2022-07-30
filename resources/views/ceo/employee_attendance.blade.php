@@ -129,6 +129,7 @@
                 dayMaxEvents: true,
                 eventOrderStrict: true,
                 progressiveEventRendering: true,
+                eventOrder: '-id',
                 customButtons: {
                     today: {
                         text: 'Today',
@@ -161,6 +162,7 @@
                                     icon: 'info',
                                     position: 'top-right',
                                     hideAfter: 2000,
+                                    allowToastClose: false,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
@@ -180,6 +182,7 @@
                                     icon: 'info',
                                     position: 'top-right',
                                     hideAfter: 2000,
+                                    allowToastClose: false,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
@@ -205,6 +208,7 @@
                                         icon: 'info',
                                         position: 'top-right',
                                         hideAfter: 2000,
+                                        allowToastClose: false,
                                     });
                                 } else {
                                     if (fSun < 7) {
@@ -247,6 +251,7 @@
                                             icon: 'info',
                                             position: 'top-right',
                                             hideAfter: 2000,
+                                            allowToastClose: false,
                                         });
                                     } else {
                                         $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
@@ -592,7 +597,7 @@
                 calendar.removeAllEvents();
                 calendar.changeView('dayGridWeek');
                 $('#sl-1, #sl-2, #sl-3, #department, .fc-button').removeClass('d-none');
-                $('#back, #emp_detail').addClass('d-none');
+                $('#back, #emp_detail, .fc-goto-button').addClass('d-none');
                 emp();
                 loadAttendance(today);
             })

@@ -1,5 +1,5 @@
 @extends('layout.master')
-@include('managers.menu')
+@include('accountants.menu')
 @push('css')
     <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
     <style>
@@ -162,6 +162,7 @@
                                     icon: 'info',
                                     position: 'top-right',
                                     hideAfter: 2000,
+                                    allowToastClose: false,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
@@ -180,6 +181,7 @@
                                     icon: 'info',
                                     position: 'top-right',
                                     hideAfter: 2000,
+                                    allowToastClose: false,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
@@ -200,6 +202,7 @@
                                         icon: 'info',
                                         position: 'top-right',
                                         hideAfter: 2000,
+                                        allowToastClose: false,
                                     });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
@@ -222,6 +225,7 @@
                                         icon: 'info',
                                         position: 'top-right',
                                         hideAfter: 2000,
+                                        allowToastClose: false,
                                     });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY) + ')').prop('selected', true).change();
@@ -283,7 +287,7 @@
                 let l = getLDay(d).toISOString().slice(0, 10);
                 let num = 9998;
                 $.ajax({
-                    url: '{{route('managers.attendance_api')}}',
+                    url: '{{route('accountants.attendance_api')}}',
                     type: 'POST',
                     dataType: 'json',
                     data: {f: f, l: l},

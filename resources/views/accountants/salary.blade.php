@@ -1,7 +1,7 @@
 @extends('layout.master')
 @include('accountants.menu')
 @section('content')
-    <table id="tableSalary" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <table id="tableSalary" class="table table-striped table-bordered table-sm">
         <thead>
             <tr>
                 <th class="th-sm">

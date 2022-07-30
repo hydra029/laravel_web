@@ -19,7 +19,8 @@
             </ul>
         </div>
     @endif
-    <table class="table table-striped table-centered mb-20 table-bordered text-center" style="border-color: crimson !important;" id="student-table-index">
+    <table class="table table-striped table-centered mb-20 table-bordered text-center"
+           style="border-color: crimson !important;" id="student-table-index">
         <thead>
         <tr>
             <th rowspan="2">Shift</th>
@@ -49,7 +50,7 @@
                         </div>
                         <label class="shift-name-inp d-none">
                             <input type="text" name="name" class="form-control text-center"
-                                   value="{{$each -> shift_name}}">
+                                   placeholder="{{$each -> shift_name}}" value="{{$each -> shift_name}}">
                         </label>
                     </td>
                     <td>
@@ -58,7 +59,7 @@
                         </div>
                         <label class="shift-status-inp d-none">
                             <input type="text" name="status" class="form-control text-center"
-                                   value="{{$each -> shift_status}}">
+                                   placeholder="{{$each -> shift_status}}" value="{{$each -> shift_status}}">
                         </label>
                     </td>
                     <td>
@@ -67,7 +68,7 @@
                         </div>
                         <label class="shift-in-start-inp d-none">
                             <input type="text" name="in_start" class="form-control text-center"
-                                   value="{{$each -> in_start}}">
+                                   placeholder="{{$each -> in_start}}"  value="{{$each -> in_start}}">
                         </label>
                     </td>
                     <td>
@@ -76,7 +77,7 @@
                         </div>
                         <label class="shift-in-end-inp d-none">
                             <input type="text" name="in_end" class="form-control text-center"
-                                   value="{{$each -> in_end}}">
+                                   placeholder="{{$each -> in_end}}" value="{{$each -> in_end}}">
                         </label>
                     </td>
                     <td>
@@ -85,7 +86,7 @@
                         </div>
                         <label class="shift-in-late-1-inp d-none">
                             <input type="text" name="in_late_1" class="form-control text-center"
-                                   value="{{$each -> in_late_1}}">
+                                   placeholder="{{$each -> in_late_1}}" value="{{$each -> in_late_1}}">
                         </label>
                     </td>
                     <td>
@@ -94,7 +95,7 @@
                         </div>
                         <label class="shift-in-late-2-inp d-none">
                             <input type="text" name="in_late_2" class="form-control text-center"
-                                   value="{{$each -> in_late_2}}">
+                                   placeholder="{{$each -> in_late_2}}" value="{{$each -> in_late_2}}">
                         </label>
                     </td>
                     <td>
@@ -103,7 +104,7 @@
                         </div>
                         <label class="shift-out-early-1-inp d-none">
                             <input type="text" name="out_early_1" class="form-control text-center"
-                                   value="{{$each -> out_early_1}}">
+                                   placeholder="{{$each -> out_early_1}}" value="{{$each -> out_early_1}}">
                         </label>
                     </td>
                     <td>
@@ -112,7 +113,7 @@
                         </div>
                         <label class="shift-out-early-2-inp d-none">
                             <input type="text" name="out_early_2" class="form-control text-center"
-                                   value="{{$each -> out_early_2}}">
+                                   placeholder="{{$each -> out_early_2}}" value="{{$each -> out_early_2}}">
                         </label>
                     </td>
                     <td>
@@ -121,7 +122,7 @@
                         </div>
                         <label class="shift-out-start-inp d-none">
                             <input type="text" name="out_start" class="form-control text-center"
-                                   value="{{$each -> out_start}}">
+                                   placeholder="{{$each -> out_start}}" value="{{$each -> out_start}}">
                         </label>
                     </td>
                     <td>
@@ -130,7 +131,7 @@
                         </div>
                         <label class="shift-out-end-inp d-none">
                             <input type="text" name="out_end" class="form-control text-center"
-                                   value="{{$each -> out_end}}">
+                                   placeholder="{{$each -> out_end}}" value="{{$each -> out_end}}">
                         </label>
                     </td>
                     <td>
@@ -145,80 +146,6 @@
             </tr>
         @endforeach
         </tbody>
-        @if($count < 3)
-            <tr class="hidden-form d-none">
-                <form id="form-time-save" method="post">
-                    <input type="hidden" name="status" value="1">
-                    <td>
-                        <label class="shift-name-inp">
-                            <select name="id">
-                                @foreach($shifts as $shift_name => $shift_id)
-                                    <option value="{{$shift_id}}" @if($shift_id === 1)selected="selected"@endif>
-                                        {{$shift_name}}
-                                    </option>
-                            @endforeach
-                        </label>
-                    </td>
-                    <td>
-                        <div>
-                            Inactive
-                        </div>
-                    </td>
-                    <td>
-                        <label class="shift-in-start-inp">
-                            <input type="text" name="in_start" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <label class="shift-in-end-inp">
-                            <input type="text" name="in_end" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <label class="shift-in-late-1-inp">
-                            <input type="text" name="in_late_1" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <label class="shift-in-late-2-inp">
-                            <input type="text" name="in_late_2" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <label class="shift-out-early-1-inp">
-                            <input type="text" name="out_early_1" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <label class="shift-out-early-2-inp">
-                            <input type="text" name="out_early_2" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <label class="shift-out-start-inp">
-                            <input type="text" name="out_start" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <label class="shift-out-end-inp">
-                            <input type="text" name="out_end" class="form-control text-center" value="00:00">
-                        </label>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary btn-new">
-                            Save
-                        </button>
-                    </td>
-                </form>
-            </tr>
-            <tr>
-                <td colspan="12">
-                    <button id="add_more" type="button">
-                        Add more
-                    </button>
-                </td>
-            </tr>
-        @endif
     </table>
 @endsection
 @push('js')
@@ -274,50 +201,80 @@
                             tr.find('.shift-out-early-2').text(response[0]["check_out_early_2"].slice(0, 5));
                             tr.find('.shift-out-start').text(response[0]["check_out_start"].slice(0, 5));
                             tr.find('.shift-out-end').text(response[0]["check_out_end"].slice(0, 5));
-                            $.notify('Action completed', 'success');
-                        })
-                        .fail(function () {
-                            $.notify('Input Format Error', 'error');
-                        })
-                } else {
-                    $.notify('Input Format Error', 'error');
-                }
-            });
-            $('#add_more').click(function (event) {
-                $('.hidden-form').removeClass('d-none')
-                $('#add_more').find('tr').addClass('d-none')
-            });
-            $('.btn-new').click(function (event) {
-                let tr = $(this).parents('tr');
-                let form = tr.find('form');
-                const time_regex = /^([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d)$/;
-                let in_start_inp = tr.find('.shift-in-start-inp').find('input').val();
-                let in_end_inp = tr.find('.shift-in-end-inp').find('input').val();
-                let in_late_1_inp = tr.find('.shift-in-late-1-inp').find('input').val();
-                let in_late_2_inp = tr.find('.shift-in-late-2-inp').find('input').val();
-                let out_early_1_inp = tr.find('.shift-out-early-1-inp').find('input').val();
-                let out_early_2_inp = tr.find('.shift-out-early-2-inp').find('input').val();
-                let out_start_inp = tr.find('.shift-out-start-inp').find('input').val();
-                let out_end_inp = tr.find('.shift-out-end-inp').find('input').val();
-                let text = in_start_inp.concat(" ", in_end_inp).concat(" ", in_late_1_inp).concat(" ", in_late_2_inp).concat(" ", out_early_1_inp).concat(" ", out_early_2_inp).concat(" ", out_start_inp).concat(" ", out_end_inp);
-                if (text.match(time_regex)) {
-                    $.ajax({
-                        url: "{{ route('ceo.time_save') }}",
-                        type: 'POST',
-                        dataType: 'JSON',
-                        data: form.serializeArray(),
-                    })
-                        .done(function (response) {
-                            // location.reload();
-                        })
-                        .fail(function () {
-                            $.notify('Input Format Error', 'error');
+                            $.toast({
+                                heading: 'Action completed',
+                                text: "You\'ve changed time shift successfully",
+                                icon: 'success',
+                                position: 'top-right',
+                                hideAfter: 2000,
+                            });
+
                         })
                 } else {
-                    $.notify('Input Format Error', 'error');
+                    $.toast({
+                        heading: 'Something went wrong',
+                        text: 'Your input data is not time',
+                        icon: 'error',
+                        position: 'top-right',
+                        hideAfter: 2000,
+                    });
+
                 }
             });
 
+            let inp = $(':input');
+            inp.on('keydown', function (e) {
+                e.preventDefault();
+                const time_regex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
+                let value = $(this).val();
+                let placeholder = $(this).attr('placeholder');
+                let len = value.length;
+                let val = value.split('');
+                if (e.keyCode === 8) {
+                    if (len === 3) {
+                        value = val[0] + val[1];
+                    } else {
+                        value = '';
+                        for (let i = 0; i < len - 2; i++) {
+                            value += val[i];
+                        }
+                    }
+                } else if (e.key >= 0 && e.key <= 9) {
+                    if (len === 2) {
+                        value += ':' + e.key;
+                    } else if (len === 5) {
+                        placeholder = $(this).val();
+                        $(this).attr('placeholder', placeholder);
+                        value = e.key;
+                    } else {
+                        value += e.key;
+                    }
+                } else if (value.match(time_regex) === true && (e.key === 27 || e.key === 13)) {
+                    $(this).attr('placeholder', value);
+                    inp.blur();
+                }
+                else {
+                    const time_regex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
+                    let value = $(this).val();
+                    if (value === '' || value.match(time_regex) === false) {
+                        let placeholder = $(this).attr('placeholder');
+                        $(this).val(placeholder);
+                    }
+                    inp.blur();
+                }
+                $(this).val(value);
+            })
+                .on('click', function () {
+                    $(this).val('');
+                })
+                .blur(function () {
+                    const time_regex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
+                    let value = $(this).val();
+                    if (value === '' || !value.match(time_regex)) {
+                        let placeholder = $(this).attr('placeholder');
+                        $(this).val(placeholder);
+                    }
+                })
         });
     </script>
 @endpush

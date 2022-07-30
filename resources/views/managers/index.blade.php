@@ -1,11 +1,17 @@
 @extends('layout.master')
-@include('master.menu')
+@include('managers.menu')
 @section('content')
     <style>
         button {
             width: 90px;
         }
     </style>
+    <form action="{{ route('managers.add') }}" method="post">
+        @csrf
+        <button class="btn btn-secondary">
+            Add
+        </button>
+    </form>
     <table class="table table-striped table-centered mb-0" id="table-index">
         <thead>
         <tr>

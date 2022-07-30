@@ -6,7 +6,7 @@
             width: 90px;
         }
     </style>
-    <table class="table table-striped table-centered mb-0" id="table-index">
+    <table class="table table-striped table-bordered table-centered mb-0 text-center" id="table-index">
         <thead>
         <tr>
             <th>Shift</th>
@@ -38,6 +38,7 @@
                         @break
                     @case(2)
                         @if($each->in_start <= date('H:i') && date('H:i') <= $each->in_end)
+
                             @if($each->check_in_time === "00:00")
                                 <td>
                                     <form action="{{ route('employees.checkin') }}" method="post">
@@ -93,26 +94,26 @@
                     @case(3)
                         @if($each->check_in_time === "00:00")
                             <td>
-                                <button class="btn btn-secondary" disabled="disabled">
+                                <button class="btn btn-outline-danger" disabled="disabled">
                                     Missed
                                 </button>
                             </td>
                         @else
                             <td>
-                                <button class="btn btn-secondary" disabled="disabled">
+                                <button class="btn btn-outline-success  " disabled="disabled">
                                     {{$each->check_in_time}}
                                 </button>
                             </td>
                         @endif
                         @if($each->check_out_time === "00:00")
                             <td>
-                                <button class="btn btn-secondary" disabled="disabled">
+                                <button class="btn btn-outline-danger" disabled="disabled">
                                     Missed
                                 </button>
                             </td>
                         @else
                             <td>
-                                <button class="btn btn-secondary" disabled="disabled">
+                                <button class="btn btn-outline-success  " disabled="disabled">
                                     {{$each->check_out_time}}
                                 </button>
                             </td>

@@ -1,15 +1,15 @@
 @extends('layout.master')
 @include('managers.menu')
 @section('content')
-    <table class="table table-striped table-centered table-bordered mb-20" id="student-table-index">
+    <table class="table table-striped table-centered table-bordered mb-20 text-center" id="student-table-index">
         <thead>
         <tr>
             <th>#</th>
             <th>Name</th>
             <th>Role</th>
-            @foreach($shifts as $shift)
+            @foreach($shifts as $value => $shift)
                 <th>
-                    {{$shift}}
+                    {{$value}}
                 </th>
             @endforeach
         </tr>

@@ -72,12 +72,12 @@ class AttendanceShiftTime extends Model
 
 	public function getShiftNameAttribute(): string
 	{
-		return ShiftEnum::getKey($this->id);
+		return ShiftEnum::getKeyByValue($this->id);
 	}
 
 	public function getShiftStatusAttribute(): string
 	{
-		return ShiftStatusEnum::getKey($this->status);
+		return ShiftStatusEnum::getKeyByValue($this->status);
 	}
 
 	public function getInStartAttribute(): string

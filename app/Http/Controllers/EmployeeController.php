@@ -32,6 +32,9 @@ class EmployeeController extends Controller
         $this->middleware('employee');
         $routeName = Route::currentRouteName();
         $arr = explode('.', $routeName);
+        $arr[1] = explode('_', $arr[1]);
+        $arr[1] = array_map('ucfirst', $arr[1]);
+        $arr[1] = implode(' ', $arr[1]);
         $arr = array_map('ucfirst', $arr);
         $title = implode(' - ', $arr);
 
@@ -63,9 +66,9 @@ class EmployeeController extends Controller
         return Employee::query()->whereId($id)->first();
     }
 
-    public function attendance(): Renderable
+    public function attendance_history(): Renderable
     {
-        return view('employees.month_attendance');
+        return view('employees.attendance_history');
     }
 
     public function attendance_api(Request $request)
@@ -78,73 +81,6 @@ class EmployeeController extends Controller
             ->where('emp_id', '=', session('id'))
             ->where('emp_role', '=', session('level'))
             ->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create(): Response
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreEmployeeRequest $request
-     * @return RedirectResponse
-     */
-    public function store(StoreEmployeeRequest $request): RedirectResponse
-    {
-    }
-
-    public function add(): RedirectResponse
-    {
-        $data = [];
-        $day = mktime(0, 0, 0, 6, 30, 2022);
-        $users = Employee::get('id');
-        foreach ($users as $each) {
-            $date = date('Y-m-d', $day);
-            for ($i = 1; $i <= 3; $i++) {
-                $shift = [
-                    'emp_id' => $each->id,
-                    'date' => $date,
-                    'shift' => $i,
-                    'emp_role' => '1'
-                ];
-                $data[] = $shift;
-            }
-        }
-        $users = Manager::get('id');
-        foreach ($users as $each) {
-            $date = date('Y-m-d', $day);
-            for ($i = 1; $i <= 3; $i++) {
-                $shift = [
-                    'emp_id' => $each->id,
-                    'date' => $date,
-                    'shift' => $i,
-                    'emp_role' => '2'
-                ];
-                $data[] = $shift;
-            }
-        }
-        $users = Accountant::get('id');
-        foreach ($users as $each) {
-            $date = date('Y-m-d', $day);
-            for ($i = 1; $i <= 3; $i++) {
-                $shift = [
-                    'emp_id' => $each->id,
-                    'date' => $date,
-                    'shift' => $i,
-                    'emp_role' => '3'
-                ];
-                $data[] = $shift;
-            }
-        }
-        Attendance::insert($data);
-        return redirect()->route('employees.index');
     }
 
     public function checkin(Request $request): RedirectResponse
@@ -175,6 +111,26 @@ class EmployeeController extends Controller
             'icon' => 'success',
         ]);
         return redirect()->route('employees.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create(): Response
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param StoreEmployeeRequest $request
+     * @return RedirectResponse
+     */
+    public function store(StoreEmployeeRequest $request): RedirectResponse
+    {
     }
 
     /**

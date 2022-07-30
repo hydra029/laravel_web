@@ -23,9 +23,12 @@ class AccountantController extends Controller
 		$this->middleware('accountant');
 		$this->model = Manager::query();
 		$routeName = Route::currentRouteName();
-		$arr = explode('.', $routeName);
-		$arr = array_map('ucfirst', $arr);
-		$title = implode(' - ', $arr);
+        $arr = explode('.', $routeName);
+        $arr[1] = explode('_', $arr[1]);
+        $arr[1] = array_map('ucfirst', $arr[1]);
+        $arr[1] = implode(' ', $arr[1]);
+        $arr = array_map('ucfirst', $arr);
+        $title = implode(' - ', $arr);
 
 		View::share('title', $title);
 	}
@@ -47,42 +50,27 @@ class AccountantController extends Controller
         ]);
 	}
 
-	public function attendance(): Renderable
+	public function salary(): Renderable
 	{
-		$limit = 25;
-		$fields = [
-			'id',
-			'fname',
-			'lname',
-			'gender',
-			'dob',
-			'email',
-			'role_id',
-			'dept_id',
-		];
-		$data = Employee::whereNull('deleted_at')
-			->with(['roles', 'departments'])
-			->paginate($limit, $fields);
-		$id = session('id');
-		$attendance = Employee::with('attendance')
-			->where('id', '=', $id)
-			->first();
-		return view('accountants.month_attendance', ([
-			'data' => $data,
-			'attendance' => $attendance,
-		]));
+		return view('accountants.salary');
 	}
 
-	/**
-	 * @throws \JsonException
-	 */
-	public function attendance_api()
+	public function attendance_history(): Renderable
 	{
-		$a = Employee::with('attendance')
-			->where('id', '=', session('id'))
-			->first('id');
-		return json_decode($a, false, 512, JSON_THROW_ON_ERROR);
+		return view('accountants.attendance_history');
 	}
+
+    public function attendance_api(Request $request)
+    {
+        $f = $request->f;
+        $l = $request->l;
+        return Attendance::with('shifts')
+            ->where('date', '<=', $l)
+            ->where('date', '>=', $f)
+            ->where('emp_id', '=', session('id'))
+            ->where('emp_role', '=', session('level'))
+            ->get();
+    }
 
     public function checkin(Request $request): RedirectResponse
     {
@@ -139,7 +127,7 @@ class AccountantController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Accountant  $accountant
+     * @param Accountant $accountant
      * @return Response
      */
     public function show(Accountant $accountant)
@@ -150,7 +138,7 @@ class AccountantController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Accountant  $accountant
+     * @param Accountant $accountant
      * @return Response
      */
     public function edit(Accountant $accountant)
@@ -161,8 +149,8 @@ class AccountantController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAccountantRequest  $request
-     * @param  \App\Models\Accountant  $accountant
+     * @param UpdateAccountantRequest $request
+     * @param Accountant $accountant
      * @return Response
      */
     public function update(UpdateAccountantRequest $request, Accountant $accountant)
@@ -173,7 +161,7 @@ class AccountantController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Accountant  $accountant
+     * @param Accountant $accountant
      * @return Response
      */
     public function destroy(Accountant $accountant)

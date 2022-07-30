@@ -162,6 +162,7 @@
                                     icon: 'info',
                                     position: 'top-right',
                                     hideAfter: 2000,
+                                    allowToastClose: false,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
@@ -180,6 +181,7 @@
                                     icon: 'info',
                                     position: 'top-right',
                                     hideAfter: 2000,
+                                    allowToastClose: false,
                                 });
                             } else {
                                 $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
@@ -200,6 +202,7 @@
                                         icon: 'info',
                                         position: 'top-right',
                                         hideAfter: 2000,
+                                        allowToastClose: false,
                                     });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY + 2) + ')').prop('selected', true).change();
@@ -222,6 +225,7 @@
                                         icon: 'info',
                                         position: 'top-right',
                                         hideAfter: 2000,
+                                        allowToastClose: false,
                                     });
                                 } else {
                                     $('#sl-1 :nth-child(' + (idY) + ')').prop('selected', true).change();

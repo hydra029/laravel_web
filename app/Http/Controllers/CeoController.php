@@ -39,6 +39,9 @@ class CeoController extends Controller
         $this->model = Manager::query();
         $routeName = Route::currentRouteName();
         $arr = explode('.', $routeName);
+        $arr[1] = explode('_', $arr[1]);
+        $arr[1] = array_map('ucfirst', $arr[1]);
+        $arr[1] = implode(' ', $arr[1]);
         $arr = array_map('ucfirst', $arr);
         $title = implode(' - ', $arr);
 
@@ -92,7 +95,7 @@ class CeoController extends Controller
     {
         $time = AttendanceShiftTime::get();
         $count = AttendanceShiftTime::count();
-        $shifts = ShiftEnum::asArray();
+        $shifts = ShiftEnum::getArrayView();
         return view('ceo.time', [
             'time' => $time,
             'count' => $count,
@@ -122,9 +125,9 @@ class CeoController extends Controller
         return AttendanceShiftTime::whereId($id)->get();
     }
 
-    public function attendance(): Renderable
+    public function employee_attendance(): Renderable
     {
-        return view('ceo.attendance');
+        return view('ceo.employee_attendance');
     }
 
     /**

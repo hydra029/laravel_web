@@ -34,22 +34,24 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
-Route::post('/employees/add', [EmployeeController::class, 'add'])->name('employees.add');
-Route::get('/employees/attendance', [EmployeeController::class, 'attendance'])->name('employees.attendance');
+Route::get('/employees/attendance_history', [EmployeeController::class, 'attendance_history'])->name('employees.attendance_history');
 Route::post('/employees/attendance_api', [EmployeeController::class, 'attendance_api'])->name('employees.attendance_api');
 
+Route::post('/managers/add', [ManagerController::class, 'add'])->name('managers.add');
 Route::put('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
 Route::put('/managers/checkout', [ManagerController::class, 'checkout'])->name('managers.checkout');
 Route::get('/managers/today_attendance', [ManagerController::class, 'today_attendance'])->name('managers.today_attendance');
-Route::get('/managers/attendance', [ManagerController::class, 'attendance'])->name('managers.attendance');
+Route::get('/managers/attendance_history', [ManagerController::class, 'attendance_history'])->name('managers.attendance_history');
 Route::get('/managers/employee_attendance', [ManagerController::class, 'employee_attendance'])->name('managers.employee_attendance');
 Route::post('/managers/attendance_api', [ManagerController::class, 'attendance_api'])->name('managers.attendance_api');
 Route::post('/managers/employee_api', [ManagerController::class, 'employee_api'])->name('managers.employee_api');
+Route::post('/managers/emp_attendance_api', [ManagerController::class, 'emp_attendance_api'])->name('managers.emp_attendance_api');
 
 Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
-Route::get('/accountants/attendance', [AccountantController::class, 'attendance'])->name('accountants.attendance');
+Route::get('/accountants/attendance_history', [AccountantController::class, 'attendance_history'])->name('accountants.attendance_history');
 Route::post('/accountants/attendance_api', [AccountantController::class, 'attendance_api'])->name('accountants.attendance_api');
+Route::get('/accountants/salary', [AccountantController::class, 'salary'])->name('accountants.salary');
 
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
@@ -84,7 +86,7 @@ Route::post('/ceo/import_acct', [CeoController::class, 'import_acct'])->name('ce
 Route::post('/ceo/import_mgr', [CeoController::class, 'import_mgr'])->name('ceo.import_mgr');
 Route::get('/ceo/get_infor', [CeoController::class, 'get_infor'])->name('ceo.get_infor');
 
-Route::get('/ceo/attendance', [CeoController::class, 'attendance'])->name('ceo.attendance');
+Route::get('/ceo/employee_attendance', [CeoController::class, 'employee_attendance'])->name('ceo.employee_attendance');
 Route::post('/ceo/attendance_api', [CeoController::class, 'attendance_api'])->name('ceo.attendance_api');
 Route::get('/ceo/department_api', [CeoController::class, 'department_api'])->name('ceo.department_api');
 Route::post('/ceo/emp_attendance_api', [CeoController::class, 'emp_attendance_api'])->name('ceo.emp_attendance_api');
