@@ -114,5 +114,5 @@ Hỗ trợ thực hiện công việc chấm công điểm danh và tính lươn
 | Kích hoạt | Thực hiện các tác vụ trong phần quản lý điểm danh|
 | Đầu vào | Thông tin điểm danh |
 | Trình tự xử lý | Kiểm tra thông tin điểm danh |
-| Đầu ra | Đúng: xác nhận đúng, truyền dữ liệu để tạo bảng lương <br>Sai: trả lại thông báo cho nhân viên |
+| Đầu ra | Đúng: xác nhận đúng, truyền dữ liệu để tạo bảng lương <br>Sai: trả lại thông báo cho nhân viên|
 | Lưu ý | Nếu thông tin điểm danh sai quản lý và nhân viên xác nhận lại và thay đổi thông tin điểm danh |
