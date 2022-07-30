@@ -4,3 +4,7 @@ ul li {
 a {
     cursor: pointer;
 }
+i,
+img {
+    cursor: pointer;
+}

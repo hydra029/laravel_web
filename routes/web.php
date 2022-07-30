@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FinesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\RoleController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
@@ -55,15 +56,20 @@ Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('c
 Route::get('/ceo/fines', [FinesController::class, 'index'])->name('ceo.fines');
 Route::post('/ceo/fines_store', [FinesController::class, 'store'])->name('ceo.fines_store');
 Route::post('/ceo/fines_update', [FinesController::class, 'update'])->name('ceo.fines_update');
-Route::post('/ceo/pay_rate_api', [CeoController::class, 'pay_rate_api'])->name('ceo.pay_rate_api');
-Route::post('/ceo/pay_rate_change/', [CeoController::class, 'pay_rate_change'])->name('ceo.pay_rate_change');
-Route::post('/ceo/pay_rate_store/', [CeoController::class, 'pay_rate_store'])->name('ceo.pay_rate_store');
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
+
+Route::get('/ceo/roles', [RoleController::class, 'index'])->name('ceo.roles');
+Route::get('/ceo/roles/store', [RoleController::class, 'store'])->name('ceo.roles.store');
+Route::get('/ceo/roles/update', [RoleController::class, 'update'])->name('ceo.roles.update');
+
+
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
-Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
+Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');	
+Route::post('/ceo/department/destroy', [DepartmentController::class, 'destroy'])->name('ceo.department.destroy');
 Route::post('/ceo/department/manager_role', [DepartmentController::class, 'manager_role'])->name('ceo.department.manager_role');
+
 Route::get('/ceo/create_emp', [CeoController::class, 'create_emp'])->name('ceo.create_emp');
 Route::post('/ceo/store_emp', [CeoController::class, 'store_emp'])->name('ceo.store_emp');
 Route::post('/ceo/store_acct', [CeoController::class, 'store_acct'])->name('ceo.store_acct');

@@ -16,8 +16,9 @@ class CreateDepartmentsTable extends Migration
     public function up(): void
     {
         Schema::create('departments', static function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+	        $table->id();
+	        $table->string('name');
+            $table->timestamps();
             $table->softDeletes();
         });
         Department::insert(['name' => 'Accountant']);

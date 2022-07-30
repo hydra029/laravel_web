@@ -21,9 +21,9 @@ class StoreDepartmentRequest extends FormRequest
                 'min:2',
                 'max:50',
             ],
-            'status' => [
-                'required',
-                'string',  
+            'id_manager' => [
+                'nullable',
+                'string',
             ],
         ];
     }

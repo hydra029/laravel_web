@@ -5,23 +5,22 @@
         <link rel="stylesheet" type="text/css"
             href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <style type="text/css" href="{{asset('css/app.css')}}"></style>
+        <style type="text/css" href="{{ asset('css/app.css') }}"></style>
         <style>
             .dept-list a:hover {
                 text-decoration: underline !important;
                 cursor: pointer;
             }
 
-            i, img {
-                cursor: pointer;
-            }
+
+                i,
+                img {
+                    cursor: pointer;
+                }
+
             .profile-card .table td,
             .table th {
-                padding: 0.35rem;
-            }
-
-            .add-dept {
-                background-color: bisque;
+                padding: 1rem;
             }
 
             .btn-add-roles {
@@ -29,16 +28,51 @@
                 margin-top: 10px;
             }
 
+            .model-popup-div {
+                background-color: rgba(0, 0, 0, 0.5);
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0%;
+                left: 0;
+                z-index: 1100;
+            }
+
+            .model-popup {
+                background-color: aliceblue;
+                position: absolute;
+                width: 500px;
+                height: 300px;
+                top: 20%;
+                left: 40%;
+                opacity: 1;
+                z-index: 1101;
+                animation-name: popup;
+                animation-duration: 1s;
+            }
+
+            @keyframes popup {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-100px);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: translateY(0px);
+                }
+            }
+
             .profile-card {
-                background-color: rgb(241, 243, 240);
+                background-color: rgb(255, 255, 255);
                 position: absolute;
                 margin: 0;
                 padding: 0;
                 top: 100px;
-                right: 10px;
-                width: 600px;
-                height: 300px;
-                animation-name: show_file;
+                right: 5%;
+                width: 80%;
+                height: 600px;
+                animation-name: popup;
             }
 
 
@@ -58,20 +92,22 @@
                 height: 100%;
             }
 
-            .profile-card-info-basic {
-                height: 75%;
-            }
+            .profile-card-info-basic {}
 
             .profile-card-roles {
                 height: 25%;
             }
-            #model-ask-delete{
+
+            .model-ask-delete, .popup-delete-department {
                 background-color: aliceblue;
-                width: 300px;
-                height: 200px;
-                position: fixed;
-                top: 10%;
-                left: 50%;
+                position: absolute;
+                width: 400px;
+                height: 150px;
+                top: 20%;
+                left: 40%;
+                opacity: 1;
+                animation-name: popup;
+                animation-duration: 1s;
             }
         </style>
     @endpush
@@ -95,15 +131,15 @@
         <br>
 
         <div class="col-12 p-2 border border-1 border-light department_employees ">
-            <table class="table table-bordere  " id="table-department-employees">
+            <table class="table table-striped table-striped   " id="table-department-employees">
                 <thead class="bg-light">
                     <tr>
                         <th class="col-1">#</th>
                         <th class="col-1"> Avatar</th>
                         <th class="col-2">Name</th>
-                        <th class="col-4s">Gender</th>
+                        <th class="col-5">Gender</th>
                         <th class="col-2">Role</th>
-                        <th class="col-2">Action</th>
+                        <th class="col-1">Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -125,115 +161,243 @@
         </button>
         <br>
         <div class="col-12 p-2 border border-1 border-light dept-list">
-            <table class="table table-striped table-striped table-bordered">
+            <table class="table table-striped table-striped" id="table-list-department">
+                <thead>
+                    <th class="col-1"><span>#</span></th>
+                    <th class="col-2"><span>Name</span></th>
+                    <th class="col-5"><span>Members</span></th>
+                    <th class="col-2"><span>Manager</span></th>
+                    <th class="col-1"> <span>Action</span></th>
 
-                <tr class="text-primary">
-                    <td class="col-1"><span>#</span></td>
-                    <td><span>Name</span></td>
-                    <td><span>Members</span></td>
-                    <td><span>Manager</span></td>
-                    <td><span>Roles / Pay rate</span></td>
-                    <td> <span>Action</span></td>
-                </tr>
-                @foreach ($dept as $each)
-                    <tr class="div-dept">
-                        <td class="col-1">
-                            <div>
-                                <span class="dept-id text-danger">{{ $each->id }}</span><span>.</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <form class="form-change-dept" method="post">
+                </thead>
+                <tbody>
+
+                    @foreach ($dept as $each)
+                        <tr class="div-dept">
+                            <td class="align-middle ">
+                                <div>
+                                    <span class="dept-id text-danger">{{ $each->id }}</span><span>.</span>
+                                </div>
+                            </td>
+                            <td class="align-middle ">
+                                <div>
                                     <span class="dept-name ">{{ $each->name }}</span>
-                                    <span class="change-dept float-right"><i class="fa-solid fa-pen-to-square"></i></span>
-                                    <span class="exit-change-dept d-none"><i class="fa-solid fa-circle-xmark"></i></span>
-                                    <br>
-                                    <input type="hidden" name="dept_id" class="dept-id" value="{{ $each->id }}">
-                                    <input type="text" name="name" value=" {{ $each->name }} "
-                                        class="d-none inp-dept">
-                                    <button class="btn-change-dept d-none "><i
-                                            class="fa-solid fa-pen-to-square"></i></button>
-                                </form>
-                            </div>
-                        </td>
-                        <td>
-                            <di>
-                                <a class="dept-members members-department ">{{ $each->members_count }} members</a>
-                            </di>
-                        </td>
-                        <td>
-                            <div>
-                                @if ($each->manager === null)
-                                    <span>null</span>
-                                @else
-                                    <span class="manager-id d-none">{{ $each->manager->id }}</span>
-                                    <span class="manager-gender d-none">{{ $each->manager->gender_name }}</span>
-                                    <span class="manager-dob d-none">{{ $each->manager->date_of_birth }}</span>
-                                    <span class="manager-email d-none">{{ $each->manager->email }}</span>
-                                    <span class="manager-phone d-none">{{ $each->manager->phone }}</span>
-                                    <span class="manager-address d-none">{{ $each->manager->address }}</span>
-                                    <span class="manager-role d-none">{{ $each->manager->role_id }}</span>
-                                    <span class="manager-avatar d-none">{{ $each->manager->avatar }}</span>
-                                    <a class="manager-name ">{{ $each->manager->full_name }}</a>
-                                @endif
+                                </div>
+                            </td>
+                            <td class="align-middle ">
+                                <div>
+                                    <span class="dept-members members-department ">{{ $each->members_count }} members</span>
+                                </div>
+                            </td>
+                            <td class="align-middle ">
+                                <div>
+                                    @if ($each->manager === null)
+                                        <span class="text-danger"> No manager yet</span>
+                                    @else
+                                        <span class="manager-id d-none">{{ $each->manager->id }}</span>
+                                        <span class="manager-gender d-none">{{ $each->manager->gender_name }}</span>
+                                        <span class="manager-dob d-none">{{ $each->manager->date_of_birth }}</span>
+                                        <span class="manager-email d-none">{{ $each->manager->email }}</span>
+                                        <span class="manager-phone d-none">{{ $each->manager->phone }}</span>
+                                        <span class="manager-address d-none">{{ $each->manager->address }}</span>
+                                        <span class="manager-role d-none">{{ $each->manager->role_id }}</span>
+                                        <span class="manager-avatar d-none">{{ $each->manager->avatar }}</span>
+                                        @if ($each->manager->avatar === null)
+                                            <img class="manager-avatar-img"
+                                                src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}"
+                                                style=" border-radius:50% " width="40px">
+                                        @else
+                                            <img class="manager-avatar-img"
+                                                src="{{ asset('') }}img/{{ $each->manager->avatar }}"style=" border-radius:50% "
+                                                width="40px">
+                                        @endif
+                                        <a class="manager-name ">{{ $each->manager->full_name }}</a>
+                                    @endif
 
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <a class="roles-department ">{{ $each->roles_count }} roles</a>
-                            </div>
-                        </td>
+                                </div>
+                            </td>
 
-                        <td>
-                            <div>
-                            </div>
-                    </tr>
-                @endforeach
+                            <td class="align-middle ">
+                                <div>
+                                    <i class="fa-solid fa-eye btn-show-department text-primary"
+                                        data-id="{{ $each->id }}"></i>
+                                    <i class="fa-solid fa-pen btn-edit-department text-warning"
+                                        data-id="{{ $each->id }}"></i>
+                                    <i class="fa-solid fa-square-xmark btn-delete-department text-danger"
+                                        data-id="{{ $each->id }}"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination float-right" id="department-pagination">
+                    {{$dept->links()}}
+                </ul>
+            </nav>  
         </div>
     </div>
-    {{-- form add department --}}
-    <div class="add-dept-div col-12 d-none  ">
-        <div class="add-dept col-6">
-            <button class="btn-warning btn-form-back rounded-pill " type="button">
-                <span class="btn-label">
-                    <i class="fa-solid fa-circle-arrow-left"></i>
-                </span>
-                back
-            </button>
-            <br>
-            <br>
-            <form id="add-department" action="{{ route('ceo.department.store') }}" method="post"
-                novalidate="novalidate">
+    {{-- /////MODEL_LOCATIONS/// --}}
+    <div class=" model-popup-div d-none">
+        {{-- form add department --}}
+        <div class="popup-add-department d-none model-popup " align="center">
+            <form id="form-add-department" action="{{ route('ceo.department.store') }}" method="post">
+                @csrf
                 <div class="card-header card-header-icon" data-background-color="rose">
                     <i class="fa-solid fa-address-book fa-2x" aria-hidden="true"></i>
                     <span class=" card-title h2"> Add department</span>
                 </div>
                 <div class="card-content">
-                    @csrf
-                    <div class="form-group label-floating is-empty">
-                        <label class="control-label">
-                            Name
-                            <small class="text-danger">*</small>
-                        </label>
-                        <input type="text" class="form-control" name="name">
-                    </div>
-                    <div class="form-group label-floating is-empty">
-                        <label class="control-label">
-                            Status
-                        </label>
-                        <select class="form-control" name="status">
-                            <option value="1">1</option>
-                            <option value="0">0</option>
-                        </select>
-                    </div>
-                    <div class="form-group label-floating is-empty">
-                        <button class="btn-success btn-xm rounded-pill btn-add-department">Add</button>
-                    </div>
+                    <table class="table form-table">
+                        <tr>
+                            <td class="form-group" width="100%" valign="top">
+                                Name:
+                                <input type="text" name="name" class="name-department form-control" value=""
+                                    placeholder="Name department" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="status" value="1">
+                                Manager:
+                                <select name="id_manager" class="form-control">
+                                    <option value="" selected>No manager</option>
+                                    @foreach ($manager as $each)
+                                        <option value="{{ $each->id }}">{{ $each->full_name }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="btn btn-primary btn-add-department float-right ml-1"
+                                    type="submit">Submit</button>
+                                <button class="btn btn-light btn-close-model float-right" type="button">Cancel</button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </form>
+        </div>
+        {{-- form edit department --}}
+        <div class="popup-edit-department d-none model-popup" align="center">
+            <div class="card-header card-header-icon" data-background-color="rose">
+                <i class="fa-solid fa-address-book fa-2x" aria-hidden="true"></i>
+                <span class=" card-title h2"> Edit department</span>
+            </div>
+            <form id="form-update-department" action="{{ route('ceo.department.update') }}" method="post"
+                class="form-horizontal">
+                @csrf
+                <table class="table form-table">
+                    <tr>
+                        <td class="form-group" width="100%" valign="top">
+                            <input type="hidden" name="id" value="" class="id-department-edit">
+                            Name:
+                            <input type="text" name="name" class="name-department-edit form-control"
+                                value="" placeholder="Name department" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="hidden" name="status" value="1">
+                            Manager:
+                            <select name="manager" class="select-manager-edit form-control">
+                                <option value="" selected>No manager</option>
+                                @foreach ($manager as $each)
+                                    <option value="{{ $each->id }}">{{ $each->full_name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="btn btn-primary btn-change-department float-right ml-1"
+                                type="submit">Submit</button>
+                            <button class="btn btn-light btn-close-model float-right" type="button">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        {{-- ask delete members --}}
+        <div class="model-ask-delete d-none">
+            <div class="card-header card-header-icon" data-background-color="rose">
+                <i class="fa-solid fa-address-book fa-2x" aria-hidden="true"></i>
+                <span class=" card-title h3 "> Bạn có chắc chắn muốn xóa không?</span>
+            </div>
+            <table class="table form-table">
+                <tr>
+                    <td align="center" valign="top">
+                        <button class="btn btn-light btn-close-model " type="button">Cancel</button>
+                    </td>
+                    <td align="center" valign="top">
+                        <button class="btn btn-danger btn-delete-members d-none" type="button">Yes</button>
+                        <button class="btn btn-danger btn-delete-departments d-none" type="button">Yes</button>
+                    </td>
+                </tr>
+            </table>
+            </div>  
+    {{-- profile --}}
+        <div class="profile-card d-none">
+            <button class="btn-warning profile-close rounded-pill" style="right: 0;" type="button">
+                <span class="btn-label">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </span>
+                Close
+            </button>
+            <div class="profile-card-img float-left ">
+
+                <span><img src="" width="100%" alt="Logo"></span>
+            </div>
+            <div class="profile-card-info float-left">
+                <div class="profile-card-info-basic">
+                    <table class="table">
+                        <tr>
+                            <td class="col-5">Name:</td>
+                            <td><span class="profile-card-name "></span></td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td><span class="profile-card-gender"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Date of birth:</td>
+                            <td><span class="profile-card-dob"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><span class="profile-card-email"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Number phone:</td>
+                            <td><span class="profile-card-number-phone"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td><span class="profile-card-address"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="profile-card-roles ">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                <div >
+                                    <i class="fa-solid fa-medal"></i>
+                                    <i class="fa-solid fa-book-circle-arrow-right"></i>
+                                    <span class="profile-card-department"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div >
+                                    <span class="profile-card-role"></span>
+                                </div>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     {{-- roles --}}
@@ -286,59 +450,6 @@
         </div>
     </div>
 
-    {{-- profile --}}
-
-    <div class="profile-card col-6 d-none">
-        <span class="profile-close float-left"><i class="fa-solid fa-circle-xmark"></i></span>
-        <div class="profile-card-img float-left ">
-
-            <span><img src="" width="100%" alt="Logo"></span>
-        </div>
-        <div class="profile-card-info float-left">
-            <div class="profile-card-info-basic">
-                <table class="table">
-                    <tr>
-                        <td class="col-5">Name:</td>
-                        <td><span class="profile-card-name "></span></td>
-                    </tr>
-                    <tr>
-                        <td>Gender:</td>
-                        <td><span class="profile-card-gender"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Date of birth:</td>
-                        <td><span class="profile-card-dob"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><span class="profile-card-email"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Number phone:</td>
-                        <td><span class="profile-card-number-phone"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Address:</td>
-                        <td><span class="profile-card-address"></span></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="profile-card-roles ">
-                <table class="table">
-                    <tr>
-                        <th>
-                            <span>department</span>
-                            <span class="profile-card-department"></span>
-                        </th>
-                        <th>
-                            <span>role</span>
-                            <span class="profile-card-role"></span>
-                        </th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
     {{-- edit profile --}}
     <div class="div-form-update-employee d-none ">
         <button class="btn-warning btn-back-form-update-employee rounded-pill " type="button">
@@ -435,7 +546,8 @@
                             <tr>
                                 <td colspan="2">
                                     Password:
-                                    <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+                                    <span toggle="#password-field"
+                                        class="fa fa-fw fa-eye field_icon toggle-password"></span>
                                     <br>
                                     <span class="error-message-password text-danger"> </span> <input type="password"
                                         name="password" value="" placeholder="Password"
@@ -468,33 +580,12 @@
 
                 </div>
             </div>
-    </form>
-</div>
-<!-- Modal -->
-<div id="model-ask-delete" class="d-none">
-        <table>
-            <tr>
-                <td colspan="2" align="center" >
-                    <h2>
-                        Bạn có chắc chắn muốn xóa không?
-                    </h2>
-                </td>
-
-            </tr>
-            <tr>
-                <td align="center">
-                    <button class="btn btn-danger btn-close-delete">No</button>
-                </td>
-                <td align="center">
-                    <button class="btn btn-success btn-success-delete">Yes</button>
-                </td>
-            </tr>
-        </table>
-</div>
+        </form>
+    </div>
 @endsection
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+    <script src="{{ asset('js/imgHover.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(async function() {
             $.ajaxSetup({
@@ -504,13 +595,17 @@
             });
 
             // add department
-
+            $('.btn-close-model').click(function() {
+                $('.model-popup-div ').addClass('d-none');
+                $('.model-popup').addClass('d-none');
+                $('.model-popup').find('form')[0].reset();
+            });
             $('.btn-add-dept').click(function() {
-                $('.title-name').text(' > Form add dept');
-                $('.add-dept-div').removeClass('d-none');
-                $('.dept-list').addClass('d-none');
+                $('.model-popup-div ').removeClass('d-none');
+                $('.popup-add-department').removeClass('d-none');
             });
             $('.btn-back').click(function() {
+                $('.model-popup-div ').addClass('d-none');
                 $('.title-name').text('');
                 $('.dept').addClass('d-none');
                 $('.dept-list').removeClass('d-none');
@@ -532,6 +627,92 @@
                 $('.dept-list').removeClass('d-none');
                 $('.dept-roles').addClass('d-none');
             })
+
+
+            // edit department 
+            $('.btn-edit-department').click(function() {
+                var dept_row = $(this).parents('tr');
+                $('.model-popup-div ').removeClass('d-none');
+                $('.model-popup').removeClass('d-none');
+                $('.popup-edit-department').removeClass('d-none');
+                var dept_id = $(this).data('id');
+                var dept_name = $(this).parents('tr').find('.dept-name').text();
+                var id_manager = $(this).parents('tr').find('.manager-id').text();
+                $('.id-department-edit').val(dept_id);
+                $('.name-department-edit').val(dept_name);
+                $('.select-manager-edit').find('option').each(function() {
+                    if ($(this).val() == id_manager) {
+                        $(this).attr('selected', 'selected');
+                    }
+                });
+                $('#form-update-department').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    $.ajax({
+                        url: "{{ route('ceo.department.update') }}",
+                        method: "POST",
+                        datatype: 'json',
+                        data: form.serialize(),
+                        success: function(response) {
+                            var img;
+                            if (response[0].manager.avatar === null) {
+                                img =
+                                    '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}';
+                            } else {
+                                img = '{{ asset('') }}' + 'img/' + response[0]
+                                    .manager.avatar;
+                            }
+                            $('.model-popup-div ').addClass('d-none');
+                            $('.model-popup').addClass('d-none');
+                            $('.popup-edit-department').addClass('d-none');
+                            dept_row.find('.dept-name').text(response[0].name);
+                            dept_row.find('.manager-id').text(response[0].manager
+                                .id);
+                            dept_row.find('.manager-name').text(response[0].manager
+                                .full_name);
+                            dept_row.find('.manager-avatar-img').attr('src', img);
+                            dept_row.find('.manager-gender').text(response[0]
+                                .manager.gender_name);
+                            dept_row.find('.manager-dob').text(response[0].manager
+                                .date_of_birth);
+                            dept_row.find('.manager-email').text(response[0].manager
+                                .email);
+                            dept_row.find('.manager-phone').text(response[0].manager
+                                .phone);
+                            dept_row.find('.manager-role').text(response[0].manager
+                                .role);
+                            dept_row.find('.manager-address').text(response[0]
+                                .manager.address);
+                            dept_row = '';
+                        }
+                    })
+                });
+            });
+
+            $('.btn-delete-department').click(function() {
+                var dept_row = $(this).parents('tr');
+                var dept_id = $(this).data('id');
+                $('.model-popup-div ').removeClass('d-none');
+                $('.model-ask-delete').removeClass('d-none');
+                $('.btn-delete-departments').removeClass('d-none');
+                $(".model-ask-delete").find(".btn-delete-departments").data('id', dept_id);
+                $('.btn-delete-departments').click(function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('ceo.department.destroy') }}",
+                        data: {
+                            dept_id: dept_id, 
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            dept_row.remove();
+                            $('.model-popup-div ').addClass('d-none');
+                            $('.model-popup').addClass('d-none');
+                            $('.btn-delete-departments').addClass('d-none');
+                        }
+                    })
+                });
+            });
 
             // show roles list
             var roles_list = [];
@@ -663,7 +844,7 @@
                                         value.id + '">' +
                                         '</label>'))
                                     .append($('<td>').append(
-                                        '<span class="pay-rate">' + value
+                                        '<span class="pay-rate">' + value   
                                         .pay_rate_money + '</span>' +
                                         '<label class="pay-rate-inp d-none">' +
                                         '<input type="text" name="pay_rate" class="form-control " value="' +
@@ -685,13 +866,13 @@
             }
             // show the members list
             var dept_list = [];
-            $('.members-department').click(function() {
-                $('.title-name').text(' > Department members');
+            $('.btn-show-department').click(function() {
                 $('.dept').removeClass('d-none');
                 $('.dept-list').addClass('d-none');
-                var dept_id = $(this).parents('tr').find('.dept-id').text();
+                var dept_id = $(this).data('id');
                 var dept_name = $(this).parents('tr').find('.dept-name').text();
                 var manager_name = $(this).parents('tr').find('.manager-name').text();
+                $('.title-name').text(` > ${dept_name}`);
                 $('.dept-name-detail').text(dept_name);
                 $('.manager-name-detail').text(manager_name);
                 $('#table-department-employees').find('tbody').empty();
@@ -705,13 +886,20 @@
                     success: function(response) {
 
                         $.each(response.data.data, function(index, value) {
+                            if (value.avatar == null) {
+                                var img =
+                                    `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
+                            } else {
+                                var img =
+                                    `<img  src="{{ asset('') }}img/${value.avatar} "  style=" border-radius:50% " width="40px"/>`
+                            }
                             $('#table-department-employees').append($(
                                     '<tr class="employee-row">')
                                 .append($('<td class="align-middle">').append((
                                     index + 1) + '.'))
                                 .append($('<td class="align-middle">').append(
-                                    `<img  src="{{ asset('') }}img/${value.avatar} " class="rounded" width="100%" />`
-                                    ))
+                                    img
+                                ))
                                 .append($('<td class="align-middle">').append(
                                     value.full_name))
                                 .append($('<td class="align-middle">').append(
@@ -765,13 +953,13 @@
                             $.each(response.data.data, function(index, value) {
                                 $('#table-department-employees').append($(
                                         `<tr class="employee-row" data-id="${value.id}">`
-                                            )
+                                    )
                                     .append($('<td class="align-middle">')
                                         .append((index + 1) + '.'))
                                     .append($('<td class="align-middle">')
                                         .append(
                                             `<img  src="{{ asset('') }}img/${value.avatar}" class="rounded" width="100px" />`
-                                            ))
+                                        ))
                                     .append($('<td class="align-middle">')
                                         .append(value.full_name))
                                     .append($('<td class="align-middle">')
@@ -799,6 +987,7 @@
             function showEmployeesInfor() {
                 $('.btn-show-employee').click(function(e) {
                     var id = $(this).data('id');
+                $('.model-popup-div ').removeClass('d-none');
                     $.ajax({
                         type: "post",
                         url: "{{ route('ceo.employee_infor') }}",
@@ -809,13 +998,10 @@
                         success: function(response) {
                             console.log(response);
                             $('.profile-card').removeClass('d-none');
-                            var relativeYPosition = (e.pageY - this.offsetTop) - 250;
-                            $('.profile-card')[0].style.right = '240' + 'px';;
-                            $('.profile-card')[0].style.top = relativeYPosition + 'px';
                             $('.profile-card').find('.profile-card-info').find(
                                 '.profile-card-name').text(response[0].full_name);
                             $('.profile-card').find('.profile-card-info').find(
-                                '.profile-card-gender').text(response[0].gender);
+                                '.profile-card-gender').text(response[0].gender_name);
                             $('.profile-card').find('.profile-card-info').find(
                                 '.profile-card-dob').text(response[0].date_of_birth);
                             $('.profile-card').find('.profile-card-info').find(
@@ -828,7 +1014,7 @@
                                 $('.profile-card').find('.profile-card-img').find('img')
                                     .attr('src',
                                         '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}'
-                                        );
+                                    );
                             } else {
                                 var src = '{{ asset('') }}';
                                 var img = src + 'img/' + response[0].avatar;
@@ -845,7 +1031,7 @@
                 });
             }
 
-            function update_emp(){
+            function update_emp() {
                 $('.btn-edit-employee').click(function(e) {
                     var id = $(this).data('id');
                     $('.div-form-update-employee').removeClass('d-none');
@@ -859,27 +1045,34 @@
                         dataType: "json",
                         success: function(response) {
                             console.log(response);
-                            $('.profile-card-edit').find('.profile-card-info').find('.inp-fname').val(response[0].fname);
-                            $('.profile-card-edit').find('.profile-card-info').find('.inp-dob').val(response[0].dob);
-                            $('.profile-card-edit').find('.profile-card-info').find('.inp-lname').val(response[0].lname);
-                            $('.profile-card-edit').find('.profile-card-info').find('.inp-phone').val(response[0].phone);
-                            $('.profile-card-edit').find('.profile-card-info').find('.inp-email').val(response[0].email);
+                            $('.profile-card-edit').find('.profile-card-info').find(
+                                '.inp-fname').val(response[0].fname);
+                            $('.profile-card-edit').find('.profile-card-info').find(
+                                '.inp-dob').val(response[0].dob);
+                            $('.profile-card-edit').find('.profile-card-info').find(
+                                '.inp-lname').val(response[0].lname);
+                            $('.profile-card-edit').find('.profile-card-info').find(
+                                '.inp-phone').val(response[0].phone);
+                            $('.profile-card-edit').find('.profile-card-info').find(
+                                '.inp-email').val(response[0].email);
+                            $('.profile-card-edit').find('.profile-card-info').find(
+                                '#select-city').find('option').each(function() {
+                                if ($(this).val() == response[0].city) {
+                                    $(this).attr('selected', 'selected');
+                                };
+                            });
+                            $('.profile-card-edit').find('.profile-card-info').find(
+                                '#select-department').find('option').each(function() {
+                                if ($(this).val() == response[0].dept_id) {
+                                    $(this).attr('selected', 'selected');
+                                };
+                            });
 
-                            var formatDate = (date) => {
-                            var day = padTo2Digits(date.getDate());
-                            var month = padTo2Digits(date.getMonth() + 1); // add 1 since getMonth returns 0-11 for the months
-                            var year = date.getFullYear();
-
-                            return `${day}-${month}-${year}`;
-                            }
-                            var date = response[0].dob;
-                            console.log(date);
-                            $('.profile-card-edit').find('.profile-card-info').find('.inp-dob').value = formatDate(date);
                             if (response[0].avatar == null) {
                                 $('.profile-card').find('.profile-card-img').find('img')
                                     .attr('src',
                                         '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}'
-                                        );
+                                    );
                             } else {
                                 var src = '{{ asset('') }}';
                                 var img = src + 'img/' + response[0].avatar;
@@ -898,80 +1091,33 @@
 
 
 
-           function delete_emp(){
-                    $('.btn-delete-employee').click(function(){
-                        var employee_delete = $(this);
-                        let id = $(this).data('id');
-                        console.log(id);
-
-                        $("#model-ask-delete").removeClass('d-none');
-                        $("#model-ask-delete").find(".btn-success-delete").data('id', id);
-                    })
-                    $(".btn-close-delete").click(function(){
-                        $("#model-ask-delete").addClass('d-none');
-                    })
-                    $('.btn-success-delete').click(function(){
-                        let id = $(this).data('id');
-                        console.log(id);
-
-                        $("#model-ask-delete").addClass('d-none');
+            function delete_emp() {
+                $('.btn-delete-employee').click(function() {
+                    var employee_delete = $(this).parents('tr');
+                    var id = $(this).data('id');
+                    $(".model-popup-div").removeClass('d-none');
+                    $(".model-ask-delete").removeClass('d-none');
+                    $(".btn-delete-members").removeClass('d-none');
+                    $(".model-ask-delete").find(".btn-delete-members").data('id', id);
+                    $('.btn-delete-members').click(function() {
                         $.ajax({
                             type: "delete",
-                            url: `{{ route('ceo.delete_emp' ) }}`,
+                            url: `{{ route('ceo.delete_emp') }}`,
                             data: {
                                 "id": id,
                             },
                             dataType: "json",
-                            success: function (response) {
-                                console.log(response);
-                                $('#table-department-employees').find('.employee-row').matches(`[data-id="${id}"]`);
-                                if ( $('#table-department-employees').find('.employee-row').matches(`[data-id="${id}"]`)    ){
-                                            $(this).remove();
-                                    }
+                            success: function(response) {
+                                employee_delete.remove();
+                                $(".model-ask-delete").addClass('d-none');
+                                $(".model-popup-div").addClass('d-none');
+                                $(".btn-delete-members").addClass('d-none');
                             }
                         });
-
                     })
+                })
             }
             // change department
-            $('.change-dept').click(function() {
-                $(this).addClass('d-none');
-                var dept_name = $(this).parents('tr').find('.dept-name').text();
-                $(this).parents('tr').find('.dept-name').addClass('d-none');
-                $(this).parents('tr').find('.inp-dept').removeClass('d-none');
-                $(this).parents('tr').find('.inp-dept').val(dept_name);
-                $(this).parents('tr').find('.btn-change-dept').removeClass('d-none');
-                $(this).parents('tr').find('.exit-change-dept').removeClass('d-none');
-            });
-            $('.exit-change-dept').click(function() {
-                $(this).addClass('d-none');
-                $(this).parents('tr').find('.dept-name').removeClass('d-none');
-                $(this).parents('tr').find('.inp-dept').addClass('d-none');
-                $(this).parents('tr').find('.btn-change-dept').addClass('d-none');
-                $(this).parents('tr').find('.change-dept').removeClass('d-none');
-            })
-
-            $('.form-change-dept').submit(function(e) {
-                e.preventDefault();
-                var form = $(this);
-                $.ajax({
-                    url: "{{ route('ceo.department.update') }}",
-                    method: "POST",
-                    datatype: 'json',
-                    data: form.serialize(),
-                    success: function(response) {
-                        let val = form.find('.inp-dept').val()
-                        form.find('.inp-dept').addClass('d-none');
-                        form.find('.btn-change-dept').addClass('d-none');
-                        form.find('.change-dept').removeClass('d-none');
-                        form.find('.exit-change-dept').addClass('d-none');
-                        form.find('.dept-name-detail').text(val);
-                        form.find('.dept-name').text(val);
-                        form.find('.dept-name').removeClass('d-none');
-                    }
-                })
-
-            });
 
             // form
 
@@ -1016,14 +1162,16 @@
                         $('.profile-card').find('.profile-card-info').find(
                             '.profile-card-address').text(response[0].address);
                         if (response[0].avatar == null) {
-                            $('.profile-card').find('.profile-card-img').find('.image-upload').find('img').attr(
+                            $('.profile-card').find('.profile-card-img').find(
+                                '.image-upload').find('img').attr(
                                 'src',
                                 '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}'
-                                );
+                            );
                         } else {
                             var src = '{{ asset('') }}';
                             var img = src + 'img/' + response[0].avatar;
-                            $('.profile-card').find('.profile-card-img').find('.image-upload').find('img').attr(
+                            $('.profile-card').find('.profile-card-img').find(
+                                '.image-upload').find('img').attr(
                                 'src', img);
                         }
                         $('.profile-card').find('.profile-card-roles').find(
@@ -1100,9 +1248,7 @@
             $('.manager-name').click(function(e) {
                 // values: e.clientX, e.clientY, e.pageX, e.pageY
                 // over
-                var relativeYPosition = (e.pageY - this.offsetTop) - 250;
-                $('.profile-card')[0].style.right = '0' + 'px';;
-                $('.profile-card')[0].style.top = relativeYPosition + 'px';
+                $('.model-popup-div ').removeClass('d-none');
                 var id_manager = $(this).parents('tr').find('.manager-id').text();
                 var name_manager = $(this).parents('tr').find('.manager-name').text();
                 var gender_manager = $(this).parents('tr').find('.manager-gender').text();
@@ -1152,8 +1298,10 @@
 
             });
             $('.profile-close').click(function() {
+                $('.model-popup-div ').addClass('d-none');
                 $('.profile-card').addClass('d-none');
-            });$('.toggle-password').click(function(){
+            });
+            $('.toggle-password').click(function() {
                 $(this).toggleClass("fa-eye fa-eye-slash");
 
                 var input = $(".inp-password");
