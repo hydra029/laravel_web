@@ -12,23 +12,15 @@
                 cursor: pointer;
             }
 
-            .imgHover {
-                width: 90px;
-                height: 120px;
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 1;
-            }
 
-            i,
-            img {
-                cursor: pointer;
-            }
+                i,
+                img {
+                    cursor: pointer;
+                }
 
             .profile-card .table td,
             .table th {
-                padding: 0.5rem;
+                padding: 1rem;
             }
 
             .btn-add-roles {
@@ -54,6 +46,7 @@
                 top: 20%;
                 left: 40%;
                 opacity: 1;
+                z-index: 1101;
                 animation-name: popup;
                 animation-duration: 1s;
             }
@@ -77,9 +70,9 @@
                 padding: 0;
                 top: 100px;
                 right: 5%;
-                width: 90%;
+                width: 80%;
                 height: 600px;
-                animation-name: show_file;
+                animation-name: popup;
             }
 
 
@@ -344,6 +337,67 @@
                     </td>
                 </tr>
             </table>
+            </div>  
+    {{-- profile --}}
+        <div class="profile-card d-none">
+            <button class="btn-warning profile-close rounded-pill" style="right: 0;" type="button">
+                <span class="btn-label">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </span>
+                Close
+            </button>
+            <div class="profile-card-img float-left ">
+
+                <span><img src="" width="100%" alt="Logo"></span>
+            </div>
+            <div class="profile-card-info float-left">
+                <div class="profile-card-info-basic">
+                    <table class="table">
+                        <tr>
+                            <td class="col-5">Name:</td>
+                            <td><span class="profile-card-name "></span></td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td><span class="profile-card-gender"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Date of birth:</td>
+                            <td><span class="profile-card-dob"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><span class="profile-card-email"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Number phone:</td>
+                            <td><span class="profile-card-number-phone"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td><span class="profile-card-address"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="profile-card-roles ">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                <div >
+                                    <i class="fa-solid fa-medal"></i>
+                                    <i class="fa-solid fa-book-circle-arrow-right"></i>
+                                    <span class="profile-card-department"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div >
+                                    <span class="profile-card-role"></span>
+                                </div>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     {{-- roles --}}
@@ -396,65 +450,6 @@
         </div>
     </div>
 
-    {{-- profile --}}
-
-    <div class="profile-card d-none">
-        <span class="profile-close float-right"><i class="fa-solid fa-circle-xmark"></i></span>
-        <div class="profile-card-img float-left ">
-
-            <span><img src="" width="100%" alt="Logo"></span>
-        </div>
-        <div class="profile-card-info float-left">
-            <div class="profile-card-info-basic">
-                <table class="table">
-                    <tr>
-                        <td class="col-5">Name:</td>
-                        <td><span class="profile-card-name "></span></td>
-                    </tr>
-                    <tr>
-                        <td>Gender:</td>
-                        <td><span class="profile-card-gender"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Date of birth:</td>
-                        <td><span class="profile-card-dob"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><span class="profile-card-email"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Number phone:</td>
-                        <td><span class="profile-card-number-phone"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Address:</td>
-                        <td><span class="profile-card-address"></span></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="profile-card-roles ">
-                <table class="table">
-                    <tr>
-                        <th>
-                            <span>department</span>
-                            <div style="border-radius:50%; width:60px; height:60px;background-color: rgb(0, 119, 210)">
-                                <span class="profile-card-department"
-                                    style="display: table; margin: auto; line-height:4;"></span>
-                            </div>
-                        </th>
-                        <th>
-                            <span>role</span>
-                            <div style="border-radius:50%; width:60px; height:60px; background-color: rgb(247, 103, 7)  ">
-                                <span class="profile-card-role"
-                                    style="display: table; margin: auto; line-height:4;"></span>
-                            </div>
-                        </th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
     {{-- edit profile --}}
     <div class="div-form-update-employee d-none ">
         <button class="btn-warning btn-back-form-update-employee rounded-pill " type="button">
@@ -610,6 +605,7 @@
                 $('.popup-add-department').removeClass('d-none');
             });
             $('.btn-back').click(function() {
+                $('.model-popup-div ').addClass('d-none');
                 $('.title-name').text('');
                 $('.dept').addClass('d-none');
                 $('.dept-list').removeClass('d-none');
@@ -668,6 +664,7 @@
                             }
                             $('.model-popup-div ').addClass('d-none');
                             $('.model-popup').addClass('d-none');
+                            $('.popup-edit-department').addClass('d-none');
                             dept_row.find('.dept-name').text(response[0].name);
                             dept_row.find('.manager-id').text(response[0].manager
                                 .id);
@@ -847,7 +844,7 @@
                                         value.id + '">' +
                                         '</label>'))
                                     .append($('<td>').append(
-                                        '<span class="pay-rate">' + value
+                                        '<span class="pay-rate">' + value   
                                         .pay_rate_money + '</span>' +
                                         '<label class="pay-rate-inp d-none">' +
                                         '<input type="text" name="pay_rate" class="form-control " value="' +
@@ -990,6 +987,7 @@
             function showEmployeesInfor() {
                 $('.btn-show-employee').click(function(e) {
                     var id = $(this).data('id');
+                $('.model-popup-div ').removeClass('d-none');
                     $.ajax({
                         type: "post",
                         url: "{{ route('ceo.employee_infor') }}",
@@ -1250,6 +1248,7 @@
             $('.manager-name').click(function(e) {
                 // values: e.clientX, e.clientY, e.pageX, e.pageY
                 // over
+                $('.model-popup-div ').removeClass('d-none');
                 var id_manager = $(this).parents('tr').find('.manager-id').text();
                 var name_manager = $(this).parents('tr').find('.manager-name').text();
                 var gender_manager = $(this).parents('tr').find('.manager-gender').text();
@@ -1299,6 +1298,7 @@
 
             });
             $('.profile-close').click(function() {
+                $('.model-popup-div ').addClass('d-none');
                 $('.profile-card').addClass('d-none');
             });
             $('.toggle-password').click(function() {

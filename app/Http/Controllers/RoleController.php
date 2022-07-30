@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use App\Models\Department;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $dept = Department::with('roles')->get();
+        // dd($dept->toArray());
+        return view('ceo.role' , compact('dept'));
     }
 
     /**
@@ -49,22 +52,17 @@ class RoleController extends Controller
      * @param StoreRoleRequest $request
      * @return Response
      */
-    public function store(StoreRoleRequest $request)
+    public function store(Request $request)
     {
         $name = $request->name;
         $dept_id = $request->dept_id;
         $pay_rate = $request->pay_rate;
-         Role::create([
+        $data = Role::create([
             'name' => $name,
             'dept_id' => $dept_id,
             'pay_rate' => $pay_rate,
          ]);
-        $roles = Role::query()
-        ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
-        ->select('roles.*', 'departments.name as dept_name')
-        ->where('dept_id', '=', $dept_id)
-        ->get();
-        return $roles->append('pay_rate_money')->toArray();
+         return $data->append('pay_rate_money')->toJson();
     }
 
     /**

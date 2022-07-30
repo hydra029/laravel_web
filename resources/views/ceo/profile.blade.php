@@ -61,12 +61,9 @@
 @section('content')
 
     <div class="div-profile-success  ">
-        <button class="btn-warning btn-back rounded-pill " type="button">
-        <span class="btn-label">
-            <i class="fa-solid fa-circle-arrow-left"></i>
-        </span>
-            back
-        </button>
+        
+        <input name="action" onclick="history.back()" type="submit" value="back" class="btn-warning btn-back rounded-pill "/>
+        
         <button class="btn-primary btn-update rounded-pill float-right " type="button">
             Edit
         </button>

@@ -434,6 +434,8 @@
                 $('.choose-card').removeClass('d-none');
                 $('.div-form-create').addClass('d-none');
                 $('.div-profile-success').addClass('d-none');
+                $("#avatar_null").removeClass('d-none');
+                $("#output").addClass('d-none');
             });
             $('.btn-update').click(function() {
                 $('.title-name').text('');
@@ -468,7 +470,7 @@
             })
             $('#avatar-input').change(function(event) {
                 $('#avatar_null').addClass('d-none');
-
+                $("#output").removeClass('d-none');
                 var output = document.getElementById('output');
                 output.src = URL.createObjectURL(event.target.files[0]);
                 output.onload = function() {
