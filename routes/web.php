@@ -62,8 +62,9 @@ Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
 
 Route::get('/ceo/roles', [RoleController::class, 'index'])->name('ceo.roles');
-Route::get('/ceo/roles/store', [RoleController::class, 'store'])->name('ceo.roles.store');
-Route::get('/ceo/roles/update', [RoleController::class, 'update'])->name('ceo.roles.update');
+Route::post('/ceo/roles/store', [RoleController::class, 'store'])->name('ceo.roles.store');
+Route::post('/ceo/roles/update', [RoleController::class, 'update'])->name('ceo.roles.update');
+Route::post('/ceo/roles/destroy', [RoleController::class, 'destroy'])->name('ceo.roles.destroy');
 
 
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');

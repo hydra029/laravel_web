@@ -34,6 +34,7 @@ class Role extends Model
 	public $timestamps = false;
 
    protected $fillable = [
+        'id',
        'name',
        'dept_id',
        'pay_rate',
