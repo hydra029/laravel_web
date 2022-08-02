@@ -227,52 +227,6 @@ class CeoController extends Controller
             ->get();
     }
 
-    public function pay_rate_api(Request $request): JsonResponse
-    {
-        $dept_id = $request->get('dept_id');
-        $data = Role::query()
-            ->where('dept_id', '=', $dept_id)
-            ->paginate();
-        // return $data->append('pay_rate_money');
-        foreach ($data as $each) {
-            $each->pay_rate_money = $each->pay_rate_money;
-        }
-        $arr['data'] = $data->getCollection();
-        $arr['pagination'] = $data->linkCollection();
-
-        return $this->successResponse($arr);
-    }
-
-    public function pay_rate_change(Request $request): array
-    {
-        $pay_rate = $request->pay_rate;
-        $id = $request->id;
-        Role::query()
-            ->Where('id', '=', $id)
-            ->update([
-                'pay_rate' => $pay_rate,
-            ]);
-        return Role::whereId($id)->get()->append('pay_rate_money')->toArray();
-    }
-
-    public function role_store(Request $request): array
-    {
-        $name = $request->name;
-        $dept_id = $request->dept_id;
-        $pay_rate = $request->pay_rate;
-        Role::create([
-            'name' => $name,
-            'dept_id' => $dept_id,
-            'pay_rate' => $pay_rate,
-        ]);
-        $roles = Role::query()
-            ->leftJoin('departments', 'roles.dept_id', '=', 'departments.id')
-            ->select(['roles.*', 'departments.name as dept_name'])
-            ->where('dept_id', '=', $dept_id)
-            ->get();
-        return $roles->append('pay_rate_money')->toArray();
-    }
-
     public function fines_store(Request $request): array
     {
         $name = $request->name;

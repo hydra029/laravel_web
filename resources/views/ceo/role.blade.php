@@ -65,46 +65,45 @@
     </style>
 @endpush
     <div class="col-12">
-        <table class="table">
             @foreach($dept as $dk => $dv)
-              <tr class="bg-light ">
-                <td colspan="3" >
-                    <span class="mr-2 text-muted">#{{ $dk + 1 }}.</span>
-                    <span class="mr-2  text-muted">{{ $dv->name}}</span>
-                    <i class="fa-solid fa-circle-plus text-success h5 m-0 btn-add-role"  data-id="{{ $dv->id}}"></i>    
-                    
-                </td>
-                <td >
-                    <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-danger float-right mr-1"></div>
-                    <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-warning float-right mr-1"></div>
-                    <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-primary float-right mr-1"></div>
-                </td>
-              </tr>
-              @foreach($dv->roles as $rk => $rv)
-              <tr>
-                <td class="col-2">
-                    <span >{{ $rk + 1 }}.</span>
-                </td>
-                <td class="col-4">
-                    <span>{{ $rv->name}}</span>
-                </td>
-                <td class="col-5">
-                    <span>{{ $rv->pay_rate_money}}</span>
-                </td>
-                <td class="col-1">
-                    <i class="fa-solid fa-pen btn-edit-role text-warning" 
-                        data-id="{{ $rv->id }}" 
-                        data-dept_id="{{$dv->id }}" 
-                        data-name="{{ $rv->name }}"
-                        data-pay_rate="{{ $rv->pay_rate }}"    
-                    ></i>
-                    <i class="fa-solid fa-square-xmark btn-delete-role text-danger" data-id="{{ $rv->id }}" ></i>
-                </td>
-              </tr>
-              @endforeach
+                <table class="table">
+                    <tr class="bg-light ">
+                        <td colspan="3" >
+                            <span class="mr-2 text-muted">#{{ $dk + 1 }}.</span>
+                            <span class="mr-2  text-muted">{{ $dv->name}}</span>
+                            <i class="fa-solid fa-circle-plus text-success h5 m-0 btn-add-role"  data-id="{{ $dv->id}}" ></i>    
+                            
+                        </td>
+                        <td >
+                            <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-danger float-right mr-1"></div>
+                            <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-warning float-right mr-1"></div>
+                            <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-primary float-right mr-1"></div>
+                        </td>
+                    </tr>
+                    @foreach($dv->roles as $rk => $rv)
+                    <tr>
+                        <td class="col-2">
+                            <span >{{ $rk + 1 }}.</span>
+                        </td>
+                        <td class="col-4">
+                            <span>{{ $rv->name}}</span>
+                        </td>
+                        <td class="col-5">
+                            <span>{{ $rv->pay_rate_money}}</span>
+                        </td>
+                        <td class="col-1">
+                            <i class="fa-solid fa-pen btn-edit-role text-warning" 
+                                data-id="{{ $rv->id }}" 
+                                data-dept_id="{{$dv->id }}"
+                                data-name="{{ $rv->name }}"
+                                data-pay_rate="{{ $rv->pay_rate }}"    
+                            ></i>
+                            <i class="fa-solid fa-square-xmark btn-delete-role text-danger" data-id="{{ $rv->id }}" ></i>
+                        </td>
+                    </tr>
+                    @endforeach
+                </table>
             @endforeach
-
-        </table>
     </div>
 
     
@@ -121,8 +120,8 @@
                     <table class="table form-table">
                         <tr>
                             <td class="form-group" width="100%" valign="top">
-                                <input type="hidden" name="id" class="role_id form-control" value="">
-                                <input type="hidden" name="dept_id" class="dept_id form-control" value="" required>
+                                <input type="hidden" name="id" class="role-id form-control" value="">
+                                <input type="hidden" name="dept_id" class="dept-id form-control" value="" required>
                                 Name:
                                 <input type="text" name="name" class="name-role form-control" value=""
                                     placeholder="Name role" required>
@@ -188,29 +187,81 @@
             });
 
             $('.btn-add-role').click(function() {
+                var table = $(this).closest('table');
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-popup').removeClass('d-none');
                 $('.model-popup').find('form')[0].reset();
-                $('.dept_id').val($(this).data('id'));
+                $('.dept-id').val($(this).data('id'));
                 $('.tilte-popup').text('Add Roles');
-                $('.model-popup').find('form').attr('action', '{{ route('ceo.roles.store') }}');
+                $('.model-popup').find('form').submit(function (e) { 
+                    e.preventDefault();
+                    var form = $(this);
+                    var formData = new FormData(form[0]);
+                    $.ajax({
+                        url: "{{ route('ceo.roles.store') }}",
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            if(response.success == true) {
+                                $('.model-popup-div ').addClass('d-none');
+                                $('.model-popup').addClass('d-none');
+                                $('.model-popup').find('form')[0].reset();
+                                $.toast({
+                                heading: 'Success',
+                                text: response.message,
+                                icon: 'success',
+                                showHideTransition: 'slide',
+                                allowToastClose: false,
+                                hideAfter: 3000,
+                                stack: 5,
+                                position: 'top-right',
+                                textAlign: 'left',
+                                loader: true,
+                            });
+                            }
+                            
+                            if(response.success == false) {
+                                $('.model-popup-div ').addClass('d-none');
+                                $('.model-popup').addClass('d-none');
+                                $('.model-popup').find('form')[0].reset();
+                                $.toast({
+                                heading: 'Error',
+                                text: response.message,
+                                icon: 'error',
+                                showHideTransition: 'slide',
+                                allowToastClose: false,
+                                hideAfter: 3000,
+                                stack: 5,
+                                position: 'top-right',
+                                textAlign: 'left',
+                                loader: true,
+                            });
+                            }
+                        }
+                        
+                    });
+                });;
             });
 
             $('.btn-edit-role').click(function() {
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-popup').removeClass('d-none');
                 $('.model-popup').find('form')[0].reset();
-                $('.role_id').val($(this).data('id'));
-                $('.dept_id').val($(this).data('dept_id'));
+                $('.role-id').val($(this).data('id'));
+                $('.dept-id').val($(this).data('dept_id'));
+                $('.name-role').val($(this).data('name'));
+                $('.pay-rate').val($(this).data('pay_rate'));
                 $('.tilte-popup').text('Edit role');
                 $('.model-popup').find('form').attr('action', '{{ route('ceo.roles.update') }}');
             });
 
             $('.btn-delete-role').click(function() {
                 $('.model-popup-div ').removeClass('d-none');
-                $('.model-popup').removeClass('d-none');
+                $('.model-ask-delete').removeClass('d-none');
                 $('.delete-id').val($(this).data('id'));
-                $('.model-popup').find('form').attr('action', '{{ route('ceo.roles.update') }}');
+                $('.model-ask-delete').find('form').attr('action', '{{ route('ceo.roles.destroy') }}');
             });
         });
     </script>

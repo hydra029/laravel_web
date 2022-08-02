@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\View;
 
 class RoleController extends Controller
 {
+    use ResponseTrait;
     public function __construct()
 	{
 		$this->middleware('ceo');
@@ -53,16 +54,18 @@ class RoleController extends Controller
      * @return Response
      */
     public function store(Request $request)
-    {
-        $name = $request->name;
-        $dept_id = $request->dept_id;
-        $pay_rate = $request->pay_rate;
-        $data = Role::create([
-            'name' => $name,
-            'dept_id' => $dept_id,
-            'pay_rate' => $pay_rate,
-         ]);
-         return $data->append('pay_rate_money')->toJson();
+    {   
+        try {
+            $role = new Role();
+            $role->id = Role::count() + 1;
+            $role->dept_id = $request->dept_id;
+            $role->name = $request->name;
+            $role->pay_rate = $request->pay_rate;
+            $role->save();
+            return $this->successResponse($role, 'Role created successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 'Error creating role');
+        }
     }
 
     /**
@@ -94,9 +97,18 @@ class RoleController extends Controller
      * @param Role $role
      * @return Response
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $name = $request->name;
+        $dept_id = $request->dept_id;
+        $pay_rate = $request->pay_rate;
+        $data = Role::find($id);
+        $data->name = $name;
+        $data->dept_id = $dept_id;
+        $data->pay_rate = $pay_rate;
+        $data->save();
+        return $data->append('pay_rate_money')->toJson();
     }
 
     /**
@@ -105,8 +117,13 @@ class RoleController extends Controller
      * @param Role $role
      * @return Response
      */
-    public function destroy(Role $role)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $data = Role::find($id);
+        $data->delete();
+        return $this->successResponse([
+            'message' => 'Delete success',
+        ]);
     }
 }
