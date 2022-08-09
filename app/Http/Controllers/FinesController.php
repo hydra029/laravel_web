@@ -46,7 +46,7 @@ class FinesController extends Controller
 
     }
 
-    public function update(Request $request)
+    public function update(Request $request): array
     {
         $id = $request->id;
         $name = $request->name;

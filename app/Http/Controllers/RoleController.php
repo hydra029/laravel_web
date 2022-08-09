@@ -6,6 +6,9 @@ use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Department;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +31,7 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -51,10 +54,10 @@ class RoleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreRoleRequest $request
-     * @return Response
+     * @return JsonResponse
      */
     public function store(Request $request)
-    {   
+    {
         try {
             $role = new Role();
             $role->id = Role::count() + 1;

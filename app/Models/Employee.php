@@ -187,7 +187,7 @@ class Employee extends Model
 
     public function roles(): BelongsTo
     {
-        return $this->BelongsTo(Role::class, 'role_id', 'id')
+        return $this->BelongsTo(Role::class,'role_id', 'id')
             ->select(['id', 'name']);
     }
 

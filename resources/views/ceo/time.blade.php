@@ -24,7 +24,6 @@
         <thead>
         <tr>
             <th rowspan="2">Shift</th>
-            <th rowspan="2">Status</th>
             <th colspan="4">Check In</th>
             <th colspan="4">Check Out</th>
             <th rowspan="2">Change</th>
@@ -49,17 +48,8 @@
                             {{$each -> shift_name}}
                         </div>
                         <label class="shift-name-inp d-none">
-                            <input type="text" name="name" class="form-control text-center"
-                                   placeholder="{{$each -> shift_name}}" value="{{$each -> shift_name}}">
-                        </label>
-                    </td>
-                    <td>
-                        <div class="shift-status">
-                            {{$each -> shift_status}}
-                        </div>
-                        <label class="shift-status-inp d-none">
-                            <input type="text" name="status" class="form-control text-center"
-                                   placeholder="{{$each -> shift_status}}" value="{{$each -> shift_status}}">
+                            <input type="text" name="id" class="form-control text-center"
+                                   placeholder="{{$each -> shift_name}}" value="{{$each -> id}}">
                         </label>
                     </td>
                     <td>
@@ -158,7 +148,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('.btn-change').click(function (event) {
+            $('.btn-change').click(function () {
                 $(this).addClass('d-none');
                 $(this).parents('tr')
                     .find('.btn-save, .shift-in-start-inp, .shift-in-end-inp, .shift-in-late-1-inp, .shift-in-late-2-inp, .shift-out-early-1-inp, .shift-out-early-2-inp, .shift-out-start-inp, .shift-out-end-inp')
@@ -168,7 +158,7 @@
                     .addClass('d-none');
 
             });
-            $('.btn-save').click(function (event) {
+            $('.btn-save').click(function () {
                 let tr = $(this).parents('tr');
                 let form = tr.find('form');
                 const time_regex = /^([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d) ([0-1]\d|2[0-3]):([0-5]\d)$/;

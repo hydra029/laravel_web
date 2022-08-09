@@ -4,14 +4,14 @@
     <meta charset="utf-8"/>
     <title>{{$title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description"/>
-    <meta content="Coderthemes" name="author"/>
+    <meta content="An APP to check attendance and make salary sheet" name="description"/>
+    <meta content="Hydra" name="author"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- css --}}
     <link href="{{ asset('css/icons.min.css' )}}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('css/app-modern.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
     <link href="{{ asset('css/app.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-    <link href="{{ asset('css/jquery.toast.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+    <link href="{{ asset('css/app-modern.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+{{--    <link href="{{ asset('css/jquery.toast.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>--}}
     @stack('css')
     <style>
         ul li {
@@ -28,7 +28,7 @@
     </style>
 </head>
 <body class="loading" data-layout="detached"
-      data-layout-config='{"leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+      data-layout-config='{"leftSidebarCondensed":false,"darkMode":true, "showRightSidebarOnStart": false}'>
 @include('layout.header')
 <div class="container-fluid m-0" style="max-width: 100%;">
     <div class="wrapper">

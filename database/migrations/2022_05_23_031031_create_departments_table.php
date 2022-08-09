@@ -22,7 +22,6 @@ class CreateDepartmentsTable extends Migration
             $table->softDeletes();
         });
         Department::insert(['name' => 'Accountant']);
-
     }
 
     /**
