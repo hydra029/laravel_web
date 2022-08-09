@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -38,14 +39,14 @@ class Department extends Model
     ];
 
 
-    public function manager(): BelongsTo
+    public function manager(): HasOne
     {
-        return $this->belongsTo(Manager::class, 'id','dept_id');
+        return $this->hasOne(Manager::class, 'dept_id');
     }
 
-    public function members(): BelongsTo
+    public function members(): hasMany
     {
-        return $this->belongsTo(Employee::class, 'id','dept_id');
+        return $this->hasMany(Employee::class, 'dept_id');
     }
 
     public function roles(): HasMany

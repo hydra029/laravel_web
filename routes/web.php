@@ -27,6 +27,7 @@ Route::get('/test', [HomeController::class, 'test'])->name('test');
 Route::post('/test', [HomeController::class, 'api'])->name('api');
 Route::get('/test/department_api', [HomeController::class, 'department_api'])->name('department_api');
 Route::post('/test/attendance_api', [HomeController::class, 'attendance_api'])->name('attendance_api');
+Route::post('/test/emp_attendance_api', [HomeController::class, 'emp_attendance_api'])->name('emp_attendance_api');
 
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
@@ -35,7 +36,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
 Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
 Route::get('/employees/attendance_history', [EmployeeController::class, 'attendance_history'])->name('employees.attendance_history');
-Route::post('/employees/attendance_api', [EmployeeController::class, 'attendance_api'])->name('employees.attendance_api');
+Route::post('/employees/history_api', [EmployeeController::class, 'history_api'])->name('employees.history_api');
 
 Route::post('/managers/add', [ManagerController::class, 'add'])->name('managers.add');
 Route::put('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
@@ -43,13 +44,16 @@ Route::put('/managers/checkout', [ManagerController::class, 'checkout'])->name('
 Route::get('/managers/today_attendance', [ManagerController::class, 'today_attendance'])->name('managers.today_attendance');
 Route::get('/managers/attendance_history', [ManagerController::class, 'attendance_history'])->name('managers.attendance_history');
 Route::get('/managers/employee_attendance', [ManagerController::class, 'employee_attendance'])->name('managers.employee_attendance');
+Route::post('/managers/history_api', [ManagerController::class, 'history_api'])->name('managers.history_api');
 Route::post('/managers/attendance_api', [ManagerController::class, 'attendance_api'])->name('managers.attendance_api');
-Route::post('/managers/employee_api', [ManagerController::class, 'employee_api'])->name('managers.employee_api');
 Route::post('/managers/emp_attendance_api', [ManagerController::class, 'emp_attendance_api'])->name('managers.emp_attendance_api');
+Route::post('/managers/salary_api', [ManagerController::class, 'salary_api'])->name('managers.salary_api');
+Route::get('/managers/salary', [ManagerController::class, 'salary'])->name('managers.salary');
 
 Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/accountants/attendance_history', [AccountantController::class, 'attendance_history'])->name('accountants.attendance_history');
+Route::post('/accountants/history_api', [AccountantController::class, 'history_api'])->name('accountants.history_api');
 Route::post('/accountants/attendance_api', [AccountantController::class, 'attendance_api'])->name('accountants.attendance_api');
 Route::get('/accountants/salary', [AccountantController::class, 'salary'])->name('accountants.salary');
 
@@ -66,10 +70,9 @@ Route::post('/ceo/roles/store', [RoleController::class, 'store'])->name('ceo.rol
 Route::post('/ceo/roles/update', [RoleController::class, 'update'])->name('ceo.roles.update');
 Route::post('/ceo/roles/destroy', [RoleController::class, 'destroy'])->name('ceo.roles.destroy');
 
-
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
-Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');	
+Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
 Route::post('/ceo/department/destroy', [DepartmentController::class, 'destroy'])->name('ceo.department.destroy');
 Route::post('/ceo/department/manager_role', [DepartmentController::class, 'manager_role'])->name('ceo.department.manager_role');
 

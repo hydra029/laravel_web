@@ -24,9 +24,8 @@ class CreateSalariesTable extends Migration
 			$table->unsignedInteger('deduction');
 			$table->unsignedInteger('salary');
 			$table->foreignId('mgr_id')->constrained('managers');
-			$table->foreignId('acct_id')->constrained('accountants')->nullable();
-			$table->boolean('ceo_sign')->nullable();
-			$table->boolean('status')->default(1);
+			$table->foreignId('acct_id')->nullable()->constrained('accountants');
+			$table->boolean('sign')->nullable();
 			$table->primary(['emp_id', 'month', 'year']);
             $table->timestamps();
 		});

@@ -4,113 +4,102 @@ namespace App\Http\Controllers;
 
 use App\Models\Accountant;
 use App\Models\Attendance;
-use App\Models\Department;
+use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
+use App\Models\Fines;
 use App\Models\Manager;
+use App\Models\Salary;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+	public function test()
+	{
+		return view('test', [
+			'title' => 'Test'
+		]);
+	}
 
+	public function attendance_api(Request $request): array
+	{
+		$dept_id = session('dept_id');
+		$s       = $request->s;
+		$m       = $request->m;
+		$data[]  = AttendanceShiftTime::get();
+		if ($dept_id === 1) {
+			$data[] = Manager::with(
+				[
+					'attendance' => function ($query) use ($s, $m) {
+						$query->where('date', '<=', $s)->where('date', '>=', $m);
+					},
+					'departments',
+					'roles',
+				]
+			)
+				->whereNull('deleted_at')
+				->whereDeptId($dept_id)
+				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+			$data[] = Accountant::with(
+				[
+					'attendance' => function ($query) use ($s, $m) {
+						$query->where('date', '<=', $s)->where('date', '>=', $m);
+					},
+					'departments',
+					'roles',
+				]
+			)
+				->whereNull('deleted_at')
+				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+		} else {
+			$data[] = Manager::with(
+				[
+					'attendance' => function ($query) use ($s, $m) {
+						$query->where('date', '<=', $s)->where('date', '>=', $m);
+					},
+					'departments',
+					'roles',
+				]
+			)
+				->whereNull('deleted_at')
+				->whereDeptId($dept_id)
+				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+			$data[] = Employee::with(
+				[
+					'attendance' => function ($query) use ($s, $m) {
+						$query->where('date', '<=', $s)->where('date', '>=', $m);
+					},
+					'departments',
+					'roles',
+				]
+			)
+				->whereNull('deleted_at')
+				->whereDeptId($dept_id)
+				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+		}
+		return $data;
+	}
 
-    public function test()
-    {
-        return view('test', [
-            'title' => 'Test'
-        ]);
-    }
-
-    public function attendance_api(Request $request): array
-    {
-        $dept_id = $request->dept_id;
-        $s = $request->s;
-        $m = $request->m;
-        if ($dept_id === 'all') {
-            $data[] = Manager::with([
-                'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m)
-                        ->where('emp_role','=','2');
-                },
-                'attendance.shifts',
-                'departments',
-            ])
-                ->whereNull('deleted_at')
-                ->orderBy('dept_id')
-                ->get(['id', 'lname', 'fname','dept_id']);
-            $data[] = Accountant::with([
-                'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m)
-                        ->where('emp_role','=','3');
-                },
-                'attendance.shifts',
-                'departments',
-            ])
-                ->whereNull('deleted_at')
-                ->get(['id', 'lname', 'fname','dept_id']);
-            $data[] = Employee::with([
-                'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m)
-                        ->where('emp_role','=','1');
-                },
-                'attendance.shifts',
-                'departments',
-            ])
-                ->whereNull('deleted_at')
-                ->orderBy('dept_id')
-                ->get(['id', 'lname', 'fname','dept_id']);
-        } else if ($dept_id === '1') {
-            $data[] = Accountant::with([
-                'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m)
-                        ->where('emp_role','=','2');
-                },
-                'attendance.shifts',
-                'departments',
-            ])
-                ->whereNull('deleted_at')
-                ->get(['id', 'lname', 'fname','dept_id']);
-        } else {
-            $data[] = Manager::with([
-                'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m)
-                        ->where('emp_role','=','3');
-                },
-                'attendance.shifts',
-                'departments',
-            ])
-                ->whereNull('deleted_at')
-                ->whereDeptId($dept_id)
-                ->get(['id', 'lname', 'fname','dept_id']);
-            $data[] = Employee::with([
-                'attendance' => function ($query) use ($s, $m) {
-                    $query->where('date', '<=', $s)->where('date', '>=', $m)
-                        ->where('emp_role','=','1');
-                },
-                'attendance.shifts',
-                'departments',
-            ])
-                ->whereNull('deleted_at')
-                ->whereDeptId($dept_id)
-                ->get(['id', 'lname', 'fname','dept_id']);
-        }
-
-        return $data;
-    }
-
-    public function department_api()
-    {
-        return Department::get();
-    }
-
-    public function emp_attendance_api(Request $request)
-    {
-        $date = $request->get('date');
-        $emp_role = $request->get('role');
-        $emp_id = $request->get('id');
-        return Attendance::with('shifts')
-            ->where('date', 'like', "%$date%")
-            ->where('emp_role', '=', $emp_role)
-            ->where('emp_id', '=', $emp_id)
-            ->get();
-    }
+	public function emp_attendance_api(Request $request): array
+	{
+		$emp_id   = $request->get('id');
+		$dept  = $request->get('dept');
+		$role  = $request->get('role');
+		$month    = date('m', strtotime('last month'));
+		$year     = date('Y', strtotime('last month'));
+		$data[]   = Salary::query()
+		->where('dept_name', '=',$dept)
+		->where('role_name', '=',$role)
+		->where('emp_id', '=',$emp_id)
+		->where('month', '=',$month)
+		->where('year', '=',$year)
+		->first();
+		$date = $request->get('date');
+		$emp_role = $request->get('emp_role');
+		$data[] = Attendance::query()
+			->where('date', 'like', "%$date%")
+			->where('emp_role', '=', $emp_role)
+			->where('emp_id', '=', $emp_id)
+			->get();
+		return $data;
+	}
 }

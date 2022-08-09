@@ -13,14 +13,12 @@ class CheckLogin
 	 * Handle an incoming request.
 	 *
 	 * @param Request $request
-	 * @param Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+	 * @param Closure(Request): (Response|RedirectResponse)  $next
 	 * @return Response|RedirectResponse
 	 */
 	public function handle(Request $request, Closure $next)
 	{
 		switch (session('level')) {
-			case 0:
-				return $next($request);
 			case 1:
 				return redirect()->route('employees.index');
 			case 2:
@@ -32,6 +30,5 @@ class CheckLogin
 			default:
 				return $next($request);
 		}
-
 	}
 }

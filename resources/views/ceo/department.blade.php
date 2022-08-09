@@ -3,8 +3,8 @@
 @section('content')
     @push('css')
         <link rel="stylesheet" type="text/css"
-            href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css" />
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+              href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
         <style type="text/css" href="{{ asset('css/app.css') }}"></style>
         <style>
             .dept-list a:hover {
@@ -13,10 +13,10 @@
             }
 
 
-                i,
-                img {
-                    cursor: pointer;
-                }
+            i,
+            img {
+                cursor: pointer;
+            }
 
             .profile-card .table td,
             .table th {
@@ -92,7 +92,8 @@
                 height: 100%;
             }
 
-            .profile-card-info-basic {}
+            .profile-card-info-basic {
+            }
 
             .profile-card-roles {
                 height: 25%;
@@ -131,16 +132,16 @@
         <br>
 
         <div class="col-12 p-2 border border-1 border-light department_employees ">
-            <table class="table table-striped table-striped   " id="table-department-employees">
+            <table class="table table-striped table-striped" id="table-department-employees">
                 <thead class="bg-light">
-                    <tr>
-                        <th class="col-1">#</th>
-                        <th class="col-1"> Avatar</th>
-                        <th class="col-2">Name</th>
-                        <th class="col-5">Gender</th>
-                        <th class="col-2">Role</th>
-                        <th class="col-1">Action</th>
-                    </tr>
+                <tr>
+                    <th class="col-1">#</th>
+                    <th class="col-1">Avatar</th>
+                    <th class="col-2">Name</th>
+                    <th class="col-5">Gender</th>
+                    <th class="col-2">Role</th>
+                    <th class="col-1">Action</th>
+                </tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -163,79 +164,80 @@
         <div class="col-12 p-2 border border-1 border-light dept-list">
             <table class="table table-striped table-striped" id="table-list-department">
                 <thead>
-                    <th class="col-1"><span>#</span></th>
-                    <th class="col-2"><span>Name</span></th>
-                    <th class="col-5"><span>Members</span></th>
-                    <th class="col-2"><span>Manager</span></th>
-                    <th class="col-1"> <span>Action</span></th>
+                <th class="col-1"><span>#</span></th>
+                <th class="col-2"><span>Name</span></th>
+                <th class="col-5"><span>Members</span></th>
+                <th class="col-2"><span>Manager</span></th>
+                <th class="col-1"><span>Action</span></th>
 
                 </thead>
                 <tbody>
 
-                    @foreach ($dept as $each)
-                        <tr class="div-dept">
-                            <td class="align-middle ">
-                                <div>
-                                    <span class="dept-id text-danger">{{ $each->id }}</span><span>.</span>
-                                </div>
-                            </td>
-                            <td class="align-middle ">
-                                <div>
-                                    <span class="dept-name ">{{ $each->name }}</span>
-                                </div>
-                            </td>
-                            <td class="align-middle ">
-                                <div>
-                                    <span class="dept-members members-department ">{{ $each->members_count }} members</span>
-                                </div>
-                            </td>
-                            <td class="align-middle ">
-                                <div>
-                                    @if ($each->manager === null)
-                                        <span class="text-danger"> No manager yet</span>
+                @foreach ($dept as $each)
+                    <tr class="div-dept">
+                        <td class="align-middle ">
+                            <div>
+                                <span class="dept-id text-danger">{{ $each->id }}</span><span>.</span>
+                            </div>
+                        </td>
+                        <td class="align-middle ">
+                            <div>
+                                <span class="dept-name ">{{ $each->name }}</span>
+                            </div>
+                        </td>
+                        <td class="align-middle ">
+                            <div>
+                                <span class="dept-members members-department ">{{ $each->members_count }} members</span>
+                            </div>
+                        </td>
+                        <td class="align-middle ">
+                            <div>
+                                @if ($each->manager === null)
+                                    <span class="text-danger"> No manager yet</span>
+                                @else
+                                    <span class="manager-id d-none">{{ $each->manager->id }}</span>
+                                    <span class="manager-gender d-none">{{ $each->manager->gender_name }}</span>
+                                    <span class="manager-dob d-none">{{ $each->manager->date_of_birth }}</span>
+                                    <span class="manager-email d-none">{{ $each->manager->email }}</span>
+                                    <span class="manager-phone d-none">{{ $each->manager->phone }}</span>
+                                    <span class="manager-address d-none">{{ $each->manager->address }}</span>
+                                    <span class="manager-role d-none">{{ $each->manager->role_id }}</span>
+                                    <span class="manager-avatar d-none">{{ $each->manager->avatar }}</span>
+                                    @if ($each->manager->avatar === null)
+                                        <img class="manager-avatar-img"
+                                             src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}"
+                                             style=" border-radius:50% " width="40px">
                                     @else
-                                        <span class="manager-id d-none">{{ $each->manager->id }}</span>
-                                        <span class="manager-gender d-none">{{ $each->manager->gender_name }}</span>
-                                        <span class="manager-dob d-none">{{ $each->manager->date_of_birth }}</span>
-                                        <span class="manager-email d-none">{{ $each->manager->email }}</span>
-                                        <span class="manager-phone d-none">{{ $each->manager->phone }}</span>
-                                        <span class="manager-address d-none">{{ $each->manager->address }}</span>
-                                        <span class="manager-role d-none">{{ $each->manager->role_id }}</span>
-                                        <span class="manager-avatar d-none">{{ $each->manager->avatar }}</span>
-                                        @if ($each->manager->avatar === null)
-                                            <img class="manager-avatar-img"
-                                                src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}"
-                                                style=" border-radius:50% " width="40px">
-                                        @else
-                                            <img class="manager-avatar-img"
-                                                src="{{ asset('') }}img/{{ $each->manager->avatar }}"style=" border-radius:50% "
-                                                width="40px">
-                                        @endif
-                                        <a class="manager-name ">{{ $each->manager->full_name }}</a>
+                                        <img class="manager-avatar-img"
+                                             src="{{ asset('') }}img/{{ $each->manager->avatar }}"
+                                             style=" border-radius:50% "
+                                             width="40px">
                                     @endif
+                                    <a class="manager-name ">{{ $each->manager->full_name }}</a>
+                                @endif
 
-                                </div>
-                            </td>
+                            </div>
+                        </td>
 
-                            <td class="align-middle ">
-                                <div>
-                                    <i class="fa-solid fa-eye btn-show-department text-primary"
-                                        data-id="{{ $each->id }}"></i>
-                                    <i class="fa-solid fa-pen btn-edit-department text-warning"
-                                        data-id="{{ $each->id }}"></i>
-                                    <i class="fa-solid fa-square-xmark btn-delete-department text-danger"
-                                        data-id="{{ $each->id }}"></i>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+                        <td class="align-middle ">
+                            <div>
+                                <i class="fa-solid fa-eye btn-show-department text-primary"
+                                   data-id="{{ $each->id }}"></i>
+                                <i class="fa-solid fa-pen btn-edit-department text-warning"
+                                   data-id="{{ $each->id }}"></i>
+                                <i class="fa-solid fa-square-xmark btn-delete-department text-danger"
+                                   data-id="{{ $each->id }}"></i>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
             <nav aria-label="Page navigation example">
                 <ul class="pagination float-right" id="department-pagination">
                     {{$dept->links()}}
                 </ul>
-            </nav>  
+            </nav>
         </div>
     </div>
     {{-- /////MODEL_LOCATIONS/// --}}
@@ -254,7 +256,7 @@
                             <td class="form-group" width="100%" valign="top">
                                 Name:
                                 <input type="text" name="name" class="name-department form-control" value=""
-                                    placeholder="Name department" required>
+                                       placeholder="Name department" required>
                             </td>
                         </tr>
                         <tr>
@@ -272,7 +274,8 @@
                         <tr>
                             <td>
                                 <button class="btn btn-primary btn-add-department float-right ml-1"
-                                    type="submit">Submit</button>
+                                        type="submit">Submit
+                                </button>
                                 <button class="btn btn-light btn-close-model float-right" type="button">Cancel</button>
                             </td>
                         </tr>
@@ -287,7 +290,7 @@
                 <span class=" card-title h2"> Edit department</span>
             </div>
             <form id="form-update-department" action="{{ route('ceo.department.update') }}" method="post"
-                class="form-horizontal">
+                  class="form-horizontal">
                 @csrf
                 <table class="table form-table">
                     <tr>
@@ -295,7 +298,7 @@
                             <input type="hidden" name="id" value="" class="id-department-edit">
                             Name:
                             <input type="text" name="name" class="name-department-edit form-control"
-                                value="" placeholder="Name department" required>
+                                   value="" placeholder="Name department" required>
                         </td>
                     </tr>
                     <tr>
@@ -313,7 +316,8 @@
                     <tr>
                         <td>
                             <button class="btn btn-primary btn-change-department float-right ml-1"
-                                type="submit">Submit</button>
+                                    type="submit">Submit
+                            </button>
                             <button class="btn btn-light btn-close-model float-right" type="button">Cancel</button>
                         </td>
                     </tr>
@@ -337,8 +341,8 @@
                     </td>
                 </tr>
             </table>
-            </div>  
-    {{-- profile --}}
+        </div>
+        {{-- profile --}}
         <div class="profile-card d-none">
             <button class="btn-warning profile-close rounded-pill" style="right: 0;" type="button">
                 <span class="btn-label">
@@ -383,14 +387,14 @@
                     <table class="table">
                         <tr>
                             <th>
-                                <div >
+                                <div>
                                     <i class="fa-solid fa-medal"></i>
                                     <i class="fa-solid fa-book-circle-arrow-right"></i>
                                     <span class="profile-card-department"></span>
                                 </div>
                             </th>
                             <th>
-                                <div >
+                                <div>
                                     <span class="profile-card-role"></span>
                                 </div>
                             </th>
@@ -413,10 +417,10 @@
 
             <table class="table table-striped table-bordered " id="table-pay-rate">
                 <thead>
-                    <th class="col-2">#</th>
-                    <th class="col-4">Roles</th>
-                    <th class="col-4">Pay rate</th>
-                    <th class="col-2">Action</th>
+                <th class="col-2">#</th>
+                <th class="col-4">Roles</th>
+                <th class="col-4">Pay rate</th>
+                <th class="col-2">Action</th>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -469,7 +473,7 @@
                             <span>Click here to chage avatar</span>
                         </label>
 
-                        <input id="file-input" type="file" class="d-none" />
+                        <input id="file-input" type="file" class="d-none"/>
                     </div>
                 </div>
                 <div class="profile-card-info float-left">
@@ -480,13 +484,17 @@
                                     First Name:
                                     <br>
                                     <span class="error-message-fname text-danger"> </span><input type="text"
-                                        name="fname" class="form-control inp-fname" placeholder="First Name">
+                                                                                                 name="fname"
+                                                                                                 class="form-control inp-fname"
+                                                                                                 placeholder="First Name">
                                 </td>
                                 <td>
                                     Last Name:
                                     <br>
                                     <span class="error-message-lname text-danger"> </span><input type="text"
-                                        name="lname" class="form-control inp-lname " placeholder="Last Name">
+                                                                                                 name="lname"
+                                                                                                 class="form-control inp-lname "
+                                                                                                 placeholder="Last Name">
                                 </td>
                             </tr>
                             <tr>
@@ -505,9 +513,11 @@
                                     Date of birth:
                                     <br>
                                     <span class="error-message-dob text-danger"> </span> <input type="date"
-                                        name="dob" id="date" class="form-control inp-dob"
-                                        style="width: 100%; display: inline;" required value=""
-                                        placeholder="Date of birth">
+                                                                                                name="dob" id="date"
+                                                                                                class="form-control inp-dob"
+                                                                                                style="width: 100%; display: inline;"
+                                                                                                required value=""
+                                                                                                placeholder="Date of birth">
                                 </td>
                                 <td></td>
                             </tr>
@@ -516,13 +526,15 @@
                                     City:
                                     <br>
                                     <span class="error-message-city text-danger"> </span><select name="city"
-                                        id="select-city" class="form-control"></select>
+                                                                                                 id="select-city"
+                                                                                                 class="form-control"></select>
                                 </td>
                                 <td>
                                     District:
                                     <br>
                                     <span class="error-message-district text-danger"> </span><select name="district"
-                                        id="select-district" class="form-control"></select>
+                                                                                                     id="select-district"
+                                                                                                     class="form-control"></select>
                                 </td>
                             </tr>
                             <tr>
@@ -530,8 +542,9 @@
                                     Number phone:
                                     <br>
                                     <span class="error-message-phone text-danger"> </span> <input type="number"
-                                        name="phone" value="" placeholder="Number phone"
-                                        class="form-control inp-phone">
+                                                                                                  name="phone" value=""
+                                                                                                  placeholder="Number phone"
+                                                                                                  class="form-control inp-phone">
                                 </td>
                             </tr>
                             <tr>
@@ -539,19 +552,22 @@
                                     Email:
                                     <br>
                                     <span class="error-message-email text-danger"> </span><input type="email"
-                                        name="email" value="" placeholder="Email"
-                                        class="form-control inp-email">
+                                                                                                 name="email" value=""
+                                                                                                 placeholder="Email"
+                                                                                                 class="form-control inp-email">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     Password:
                                     <span toggle="#password-field"
-                                        class="fa fa-fw fa-eye field_icon toggle-password"></span>
+                                          class="fa fa-fw fa-eye field_icon toggle-password"></span>
                                     <br>
                                     <span class="error-message-password text-danger"> </span> <input type="password"
-                                        name="password" value="" placeholder="Password"
-                                        class="form-control inp-password">
+                                                                                                     name="password"
+                                                                                                     value=""
+                                                                                                     placeholder="Password"
+                                                                                                     class="form-control inp-password">
                                 </td>
                             </tr>
                             <tr>
@@ -587,7 +603,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('js/imgHover.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(async function() {
+        $(document).ready(async function () {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -595,16 +611,16 @@
             });
 
             // add department
-            $('.btn-close-model').click(function() {
+            $('.btn-close-model').click(function () {
                 $('.model-popup-div ').addClass('d-none');
                 $('.model-popup').addClass('d-none');
                 $('.model-popup').find('form')[0].reset();
             });
-            $('.btn-add-dept').click(function() {
+            $('.btn-add-dept').click(function () {
                 $('.model-popup-div ').removeClass('d-none');
                 $('.popup-add-department').removeClass('d-none');
             });
-            $('.btn-back').click(function() {
+            $('.btn-back').click(function () {
                 $('.model-popup-div ').addClass('d-none');
                 $('.title-name').text('');
                 $('.dept').addClass('d-none');
@@ -617,20 +633,20 @@
                 $('#employees-pagination').empty();
                 $('#table-department-employees').find('tbody').empty();
             });
-            $('.btn-form-back').click(function() {
+            $('.btn-form-back').click(function () {
                 $('.title-name').text('');
                 $('.dept-list').removeClass('d-none');
                 $('.add-dept-div').addClass('d-none');
             })
-            $('.btn-back-roles').click(function() {
+            $('.btn-back-roles').click(function () {
                 $('.title-name').text('');
                 $('.dept-list').removeClass('d-none');
                 $('.dept-roles').addClass('d-none');
             })
 
 
-            // edit department 
-            $('.btn-edit-department').click(function() {
+            // edit department
+            $('.btn-edit-department').click(function () {
                 var dept_row = $(this).parents('tr');
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-popup').removeClass('d-none');
@@ -640,12 +656,12 @@
                 var id_manager = $(this).parents('tr').find('.manager-id').text();
                 $('.id-department-edit').val(dept_id);
                 $('.name-department-edit').val(dept_name);
-                $('.select-manager-edit').find('option').each(function() {
+                $('.select-manager-edit').find('option').each(function () {
                     if ($(this).val() == id_manager) {
                         $(this).attr('selected', 'selected');
                     }
                 });
-                $('#form-update-department').submit(function(e) {
+                $('#form-update-department').submit(function (e) {
                     e.preventDefault();
                     var form = $(this);
                     $.ajax({
@@ -653,7 +669,7 @@
                         method: "POST",
                         datatype: 'json',
                         data: form.serialize(),
-                        success: function(response) {
+                        success: function (response) {
                             var img;
                             if (response[0].manager.avatar === null) {
                                 img =
@@ -689,22 +705,22 @@
                 });
             });
 
-            $('.btn-delete-department').click(function() {
+            $('.btn-delete-department').click(function () {
                 var dept_row = $(this).parents('tr');
                 var dept_id = $(this).data('id');
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-ask-delete').removeClass('d-none');
                 $('.btn-delete-departments').removeClass('d-none');
                 $(".model-ask-delete").find(".btn-delete-departments").data('id', dept_id);
-                $('.btn-delete-departments').click(function() {
+                $('.btn-delete-departments').click(function () {
                     $.ajax({
                         type: "POST",
                         url: "{{ route('ceo.department.destroy') }}",
                         data: {
-                            dept_id: dept_id, 
+                            dept_id: dept_id,
                         },
                         dataType: "json",
-                        success: function(response) {
+                        success: function (response) {
                             dept_row.remove();
                             $('.model-popup-div ').addClass('d-none');
                             $('.model-popup').addClass('d-none');
@@ -713,10 +729,10 @@
                     })
                 });
             });
-            
+
             // show the members list
             var dept_list = [];
-            $('.btn-show-department').click(function() {
+            $('.btn-show-department').click(function () {
                 $('.dept').removeClass('d-none');
                 $('.dept-list').addClass('d-none');
                 var dept_id = $(this).data('id');
@@ -733,9 +749,9 @@
                     data: {
                         dept_id: dept_id
                     },
-                    success: function(response) {
+                    success: function (response) {
 
-                        $.each(response.data.data, function(index, value) {
+                        $.each(response.data.data, function (index, value) {
                             if (value.avatar == null) {
                                 var img =
                                     `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
@@ -744,7 +760,7 @@
                                     `<img  src="{{ asset('') }}img/${value.avatar} "  style=" border-radius:50% " width="40px"/>`
                             }
                             $('#table-department-employees').append($(
-                                    '<tr class="employee-row">')
+                                '<tr class="employee-row">')
                                 .append($('<td class="align-middle">').append((
                                     index + 1) + '.'))
                                 .append($('<td class="align-middle">').append(
@@ -774,9 +790,9 @@
             });
 
             function renderEmployeesPagination(links) {
-                links.forEach(function(each) {
+                links.forEach(function (each) {
                     $('#employees-pagination').append($('<li>').attr('class',
-                            `page-item ${each.active ? 'active' : ''}`)
+                        `page-item ${each.active ? 'active' : ''}`)
                         .append(`<a class="page-link"
                                 href="${each.url}">
                                     ${each.label}
@@ -786,7 +802,7 @@
             }
 
             function changePage(dept_id) {
-                $(document).on('click', '#employees-pagination > li > a', function(event) {
+                $(document).on('click', '#employees-pagination > li > a', function (event) {
                     event.preventDefault();
                     var url = $(this).attr('href');
                     console.log(url);
@@ -798,26 +814,26 @@
                         data: {
                             dept_id: dept_id
                         },
-                        success: function(response) {
+                        success: function (response) {
 
-                            $.each(response.data.data, function(index, value) {
+                            $.each(response.data.data, function (index, value) {
                                 $('#table-department-employees').append($(
                                         `<tr class="employee-row" data-id="${value.id}">`
                                     )
-                                    .append($('<td class="align-middle">')
-                                        .append((index + 1) + '.'))
-                                    .append($('<td class="align-middle">')
-                                        .append(
-                                            `<img  src="{{ asset('') }}img/${value.avatar}" class="rounded" width="100px" />`
-                                        ))
-                                    .append($('<td class="align-middle">')
-                                        .append(value.full_name))
-                                    .append($('<td class="align-middle">')
-                                        .append(value.gender_name))
-                                    .append($('<td class="align-middle">')
-                                        .append(value.roles.name))
-                                    .append($('<td class="align-middle">')
-                                        .append(`
+                                        .append($('<td class="align-middle">')
+                                            .append((index + 1) + '.'))
+                                        .append($('<td class="align-middle">')
+                                            .append(
+                                                `<img  src="{{ asset('') }}img/${value.avatar}" class="rounded" width="100px" />`
+                                            ))
+                                        .append($('<td class="align-middle">')
+                                            .append(value.full_name))
+                                        .append($('<td class="align-middle">')
+                                            .append(value.gender_name))
+                                        .append($('<td class="align-middle">')
+                                            .append(value.roles.name))
+                                        .append($('<td class="align-middle">')
+                                            .append(`
                                             <i class="fa-solid fa-eye btn-show-employee text-primary" data-id="${value.id}"></i>
                                             <i class="fa-solid fa-pen btn-edit-employee text-warning" data-id="${value.id}"></i>
                                             <i class="fa-solid fa-square-xmark btn-delete-employee text-danger" data-id="${value.id}"></i>
@@ -835,9 +851,9 @@
             }
 
             function showEmployeesInfor() {
-                $('.btn-show-employee').click(function(e) {
+                $('.btn-show-employee').click(function (e) {
                     var id = $(this).data('id');
-                $('.model-popup-div ').removeClass('d-none');
+                    $('.model-popup-div ').removeClass('d-none');
                     $.ajax({
                         type: "post",
                         url: "{{ route('ceo.employee_infor') }}",
@@ -845,7 +861,7 @@
                             id: id,
                         },
                         dataType: "json",
-                        success: function(response) {
+                        success: function (response) {
                             console.log(response);
                             $('.profile-card').removeClass('d-none');
                             $('.profile-card').find('.profile-card-info').find(
@@ -882,7 +898,7 @@
             }
 
             function update_emp() {
-                $('.btn-edit-employee').click(function(e) {
+                $('.btn-edit-employee').click(function (e) {
                     var id = $(this).data('id');
                     $('.div-form-update-employee').removeClass('d-none');
                     $('.dept').addClass('d-none');
@@ -893,7 +909,7 @@
                             id: id,
                         },
                         dataType: "json",
-                        success: function(response) {
+                        success: function (response) {
                             console.log(response);
                             $('.profile-card-edit').find('.profile-card-info').find(
                                 '.inp-fname').val(response[0].fname);
@@ -906,16 +922,18 @@
                             $('.profile-card-edit').find('.profile-card-info').find(
                                 '.inp-email').val(response[0].email);
                             $('.profile-card-edit').find('.profile-card-info').find(
-                                '#select-city').find('option').each(function() {
+                                '#select-city').find('option').each(function () {
                                 if ($(this).val() == response[0].city) {
                                     $(this).attr('selected', 'selected');
-                                };
+                                }
+                                ;
                             });
                             $('.profile-card-edit').find('.profile-card-info').find(
-                                '#select-department').find('option').each(function() {
+                                '#select-department').find('option').each(function () {
                                 if ($(this).val() == response[0].dept_id) {
                                     $(this).attr('selected', 'selected');
-                                };
+                                }
+                                ;
                             });
 
                             if (response[0].avatar == null) {
@@ -934,22 +952,21 @@
                 });
             }
 
-            $('.btn-back-form-update-employee').click(function(e) {
+            $('.btn-back-form-update-employee').click(function (e) {
                 $('.dept').removeClass('d-none');
                 $('.div-form-update-employee').addClass('d-none');
             })
 
 
-
             function delete_emp() {
-                $('.btn-delete-employee').click(function() {
+                $('.btn-delete-employee').click(function () {
                     var employee_delete = $(this).parents('tr');
                     var id = $(this).data('id');
                     $(".model-popup-div").removeClass('d-none');
                     $(".model-ask-delete").removeClass('d-none');
                     $(".btn-delete-members").removeClass('d-none');
                     $(".model-ask-delete").find(".btn-delete-members").data('id', id);
-                    $('.btn-delete-members').click(function() {
+                    $('.btn-delete-members').click(function () {
                         $.ajax({
                             type: "delete",
                             url: `{{ route('ceo.delete_emp') }}`,
@@ -957,7 +974,7 @@
                                 "id": id,
                             },
                             dataType: "json",
-                            success: function(response) {
+                            success: function (response) {
                                 employee_delete.remove();
                                 $(".model-ask-delete").addClass('d-none');
                                 $(".model-popup-div").addClass('d-none');
@@ -967,6 +984,7 @@
                     })
                 })
             }
+
             // change department
 
             // form
@@ -981,15 +999,15 @@
                 'email',
                 'password',
             ];
-            $.each(array, function(index, each) {
+            $.each(array, function (index, each) {
                 let text = each;
                 console.log(text);
-                $(`.inp-${each}`).on("change paste keyup", function(text) {
+                $(`.inp-${each}`).on("change paste keyup", function (text) {
                     $(`.error-message-${each}`).empty();
                 });
             })
 
-            $('#form-update-employees').submit(function(e) {
+            $('#form-update-employees').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
                 $.ajax({
@@ -997,7 +1015,7 @@
                     url: "{{ route('ceo.update_emp') }}",
                     data: form.serialize(),
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         $.notify('success', 'edit success');
                         $('.profile-card').find('.profile-card-info').find(
                             '.profile-card-name').text(response[0].full_name);
@@ -1033,9 +1051,9 @@
                         $('#form-update-employees')[0].reset();
 
                     },
-                    error: function(xhr, textStatus, errorThrown) {
+                    error: function (xhr, textStatus, errorThrown) {
                         var err = JSON.parse(xhr.responseText);
-                        $.each(err.errors, function(key, value) {
+                        $.each(err.errors, function (key, value) {
                             $(`.error-message-${key}`).text(value);
                         })
                     }
@@ -1044,21 +1062,22 @@
             $('#select-city').select2();
             const response = await fetch('{{ asset('locations/index.json') }}');
             const cities = await response.json();
-            $.each(cities, function(index, each) {
+            $.each(cities, function (index, each) {
                 $('#select-city').append(
                     `<option value='${each.code}' data-path='${each.file_path}'>${index}</option>`);
             });
-            $('#select-city').change(function() {
+            $('#select-city').change(function () {
                 loadDistrict();
             })
             loadDistrict();
             $('#select-district').select2();
+
             async function loadDistrict() {
                 $('#select-district').empty();
                 const path = $("#select-city option:selected").data('path');
                 const response = await fetch('{{ asset('locations/') }}' + path);
                 const districts = await response.json();
-                $.each(districts.district, function(index, each) {
+                $.each(districts.district, function (index, each) {
                     if (each.pre === "Quận" || each.pre === "Huyện") {
                         $('#select-district').append(`
                             <option>
@@ -1070,7 +1089,7 @@
 
             var dept_id = $("#select-department").val();
             select_role(dept_id);
-            $("#select-department").change(function() {
+            $("#select-department").change(function () {
                 var dept_id = $(this).val();
                 select_role(dept_id);
             });
@@ -1084,8 +1103,8 @@
                         dept_id: dept_id
                     },
                     dataType: "json",
-                    success: function(response) {
-                        $.each(response, function(index, value) {
+                    success: function (response) {
+                        $.each(response, function (index, value) {
                             $("#select-role").append($('<option value="' + value.id + '">' +
                                 value.name + '</option>'))
                         })
@@ -1095,7 +1114,7 @@
 
             // views profile manager
 
-            $('.manager-name').click(function(e) {
+            $('.manager-name').click(function (e) {
                 // values: e.clientX, e.clientY, e.pageX, e.pageY
                 // over
                 $('.model-popup-div ').removeClass('d-none');
@@ -1135,7 +1154,7 @@
                     data: {
                         role_id: id_role_manager,
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('.profile-card').find('.profile-card-roles').find(
                             '.profile-card-role').text(response[0]['name']);
                         $('.profile-card').find('.profile-card-roles').find(
@@ -1147,11 +1166,11 @@
 
 
             });
-            $('.profile-close').click(function() {
+            $('.profile-close').click(function () {
                 $('.model-popup-div ').addClass('d-none');
                 $('.profile-card').addClass('d-none');
             });
-            $('.toggle-password').click(function() {
+            $('.toggle-password').click(function () {
                 $(this).toggleClass("fa-eye fa-eye-slash");
 
                 var input = $(".inp-password");

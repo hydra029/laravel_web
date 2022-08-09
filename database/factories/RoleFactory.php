@@ -13,19 +13,10 @@ class RoleFactory extends Factory
      */
     public function definition(): array
     {
-        for ($i = 1; $i <= 5; $i++) {
-            for ($j = 1; $j <= 8; $j++) {
-                $unique[] = $i . '-' . $j;
-            }
-        }
-        $unique = $this->faker->unique()->randomElement($unique);
-        $unique = explode('-', $unique);
-        [$id, $dept_id] = $unique;
 
         return [
-            'id' => $id,
-            'dept_id' => $dept_id,
-            'name' => $this->faker->unique()->word,
+            'dept_id' => $this->faker->numberBetween(1, 10),
+            'name' => $this->faker->unique()->lastName,
             'pay_rate' => $this->faker->numberBetween(5000000, 20000000),
         ];
     }

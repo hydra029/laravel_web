@@ -32,7 +32,7 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAttendanceShiftTimeRequest  $request
+     * @param StoreAttendanceShiftTimeRequest $request
      * @return Response
      */
     public function store(StoreAttendanceShiftTimeRequest $request)

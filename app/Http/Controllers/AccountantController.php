@@ -7,6 +7,7 @@ use App\Models\Accountant;
 use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\UpdateAccountantRequest;
 use App\Models\Attendance;
+use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
 use App\Models\Manager;
 use Illuminate\Contracts\Support\Renderable;
@@ -60,16 +61,18 @@ class AccountantController extends Controller
 		return view('accountants.attendance_history');
 	}
 
-    public function attendance_api(Request $request)
+    public function history_api(Request $request): array
     {
         $f = $request->f;
         $l = $request->l;
-        return Attendance::with('shifts')
+	    $arr[] = AttendanceShiftTime::get();
+        $arr[] = Attendance::query()
             ->where('date', '<=', $l)
             ->where('date', '>=', $f)
             ->where('emp_id', '=', session('id'))
             ->where('emp_role', '=', session('level'))
             ->get();
+        return $arr;
     }
 
     public function checkin(Request $request): RedirectResponse

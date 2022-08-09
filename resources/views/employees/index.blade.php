@@ -6,12 +6,7 @@
             width: 90px;
         }
     </style>
-    <form action="{{ route('employees.add') }}" method="post">
-        @csrf
-        <button class="btn btn-secondary">
-            Add
-        </button>
-    </form>
+
     <table class="table table-striped table-centered mb-0" id="table-index">
         <thead>
         <tr>

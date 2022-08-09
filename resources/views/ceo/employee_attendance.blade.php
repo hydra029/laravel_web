@@ -1,10 +1,15 @@
 @extends('layout.master')
 @include('ceo.menu')
 @push('css')
-    <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-    <style>
+	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<link href="{{ asset('css/style.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<style>
         .fc-daygrid-event {
             margin: 0;
+        }
+
+        #external-events, #external-events > .fc-event {
+            cursor: pointer !important;
         }
 
         #calendar .fc-day-today {
@@ -39,70 +44,185 @@
             margin: 0 1px;
         }
 
+        .event-0 {
+            text-align: left;
+        }
+
         .event-1 {
             background: #9761ed;
         }
 
         .event-2 {
-            background: #8ca5ff
+            background: #8ca5ff;
         }
 
         .event-3 {
-            background: #00c67f
+            background: #00c67f;
         }
 
         .event-4 {
-            background: #f07171
+            background: #f07171;
         }
 
         .event-5 {
-            background: #f57542
+            background: #f57542;
         }
 
         .event-6 {
-            background: #f03e44
+            background: #9299a0;
+        }
+
+        .event-7 {
+            background: #f03e44;
         }
 
         .emp-name {
             margin: 8px 0;
         }
-    </style>
+
+        .E11, .E21, .OT1, .L11, .L21, .OW1, .MS1,
+        .E12, .E22, .OT2, .L12, .L22, .OW2, .MS2,
+        .E13, .E23, .OT3, .L13, .L23, .OW3, .MS3 {
+            float: right;
+            text-align: center;
+            padding: 0;
+        }
+
+        #table_salary {
+            margin: 5px 7px;
+            border: 1px solid #3788d8;
+            border-radius: 5px !important;
+            font-size: 13px;
+            text-align: center;
+            width: 94%;
+            cursor: default;
+        }
+
+        #table_salary tr > th {
+            border: 1px solid #3788d8;
+            height: 32px;
+            padding: 0 !important;
+            width: 50% !important;
+        }
+
+        .type {
+            width: 20%;
+            text-align: center;
+        }
+
+	</style>
 @endpush
 @section('content')
-    <div class="col-1 p-1">
-        <div id='external-events'>
-            <p class="text-center">
-                <strong>Detail</strong>
-            </p>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-1'>
-                <div class='fc-event-main tc'>Early Type 1</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-2'>
-                <div class='fc-event-main tc'>Early Type 2</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-3'>
-                <div class='fc-event-main tc'>On Time</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-4'>
-                <div class='fc-event-main tc'>Late Type 1</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-5'>
-                <div class='fc-event-main tc'>Late Type 2</div>
-            </div>
-            <div class='fc-event fc-h-event fc-daygrid-block-event event-6'>
-                <div class='fc-event-main tc'>Off Work</div>
-            </div>
-
-        </div>
-    </div>
-    <div class="col-11 p-1">
-        <div id="calendar"></div>
-    </div>
+	<div class="col-2 p-1">
+		<table id="table_salary">
+			<tr>
+				<th class="col-6">Type</th>
+				<th class="type col-2">WD</th>
+				<th class="type col-2">OT</th>
+				<th class="type col-2">OD</th>
+			</tr>
+		</table>
+		<div id='external-events'>
+			<div class='fc-event fc-h-event event-1'>
+				<div class='fc-event-main tc event-0'>
+                    <span class="text-left">
+                        Early 1:
+                    </span>
+					<span class="E13 col-2">
+                    </span>
+					<span class="E12 col-2">
+                    </span>
+					<span class="E11 col-2">
+                    </span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-2'>
+				<div class='fc-event-main tc event-0'>
+                    <span>
+                        Early 2:
+                    </span>
+					<span class="E23 col-2">
+                    </span>
+					<span class="E22 col-2">
+                    </span>
+					<span class="E21 col-2">
+                    </span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-3'>
+				<div class='fc-event-main tc event-0'>
+                    <span>
+                        On Time:
+                    </span>
+					<span class="OT3 col-2">
+                    </span>
+					<span class="OT2 col-2">
+                    </span>
+					<span class="OT1 col-2">
+                    </span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-4'>
+				<div class='fc-event-main tc event-0'>
+                    <span>
+                        Late 1:
+                    </span>
+					<span class="L13 col-2">
+                    </span>
+					<span class="L12 col-2">
+                    </span>
+					<span class="L11 col-2">
+                    </span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-5'>
+				<div class='fc-event-main tc event-0'>
+                    <span>
+                        Late 2:
+                    </span>
+					<span class="L23 col-2">
+                    </span>
+					<span class="L22 col-2">
+                    </span>
+					<span class="L21 col-2">
+                    </span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-6'>
+				<div class='fc-event-main tc event-0'>
+                    <span>
+                        Miss:
+                    </span>
+					<span class="MS3 col-2">
+                    </span>
+					<span class="MS2 col-2">
+                    </span>
+					<span class="MS1 col-2">
+                    </span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-7'>
+				<div class='fc-event-main tc event-0'>
+                    <span>
+                        Off Work:
+                    </span>
+					<span class="OW3 col-2">
+                    </span>
+					<span class="OW2 col-2">
+                    </span>
+					<span class="OW1 col-2">
+                    </span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-10 p-1">
+		<div id="calendar"></div>
+	</div>
 @endsection
 @push('js')
-
-    <script src="{{ asset('js/main.min.js' )}}"></script>
-    <script>
+	<script src="{{ asset('js/main.min.js' )}}"></script>
+	<script>
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -110,40 +230,42 @@
                 }
             });
             const calendarEl = document.getElementById('calendar');
-            let today = new Date();
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                headerToolbar: {
-                    left: 'today,goto',
+            let td           = getFullDate(new Date());
+            let today        = new Date(new Date(td).setHours(7));
+            let mTime        = new Date(new Date(new Date(td).setHours(7)).setDate(1)).getTime();
+            let tdTime       = new Date(new Date(getMon(td)).setHours(7)).getTime();
+            const calendar   = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar            : {
+                    left  : 'today,goto',
                     center: 'title',
-                    right: 'prevYear,prev,next,nextYear',
+                    right : 'prevYear,prev,next,nextYear',
                 },
-                initialDate: today,
-                nowIndicator: true,
-                initialView: 'dayGridWeek',
-                weekNumbers: true,
-                weekNumberCalculation: 'ISO',
-                editable: true,
-                selectable: true,
-                height: 750,
-                contentHeight: 100,
-                dayMaxEvents: true,
-                eventOrderStrict: true,
+                initialDate              : new Date(),
+                nowIndicator             : true,
+                initialView              : 'dayGridWeek',
+                weekNumbers              : true,
+                weekNumberCalculation    : 'ISO',
+                editable                 : true,
+                selectable               : true,
+                height                   : 750,
+                contentHeight            : 100,
+                dayMaxEvents             : true,
+                eventOrderStrict         : true,
                 progressiveEventRendering: true,
-                eventOrder: '-id',
-                customButtons: {
-                    today: {
-                        text: 'Today',
+                eventOrder               : '-id',
+                customButtons            : {
+                    today   : {
+                        text : 'Today',
                         click: function () {
-                            let date = new Date();
-                            loadDate(date);
+                            loadDate(new Date());
                         }
                     },
-                    goto: {
-                        text: 'Go to',
+                    goto    : {
+                        text : 'Go to',
                         click: function () {
                             calendar.removeAllEvents();
                             del();
-                            let day = sl3.children(':selected').val();
+                            let day  = sl3.children(':selected').val();
                             let date = new Date(day);
                             calendar.gotoDate(date);
                             emp();
@@ -152,16 +274,16 @@
                     },
                     prevYear: {
                         click: function () {
-                            let fY = $('#sl-1 :last-child').index();
+                            let fY  = $('#sl-1 :last-child').index();
                             let idM = sl2.children(':selected').index();
                             let idY = sl1.children(':selected').index();
                             if (idY === fY) {
                                 $.toast({
-                                    heading: 'Something went wrong',
-                                    text: 'There is no more data available',
-                                    icon: 'info',
-                                    position: 'top-right',
-                                    hideAfter: 2000,
+                                    heading        : 'Something went wrong',
+                                    text           : 'There is no more data available',
+                                    icon           : 'info',
+                                    position       : 'top-right',
+                                    hideAfter      : 2000,
                                     allowToastClose: false,
                                 });
                             } else {
@@ -177,11 +299,11 @@
                             let idY = sl1.children(':selected').index();
                             if (idY === 1) {
                                 $.toast({
-                                    heading: 'Something went wrong',
-                                    text: 'There is no more data available',
-                                    icon: 'info',
-                                    position: 'top-right',
-                                    hideAfter: 2000,
+                                    heading        : 'Something went wrong',
+                                    text           : 'There is no more data available',
+                                    icon           : 'info',
+                                    position       : 'top-right',
+                                    hideAfter      : 2000,
                                     allowToastClose: false,
                                 });
                             } else {
@@ -191,23 +313,22 @@
                             }
                         }
                     },
-                    prev: {
+                    prev    : {
                         click: function () {
-                            let fY = $('#sl-1 :last-child').index();
-                            let idD = sl3.children(':selected').index();
-                            let idM = sl2.children(':selected').index();
-                            let idY = sl1.children(':selected').index();
+                            let fY     = $('#sl-1 :last-child').index();
+                            let idD    = sl3.children(':selected').index();
+                            let idM    = sl2.children(':selected').index();
+                            let idY    = sl1.children(':selected').index();
                             let slDate = sl3.children(':selected').val();
-                            let fSun = new Date(slDate).getDate();
-                            console.log(fSun);
+                            let fSun   = new Date(slDate).getDate();
                             if (idD === 1) {
                                 if (idY === fY && idM === 12) {
                                     $.toast({
-                                        heading: 'Something went wrong',
-                                        text: 'There is no more data available',
-                                        icon: 'info',
-                                        position: 'top-right',
-                                        hideAfter: 2000,
+                                        heading        : 'Something went wrong',
+                                        text           : 'There is no more data available',
+                                        icon           : 'info',
+                                        position       : 'top-right',
+                                        hideAfter      : 2000,
                                         allowToastClose: false,
                                     });
                                 } else {
@@ -234,23 +355,23 @@
                             }
                         }
                     },
-                    next: {
+                    next    : {
                         click: function () {
-                            let lW = $('#sl-3 :last-child').index();
-                            let idD = sl3.children(':selected').index();
-                            let idM = sl2.children(':selected').index();
-                            let idY = sl1.children(':selected').index();
+                            let lW     = $('#sl-3 :last-child').index();
+                            let idD    = sl3.children(':selected').index();
+                            let idM    = sl2.children(':selected').index();
+                            let idY    = sl1.children(':selected').index();
                             let slDate = sl3.children(':selected').val();
-                            let lSun = new Date(slDate).getDay();
+                            let lSun   = new Date(slDate).getDay();
                             if (idD === lW) {
                                 if (idM === 1) {
                                     if (idY === 1) {
                                         $.toast({
-                                            heading: 'Something went wrong',
-                                            text: 'There is no more data available',
-                                            icon: 'info',
-                                            position: 'top-right',
-                                            hideAfter: 2000,
+                                            heading        : 'Something went wrong',
+                                            text           : 'There is no more data available',
+                                            icon           : 'info',
+                                            position       : 'top-right',
+                                            hideAfter      : 2000,
                                             allowToastClose: false,
                                         });
                                     } else {
@@ -276,18 +397,33 @@
                         }
                     },
                 },
+
                 eventDidMount: function (info) {
                     if (info.event.extendedProps.background) {
                         info.el.style.background = info.event.extendedProps.background;
                     }
                 }
             });
-
+            $.ajax({
+                url     : '{{route('ceo.department_api')}}',
+                type    : 'GET',
+                dataType: 'json',
+            })
+                .done(function (response) {
+                    let num = response.length;
+                    for (let i = 1; i < num; i++) {
+                        dept.append($('<option>')
+                            .attr('value', response[i]['id'])
+                            .text(response[i]['name'])
+                            .addClass('m-opt')
+                        )
+                    }
+                })
 
             calendar.render();
             $(".fc-goto-button")
                 .after($('<a>').attr({
-                    id: 'emp_detail',
+                    id  : 'emp_detail',
                     role: 'button',
                     href: '#'
                 }).addClass('btn btn-outline-primary disabled d-none'))
@@ -302,16 +438,16 @@
             $(".fc-prevYear-button")
                 .before($('<select>')
                     .attr({
-                        id: 'department',
+                        id   : 'department',
                         style: 'margin: 0 3px'
                     })
                     .append($('<option>')
-                        .text('Department')
-                        .attr('value', 'all')
+                        .text('Accountant')
+                        .attr('value', '1')
                     ))
                 .before($('<button>')
                     .attr({
-                        id: 'back',
+                        id   : 'back',
                         style: 'margin: 0 3px'
                     })
                     .addClass('btn btn-primary d-none')
@@ -320,25 +456,8 @@
             let dept = $('#department');
             let back = $("#back");
             emp();
-            loadAttendance(today);
 
-            $.ajax({
-                url: '{{route('ceo.department_api')}}',
-                type: 'GET',
-                dataType: 'json',
-            })
-                .done(function (response) {
-                    let num = response.length;
-                    for (let i = 0; i < num; i++) {
-                        dept.append($('<option>')
-                            .attr('value', response[i]['id'])
-                            .text(response[i]['name'])
-                            .addClass('m-opt')
-                        )
-                    }
-                })
-
-            let crYear = new Date().toISOString().slice(0, 4);
+            let crYear = new Date(today).toISOString().slice(0, 4);
             for (let i = crYear; i >= 2020; i--) {
                 sl1
                     .append($('<option>')
@@ -361,136 +480,628 @@
             }
 
             function loadAttendance(d) {
+                let e       = [];
                 let dept_id = dept.children(':selected').val();
-                let m = getMon(d).toISOString().slice(0, 10);
-                let s = getSun(d).toISOString().slice(0, 10);
+                let m       = getMon(d).toISOString().slice(0, 10);
+                let s       = getSun(d).toISOString().slice(0, 10);
+                let crTime = new Date(m).getTime();
                 $.ajax({
-                    url: '{{route('ceo.attendance_api')}}',
-                    type: 'POST',
+                    url     : '{{route('ceo.attendance_api')}}',
+                    type    : 'POST',
                     dataType: 'json',
-                    data: {m: m, s: s, dept_id: dept_id},
+                    data    : {
+                        m      : m,
+                        s      : s,
+                        dept_id: dept_id
+                    },
                 })
                     .done(function (response) {
-                        let emp_id = 0;
-                        let e_num = 0;
-                        let num = 9998;
+                        $('.div-name').remove()
                         let text_color;
-                        let eventSource = [];
                         let emp_types = response.length;
-                        for (let k = 0; k < emp_types; k++) {
+                        let e_num     = 0;
+                        let num       = 9998;
+
+                        let E11 = 0;
+                        let E21 = 0;
+                        let OT1 = 0;
+                        let L11 = 0;
+                        let L21 = 0;
+                        let MS1 = 0;
+                        let OW1 = 0;
+                        let E12 = 0;
+                        let E22 = 0;
+                        let OT2 = 0;
+                        let L12 = 0;
+                        let L22 = 0;
+                        let MS2 = 0;
+                        let OW2 = 0;
+                        let E13 = 0;
+                        let E23 = 0;
+                        let OT3 = 0;
+                        let L13 = 0;
+                        let L23 = 0;
+                        let OW3 = 0;
+                        let MS3 = 0;
+
+                        let on_time  = '#00c67f';
+                        let miss     = '#9299a0';
+                        let off_work = '#f03e44';
+                        let late_1   = '#f07171';
+                        let late_2   = '#f57542';
+                        let early_1  = '#9761ed';
+                        let early_2  = '#8ca5ff';
+                        let color_1  = off_work;
+                        let color_2  = off_work;
+
+                        let check_in_1_start    = response[0][0]['check_in_start'].slice(0, 5);
+                        let check_in_1_end      = response[0][0]['check_in_end'].slice(0, 5);
+                        let check_in_1_late_1   = response[0][0]['check_in_late_1'].slice(0, 5);
+                        let check_in_1_late_2   = response[0][0]['check_in_late_2'].slice(0, 5);
+                        let check_out_1_start   = response[0][0]['check_out_start'].slice(0, 5);
+                        let check_out_1_end     = response[0][0]['check_out_end'].slice(0, 5);
+                        let check_out_1_early_1 = response[0][0]['check_out_early_1'].slice(0, 5);
+                        let check_out_1_early_2 = response[0][0]['check_out_early_2'].slice(0, 5);
+                        let check_in_2_start    = response[0][1]['check_in_start'].slice(0, 5);
+                        let check_in_2_end      = response[0][1]['check_in_end'].slice(0, 5);
+                        let check_in_2_late_1   = response[0][1]['check_in_late_1'].slice(0, 5);
+                        let check_in_2_late_2   = response[0][1]['check_in_late_2'].slice(0, 5);
+                        let check_out_2_start   = response[0][1]['check_out_start'].slice(0, 5);
+                        let check_out_2_end     = response[0][1]['check_out_end'].slice(0, 5);
+                        let check_out_2_early_1 = response[0][1]['check_out_early_1'].slice(0, 5);
+                        let check_out_2_early_2 = response[0][1]['check_out_early_2'].slice(0, 5);
+                        let check_in_3_start    = response[0][2]['check_in_start'].slice(0, 5);
+                        let check_in_3_end      = response[0][2]['check_in_end'].slice(0, 5);
+                        let check_in_3_late_1   = response[0][2]['check_in_late_1'].slice(0, 5);
+                        let check_in_3_late_2   = response[0][2]['check_in_late_2'].slice(0, 5);
+                        let check_out_3_start   = response[0][2]['check_out_start'].slice(0, 5);
+                        let check_out_3_end     = response[0][2]['check_out_end'].slice(0, 5);
+                        let check_out_3_early_1 = response[0][2]['check_out_early_1'].slice(0, 5);
+                        let check_out_3_early_2 = response[0][2]['check_out_early_2'].slice(0, 5);
+                        for (let k = 1; k < emp_types; k++) {
+                            let emp_id  = 0;
                             let emp_num = response[k].length;
                             for (let i = 0; i < emp_num; i++) {
+                                emp_id = response[k][i]['id'];
+                                e_num++;
+                                let dept_id  = response[k][i]['departments']['id'];
+                                let dept     = response[k][i]['departments']['name'];
+                                let role     = response[k][i]['roles']['name'];
+                                let role_id  = response[k][i]['roles']['id'];
+                                let emp_name = response[k][i]['fname'] + ' ' + response[k][i]['lname'];
+                                if (role === 'Manager') {
+                                    emp_name += '*';
+                                }
+                                let emp_role = 1;
+                                if (role_id === 1) {
+                                    emp_role = 2;
+                                } else {
+                                    if (dept_id === 1) {
+                                        emp_role = 3;
+                                    }
+                                }
+                                if (e_num % 2 === 0) {
+                                    text_color = '#F5F5DC';
+                                    $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
+                                        .append($('<div>')
+                                            .attr('style', 'height: 82.005px; padding: 22px 0; background: #F0F8FF; cursor: pointer;')
+                                            .addClass('text-center div-name')
+                                            .append($('<a>')
+                                                .append($('<b>')
+                                                    .addClass('emp-name text-center')
+                                                    .attr({
+                                                        style      : 'font-size: 15px',
+                                                        "data-id"  : emp_id,
+                                                        "data-role": emp_role,
+                                                    })
+                                                    .text(emp_name)
+                                                )
+                                                .append('<br>')
+                                                .append($('<p>')
+                                                    .addClass('emp-dept text-center')
+                                                    .attr({
+                                                        style: 'font-size: 15px',
+                                                    })
+                                                    .text(dept)
+                                                )
+                                            )
+                                        )
+                                } else {
+                                    text_color = '#000000';
+                                    $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
+                                        .append($('<div>')
+                                            .attr('style', 'height: 82.09px; padding: 22px 0; cursor: pointer;')
+                                            .addClass('text-center div-name')
+                                            .append($('<a>')
+                                                .append($('<b>')
+                                                    .addClass('emp-name text-center')
+                                                    .attr({
+                                                        style      : 'font-size: 15px',
+                                                        "data-id"  : emp_id,
+                                                        "data-role": emp_role,
+                                                    })
+                                                    .text(emp_name)
+                                                )
+                                                .append('<br>')
+                                                .append($('<p>')
+                                                    .addClass('emp-dept text-center')
+                                                    .attr({
+                                                        style: 'font-size: 15px',
+                                                    })
+                                                    .text(dept)
+                                                )
+                                            )
+                                        )
+                                }
+                                let date   = m;
                                 let length = response[k][i]['attendance'].length;
-                                for (let j = 0; j < length; j++) {
-                                    let date = response[k][i]['attendance'][j]['date'];
-                                    date = new Date(date);
-                                    let emp_name = response[k][i]['fname'] + " " + response[k][i]['lname'];
-                                    let emp_dept = response[k][i]['departments']['name'];
-                                    if (k === 0) {
-                                        emp_dept += '*';
+                                if (length === 0) {
+                                    let total_day = 7;
+                                    let crMon     = getMon(today).toISOString().slice(0, 10);
+                                    if (crMon === m) {
+                                        total_day = new Date(td).getDay();
                                     }
-                                    num--;
-                                    let emp_role = response[k][i]['attendance'][j]['emp_role'];
-                                    let check_in = response[k][i]['attendance'][j]['check_in'].slice(0, 5);
-                                    let check_out = response[k][i]['attendance'][j]['check_out'].slice(0, 5);
-                                    let check_in_start = response[k][i]['attendance'][j]['shifts']['check_in_start'].slice(0, 5);
-                                    let check_in_end = response[k][i]['attendance'][j]['shifts']['check_in_end'].slice(0, 5);
-                                    let check_in_late_1 = response[k][i]['attendance'][j]['shifts']['check_in_late_1'].slice(0, 5);
-                                    let check_in_late_2 = response[k][i]['attendance'][j]['shifts']['check_in_late_2'].slice(0, 5);
-                                    let check_out_start = response[k][i]['attendance'][j]['shifts']['check_out_start'].slice(0, 5);
-                                    let check_out_end = response[k][i]['attendance'][j]['shifts']['check_out_end'].slice(0, 5);
-                                    let check_out_early_1 = response[k][i]['attendance'][j]['shifts']['check_out_early_1'].slice(0, 5);
-                                    let check_out_early_2 = response[k][i]['attendance'][j]['shifts']['check_out_early_2'].slice(0, 5);
-                                    let title = check_in + Array(14).fill('\xa0').join('') + check_out;
-                                    let color_1 = '#F03E44';
-                                    let color_2 = '#F03E44';
-
-                                    if (check_in >= check_in_start && check_in <= check_in_end) {
-                                        color_1 = '#00C67F';
-                                    } else if (check_in > check_in_end && check_in <= check_in_late_1) {
-                                        color_1 = '#F07171';
-                                    } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
-                                        color_1 = '#F57542';
-                                    }
-
-                                    if (check_out >= check_out_start && check_out <= check_out_end) {
-                                        color_2 = '#00C67F';
-                                    } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
-                                        color_2 = '#8CA5FF';
-                                    } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
-                                        color_2 = '#9761ED';
-                                    }
-
-                                    let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
-                                    if (emp_id !== response[k][i]['attendance'][j]['emp_id']) {
-                                        emp_id = response[k][i]['attendance'][j]['emp_id'];
-                                        e_num++;
-                                        if (e_num % 2 === 0) {
-                                            text_color = '#000000';
-                                            $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
-                                                .append($('<div>')
-                                                    .attr('style', 'height: 82.005px; padding: 22px 0; background: #F0F8FF')
-                                                    .addClass('text-center div-name')
-                                                    .append($('<a>')
-                                                        .append($('<b>')
-                                                            .addClass('emp-name text-center')
-                                                            .attr({
-                                                                style: 'font-size: 15px',
-                                                                "data-value": emp_id + "-" + emp_role,
-                                                            })
-                                                            .text(emp_name)
-                                                        )
-                                                        .append('<br>')
-                                                        .append($('<p>')
-                                                            .addClass('emp-dept text-center')
-                                                            .attr({
-                                                                style: 'font-size: 15px',
-                                                            })
-                                                            .text(emp_dept)
-                                                        )
-                                                    )
-                                                )
+                                    date = getFullDate(m);
+                                    for (let i = 1; i <= total_day; i++) {
+                                        addEvent(3, num, date, e);
+                                        let sun = getDay(date);
+                                        num -= 1;
+                                        if (sun === 0) {
+                                            OW3 += 6;
                                         } else {
-                                            text_color = '#F5F5DC';
-                                            $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
-                                                .append($('<div>')
-                                                    .attr('style', 'height: 82.09px; padding: 22px 0')
-                                                    .addClass('text-center div-name')
-                                                    .append($('<a>')
-                                                        .append($('<b>')
-                                                            .addClass('emp-name text-center')
-                                                            .attr({
-                                                                style: 'font-size: 15px',
-                                                                "data-value": emp_id + "-" + emp_role,
-                                                            })
-                                                            .text(emp_name)
-                                                        )
-                                                        .append('<br>')
-                                                        .append($('<p>')
-                                                            .addClass('emp-dept text-center')
-                                                            .attr({
-                                                                style: 'font-size: 15px',
-                                                            })
-                                                            .text(emp_dept)
-                                                        )
-                                                    )
-                                                )
+                                            OW1 += 4;
+                                            OW2 += 2;
+                                        }
+                                        date = getNextDate(date);
+                                    }
+                                } else {
+                                    let s_num        = 1;
+                                    let default_date = m;
+                                    for (let j = 0; j < length; j++) {
+                                        let shift     = response[k][i]['attendance'][j]['shift'];
+                                        let date      = response[k][i]['attendance'][j]['date'];
+                                        let check_in  = response[k][i]['attendance'][j]['check_in'];
+                                        let check_out = response[k][i]['attendance'][j]['check_out'];
+                                        let sun       = getDay(date);
+                                        let d1        = getDay(default_date);
+                                        let d2        = getDay(date);
+                                        if (d1 === 0) {
+                                            d1 = 7;
+                                        }
+                                        if (d2 === 0) {
+                                            d2 = 7;
+                                        }
+                                        if (j === 0) {
+                                            if (shift === 2) {
+                                                addEvent(1, num, date, e);
+                                                num--;
+                                                if (sun === 0) {
+                                                    OW3 += 2;
+                                                } else {
+                                                    OW1 += 2;
+                                                }
+                                            }
+                                            if (shift === 3) {
+                                                addEvent(2, num, date, e);
+                                                num -= 2;
+                                                if (sun === 0) {
+                                                    OW3 += 4;
+                                                } else {
+                                                    OW1 += 4;
+                                                }
+                                            }
+                                            if (d1 < d2) {
+                                                let off_date = m;
+                                                for (let n = 1; n < d2; n++) {
+                                                    addEvent(3, num, off_date, e);
+                                                    num -= 3;
+                                                    OW1 += 4;
+                                                    OW2 += 2;
+                                                    off_date = getNextDate(off_date)
+                                                }
+                                            }
+                                        }
+                                        if (d1 === d2) {
+                                            if (shift === 3) {
+                                                if (s_num === 2) {
+                                                    addEvent(1, num, date, e);
+                                                }
+                                                num--;
+                                            }
+                                        }
+                                        if (d1 !== d2 && j > 0) {
+                                            let dx = d2 - d1;
+                                            if (dx > 0) {
+                                                let off_date = getNextDate(default_date);
+                                                for (let n = d1 + 1; n < d2; n++) {
+                                                    addEvent(3, num, off_date, e);
+                                                    num -= 3;
+                                                    OW1 += 4;
+                                                    OW2 += 2;
+                                                    off_date = getNextDate(off_date)
+                                                }
+                                            }
+                                            let sun = getDay(date)
+                                            if (shift === 1) {
+                                                if (s_num === 2) {
+                                                    addEvent(2, num, default_date, e);
+                                                    num -= 2;
+                                                    OW1 += 2;
+                                                    OW2 += 2;
+
+                                                }
+                                                if (s_num === 3) {
+                                                    addEvent(1, num, default_date, e);
+                                                    num--;
+                                                    OW1 += 2;
+
+                                                }
+                                            }
+                                            if (shift === 2) {
+                                                if (s_num === 2) {
+                                                    addEvent(2, num, default_date, e)
+                                                    num -= 2;
+                                                    addEvent(1, num, date, e)
+                                                    num--;
+                                                    if (sun === 0) {
+                                                        OW3 += 2;
+                                                        OW1 += 2;
+                                                        OW2 += 2;
+                                                    } else {
+                                                        OW1 += 4;
+                                                        OW2 += 2;
+                                                    }
+                                                }
+                                                if (s_num === 3) {
+                                                    addEvent(1, num, default_date, e)
+                                                    num--;
+                                                    addEvent(1, num, date, e)
+                                                    num--;
+                                                    if (sun === 0) {
+                                                        OW3 += 2;
+                                                        OW2 += 2;
+                                                    } else {
+                                                        OW1 += 2;
+                                                        OW2 += 2;
+                                                    }
+                                                }
+                                                if (s_num === 1) {
+                                                    addEvent(1, num, date, e)
+                                                    num--;
+                                                    if (sun === 0) {
+                                                        OW3 += 2;
+                                                    } else {
+                                                        OW1 += 2;
+                                                    }
+                                                }
+                                            }
+                                            if (shift === 3) {
+                                                if (s_num === 2) {
+                                                    addEvent(2, num, default_date, e)
+                                                    num -= 2;
+                                                    addEvent(2, num, date, e)
+                                                    num -= 2;
+                                                    if (sun === 0) {
+                                                        OW3 += 4;
+                                                        OW1 += 2;
+                                                        OW2 += 2;
+                                                    } else {
+                                                        OW1 += 6;
+                                                        OW2 += 2;
+                                                    }
+                                                }
+                                                if (s_num === 3) {
+                                                    addEvent(1, num, default_date, e)
+                                                    num--;
+                                                    addEvent(2, num, date, e)
+                                                    num -= 2;
+                                                    if (sun === 0) {
+                                                        OW3 += 4;
+                                                        OW2 += 2;
+                                                    } else {
+                                                        OW1 += 4;
+                                                        OW2 += 2;
+                                                    }
+                                                }
+                                                if (s_num === 1) {
+                                                    addEvent(2, num, date, e)
+                                                    num--;
+                                                    if (sun === 0) {
+                                                        OW3 += 4;
+                                                    } else {
+                                                        OW1 += 4;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        default_date = date;
+                                        if (check_in !== null) {
+                                            check_in = check_in.slice(0, 5);
+                                        }
+                                        if (check_out !== null) {
+                                            check_out = check_out.slice(0, 5);
+                                        }
+                                        if (shift === 1) {
+                                            if (check_in >= check_in_1_start && check_in <= check_in_1_end) {
+                                                check_in = Array(10).fill('\xa0').join('');
+                                                color_1  = on_time;
+                                                if (sun === 0) {
+                                                    OT3++;
+                                                } else {
+                                                    OT1++;
+                                                }
+                                            } else if (check_in <= check_in_1_late_1) {
+                                                color_1 = late_2;
+                                                if (sun === 0) {
+                                                    L23++;
+                                                } else {
+                                                    L21++;
+                                                }
+                                            } else if (check_in <= check_in_1_late_2) {
+                                                color_1 = late_1;
+                                                if (sun === 0) {
+                                                    L13++;
+                                                } else {
+                                                    L11++;
+                                                }
+                                            }
+                                            if (check_out >= check_out_1_start && check_out <= check_out_1_end) {
+                                                check_out = Array(10).fill('\xa0').join('');
+                                                color_2   = on_time;
+                                                if (sun === 0) {
+                                                    OT3++;
+                                                } else {
+                                                    OT1++;
+                                                }
+                                            } else if (check_out >= check_out_1_early_1) {
+                                                color_2 = early_2;
+                                                if (sun === 0) {
+                                                    E23++;
+                                                } else {
+                                                    E21++;
+                                                }
+                                            } else if (check_out >= check_out_1_early_2) {
+                                                color_2 = early_1;
+                                                if (sun === 0) {
+                                                    E13++;
+                                                } else {
+                                                    E11++;
+                                                }
+                                            }
+                                            s_num = 2
+                                        } else if (shift === 2) {
+                                            if (check_in >= check_in_2_start && check_in <= check_in_2_end) {
+                                                check_in = Array(10).fill('\xa0').join('');
+                                                color_1  = on_time;
+                                                if (sun === 0) {
+                                                    OT3++;
+                                                } else {
+                                                    OT1++;
+                                                }
+                                            } else if (check_in <= check_in_2_late_1) {
+                                                color_1 = late_2;
+                                                if (sun === 0) {
+                                                    L23++;
+                                                } else {
+                                                    L21++;
+                                                }
+                                            } else if (check_in <= check_in_2_late_2) {
+                                                color_1 = late_1;
+                                                if (sun === 0) {
+                                                    L13++;
+                                                } else {
+                                                    L11++;
+                                                }
+                                            }
+                                            if (check_out >= check_out_2_start && check_out <= check_out_2_end) {
+                                                check_out = Array(10).fill('\xa0').join('');
+                                                color_2   = on_time;
+                                                if (sun === 0) {
+                                                    OT3++;
+                                                } else {
+                                                    OT1++;
+                                                }
+                                            } else if (check_out >= check_out_2_early_1) {
+                                                color_2 = early_2;
+                                                if (sun === 0) {
+                                                    E23++;
+                                                } else {
+                                                    E21++;
+                                                }
+                                            } else if (check_out >= check_out_2_early_2) {
+                                                color_2 = early_1;
+                                                if (sun === 0) {
+                                                    E13++;
+                                                } else {
+                                                    E11++;
+                                                }
+                                            }
+                                            s_num = 3;
+                                        } else {
+                                            if (check_in >= check_in_3_start && check_in <= check_in_3_end) {
+                                                check_in = Array(10).fill('\xa0').join('');
+                                                color_1  = on_time;
+                                                if (sun === 0) {
+                                                    OT3++;
+                                                } else {
+                                                    OT2++;
+                                                }
+                                            } else if (check_in <= check_in_3_late_1) {
+                                                color_1 = late_2;
+                                                if (sun === 0) {
+                                                    L23++;
+                                                } else {
+                                                    L22++;
+                                                }
+                                            } else if (check_in <= check_in_3_late_2) {
+                                                color_1 = late_1;
+                                                if (sun === 0) {
+                                                    L13++;
+                                                } else {
+                                                    L12++;
+                                                }
+                                            }
+                                            if (check_out >= check_out_3_start && check_out <= check_out_3_end) {
+                                                check_out = Array(10).fill('\xa0').join('');
+                                                color_2   = on_time;
+                                                if (sun === 0) {
+                                                    OT3++;
+                                                } else {
+                                                    OT2++;
+                                                }
+                                            } else if (check_out >= check_out_3_early_1) {
+                                                color_2 = early_2;
+                                                if (sun === 0) {
+                                                    E23++;
+                                                } else {
+                                                    E22++;
+                                                }
+                                            } else if (check_out >= check_out_3_early_2) {
+                                                color_2 = early_1;
+                                                if (sun === 0) {
+                                                    E13++;
+                                                } else {
+                                                    E12++;
+                                                }
+                                            }
+                                            s_num = 1;
+                                        }
+                                        if (check_in === null) {
+                                            check_in = Array(10).fill('\xa0').join('');
+                                            color_1  = miss;
+                                            if (sun === 0) {
+                                                MS3++;
+                                            } else {
+                                                if (shift === 3) {
+                                                    MS2++;
+                                                } else {
+                                                    MS1++;
+                                                }
+                                            }
+                                        }
+                                        if (check_out === null) {
+                                            check_out = Array(10).fill('\xa0').join('');
+                                            color_2   = miss;
+                                            if (sun === 0) {
+                                                MS3++;
+                                            } else {
+                                                if (shift === 3) {
+                                                    MS2++;
+                                                } else {
+                                                    MS1++;
+                                                }
+                                            }
+                                        }
+                                        let title = check_in + Array(20).fill('\xa0').join('') + check_out;
+                                        let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                                        let event = {
+                                            id        : num,
+                                            title     : title,
+                                            start     : date,
+                                            allDay    : true,
+                                            overlap   : false,
+                                            background: color,
+                                            textColor : text_color,
+                                        }
+                                        e.push(event);
+                                        num--;
+                                    }
+                                    let l_date    = response[k][i]['attendance'][length - 1]['date'];
+                                    let days      = getDay(l_date);
+                                    let day       = getDay(new Date());
+                                    if (days < day) {
+                                        let date = getFullDate(today);
+                                        addEvent(3,num,date,e);
+                                        num -= 3;
+                                    }
+                                    let total_day = 7;
+                                    if (days === 0) {
+                                        days = 7;
+                                    }
+                                    if (days < total_day) {
+                                        let date = getNextDate(l_date);
+                                        if (crTime === tdTime) {
+                                            total_day = days - 1;
+                                        }
+                                        if (s_num === 2) {
+                                            addEvent(2, num, l_date, e);
+                                            num -= 2;
+                                            if (days === 0) {
+                                                OW3 += 4;
+                                            } else {
+                                                OW1 += 2;
+                                                OW2 += 2;
+                                            }
+                                        } else if (s_num === 3) {
+                                            addEvent(1, num, l_date, e);
+                                            num -= 1;
+                                            if (days === 0) {
+                                                OW3 += 2;
+                                            } else {
+                                                OW2 += 2;
+                                            }
+                                        }
+                                        for (let i = 1; i < total_day; i++) {
+                                            addEvent(3, num, date, e);
+                                            num -= 3;
+                                            let sun = getDay(date);
+                                            if (sun === 0) {
+                                                OW3 += 6;
+                                            } else {
+                                                OW1 += 4;
+                                                OW2 += 2;
+                                            }
+                                            date = getNextDate(date);
                                         }
                                     }
-                                    let event = {
-                                        id: num,
-                                        title: title,
-                                        start: date,
-                                        allDay: true,
-                                        overlap: false,
-                                        background: color,
-                                        textColor: text_color,
-                                    }
-                                    eventSource.push(event);
                                 }
                             }
+                            $('.E11').text(E11);
+                            $('.E21').text(E21);
+                            $('.OT1').text(OT1);
+                            $('.L11').text(L11);
+                            $('.L21').text(L21);
+                            $('.MS1').text(MS1);
+                            $('.OW1').text(OW1);
+                            $('.E12').text(E12);
+                            $('.E22').text(E22);
+                            $('.OT2').text(OT2);
+                            $('.L12').text(L12);
+                            $('.L22').text(L22);
+                            $('.MS2').text(MS2);
+                            $('.OW2').text(OW2);
+                            $('.E13').text(E13);
+                            $('.E23').text(E23);
+                            $('.OT3').text(OT3);
+                            $('.L13').text(L13);
+                            $('.L23').text(L23);
+                            $('.OW3').text(OW3);
+                            $('.MS3').text(MS3);
                         }
+                        calendar.addEventSource(e);
                         $(".emp-name").click(function () {
+                            let E11 = 0;
+                            let E21 = 0;
+                            let OT1 = 0;
+                            let L11 = 0;
+                            let L21 = 0;
+                            let MS1 = 0;
+                            let OW1 = 0;
+                            let E12 = 0;
+                            let E22 = 0;
+                            let OT2 = 0;
+                            let L12 = 0;
+                            let L22 = 0;
+                            let MS2 = 0;
+                            let OW2 = 0;
+                            let E13 = 0;
+                            let E23 = 0;
+                            let OT3 = 0;
+                            let L13 = 0;
+                            let L23 = 0;
+                            let OW3 = 0;
+                            let MS3 = 0;
+
                             let name = $(this).text();
                             let dept = $(this).parent().find('.emp-dept').text();
                             let text = name + ' - ' + dept;
@@ -500,84 +1111,494 @@
                             calendar.removeAllEvents();
                             del();
                             calendar.changeView('dayGridMonth');
-                            let data = $(this).attr('data-value');
-                            data = data.split('-');
-                            let id = data[0];
-                            let role = data[1];
-                            let m = sl2.children(':selected').text();
-                            let y = sl1.children(':selected').text();
-                            let date = y + '-' + m;
+                            let id     = $(this).data('id');
+                            let role   = $(this).data('role');
+                            let m      = sl2.children(':selected').text();
+                            let y      = sl1.children(':selected').text();
+                            let crD    = y + '-' + m;
+                            let crTime = new Date(crD).getTime();
+                            let e      = [];
                             $.ajax({
-                                url: '{{route('ceo.emp_attendance_api')}}',
-                                type: 'POST',
+                                url     : '{{route('ceo.emp_attendance_api')}}',
+                                type    : 'POST',
                                 dataType: 'json',
-                                data: {id: id, role: role, date: date},
+                                data    : {
+                                    id  : id,
+                                    role: role,
+                                    date: crD
+                                },
                             })
                                 .done(function (response) {
-                                    let num = 9998;
-                                    let emp_num = response.length;
-                                    for (let i = 0; i <= emp_num; i++) {
-                                        s
-                                        num--;
-                                        let date = response[i]['date'];
-                                        let check_in = response[i]['check_in'].slice(0, 5);
-                                        let check_out = response[i]['check_out'].slice(0, 5);
-                                        let check_in_start = response[i]['shifts']['check_in_start'].slice(0, 5);
-                                        let check_in_end = response[i]['shifts']['check_in_end'].slice(0, 5);
-                                        let check_in_late_1 = response[i]['shifts']['check_in_late_1'].slice(0, 5);
-                                        let check_in_late_2 = response[i]['shifts']['check_in_late_2'].slice(0, 5);
-                                        let check_out_start = response[i]['shifts']['check_out_start'].slice(0, 5);
-                                        let check_out_end = response[i]['shifts']['check_out_end'].slice(0, 5);
-                                        let check_out_early_1 = response[i]['shifts']['check_out_early_1'].slice(0, 5);
-                                        let check_out_early_2 = response[i]['shifts']['check_out_early_2'].slice(0, 5);
-                                        let title = check_in + Array(20).fill('\xa0').join('') + check_out;
-                                        let color_1 = '#f03e44';
-                                        let color_2 = '#f03e44';
-                                        if (check_in >= check_in_start && check_in <= check_in_end) {
-                                            color_1 = '#00c67f';
-                                        } else if (check_in > check_in_end && check_in <= check_in_late_1) {
-                                            color_1 = '#f07171';
-                                        } else if (check_in > check_in_late_1 && check_in <= check_in_late_2) {
-                                            color_1 = '#f57542';
+                                    let shift_num    = response.length;
+                                    let s_num        = 1;
+                                    let default_date = getFullDate(crD);
+                                    let total_day    = getDays(crD);
+                                    let crDate       = new Date(td).getDate();
+                                    if (shift_num > 0) {
+                                        for (let i = 0; i < shift_num; i++) {
+                                            num--;
+                                            let shift     = response[i]['shift'];
+                                            let date      = response[i]['date'];
+                                            let check_in  = response[i]['check_in'];
+                                            let check_out = response[i]['check_out'];
+                                            let d1        = getDate(default_date);
+                                            let d2        = getDate(date);
+                                            let sun       = getDay(date);
+                                            let sun1      = getDay(default_date);
+                                            if (i === 0) {
+                                                if (shift === 2) {
+                                                    addEvent(1, num, date, e);
+                                                    num--;
+                                                    if (sun === 0) {
+                                                        OW3 += 2;
+                                                    } else {
+                                                        OW1 += 2;
+                                                    }
+                                                }
+                                                if (shift === 3) {
+                                                    addEvent(2, num, date, e);
+                                                    num -= 2;
+                                                    if (sun === 0) {
+                                                        OW3 += 4;
+                                                    } else {
+                                                        OW1 += 4;
+                                                    }
+                                                }
+                                                if (d1 < d2) {
+                                                    let off_date = getFullDate(crD);
+                                                    for (let n = 1; n < d2; n++) {
+                                                        addEvent(3, num, off_date, e);
+                                                        num -= 3;
+                                                        OW1 += 4;
+                                                        OW2 += 2;
+                                                        off_date = getNextDate(off_date)
+                                                    }
+                                                }
+                                            }
+                                            if (d1 === d2) {
+                                                if (shift === 3) {
+                                                    if (s_num === 2) {
+                                                        addEvent(1, num, date, e);
+                                                    }
+                                                    num--;
+                                                }
+                                            }
+                                            if (d2 !== d1) {
+                                                if (i > 0) {
+                                                    let dx = d2 - d1;
+                                                    if (dx > 0) {
+                                                        let off_date = getNextDate(default_date);
+                                                        for (let n = d1 + 1; n < d2; n++) {
+                                                            let sun = getDay(off_date)
+                                                            addEvent(3, num, off_date, e);
+                                                            num -= 3;
+                                                            if (sun === 0) {
+                                                                OW3 += 6;
+                                                            } else {
+                                                                OW1 += 4;
+                                                                OW2 += 2;
+                                                            }
+                                                            off_date = getNextDate(off_date)
+                                                        }
+                                                    }
+                                                    if (shift === 1) {
+                                                        if (s_num === 2) {
+                                                            addEvent(2, num, default_date, e);
+                                                            num -= 2;
+                                                            if (sun1 === 0) {
+                                                                OW3 += 4;
+                                                            } else {
+                                                                OW1 += 2;
+                                                                OW2 += 2;
+                                                            }
+                                                        }
+                                                        if (s_num === 3) {
+                                                            addEvent(1, num, default_date, e);
+                                                            num--;
+                                                            if (sun1 === 0) {
+                                                                OW3 += 2;
+                                                            } else {
+                                                                OW2 += 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (shift === 2) {
+                                                        if (s_num === 2) {
+                                                            addEvent(2, num, default_date, e)
+                                                            num -= 2;
+                                                            addEvent(1, num, date, e)
+                                                            num--;
+                                                            if (sun === 0) {
+                                                                OW3 += 2;
+                                                                OW2 += 2;
+                                                                OW1 += 2;
+                                                            } else if (sun1 === 0) {
+                                                                OW1 += 2;
+                                                                OW3 += 4;
+                                                            } else {
+                                                                OW1 += 4;
+                                                                OW2 += 2;
+                                                            }
+                                                        }
+                                                        if (s_num === 3) {
+                                                            addEvent(1, num, default_date, e)
+                                                            num--;
+                                                            addEvent(1, num, date, e)
+                                                            num--;
+                                                            if (sun === 0) {
+                                                                OW3 += 2;
+                                                                OW2 += 2;
+                                                            } else if (sun1 === 0) {
+                                                                OW1 += 2;
+                                                                OW3 += 2;
+                                                            } else {
+                                                                OW1 += 2;
+                                                                OW2 += 2;
+                                                            }
+                                                        }
+                                                        if (s_num === 1) {
+                                                            addEvent(1, num, date, e)
+                                                            num--;
+                                                            if (sun === 0) {
+                                                                OW3 += 2;
+                                                            } else {
+                                                                OW1 += 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (shift === 3) {
+                                                        if (s_num === 2) {
+                                                            addEvent(2, num, default_date, e)
+                                                            num -= 2;
+                                                            addEvent(2, num, date, e)
+                                                            num -= 2;
+                                                            if (sun === 0) {
+                                                                OW3 += 4;
+                                                                OW2 += 4;
+                                                            } else if (sun1 === 0) {
+                                                                OW1 += 4;
+                                                                OW3 += 4;
+                                                            } else {
+                                                                OW1 += 6;
+                                                                OW2 += 2;
+                                                            }
+                                                        }
+                                                        if (s_num === 3) {
+                                                            addEvent(1, num, default_date, e)
+                                                            num--;
+                                                            addEvent(2, num, date, e)
+                                                            num -= 2;
+                                                            if (sun === 0) {
+                                                                OW3 += 4;
+                                                                OW2 += 2;
+                                                            } else if (sun1 === 0) {
+                                                                OW1 += 4;
+                                                                OW3 += 2;
+                                                            } else {
+                                                                OW1 += 4;
+                                                                OW2 += 2;
+                                                            }
+                                                        }
+                                                        if (s_num === 1) {
+                                                            addEvent(2, num, date, e)
+                                                            num--;
+                                                            if (sun === 0) {
+                                                                OW3 += 4;
+                                                            } else {
+                                                                OW1 += 4;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            default_date = date;
+                                            if (check_in !== null) {
+                                                check_in = check_in.slice(0, 5);
+                                            }
+                                            if (check_out !== null) {
+                                                check_out = check_out.slice(0, 5);
+                                            }
+                                            if (shift === 1) {
+                                                if (check_in >= check_in_1_start && check_in <= check_in_1_end) {
+                                                    check_in = Array(10).fill('\xa0').join('');
+                                                    color_1  = on_time;
+                                                    if (sun === 0) {
+                                                        OT3++;
+                                                    } else {
+                                                        OT1++;
+                                                    }
+                                                } else if (check_in <= check_in_1_late_1) {
+                                                    color_1 = late_2;
+                                                    if (sun === 0) {
+                                                        L23++;
+                                                    } else {
+                                                        L21++;
+                                                    }
+                                                } else if (check_in <= check_in_1_late_2) {
+                                                    color_1 = late_1;
+                                                    if (sun === 0) {
+                                                        L13++;
+                                                    } else {
+                                                        L11++;
+                                                    }
+                                                }
+                                                if (check_out >= check_out_1_start && check_out <= check_out_1_end) {
+                                                    check_out = Array(10).fill('\xa0').join('');
+                                                    color_2   = on_time;
+                                                    if (sun === 0) {
+                                                        OT3++;
+                                                    } else {
+                                                        OT1++;
+                                                    }
+                                                } else if (check_out >= check_out_1_early_1) {
+                                                    color_2 = early_2;
+                                                    if (sun === 0) {
+                                                        E23++;
+                                                    } else {
+                                                        E21++;
+                                                    }
+                                                } else if (check_out >= check_out_1_early_2) {
+                                                    color_2 = early_1;
+                                                    if (sun === 0) {
+                                                        E13++;
+                                                    } else {
+                                                        E11++;
+                                                    }
+                                                }
+                                                s_num = 2
+                                            } else if (shift === 2) {
+                                                if (check_in >= check_in_2_start && check_in <= check_in_2_end) {
+                                                    check_in = Array(10).fill('\xa0').join('');
+                                                    color_1  = on_time;
+                                                    if (sun === 0) {
+                                                        OT3++;
+                                                    } else {
+                                                        OT1++;
+                                                    }
+                                                } else if (check_in <= check_in_2_late_1) {
+                                                    color_1 = late_2;
+                                                    if (sun === 0) {
+                                                        L23++;
+                                                    } else {
+                                                        L21++;
+                                                    }
+                                                } else if (check_in <= check_in_2_late_2) {
+                                                    color_1 = late_1;
+                                                    if (sun === 0) {
+                                                        L13++;
+                                                    } else {
+                                                        L11++;
+                                                    }
+                                                }
+                                                if (check_out >= check_out_2_start && check_out <= check_out_2_end) {
+                                                    check_out = Array(10).fill('\xa0').join('');
+                                                    color_2   = on_time;
+                                                    if (sun === 0) {
+                                                        OT3++;
+                                                    } else {
+                                                        OT1++;
+                                                    }
+                                                } else if (check_out >= check_out_2_early_1) {
+                                                    color_2 = early_2;
+                                                    if (sun === 0) {
+                                                        E23++;
+                                                    } else {
+                                                        E21++;
+                                                    }
+                                                } else if (check_out >= check_out_2_early_2) {
+                                                    color_2 = early_1;
+                                                    if (sun === 0) {
+                                                        E13++;
+                                                    } else {
+                                                        E11++;
+                                                    }
+                                                }
+                                                s_num = 3;
+                                            } else if (shift === 3) {
+                                                if (check_in >= check_in_3_start && check_in <= check_in_3_end) {
+                                                    check_in = Array(10).fill('\xa0').join('');
+                                                    color_1  = on_time;
+                                                    if (sun === 0) {
+                                                        OT3++;
+                                                    } else {
+                                                        OT2++;
+                                                    }
+                                                } else if (check_in <= check_in_3_late_1) {
+                                                    color_1 = late_2;
+                                                    if (sun === 0) {
+                                                        L23++;
+                                                    } else {
+                                                        L22++;
+                                                    }
+                                                } else if (check_in <= check_in_3_late_2) {
+                                                    color_1 = late_1;
+                                                    if (sun === 0) {
+                                                        L13++;
+                                                    } else {
+                                                        L12++;
+                                                    }
+                                                }
+                                                if (check_out >= check_out_3_start && check_out <= check_out_3_end) {
+                                                    check_out = Array(10).fill('\xa0').join('');
+                                                    color_2   = on_time;
+                                                    if (sun === 0) {
+                                                        OT3++;
+                                                    } else {
+                                                        OT2++;
+                                                    }
+                                                } else if (check_out >= check_out_3_early_1) {
+                                                    color_2 = early_2;
+                                                    if (sun === 0) {
+                                                        E23++;
+                                                    } else {
+                                                        E22++;
+                                                    }
+                                                } else if (check_out >= check_out_3_early_2) {
+                                                    color_2 = early_1;
+                                                    if (sun === 0) {
+                                                        E13++;
+                                                    } else {
+                                                        E12++;
+                                                    }
+                                                }
+                                                s_num = 1;
+                                            }
+                                            if (check_in === null) {
+                                                check_in = Array(10).fill('\xa0').join('');
+                                                color_1  = miss;
+                                                if (sun === 0) {
+                                                    MS3++;
+                                                } else {
+                                                    if (shift === 3) {
+                                                        MS2++;
+                                                    } else {
+                                                        MS1++;
+                                                    }
+                                                }
+                                            }
+                                            if (check_out === null) {
+                                                check_out = Array(10).fill('\xa0').join('');
+                                                color_2   = miss;
+                                                if (sun === 0) {
+                                                    MS3++;
+                                                } else {
+                                                    if (shift === 3) {
+                                                        MS2++;
+                                                    } else {
+                                                        MS1++;
+                                                    }
+                                                }
+                                            }
+                                            let title = check_in + Array(20).fill('\xa0').join('') + check_out;
+                                            let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                                            let event = {
+                                                id        : num,
+                                                title     : title,
+                                                start     : date,
+                                                allDay    : true,
+                                                overlap   : false,
+                                                background: color,
+                                            }
+                                            e.push(event);
                                         }
-
-                                        if (check_out >= check_out_start && check_out <= check_out_end) {
-                                            color_2 = '#00c67f';
-                                        } else if (check_out >= check_out_early_1 && check_out < check_out_start) {
-                                            color_2 = '#8ca5ff';
-                                        } else if (check_out >= check_out_early_2 && check_out < check_out_early_1) {
-                                            color_2 = '#9761ed';
+                                        let l_date = response[shift_num - 1]['date'];
+                                        let days   = getDate(l_date);
+                                        if (days < total_day) {
+                                            if (crTime === mTime) {
+                                                total_day = crDate;
+                                            }
+                                            if (crTime <= mTime) {
+                                                if (s_num === 2) {
+                                                    addEvent(2, num, l_date, e);
+                                                    num -= 2;
+                                                    if (getDay(l_date) === 0) {
+                                                        OW3 += 4;
+                                                    } else {
+                                                        OW1 += 2;
+                                                        OW2 += 2;
+                                                    }
+                                                } else if (s_num === 3) {
+                                                    addEvent(1, num, l_date, e);
+                                                    num -= 1;
+                                                    if (getDay(l_date) === 0) {
+                                                        OW3 += 2;
+                                                    } else {
+                                                        OW2 += 2;
+                                                    }
+                                                }
+                                                for (let i = days + 1; i <= total_day; i++) {
+                                                    let d = new Date(l_date);
+                                                    d.setDate(i);
+                                                    d        = new Date(d);
+                                                    let date = getFullDate(d);
+                                                    addEvent(3, num, date, e);
+                                                    num -= 3;
+                                                    let sun = getDay(date);
+                                                    if (sun === 0) {
+                                                        OW3 += 6;
+                                                    } else {
+                                                        OW1 += 4;
+                                                        OW2 += 2;
+                                                    }
+                                                }
+                                            }
                                         }
-
-                                        let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
-                                        let event = {
-                                            id: num,
-                                            title: title,
-                                            start: date,
-                                            allDay: true,
-                                            overlap: false,
-                                            background: color,
+                                    } else {
+                                        if (mTime === crTime) {
+                                            total_day = crDate;
                                         }
-                                        calendar.addEvent(event);
+                                        if (crTime <= mTime) {
+                                            for (let i = 1; i <= total_day; i++) {
+                                                let d = new Date(default_date);
+                                                d.setDate(i);
+                                                d        = new Date(d);
+                                                let date = getFullDate(d);
+                                                addEvent(3, num, date, e);
+                                                num -= 3;
+                                                let sun = getDay(date);
+                                                if (sun === 0) {
+                                                    OW3 += 6;
+                                                } else {
+                                                    OW1 += 4;
+                                                    OW2 += 2;
+                                                }
+                                            }
+                                        }
                                     }
+                                    calendar.addEventSource(e);
+                                    $('.E11').text(E11);
+                                    $('.E21').text(E21);
+                                    $('.OT1').text(OT1);
+                                    $('.L11').text(L11);
+                                    $('.L21').text(L21);
+                                    $('.MS1').text(MS1);
+                                    $('.OW1').text(OW1);
+                                    $('.E12').text(E12);
+                                    $('.E22').text(E22);
+                                    $('.OT2').text(OT2);
+                                    $('.L12').text(L12);
+                                    $('.L22').text(L22);
+                                    $('.MS2').text(MS2);
+                                    $('.OW2').text(OW2);
+                                    $('.E13').text(E13);
+                                    $('.E23').text(E23);
+                                    $('.OT3').text(OT3);
+                                    $('.L13').text(L13);
+                                    $('.L23').text(L23);
+                                    $('.OW3').text(OW3);
+                                    $('.MS3').text(MS3);
                                 })
-                        });
-                        calendar.addEventSource(eventSource);
+                        })
                     })
             }
 
-            let d = calendar.getDate();
-            loadDate(d);
+            loadDate(new Date());
             sl1.change(function () {
                 loadWeek();
-                $('#sl-3 :nth-child(2)').prop('selected', true);
-                $(".fc-goto-button").click();
             })
 
             sl2.change(function () {
                 loadWeek();
-                $('#sl-3 :nth-child(2)').prop('selected', true);
-                $(".fc-goto-button").click();
             })
 
             sl3.change(function () {
@@ -594,21 +1615,20 @@
             })
 
             back.click(function () {
-                calendar.removeAllEvents();
                 calendar.changeView('dayGridWeek');
                 $('#sl-1, #sl-2, #sl-3, #department, .fc-button').removeClass('d-none');
                 $('#back, #emp_detail, .fc-goto-button').addClass('d-none');
-                emp();
-                loadAttendance(today);
+                $(".fc-goto-button").click();
             })
 
             function loadDate(d) {
+                d      = new Date(d);
                 let dd = d.getDay();
                 let cd = d.getDate();
                 let cm = d.getMonth() + 1;
                 let cy = d.getFullYear();
-                let m = sl2.children(':selected').val();
-                let y = sl1.children(':selected').val();
+                let m  = sl2.children(':selected').val();
+                let y  = sl1.children(':selected').val();
                 let cM = new Date(cy, cm - 1, cd - dd + 8).toISOString().slice(0, 10);
                 if (cm !== m) {
                     sl1.val(cy).change();
@@ -616,7 +1636,9 @@
                 if (cy !== y) {
                     sl2.val(cm).change();
                 }
-                $.when(loadWeek()).then(sl3.val(cM).change());
+                loadWeek();
+                sl3.val(cM).change();
+                $(".fc-goto-button").click();
             }
 
             function del() {
@@ -644,7 +1666,7 @@
                                 .addClass('text-center m-0 p-1')
                                 .attr({
                                     style: 'height: 25px; font-style: italic; background-color: #F0F8FF;',
-                                    id: 'emp_name'
+                                    id   : 'emp_name'
                                 })
                                 .text('Name')
                             )
@@ -655,27 +1677,27 @@
             function loadWeek() {
                 sl3.empty();
                 sl3.append($('<option>').text('Day'));
-                let j = 0;
-                let num = 0;
-                let ar = '';
-                let arr1 = [];
-                let year = sl1.children(':selected').val();
+                let j     = 0;
+                let num   = 0;
+                let ar    = '';
+                let arr1  = [];
+                let year  = sl1.children(':selected').val();
                 let month = sl2.children(':selected').val();
-                let days = new Date(year, month, 0).getDate();
-                let fd = new Date(year, month - 1, 1).getDay();
-                let pMon = month - 1;
-                let nMon = month - 0 + 1;
+                let days  = new Date(year, month, 0).getDate();
+                let fd    = new Date(year, month - 1, 1).getDay();
+                let pMon  = month - 1;
+                let nMon  = month - 0 + 1;
                 if (month < 10) {
                     month = '0' + month;
                 }
-                if (pMon < 10 && pMon > 0) {
+                if (month < 11) {
                     pMon = '0' + pMon;
-                } else if (pMon === 0) {
+                } else if (month === 1) {
                     pMon = 12;
                 }
-                if (nMon < 10) {
+                if (month < 9) {
                     nMon = '0' + nMon;
-                } else if (nMon >= 12) {
+                } else if (month === 12) {
                     nMon = '01';
                 }
                 if (fd !== 0) {
@@ -691,7 +1713,7 @@
                     if (i < 10) {
                         j = '0' + i;
                     }
-                    let n = new Date(year, month - 1, i).getDay();
+                    let n    = new Date(year, month - 1, i).getDay();
                     let data = j + '/' + month;
                     if (n === 1) {
                         arr1.push(data)
@@ -703,56 +1725,97 @@
                         sl3.append($('<option>')
                             .attr({
                                 value: val,
-                                id: 'W' + num
+                                id   : 'W' + num
                             })
                             .text(ar)
                             .addClass('d-opt')
                         )
                         arr1 = [];
-                    } else if (n !== 0 && i === days) {
-                        num++;
-                        let val = new Date(year, month - 1, i + 1).toISOString().slice(0, 10);
-                        fd = new Date(year, month, i).getDay();
-                        let sun = new Date(year, month, 6 - i).getDate();
-                        sun = '0' + sun + '/' + nMon;
-                        arr1.push(sun);
-                        ar = arr1[0] + '-' + arr1[1];
-                        sl3.append($('<option>')
-                            .attr({
-                                value: val,
-                                id: 'W' + num
-                            })
-                            .text(ar)
-                            .addClass('d-opt')
-                        )
-                        arr1 = [];
+                    } else {
+                        if (i === days) {
+                            num++;
+                            let val = new Date(year, month - 1, i + 1).toISOString().slice(0, 10);
+                            fd      = new Date(year, month, i).getDay();
+                            let sun = new Date(year, month, 6 - i).getDate();
+                            sun     = '0' + sun + '/' + nMon;
+                            arr1.push(sun);
+                            ar = arr1[0] + '-' + arr1[1];
+                            sl3.append($('<option>')
+                                .attr({
+                                    value: val,
+                                    id   : 'W' + num
+                                })
+                                .text(ar)
+                                .addClass('d-opt')
+                            )
+                            arr1 = [];
+                        }
                     }
                 }
             }
 
             function getSun(d) {
-                d = new Date(d);
-                let day = d.getDay(),
+                d        = new Date(d);
+                let day  = d.getDay(),
                     diff = d.getDate() + (day === 0 ? 0 : 7 - day);
                 return new Date(d.setDate(diff));
             }
 
             function getMon(d) {
-                d = new Date(d);
-                let day = d.getDay(),
+                d        = new Date(d);
+                let day  = d.getDay(),
                     diff = d.getDate() - day + (day === 0 ? -6 : 1);
                 return new Date(d.setDate(diff));
             }
 
-            function loadEmpDate(d) {
-                let cm = d.getMonth() + 1;
-                let cy = d.getFullYear();
-                sl1.val(cy).change();
-                sl2.val(cm).change();
+            function getPreDate(d) {
+                d       = new Date(d);
+                let num = d.getDate()
+                d       = d.setDate(num - 1)
+                return new Date(d).toISOString().slice(0, 10);
             }
 
+            function getNextDate(d) {
+                d       = new Date(d);
+                let num = d.getDate()
+                d       = d.setDate(num + 1)
+                return new Date(d).toISOString().slice(0, 10);
+            }
+
+            function getFullDate(d) {
+                return new Date(d).toISOString().slice(0, 10);
+            }
+
+            function getDate(d) {
+                return new Date(d).getDate();
+            }
+
+            function getDay(d) {
+                return new Date(d).getDay();
+            }
+
+            function addEvent(x, n, d, e) {
+                for (let i = 0; i < x; i++) {
+                    let event = {
+                        id        : n,
+                        start     : d,
+                        allDay    : true,
+                        overlap   : false,
+                        background: '#f03e44',
+                    }
+                    e.push(event);
+                    n--;
+                }
+                return e;
+            }
+
+            function getDays(d) {
+                d     = new Date(d);
+                let m = d.getMonth() + 1;
+                let l = new Date(d.setMonth(m));
+                d     = new Date(l.setDate(0));
+                return new Date(d).getDate();
+            }
         })
-    </script>
+	</script>
 @endpush
-
-
