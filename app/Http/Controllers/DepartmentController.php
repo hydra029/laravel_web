@@ -83,9 +83,16 @@ class DepartmentController extends Controller
 		$data['name'] = $arr['name'];	
 		 $this->models::create($data);
 		$dept_id = $this->models::max('id');
+		Role::create([
+			'name' => $data['name'] . ' Manager',
+			'dept_id' => $dept_id,
+			'pay_rate' => 1000000,
+		]);
+		$role_id = Role::max('id');
 		if($arr['manager_id'] != null){
 			$manager = Manager::find($arr['manager_id']);
 			$manager->dept_id = $dept_id;
+			$manager->role_id = $role_id;
 			$manager->save();
 		}
 		session()->flash('noti', [

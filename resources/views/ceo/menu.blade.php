@@ -22,8 +22,8 @@
         <span> Configuration </span>
         <i class="uil uil-angle-down" ></i>
     </a>
-    <div class="collapse" id="collapseExample">
-        <li class="side-nav-item">
+    <div class="collapse ml-2" id="collapseExample">
+        <li class="side-nav-item" >
             <a href="{{route('ceo.fines')}}" class="side-nav-link">
                 <i class="uil-money-bill"></i>
                 <span> Fines </span>
@@ -35,7 +35,7 @@
                 <span> Time </span>
             </a>
         </li>
-        <li class="side-nav-item">
+        <li class="side-nav-item" >
             <a href="{{route('ceo.roles')}}" class="side-nav-link">
                 <i class="uil uil-moneybag-alt"></i>
                 <span> Roles </span>

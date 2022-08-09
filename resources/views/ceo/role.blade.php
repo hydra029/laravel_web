@@ -64,13 +64,24 @@
             }
     </style>
 @endpush
-    <div class="col-12">
+<div class="col-12">
+    <div class="col-1 position-fixed" >
+        <div id="list-example" class="list-group">
+        
+        @foreach($dept as $dk => $dv)
+            <a class="list-group-item list-group-item-action active"
+                href="#list-item-{{ $dv->id }}">{{ $dv->name}}</a>
+        @endforeach
+        </div>
+    </div>
+    <div class="col-11 " style="margin-left: 10%" data-spy="scroll" data-target="#list-example" data-offset="1"
+    class="scrollspy-example">
             @foreach($dept as $dk => $dv)
                 <table class="table">
-                    <tr class="bg-light ">
+                    <tr class="bg-secondary " id="list-item-{{ $dv->id }}">
                         <td colspan="3" >
-                            <span class="mr-2 text-muted">#{{ $dk + 1 }}.</span>
-                            <span class="mr-2  text-muted">{{ $dv->name}}</span>
+                            <span class="mr-2 text-white">#{{ $dk + 1 }}.</span>
+                            <span class="mr-2  text-white">{{ $dv->name}}</span>
                             <i class="fa-solid fa-circle-plus text-success h5 m-0 btn-add-role"  data-id="{{ $dv->id}}" ></i>    
                             
                         </td>
@@ -79,6 +90,12 @@
                             <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-warning float-right mr-1"></div>
                             <div style="border-radius: 50%; width: 10px; height: 10px; display: inline-block" class="bg-primary float-right mr-1"></div>
                         </td>
+                    </tr>
+                    <tr class="text-primary bg-light">
+                        <td>id</td>
+                        <td>Name</td>
+                        <td>Pay rate</td>
+                        <td>Action</td>
                     </tr>
                     @foreach($dv->roles as $rk => $rv)
                     <tr>
@@ -105,6 +122,8 @@
                 </table>
             @endforeach
     </div>
+
+</div>
 
     
     <div class=" model-popup-div d-none">

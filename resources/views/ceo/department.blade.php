@@ -122,7 +122,7 @@
     @endif
     {{-- // department_employees --}}
     <div class="dept col-12 d-none">
-        <button class="btn-warning btn-back rounded-pill " type="button">
+        <button class="btn-warning btn-back" type="button">
             <span class="btn-label">
                 <i class="fa-solid fa-circle-arrow-left"></i>
             </span>
@@ -153,7 +153,7 @@
     </div>
     {{-- // department list table --}}
     <div class="dept-list col-12">
-        <button class="btn-success rounded-pill btn-add-dept " type="button">
+        <button class="btn-success btn-add-dept " type="button">
             Add
             <span class="btn-label">
                 <i class="fa-solid fa-circle-plus"></i>

@@ -13,6 +13,19 @@
     <link href="{{ asset('css/app.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
     <link href="{{ asset('css/jquery.toast.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
     @stack('css')
+    <style>
+        ul li {
+    list-style-type: none;
+        }
+        i,
+        img {
+            cursor: pointer;
+        }
+        i {
+            font-size: 1.2em;
+}
+
+    </style>
 </head>
 <body class="loading" data-layout="detached"
       data-layout-config='{"leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -20,7 +33,7 @@
 <div class="container-fluid m-0" style="max-width: 100%;">
     <div class="wrapper">
         @include('layout.sidebar')
-        <div class="content-page">
+        <div class="content-page" style="margin-left: 18%; margin-top:5%">
             <div class="content" id="content">
                 <div class="row">
                     <div class="col-12">
