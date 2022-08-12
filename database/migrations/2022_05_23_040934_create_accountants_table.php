@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Department;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,6 +31,7 @@ class CreateAccountantsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 		});
+		Department::foreign('acct_id')->references('id')->on('accountants');
 	}
 
 	/**

@@ -18,6 +18,7 @@ class CreateDepartmentsTable extends Migration
         Schema::create('departments', static function (Blueprint $table) {
 	        $table->id();
 	        $table->string('name');
+	        $table->unsignedBigInteger('acct_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -19,14 +19,20 @@ class CreateSalariesTable extends Migration
 			$table->integer('year');
 			$table->string('dept_name');
 			$table->string('role_name');
-			$table->unsignedTinyInteger('work_day');
+			$table->double('work_day',10,3);
+			$table->double('over_work_day',10,3);
+			$table->unsignedTinyInteger('late_1');
+			$table->unsignedTinyInteger('late_2');
+			$table->unsignedTinyInteger('early_1');
+			$table->unsignedTinyInteger('early_2');
+			$table->unsignedTinyInteger('miss');
 			$table->unsignedInteger('pay_rate');
 			$table->unsignedInteger('deduction');
 			$table->unsignedInteger('salary');
 			$table->foreignId('mgr_id')->constrained('managers');
 			$table->foreignId('acct_id')->nullable()->constrained('accountants');
 			$table->boolean('sign')->nullable();
-			$table->primary(['emp_id', 'month', 'year']);
+			$table->primary(['emp_id', 'month', 'year','dept_name','role_name']);
             $table->timestamps();
 		});
 	}
