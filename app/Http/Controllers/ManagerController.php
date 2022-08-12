@@ -53,159 +53,159 @@ class ManagerController extends Controller
 		]);
 	}
 
-//    public function add(): RedirectResponse
-//    {
-//        $data = [];
-//        $shift_11 = [];
-//        $shift_12 = [];
-//        $shift_21 = [];
-//        $shift_22 = [];
-//        $shift_31 = [];
-//        $shift_32 = [];
-//
-//        for ($i = 0; $i <= 59; $i++) {
-//            if ($i < 10) {
-//                $a = '0' . $i;
-//            } else {
-//                $a = $i;
-//            }
-//            $shift11 = '07:' . $a;
-//            $shift12 = '11:' . $a;
-//            $shift32 = '21:' . $a;
-//            $shift_11[] = $shift11;
-//            $shift_12[] = $shift12;
-//            $shift_32[] = $shift32;
-//        }
-//        for ($i = 31; $i <= 59; $i++) {
-//            $shift21 = '13:' . $a;
-//            $shift22 = '17:' . $a;
-//            $shift31 = '17:' . $a;
-//            $shift_21[] = $shift21;
-//            $shift_22[] = $shift22;
-//            $shift_31[] = $shift31;
-//        }
-//        for ($i = 0; $i <= 30; $i++) {
-//            if ($i < 10) {
-//                $a = '0' . $i;
-//            } else {
-//                $a = $i;
-//            }
-//            $shift21 = '14:' . $a;
-//            $shift22 = '18:' . $a;
-//            $shift31 = '18:' . $a;
-//            $shift_21[] = $shift21;
-//            $shift_22[] = $shift22;
-//            $shift_31[] = $shift31;
-//        }
-//        for ($i = 1; $i <= 30; $i++) {
-//            if ($i < 10) {
-//                $a = '0' . $i;
-//            } else {
-//                $a = $i;
-//            }
-//            $date = '2022-07-' . $a;
-//
-//            for ($j = 1; $j <= 40; $j++) {
-//                $start1 = $shift_11[array_rand($shift_11)];
-//                $end1 = $shift_12[array_rand($shift_12)];
-//                $start2 = $shift_21[array_rand($shift_21)];
-//                $end2 = $shift_22[array_rand($shift_22)];
-//                $start3 = $shift_31[array_rand($shift_31)];
-//                $end3 = $shift_32[array_rand($shift_32)];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 1,
-//                    'shift' => 1,
-//                    'check_in' => $start1,
-//                    'check_out' => $end1,
-//                ];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 1,
-//                    'shift' => 2,
-//                    'check_in' => $start2,
-//                    'check_out' => $end2,
-//                ];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 1,
-//                    'shift' => 3,
-//                    'check_in' => $start3,
-//                    'check_out' => $end3,
-//                ];
-//            }
-//            for ($j = 1; $j <= 5; $j++) {
-//                $start1 = $shift_11[array_rand($shift_11)];
-//                $end1 = $shift_12[array_rand($shift_12)];
-//                $start2 = $shift_21[array_rand($shift_21)];
-//                $end2 = $shift_22[array_rand($shift_22)];
-//                $start3 = $shift_31[array_rand($shift_31)];
-//                $end3 = $shift_32[array_rand($shift_32)];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 2,
-//                    'shift' => 1,
-//                    'check_in' => $start1,
-//                    'check_out' => $end1,
-//                ];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 2,
-//                    'shift' => 2,
-//                    'check_in' => $start2,
-//                    'check_out' => $end2,
-//                ];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 2,
-//                    'shift' => 3,
-//                    'check_in' => $start3,
-//                    'check_out' => $end3,
-//                ];
-//            }
-//            for ($j = 1; $j <= 5; $j++) {
-//                $start1 = $shift_11[array_rand($shift_11)];
-//                $end1 = $shift_12[array_rand($shift_12)];
-//                $start2 = $shift_21[array_rand($shift_21)];
-//                $end2 = $shift_22[array_rand($shift_22)];
-//                $start3 = $shift_31[array_rand($shift_31)];
-//                $end3 = $shift_32[array_rand($shift_32)];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 3,
-//                    'shift' => 1,
-//                    'check_in' => $start1,
-//                    'check_out' => $end1,
-//                ];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 3,
-//                    'shift' => 2,
-//                    'check_in' => $start2,
-//                    'check_out' => $end2,
-//                ];
-//                $data[] = [
-//                    'date' => $date,
-//                    'emp_id' => $j,
-//                    'emp_role' => 3,
-//                    'shift' => 3,
-//                    'check_in' => $start3,
-//                    'check_out' => $end3,
-//                ];
-//            }
-//        }
-//        dd($data);
-//        Attendance::insert($data);
-//        return redirect()->route('managers.index');
-//    }
+	//    public function add(): RedirectResponse
+	//    {
+	//        $data = [];
+	//        $shift_11 = [];
+	//        $shift_12 = [];
+	//        $shift_21 = [];
+	//        $shift_22 = [];
+	//        $shift_31 = [];
+	//        $shift_32 = [];
+	//
+	//        for ($i = 0; $i <= 59; $i++) {
+	//            if ($i < 10) {
+	//                $a = '0' . $i;
+	//            } else {
+	//                $a = $i;
+	//            }
+	//            $shift11 = '07:' . $a;
+	//            $shift12 = '11:' . $a;
+	//            $shift32 = '21:' . $a;
+	//            $shift_11[] = $shift11;
+	//            $shift_12[] = $shift12;
+	//            $shift_32[] = $shift32;
+	//        }
+	//        for ($i = 31; $i <= 59; $i++) {
+	//            $shift21 = '13:' . $a;
+	//            $shift22 = '17:' . $a;
+	//            $shift31 = '17:' . $a;
+	//            $shift_21[] = $shift21;
+	//            $shift_22[] = $shift22;
+	//            $shift_31[] = $shift31;
+	//        }
+	//        for ($i = 0; $i <= 30; $i++) {
+	//            if ($i < 10) {
+	//                $a = '0' . $i;
+	//            } else {
+	//                $a = $i;
+	//            }
+	//            $shift21 = '14:' . $a;
+	//            $shift22 = '18:' . $a;
+	//            $shift31 = '18:' . $a;
+	//            $shift_21[] = $shift21;
+	//            $shift_22[] = $shift22;
+	//            $shift_31[] = $shift31;
+	//        }
+	//        for ($i = 1; $i <= 30; $i++) {
+	//            if ($i < 10) {
+	//                $a = '0' . $i;
+	//            } else {
+	//                $a = $i;
+	//            }
+	//            $date = '2022-07-' . $a;
+	//
+	//            for ($j = 1; $j <= 40; $j++) {
+	//                $start1 = $shift_11[array_rand($shift_11)];
+	//                $end1 = $shift_12[array_rand($shift_12)];
+	//                $start2 = $shift_21[array_rand($shift_21)];
+	//                $end2 = $shift_22[array_rand($shift_22)];
+	//                $start3 = $shift_31[array_rand($shift_31)];
+	//                $end3 = $shift_32[array_rand($shift_32)];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 1,
+	//                    'shift' => 1,
+	//                    'check_in' => $start1,
+	//                    'check_out' => $end1,
+	//                ];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 1,
+	//                    'shift' => 2,
+	//                    'check_in' => $start2,
+	//                    'check_out' => $end2,
+	//                ];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 1,
+	//                    'shift' => 3,
+	//                    'check_in' => $start3,
+	//                    'check_out' => $end3,
+	//                ];
+	//            }
+	//            for ($j = 1; $j <= 5; $j++) {
+	//                $start1 = $shift_11[array_rand($shift_11)];
+	//                $end1 = $shift_12[array_rand($shift_12)];
+	//                $start2 = $shift_21[array_rand($shift_21)];
+	//                $end2 = $shift_22[array_rand($shift_22)];
+	//                $start3 = $shift_31[array_rand($shift_31)];
+	//                $end3 = $shift_32[array_rand($shift_32)];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 2,
+	//                    'shift' => 1,
+	//                    'check_in' => $start1,
+	//                    'check_out' => $end1,
+	//                ];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 2,
+	//                    'shift' => 2,
+	//                    'check_in' => $start2,
+	//                    'check_out' => $end2,
+	//                ];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 2,
+	//                    'shift' => 3,
+	//                    'check_in' => $start3,
+	//                    'check_out' => $end3,
+	//                ];
+	//            }
+	//            for ($j = 1; $j <= 5; $j++) {
+	//                $start1 = $shift_11[array_rand($shift_11)];
+	//                $end1 = $shift_12[array_rand($shift_12)];
+	//                $start2 = $shift_21[array_rand($shift_21)];
+	//                $end2 = $shift_22[array_rand($shift_22)];
+	//                $start3 = $shift_31[array_rand($shift_31)];
+	//                $end3 = $shift_32[array_rand($shift_32)];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 3,
+	//                    'shift' => 1,
+	//                    'check_in' => $start1,
+	//                    'check_out' => $end1,
+	//                ];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 3,
+	//                    'shift' => 2,
+	//                    'check_in' => $start2,
+	//                    'check_out' => $end2,
+	//                ];
+	//                $data[] = [
+	//                    'date' => $date,
+	//                    'emp_id' => $j,
+	//                    'emp_role' => 3,
+	//                    'shift' => 3,
+	//                    'check_in' => $start3,
+	//                    'check_out' => $end3,
+	//                ];
+	//            }
+	//        }
+	//        dd($data);
+	//        Attendance::insert($data);
+	//        return redirect()->route('managers.index');
+	//    }
 
 	public function today_attendance()
 	{
@@ -213,10 +213,10 @@ class ManagerController extends Controller
 		$date    = date('Y-m-d');
 		$dept_id = session('dept_id');
 		$data    = Employee::with([
-			                          'attendance' => function ($query) use ($date) {
-				                          $query->where('date', '=', $date);
-			                          }, 'roles'
-		                          ])
+			'attendance' => function ($query) use ($date) {
+				$query->where('date', '=', $date);
+			}, 'roles'
+		])
 			->where('dept_id', '=', $dept_id)
 			->whereNull('deleted_at')
 			->paginate($limit);
@@ -320,11 +320,11 @@ class ManagerController extends Controller
 		$month    = date('m', strtotime('last month'));
 		$year     = date('Y', strtotime('last month'));
 		$data[]   = Salary::query()
-			->where('dept_name', '=',$dept)
-			->where('role_name', '=',$role)
-			->where('emp_id', '=',$emp_id)
-			->where('month', '=',$month)
-			->where('year', '=',$year)
+			->where('dept_name', '=', $dept)
+			->where('role_name', '=', $role)
+			->where('emp_id', '=', $emp_id)
+			->where('month', '=', $month)
+			->where('year', '=', $year)
 			->first();
 		$date = $request->get('date');
 		$emp_role = $request->get('emp_role');
@@ -412,7 +412,7 @@ class ManagerController extends Controller
 				'mgr_id'    => $mgr_id,
 			]
 		);
-//		return [$emp_id, $role_name, $dept_name, $work_day, number_format($pay_rate), number_format($deduction), $E1, $E2, $L1, $L2, $miss, number_format((int)$salary)];
+		//		return [$emp_id, $role_name, $dept_name, $work_day, number_format($pay_rate), number_format($deduction), $E1, $E2, $L1, $L2, $miss, number_format((int)$salary)];
 	}
 
 	public function salary()

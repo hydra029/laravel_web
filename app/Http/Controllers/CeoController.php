@@ -73,11 +73,12 @@ class CeoController extends Controller
 			->with(['roles', 'departments'])
 			->paginate(11);
 		return view(
-			'ceo.index', ([
-			'acc'  => $acc,
-			'data' => $data,
-			'num'  => 1,
-		])
+			'ceo.index',
+			([
+				'acc'  => $acc,
+				'data' => $data,
+				'num'  => 1,
+			])
 		);
 	}
 
@@ -116,22 +117,21 @@ class CeoController extends Controller
 		$out_end     = $request->get('out_end');
 		AttendanceShiftTime::whereId($id)
 			->update([
-				         'check_in_start'    => $in_start,
-				         'check_in_end'      => $in_end,
-				         'check_in_late_1'   => $in_late_1,
-				         'check_in_late_2'   => $in_late_2,
-				         'check_out_early_1' => $out_early_1,
-				         'check_out_early_2' => $out_early_2,
-				         'check_out_start'   => $out_start,
-				         'check_out_end'     => $out_end,
-			         ]);
+				'check_in_start'    => $in_start,
+				'check_in_end'      => $in_end,
+				'check_in_late_1'   => $in_late_1,
+				'check_in_late_2'   => $in_late_2,
+				'check_out_early_1' => $out_early_1,
+				'check_out_early_2' => $out_early_2,
+				'check_out_start'   => $out_start,
+				'check_out_end'     => $out_end,
+			]);
 		session()->flash('noti', [
 			'heading' => 'Action successfully',
 			'text'    => 'You\'ve changed the shift\'s time successfully',
 			'icon'    => 'success',
 		]);
 		if ($id === 1) {
-
 		}
 		return AttendanceShiftTime::whereId($id)->get();
 	}
@@ -223,10 +223,10 @@ class CeoController extends Controller
 		$fines     = $request->fines;
 		$deduction = $request->deduction;
 		return Fines::create([
-			                     'name'      => $name,
-			                     'fines'     => $fines,
-			                     'deduction' => $deduction,
-		                     ])->append(['fines_time', 'deduction_detail'])->toArray();
+			'name'      => $name,
+			'fines'     => $fines,
+			'deduction' => $deduction,
+		])->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
 	public function fines_update(Request $request): array
@@ -238,18 +238,18 @@ class CeoController extends Controller
 		Fines::query()
 			->where('id', $id)
 			->update([
-				         'name'      => $name,
-				         'fines'     => $fines,
-				         'deduction' => $deduction,
-			         ]);
+				'name'      => $name,
+				'fines'     => $fines,
+				'deduction' => $deduction,
+			]);
 		return Fines::whereId($id)->get()->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
 	public function import_employee(Request $request): void
 	{
 		$request->validate([
-			                   'file' => 'required|max:10000|mimes:xlsx,xls',
-		                   ]);
+			'file' => 'required|max:10000|mimes:xlsx,xls',
+		]);
 		$path = $request->file;
 
 		Excel::import(new EmployeesImport, $path);
@@ -258,8 +258,8 @@ class CeoController extends Controller
 	public function import_acct(Request $request): void
 	{
 		$request->validate([
-			                   'file' => 'required|max:10000|mimes:xlsx,xls',
-		                   ]);
+			'file' => 'required|max:10000|mimes:xlsx,xls',
+		]);
 		$path = $request->file;
 
 		Excel::import(new AccountantsImport, $path);
@@ -268,8 +268,8 @@ class CeoController extends Controller
 	public function import_mgr(Request $request): void
 	{
 		$request->validate([
-			                   'file' => 'required|max:10000|mimes:xlsx,xls',
-		                   ]);
+			'file' => 'required|max:10000|mimes:xlsx,xls',
+		]);
 		$path = $request->file;
 
 		Excel::import(new  ManagersImport, $path);
@@ -323,8 +323,8 @@ class CeoController extends Controller
 		$id = $request->get('id');
 		Employee::query()->whereId($id)->delete();
 		return $this->successResponse([
-			                              'message' => 'Delete success',
-		                              ]);
+			'message' => 'Delete success',
+		]);
 	}
 
 	public function store_acct(StoreAccountantRequest $storeAccountantRequest): array

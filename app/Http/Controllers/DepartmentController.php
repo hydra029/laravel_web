@@ -81,24 +81,7 @@ class DepartmentController extends Controller
         //
     }
 
-    public function store(StoreDepartmentRequest $request): RedirectResponse
-    {
-        $arr = $request->validated();
-        $data['name'] = $arr['name'];
-        $this->models::create($data);
-        $dept_id = $this->models::max('id');
-        if ($arr['manager_id'] !== null) {
-            $manager = Manager::find($arr['manager_id']);
-            $manager->dept_id = $dept_id;
-            $manager->save();
-        }
-        session()->flash('noti', [
-            'heading' => 'Add department successfully',
-            'text' => '',
-            'icon' => 'success',
-        ]);
-        return redirect()->route('ceo.department');
-    }
+    
 
 	public function store(StoreDepartmentRequest $request)
 	{

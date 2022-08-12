@@ -9,6 +9,7 @@ use App\Http\Controllers\FinesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalaryController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +65,10 @@ Route::post('/ceo/fines_store', [FinesController::class, 'store'])->name('ceo.fi
 Route::post('/ceo/fines_update', [FinesController::class, 'update'])->name('ceo.fines_update');
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
+
+Route::get('/ceo/salary', [SalaryController::class, 'index'])->name('ceo.salary');
+Route::post('/ceo/salary_api', [SalaryController::class, 'salary_api'])->name('ceo.salary_api');
+Route::post('/ceo/salary_detail', [SalaryController::class, 'salary_detail'])->name('ceo.salary_detail');
 
 Route::get('/ceo/roles', [RoleController::class, 'index'])->name('ceo.roles');
 Route::post('/ceo/roles/store', [RoleController::class, 'store'])->name('ceo.roles.store');

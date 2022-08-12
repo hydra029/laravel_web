@@ -66,9 +66,17 @@ class Salary extends Model
 	{
 		return $this->hasMany(Accountant::class, 'acct_id');
 	}
-	public function pay_rate(): HasMany
+	public function getSalaryMoneyAttribute()
 	{
-		return $this->hasMany(Role::class, 'pay_rate');
+		return number_format((float)($this->salary)). ' đ' ;
 	}
+	public function getPayRateMoneyAttribute()
+	{
+		return number_format((float)($this->pay_rate)). ' đ' ;
+	}
+	public function getDeductionDetailAttribute()
+    {
+        return '-' . number_format((float)($this->deduction)). ' đ';
+    }
 
 }

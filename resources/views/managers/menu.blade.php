@@ -30,5 +30,5 @@
                 <span> Salary </span>
             </a>
         </li>
-        @endif
+    @endif
 @endsection

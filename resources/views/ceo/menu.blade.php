@@ -17,6 +17,12 @@
             <span> Department </span>
         </a>
     </li>
+    <li class="side-nav-item">
+        <a href="{{route('ceo.salary')}}" class="side-nav-link">
+            <i class="uil-calendar-alt"></i>
+            <span> Salary </span>
+        </a>
+    </li>
     <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="side-nav-link" id="home">
         <i class="uil uil-bright" ></i>
         <span> Configuration </span>
