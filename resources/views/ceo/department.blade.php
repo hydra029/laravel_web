@@ -187,7 +187,13 @@
                             </td>
                             <td class="align-middle ">
                                 <div>
-                                    <span class="dept-members members-department ">{{ $each->members_count }} members</span>
+                                    <span class="dept-members members-department ">
+                                        @if($each->id ==1)
+                                            {{ $each->acctmembers_count }}
+                                        @else
+                                        {{ $each->members_count }} 
+                                        @endif
+                                        members</span>
                                 </div>
                             </td>
                             <td class="align-middle ">
@@ -723,12 +729,19 @@
                 var dept_id = $(this).data('id');
                 var dept_name = $(this).parents('tr').find('.dept-name').text();
                 var manager_name = $(this).parents('tr').find('.manager-name').text();
+                var url;
+                if (dept_id == 1) {
+                    url = "{{ route('ceo.department_accountants') }}";
+                } else {
+                    url = "{{ route('ceo.department_employees') }}";
+                }
+
                 $('.title-name').text(` > ${dept_name}`);
                 $('.dept-name-detail').text(dept_name);
                 $('.manager-name-detail').text(manager_name);
                 $('#table-department-employees').find('tbody').empty();
                 $.ajax({
-                    url: "{{ route('ceo.department_employees') }}",
+                    url: url,
                     method: "POST",
                     datatype: 'json',
                     data: {

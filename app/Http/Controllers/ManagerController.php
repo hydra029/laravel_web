@@ -410,6 +410,45 @@ class ManagerController extends Controller
 		return view('managers.salary');
 	}
 
+	public function get_salary(Request $request)
+    {	
+		$dept_id = $request->dept_id;
+        $month = $request->month;
+        $year = $request->year;
+
+		$dept = Department::query()->where('id', '=', $dept_id)->first();
+		// dd($dept->toArray());
+        $salary = Salary::query()->with('emp')
+		->where('dept_name', $dept->name)
+        ->where('month', $month)
+        ->where('year', $year)
+        ->get()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day']);
+		
+        return $salary;
+    }
+	
+    public function salary_detail(Request $request)
+    {
+        $id = $request->id;
+        $dept_name = $request->dept_name;
+        $role_name = $request->role_name;
+        $month = $request->month;
+        $year = $request->year;
+        $fines = Fines::query()->get()->append('deduction_detail');
+        $salary = Salary::query()->with('emp')
+        ->where('emp_id', $id)
+        ->where('month', $month)
+        ->where('year', $year)
+        ->where('dept_name', $dept_name)
+        ->where('role_name', $role_name)
+        ->first()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
+        $arr['salary'] = $salary;
+        $arr['fines'] = $fines;
+        return $arr;
+    }
+
 	public function assignment()
 	{
 		return view('managers.assignment');

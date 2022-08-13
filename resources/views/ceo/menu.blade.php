@@ -55,3 +55,25 @@
         </a>
     </li>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $(".collapse").on("show.collapse", function () {
+                localStorage.setItem("coll_" + this.id, true);
+            });
+
+            $(".collapse").on("hidden.collapse", function () {
+                localStorage.removeItem("coll_" + this.id);
+            });
+            
+            $(".collapse").each(function () {
+                if (localStorage.getItem("coll_" + this.id) === "true") {
+                    $(this).collapse("show");
+                }
+                else {
+                    $(this).collapse("hiden");
+                }
+            });
+        });
+    </script>
+@endpush

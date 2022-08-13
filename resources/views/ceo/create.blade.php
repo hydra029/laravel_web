@@ -538,7 +538,6 @@
                         dataType: "json",
 
                         success: function(response) {
-                            $.notify('Add new success', 'success');
                             $('.div-form-create').addClass('d-none');
                             $('.div-profile-success').removeClass('d-none');
                             $('.div-profile-success').find('.name-profile-success').text(

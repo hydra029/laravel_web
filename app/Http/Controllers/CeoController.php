@@ -341,6 +341,12 @@ class CeoController extends Controller
 		return [$role, $emp];
 	}
 
+	
+    public function salary()
+    {
+        return view('ceo.salary');
+    }
+
 	/**
 	 * Show the form for creating a new resource.
 	 *

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Salary;
 use App\Http\Requests\StoreSalaryRequest;
 use App\Http\Requests\UpdateSalaryRequest;
+use App\Models\Fines;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +16,6 @@ class SalaryController extends Controller
 {
     public function __construct()
 	{
-		$this->middleware('ceo');
 		$this->model = Salary::query();
 		$routeName   = Route::currentRouteName();
 		$arr         = explode('.', $routeName);
@@ -37,31 +37,37 @@ class SalaryController extends Controller
         return view('ceo.salary');
     }
 
-    public function salary_api(Request $request)
+    public function get_salary(Request $request)
     {
-        $month = request()->month;
-        $year = request()->year;
-        $salary = $this->model->with('emp')->where('month', $month)->where('year', $year)->get()->append(['salary_money','deduction_detail','pay_rate_money']);
+        $month = $request->month;
+        $year = $request->year;
+        $salary = $this->model->with('emp')
+        ->where('month', $month)
+        ->where('year', $year)
+        ->get()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day']);
         return $salary;
     }
 
     public function salary_detail(Request $request)
     {
-        $id = request()->id;
-        $dept_name = request()->dept_name;
-        $role_name = request()->role_name;
-        $month = request()->month;
-        $year = request()->year;
+        $id = $request->id;
+        $dept_name = $request->dept_name;
+        $role_name = $request->role_name;
+        $month = $request->month;
+        $year = $request->year;
+        $fines = Fines::query()->get()->append('deduction_detail');
         $salary = $this->model->with('emp')
         ->where('emp_id', $id)
         ->where('month', $month)
         ->where('year', $year)
         ->where('dept_name', $dept_name)
         ->where('role_name', $role_name)
-        ->get()
-        ->append(['salary_money','deduction_detail','pay_rate_money']);
-        
-        return $salary;
+        ->first()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
+        $arr['salary'] = $salary;
+        $arr['fines'] = $fines;
+        return $arr;
     }
     /**
      * Show the form for creating a new resource.
