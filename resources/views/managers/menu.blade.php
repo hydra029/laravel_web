@@ -12,12 +12,12 @@
 			<span> Attendance History </span>
 		</a>
 	</li>
-	<li class="side-nav-item">
+	{{-- <li class="side-nav-item">
 		<a href="{{route('managers.today_attendance')}}" class="side-nav-link">
 			<i class="uil-calendar-alt"></i>
 			<span> Today Attendance </span>
 		</a>
-	</li>
+	</li> --}}
 	<li class="side-nav-item">
 		<a href="{{route('managers.employee_attendance')}}" class="side-nav-link">
 			<i class="uil-calendar-alt"></i>

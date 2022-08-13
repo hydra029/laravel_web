@@ -293,13 +293,6 @@
                         }
                     });
                 }
-                $(".checkAll").click(function() {
-                    if (this.checked) {
-                        $(".check_box").prop("checked", true);
-                    } else {
-                        $(".check_box").prop("checked", false);
-                    }  
-                });
 
                 function showDetailSalary(){
                     $(".btn-show-salary").click(function() {
