@@ -22,14 +22,14 @@ Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('l
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::put('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
-Route::put('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
+Route::post('/employees/checkin', [EmployeeController::class, 'checkin'])->name('employees.checkin');
+Route::post('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
 Route::get('/employees/attendance_history', [EmployeeController::class, 'attendance_history'])->name('employees.attendance_history');
 Route::post('/employees/history_api', [EmployeeController::class, 'history_api'])->name('employees.history_api');
 
 Route::post('/managers/add', [ManagerController::class, 'add'])->name('managers.add');
-Route::put('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
-Route::put('/managers/checkout', [ManagerController::class, 'checkout'])->name('managers.checkout');
+Route::post('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
+Route::post('/managers/checkout', [ManagerController::class, 'checkout'])->name('managers.checkout');
 Route::get('/managers/today_attendance', [ManagerController::class, 'today_attendance'])->name('managers.today_attendance');
 Route::get('/managers/attendance_history', [ManagerController::class, 'attendance_history'])->name('managers.attendance_history');
 Route::get('/managers/employee_attendance', [ManagerController::class, 'employee_attendance'])->name('managers.employee_attendance');
@@ -40,8 +40,8 @@ Route::post('/managers/salary_api', [ManagerController::class, 'salary_api'])->n
 Route::get('/managers/salary', [ManagerController::class, 'salary'])->name('managers.salary');
 Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->name('managers.assignment');
 
-Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
-Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
+Route::post('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
+Route::post('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
 Route::get('/accountants/attendance_history', [AccountantController::class, 'attendance_history'])->name('accountants.attendance_history');
 Route::post('/accountants/history_api', [AccountantController::class, 'history_api'])->name('accountants.history_api');
 Route::post('/accountants/attendance_api', [AccountantController::class, 'attendance_api'])->name('accountants.attendance_api');

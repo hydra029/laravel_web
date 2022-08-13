@@ -31,15 +31,4 @@ class AttendanceRequest extends FormRequest
 			],
 		];
 	}
-
-	public function messages(): array
-	{
-		return [
-			'time.regex' => session()->flash('noti', [
-				'heading' => 'What do you want ???',
-				'text'    => 'You are trying to break my app ???',
-				'icon'    => 'success',
-			]),
-		];
-	}
 }

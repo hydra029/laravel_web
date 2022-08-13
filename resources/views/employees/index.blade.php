@@ -6,6 +6,10 @@
             width: 90px;
         }
 
+        button:disabled {
+            cursor: not-allowed !important;
+        }
+
         table {
             text-align: center;
         }
@@ -34,7 +38,7 @@
 					<p>{{$each->shift_name}}</p>
 				</td>
 				<td>
-					<p data-value="{{$each->in_start}}">{{$each->in_start}}</p>
+					<p>{{$each->in_start}}</p>
 				</td>
 				<td>
 					<p>{{$each->in_end}}</p>
@@ -94,18 +98,18 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            let in_start_1  = $('table tr:nth-child(1) td:nth-child(2)').text().replace(/[^\d:]*/,'');
-            let in_start_2  = $('table tr:nth-child(2) td:nth-child(2)').text().replace(/[^\d:]*/,'');
-            let in_start_3  = $('table tr:nth-child(3) td:nth-child(2)').text().replace(/[^\d:]*/,'');
-            let in_end_1    = $('table tr:nth-child(1) td:nth-child(5)').text().replace(/[^\d:]*/,'');
-            let in_end_2    = $('table tr:nth-child(2) td:nth-child(5)').text().replace(/[^\d:]*/,'');
-            let in_end_3    = $('table tr:nth-child(3) td:nth-child(5)').text().replace(/[^\d:]*/,'');
-            let out_start_1 = $('table tr:nth-child(1) td:nth-child(6)').text().replace(/[^\d:]*/,'');
-            let out_start_2 = $('table tr:nth-child(2) td:nth-child(6)').text().replace(/[^\d:]*/,'');
-            let out_start_3 = $('table tr:nth-child(3) td:nth-child(6)').text().replace(/[^\d:]*/,'');
-            let out_end_1   = $('table tr:nth-child(1) td:nth-child(9)').text().replace(/[^\d:]*/,'');
-            let out_end_2   = $('table tr:nth-child(2) td:nth-child(9)').text().replace(/[^\d:]*/,'');
-            let out_end_3   = $('table tr:nth-child(3) td:nth-child(9)').text().replace(/[^\d:]*/,'');
+            let in_start_1  = $('table tr:nth-child(1) td:nth-child(2)').text().replace(/[^\d:]*/, '');
+            let in_start_2  = $('table tr:nth-child(2) td:nth-child(2)').text().replace(/[^\d:]*/, '');
+            let in_start_3  = $('table tr:nth-child(3) td:nth-child(2)').text().replace(/[^\d:]*/, '');
+            let in_end_1    = $('table tr:nth-child(1) td:nth-child(5)').text().replace(/[^\d:]*/, '');
+            let in_end_2    = $('table tr:nth-child(2) td:nth-child(5)').text().replace(/[^\d:]*/, '');
+            let in_end_3    = $('table tr:nth-child(3) td:nth-child(5)').text().replace(/[^\d:]*/, '');
+            let out_start_1 = $('table tr:nth-child(1) td:nth-child(6)').text().replace(/[^\d:]*/, '');
+            let out_start_2 = $('table tr:nth-child(2) td:nth-child(6)').text().replace(/[^\d:]*/, '');
+            let out_start_3 = $('table tr:nth-child(3) td:nth-child(6)').text().replace(/[^\d:]*/, '');
+            let out_end_1   = $('table tr:nth-child(1) td:nth-child(9)').text().replace(/[^\d:]*/, '');
+            let out_end_2   = $('table tr:nth-child(2) td:nth-child(9)').text().replace(/[^\d:]*/, '');
+            let out_end_3   = $('table tr:nth-child(3) td:nth-child(9)').text().replace(/[^\d:]*/, '');
             let time        = moment().format('HH:mm');
             if (time <= in_end_1 && time >= in_start_1 || time <= in_end_2 && time >= in_start_2 || time <= in_end_3 && time >= in_start_3) {
                 check_in.removeAttr('disabled');
@@ -113,6 +117,59 @@
             if (time <= out_end_1 && time >= out_start_1 || time <= out_end_2 && time >= out_start_2 || time <= out_end_3 && time >= out_start_3) {
                 check_out.removeAttr('disabled');
             }
+            let date = moment().format('YYYY-MM-DD');
+            $.ajax({
+                url     : "{{ route('employees.history_api') }}",
+                type    : 'POST',
+                dataType: 'JSON',
+                data    : {
+                    f: date,
+                    l: date
+                },
+            })
+                .done(function (response) {
+                    let time        = moment().format('HH:mm');
+                    let len         = response[1].length;
+                    let in_shift, out_shift    = 0;
+                    let shift    = 0;
+                    let checkin  = '';
+                    let checkout = '';
+                    if (time >= in_start_1 && time <= in_end_1) {
+                        in_shift = 1;
+                    }
+                    if (time >= in_start_2 && time <= in_end_2) {
+                        in_shift = 2;
+                    }
+                    if (time >= in_start_3 && time <= in_end_3) {
+                        in_shift = 3;
+                    }
+                    if (time >= out_start_1 && time <= out_end_1) {
+                        out_shift = 1;
+                    }
+                    if (time >= out_start_2 && time <= out_end_2) {
+                        out_shift = 2;
+                    }
+                    if (time >= out_start_3 && time <= out_end_3) {
+                        out_shift = 3;
+                    }
+
+                    for (let i = 0; i < len; i++) {
+                        let shift = response[1][i]['shift'];
+                        if (shift === in_shift) {
+                            checkin  = response[1][i]['check_in'];
+                        }
+                        if (shift === out_shift) {
+                            checkout = response[1][i]['check_out'];
+                            console.log(check_out);
+                        }
+                    }
+                    if(checkin === 0 || checkin === null) {
+                        check_in.prop(disabled, true);
+                    }
+                    if(checkout === 0 || checkout === null) {
+                        check_out.prop(disabled, true);
+                    }
+                });
             check_in.click(function () {
                 let time = moment().format('HH:mm');
                 $.ajax({
@@ -134,8 +191,8 @@
                     data    : {time: time},
                 })
                     .done(function () {
-                        check_in.prop(disabled, true);
-                    });
+                        check_out.prop(disabled, true);
+                    })
             })
         })
 	</script>
