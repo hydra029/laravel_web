@@ -48,24 +48,69 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read Collection|Manager[] $mgr
  * @property-read int|null $mgr_count
  * @property-read int|null $pay_rate_count
+ * @property float $over_work_day
+ * @property int $late_1
+ * @property int $late_2
+ * @property int $early_1
+ * @property int $early_2
+ * @property int $miss
+ * @property int $deduction
+ * @property int|null $sign
+ * @property string|null $created_at
+ * @property string|null $updated_at
+ * @method static Builder|Salary whereCreatedAt($value)
+ * @method static Builder|Salary whereDeduction($value)
+ * @method static Builder|Salary whereEarly1($value)
+ * @method static Builder|Salary whereEarly2($value)
+ * @method static Builder|Salary whereLate1($value)
+ * @method static Builder|Salary whereLate2($value)
+ * @method static Builder|Salary whereMiss($value)
+ * @method static Builder|Salary whereOverWorkDay($value)
+ * @method static Builder|Salary whereSign($value)
+ * @method static Builder|Salary whereUpdatedAt($value)
  */
 class Salary extends Model
 {
-    use HasFactory;
-	public $timestamps = false;
+	use HasFactory;
+
+	public    $timestamps = false;
+	protected $fillable   = [
+		'emp_id',
+		'role_name',
+		'dept_name',
+		'role_id',
+		'work_day',
+		'over_work_day',
+		'miss',
+		'early_1',
+		'early_2',
+		'late_1',
+		'late_2',
+		'month',
+		'year',
+		'deduction',
+		'pay_rate',
+		'salary',
+		'mgr_id',
+		'acct_id',
+		'sign',
+	];
 
 	public function emp(): HasMany
 	{
-		return $this->hasMany(Employee::class, 'id' ,'emp_id');
+		return $this->hasMany(Employee::class, 'id', 'emp_id');
 	}
+
 	public function mgr(): HasMany
 	{
 		return $this->hasMany(Manager::class, 'mgr_id');
 	}
+
 	public function acct(): HasMany
 	{
 		return $this->hasMany(Accountant::class, 'acct_id');
 	}
+
 	public function pay_rate(): HasMany
 	{
 		return $this->hasMany(Role::class, 'pay_rate');

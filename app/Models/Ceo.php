@@ -36,6 +36,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin Eloquent
  * @property-read Department|null $department
  * @property-read Role|null $role
+ * @property string $city
+ * @property string $district
+ * @property string $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read string $address
+ * @property-read string $age
+ * @property-read string $date
+ * @property-read string $date_of_birth
+ * @property-read string $full_name
+ * @property-read string $gender_name
+ * @property-read string $role_name
+ * @method static \Illuminate\Database\Query\Builder|Ceo onlyTrashed()
+ * @method static Builder|Ceo whereAvatar($value)
+ * @method static Builder|Ceo whereCity($value)
+ * @method static Builder|Ceo whereCreatedAt($value)
+ * @method static Builder|Ceo whereDeletedAt($value)
+ * @method static Builder|Ceo whereDistrict($value)
+ * @method static Builder|Ceo wherePhone($value)
+ * @method static Builder|Ceo whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Ceo withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Ceo withoutTrashed()
  */
 class Ceo extends Model
 {

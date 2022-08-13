@@ -105,35 +105,12 @@ class CeoController extends Controller
 
 	public function time_change(Request $request)
 	{
-		$id          = $request->get('id');
-		$in_start    = $request->get('in_start');
-		$in_end      = $request->get('in_end');
-		$in_late_1   = $request->get('in_late_1');
-		$in_late_2   = $request->get('in_late_2');
-		$out_early_1 = $request->get('out_early_1');
-		$out_early_2 = $request->get('out_early_2');
-		$out_start   = $request->get('out_start');
-		$out_end     = $request->get('out_end');
-		AttendanceShiftTime::whereId($id)
-			->update([
-				         'check_in_start'    => $in_start,
-				         'check_in_end'      => $in_end,
-				         'check_in_late_1'   => $in_late_1,
-				         'check_in_late_2'   => $in_late_2,
-				         'check_out_early_1' => $out_early_1,
-				         'check_out_early_2' => $out_early_2,
-				         'check_out_start'   => $out_start,
-				         'check_out_end'     => $out_end,
-			         ]);
-		session()->flash('noti', [
-			'heading' => 'Action successfully',
-			'text'    => 'You\'ve changed the shift\'s time successfully',
-			'icon'    => 'success',
-		]);
-		if ($id === 1) {
-
+		$time = AttendanceShiftTime::where('id','=',$request->get('id'))->first();
+		if ($time) {
+			$time->fill($request->all());
+			$time->save();
 		}
-		return AttendanceShiftTime::whereId($id)->get();
+		return $time;
 	}
 
 	public function employee_attendance(): Renderable
@@ -158,7 +135,7 @@ class CeoController extends Controller
 				]
 			)
 				->whereNull('deleted_at')
-				->whereDeptId($dept_id)
+				->where('dept_id','=',$dept_id)
 				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
 			$data[] = Accountant::with(
 				[
@@ -182,7 +159,7 @@ class CeoController extends Controller
 				]
 			)
 				->whereNull('deleted_at')
-				->whereDeptId($dept_id)
+				->where('dept_id','=',$dept_id)
 				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
 			$data[] = Employee::with(
 				[
@@ -194,7 +171,7 @@ class CeoController extends Controller
 				]
 			)
 				->whereNull('deleted_at')
-				->whereDeptId($dept_id)
+				->where('dept_id','=',$dept_id)
 				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
 		}
 		return $data;

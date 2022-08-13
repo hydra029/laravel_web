@@ -42,6 +42,37 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  * @property-read \App\Models\Department|null $department
  * @property-read \App\Models\Role|null $role
+ * @property string $city
+ * @property string $district
+ * @property string $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attendance[] $attendance
+ * @property-read int|null $attendance_count
+ * @property-read \App\Models\Department $departments
+ * @property-read string $address
+ * @property-read string $age
+ * @property-read string $check1
+ * @property-read string $check2
+ * @property-read string $check3
+ * @property-read string $date
+ * @property-read string $date_of_birth
+ * @property-read string $full_name
+ * @property-read string $gender_name
+ * @property-read string $role_name
+ * @property-read string $shift_status
+ * @property-read \App\Models\Role $roles
+ * @method static \Illuminate\Database\Query\Builder|Accountant onlyTrashed()
+ * @method static Builder|Accountant whereAvatar($value)
+ * @method static Builder|Accountant whereCity($value)
+ * @method static Builder|Accountant whereCreatedAt($value)
+ * @method static Builder|Accountant whereDeletedAt($value)
+ * @method static Builder|Accountant whereDistrict($value)
+ * @method static Builder|Accountant wherePhone($value)
+ * @method static Builder|Accountant whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Accountant withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Accountant withoutTrashed()
  */
 class Accountant extends Model
 {

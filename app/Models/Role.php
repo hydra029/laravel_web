@@ -27,6 +27,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string $pay_rate_money
  * @method static Builder|Role whereDeptId($value)
  * @method static Builder|Role wherePayRate($value)
+ * @property string|null $deleted_at
+ * @property-read \App\Models\Department $departments
+ * @method static Builder|Role whereDeletedAt($value)
  */
 class Role extends Model
 {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AttendanceShiftTime;
 use Illuminate\Http\Response;
-use App\Http\Requests\StoreAttendanceShiftTimeRequest;
+use App\Http\Requests\AttendanceRequest;
 use App\Http\Requests\UpdateAttendanceShiftTimeRequest;
 
 class AttendanceShiftTimeController extends Controller
@@ -32,10 +32,10 @@ class AttendanceShiftTimeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreAttendanceShiftTimeRequest $request
+     * @param AttendanceRequest $request
      * @return Response
      */
-    public function store(StoreAttendanceShiftTimeRequest $request)
+    public function store(AttendanceRequest $request)
     {
         //
     }

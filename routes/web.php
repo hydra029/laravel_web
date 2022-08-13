@@ -12,17 +12,6 @@ use App\Http\Controllers\RoleController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/test', [HomeController::class, 'test'])->name('test');
 Route::post('/test', [HomeController::class, 'api'])->name('api');
 Route::get('/test/department_api', [HomeController::class, 'department_api'])->name('department_api');
@@ -49,6 +38,7 @@ Route::post('/managers/attendance_api', [ManagerController::class, 'attendance_a
 Route::post('/managers/emp_attendance_api', [ManagerController::class, 'emp_attendance_api'])->name('managers.emp_attendance_api');
 Route::post('/managers/salary_api', [ManagerController::class, 'salary_api'])->name('managers.salary_api');
 Route::get('/managers/salary', [ManagerController::class, 'salary'])->name('managers.salary');
+Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->name('managers.assignment');
 
 Route::put('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::put('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');

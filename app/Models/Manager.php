@@ -46,6 +46,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\Models\Department|null $department
  * @property-read string $date_of_birth
  * @property-read \App\Models\Role|null $role
+ * @property string $city
+ * @property string $district
+ * @property string $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attendance[] $attendance
+ * @property-read int|null $attendance_count
+ * @property-read \App\Models\Department $departments
+ * @property-read string $address
+ * @property-read \App\Models\Role $roles
+ * @method static \Illuminate\Database\Query\Builder|Manager onlyTrashed()
+ * @method static Builder|Manager whereAvatar($value)
+ * @method static Builder|Manager whereCity($value)
+ * @method static Builder|Manager whereCreatedAt($value)
+ * @method static Builder|Manager whereDeletedAt($value)
+ * @method static Builder|Manager whereDistrict($value)
+ * @method static Builder|Manager wherePhone($value)
+ * @method static Builder|Manager whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Manager withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Manager withoutTrashed()
  */
 class Manager extends Model
 {
