@@ -32,20 +32,9 @@ class LoginRequest extends FormRequest
 			'password' => [
 				'required',
 				'string',
-				'min:8',
+//				'min:8',
 				'max:255',
 			],
-		];
-	}
-
-	public function messages(): array
-	{
-		return [
-			'password' => session()->flash('noti', [
-				'heading' => 'Your password format is incorrect !',
-				'text'    => 'Password is between 8 and 255 characters long.',
-				'icon'    => 'error',
-			]),
 		];
 	}
 }

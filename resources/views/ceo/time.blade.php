@@ -207,6 +207,15 @@
                             });
 
                         })
+	                    .fail(function () {
+                            $.toast({
+                                heading  : 'Something went wrong',
+                                text     : "Your time input format is incorrect",
+                                icon     : 'success',
+                                position : 'top-right',
+                                hideAfter: 2000,
+                            });
+	                    })
                 } else {
                     $.toast({
                         heading  : 'Something went wrong',

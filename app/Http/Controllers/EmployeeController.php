@@ -1,9 +1,11 @@
 <?php
+/** @noinspection NullPointerExceptionInspection */
 
 namespace App\Http\Controllers;
 
 use App\Enums\EmpRoleEnum;
 use App\Enums\ShiftStatusEnum;
+use App\Http\Requests\AttendanceRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Accountant;
@@ -82,35 +84,114 @@ class EmployeeController extends Controller
 		return $arr;
 	}
 
-	public function checkin(Request $request): RedirectResponse
+	public function checkin(AttendanceRequest $request): int
 	{
-		Attendance::query()
+		$time        = date('H:i');
+		$shift1      = AttendanceShiftTime::where('id', '=', 1)->first();
+		$shift2      = AttendanceShiftTime::where('id', '=', 2)->first();
+		$shift3      = AttendanceShiftTime::where('id', '=', 3)->first();
+		$in_start_1  = $shift1->check_in_start;
+		$in_start_2  = $shift2->check_in_start;
+		$in_start_3  = $shift3->check_in_start;
+		$in_end_1    = $shift1->check_in_late_2;
+		$in_end_2    = $shift2->check_in_late_2;
+		$in_end_3    = $shift3->check_in_late_2;
+		$shift       = 0;
+		$attendance  = Attendance::query()
 			->where('emp_id', '=', session('id'))
 			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
 			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $request->get('shift'))
-			->update(['check_in' => date('H:i')]);
+			->where('shift', '=', $shift)
+			->first();
+		if ($time >= $in_start_1 && $time <= $in_end_1) {
+			$shift = 1;
+		}
+		if ($time >= $in_start_2 && $time <= $in_end_2) {
+			$shift = 2;
+		}
+		if ($time >= $in_start_3 && $time <= $in_end_3) {
+			$shift = 3;
+		}
+		if ($attendance) {
+			Attendance::query()
+				->where('emp_id', '=', session('id'))
+				->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
+				->where('date', '=', date('Y-m-d'))
+				->where('shift', '=', $shift)
+				->update(['check_in' => $time]);
+		} else {
+			Attendance::query()
+				->insert(
+					[
+						'date'     => date('Y-m-d'),
+						'emp_id'   => session('id'),
+						'emp_role' => EmpRoleEnum::EMPLOYEE,
+						'shift'    => $shift,
+						'check_in' => $time,
+					]
+				);
+		}
 		session()->flash('noti', [
 			'heading' => 'Check in successfully',
-			'text'    => 'You\'ve checked in shift ' . $request->get('shift') . ' successfully',
+			'text'    => 'You\'ve checked in successfully',
 			'icon'    => 'success',
 		]);
-		return redirect()->route('employees.index');
+		return 1;
 	}
 
-	public function checkout(Request $request): RedirectResponse
+	public function checkout(AttendanceRequest $request): int
 	{
-		Attendance::where('emp_id', '=', session('id'))
+		$time        = date('H:i');
+		$shift1      = AttendanceShiftTime::where('id', '=', 1)->first();
+		$shift2      = AttendanceShiftTime::where('id', '=', 2)->first();
+		$shift3      = AttendanceShiftTime::where('id', '=', 3)->first();
+		$out_start_1 = $shift1->check_out_early_1;
+		$out_start_2 = $shift2->check_out_early_1;
+		$out_start_3 = $shift3->check_out_early_1;
+		$out_end_1   = $shift1->check_out_end;
+		$out_end_2   = $shift2->check_out_end;
+		$out_end_3   = $shift3->check_out_end;
+		$shift       = 0;
+		$attendance  = Attendance::query()
+			->where('emp_id', '=', session('id'))
 			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
 			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $request->get('shift'))
-			->update(['check_out' => date('H:i')]);
+			->where('shift', '=', $shift)
+			->first();
+		if ($time >= $out_start_1 && $time <= $out_end_1) {
+			$shift = 1;
+		}
+		if ($time >= $out_start_2 && $time <= $out_end_2) {
+			$shift = 2;
+		}
+		if ($time >= $out_start_3 && $time <= $out_end_3) {
+			$shift = 3;
+		}
+		if ($attendance) {
+			Attendance::query()
+				->where('emp_id', '=', session('id'))
+				->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
+				->where('date', '=', date('Y-m-d'))
+				->where('shift', '=', $shift)
+				->update(['check_out' => $time]);
+		} else {
+			Attendance::query()
+				->insert(
+					[
+						'date'     => date('Y-m-d'),
+						'emp_id'   => session('id'),
+						'emp_role' => EmpRoleEnum::EMPLOYEE,
+						'shift'    => $shift,
+						'check_out' => $time,
+					]
+				);
+		}
 		session()->flash('noti', [
 			'heading' => 'Check out successfully',
-			'text'    => 'You\'ve checked out shift ' . $request->get('shift') . ' successfully',
+			'text'    => 'You\'ve checked out successfully',
 			'icon'    => 'success',
 		]);
-		return redirect()->route('employees.index');
+		return 1;
 	}
 
 	/**

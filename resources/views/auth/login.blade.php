@@ -17,6 +17,15 @@
                     <span><img src="{{ asset('img/cc6b25538116323e310f02dc72369bd4.jpg') }}" height="20"
                                alt="Logo"></span>
 				</div>
+				@if ($errors->any())
+					<div class="alert alert-danger">
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
 				<h4 class="mt-0">Sign In</h4>
 				<p class="text-muted mb-4">Enter your email address and password to access account.</p>
 				<!-- form -->
@@ -90,8 +99,8 @@
 <script src="{{ asset('js/app.min.js' )}}"></script>
 @include('layout.notify')
 <script>
-	$(function () {
-        let email = $('#email');
+    $(function () {
+        let email    = $('#email');
         let password = $('#password');
         $.ajaxSetup({
             headers: {
@@ -100,72 +109,91 @@
         });
         email.select();
         $(this).keydown(function (e) {
-            if(e.keyCode === 9) {
+            if (e.keyCode === 9) {
                 e.preventDefault()
-	            if (email.is(':focus')) {
+                if (email.is(':focus')) {
                     password.select();
-	            } else if (password.is(':focus')){
+                } else if (password.is(':focus')) {
                     email.focus();
-	            } else {
+                } else {
                     email.focus();
-	            }
+                }
             }
         })
         $('#login-form').submit(function (e) {
             e.preventDefault()
-            let email_val = email.val();
+            let email_val    = email.val();
             let password_val = password.val();
-            let len = password_val.length;
-            console.log(len);
+            let len          = password_val.length;
             if (len < 3) {
                 $.toast({
-                    heading: 'Your password is too short!',
-                    text: 'Password is at least 8 characters.',
-                    icon: 'information',
+                    heading           : 'Your password is too short!',
+                    text              : 'Password is at least 8 characters.',
+                    icon              : 'error',
                     showHideTransition: 'slide',
-                    allowToastClose: false,
-                    hideAfter: 3000,
-                    position: 'top-right',
-                    textAlign: 'left',
-                    loader: true,
+                    allowToastClose   : false,
+                    hideAfter         : 3000,
+                    position          : 'top-right',
+                    textAlign         : 'left',
+                    loader            : true,
                 });
             } else if (len > 255) {
                 $.toast({
-                    heading: 'Your password is too long!',
-                    text: 'The supported maximum password length is 255 characters.',
-                    icon: 'information',
+                    heading           : 'Your password is too long!',
+                    text              : 'The supported maximum password length is 255 characters.',
+                    icon              : 'error',
                     showHideTransition: 'slide',
-                    allowToastClose: false,
-                    hideAfter: 3000,
-                    position: 'top-right',
-                    textAlign: 'left',
-                    loader: true,
+                    allowToastClose   : false,
+                    hideAfter         : 3000,
+                    position          : 'top-right',
+                    textAlign         : 'left',
+                    loader            : true,
                 });
             } else {
                 $.ajax({
                     url     : "{{ route('process_login') }}",
                     type    : 'POST',
                     dataType: 'JSON',
-                    data    : {"_token": "{{ csrf_token() }}",email: email_val, password: password_val},
+                    data    : {
+                        "_token": "{{ csrf_token() }}",
+                        email   : email_val,
+                        password: password_val
+                    },
                 })
-	                .done(function(response) {
+                    .done(function (response) {
                         if (response === 1) {
                             $.toast({
-                                heading: 'Email or password is incorrect!',
-                                text: 'Please enter the correct email and password.',
-                                icon: 'error',
+                                heading           : 'Wrong information!',
+                                text              : 'Please enter the correct email and password.',
+                                icon              : 'error',
                                 showHideTransition: 'slide',
-                                allowToastClose: false,
-                                hideAfter: 3000,
-                                position: 'top-right',
-                                textAlign: 'left',
-                                loader: true,
+                                allowToastClose   : false,
+                                hideAfter         : 3000,
+                                position          : 'top-right',
+                                textAlign         : 'left',
+                                loader            : true,
                             });
+                        } else {
+                            location.reload();
                         }
-	                })
+                    })
+                    .fail(function (response) {
+                        console.log(response);
+                        $.toast({
+                            heading           : 'Wrong information!',
+                            text              : 'Please enter the correct email and password format.',
+                            icon              : 'error',
+                            showHideTransition: 'slide',
+                            allowToastClose   : false,
+                            hideAfter         : 3000,
+                            position          : 'top-right',
+                            textAlign         : 'left',
+                            loader            : true,
+                        });
+                    })
             }
         })
-	})
+    })
 </script>
 </body>
 </html>

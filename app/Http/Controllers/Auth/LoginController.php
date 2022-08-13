@@ -57,11 +57,11 @@ class LoginController extends Controller
 				Employee::query()
 					->where('email', $email)
 					->update(['password' => $password]);
-				return redirect()->route('employees.index');
+				return 0;
 			}
 
 			if (Hash::check($password, $user->password)) {
-				return redirect()->route('employees.index');
+				return 0;
 			}
 
 			if (session('remember') === 0) {
@@ -94,10 +94,10 @@ class LoginController extends Controller
 				$password = Hash::make($password);
 				Manager::where('email', $email)
 					->update(['password' => $password]);
-				return redirect()->route('managers.index');
+				return 0;
 			}
 			if (Hash::check($password, $user->password)) {
-				return redirect()->route('managers.index');
+				return 0;
 			}
 			if (session('remember') === 0) {
 				session()->flush();
@@ -130,11 +130,11 @@ class LoginController extends Controller
 				Accountant::where('email', $email)
 					->update(['password' => $password]);
 
-				return redirect()->route('accountants.index');
+				return 0;
 			}
 
 			if (Hash::check($password, $user->password)) {
-				return redirect()->route('accountants.index');
+				return 0;
 			}
 
 			if (session('remember') === 0) {
@@ -164,10 +164,10 @@ class LoginController extends Controller
 				$password = Hash::make($password);
 				Ceo::where('email', $email)
 					->update(['password' => $password]);
-				return redirect()->route('ceo.index');
+				return 0;
 			}
 			if (Hash::check($password, $user->password)) {
-				return redirect()->route('ceo.index');
+				return 0;
 			}
 			if (session('remember') === 0) {
 				session()->flush();
