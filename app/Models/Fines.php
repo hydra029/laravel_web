@@ -27,6 +27,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Fines whereFines($value)
  * @method static Builder|Fines whereId($value)
  * @method static Builder|Fines whereName($value)
+ * @property string $type
+ * @method static Builder|Fines query()
+ * @method static Builder|Fines whereType($value)
  */
 
 class Fines extends Model

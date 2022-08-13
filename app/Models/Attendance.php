@@ -44,6 +44,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read Accountant|null $acct
  * @property-read string $full_name
  * @property-read Manager|null $mgr
+ * @property-read string $check_in_time
+ * @property-read string $check_out_time
+ * @property-read string $in_end
+ * @property-read string $in_start
+ * @property-read string $out_end
+ * @property-read string $out_start
+ * @property-read \App\Models\AttendanceShiftTime|null $shifts
  */
 class Attendance extends Model
 {

@@ -58,7 +58,6 @@ class AttendanceShiftTime extends Model
 
 	public $timestamps = false;
 	protected $fillable = [
-		'id',
 		'check_in_start',
 		'check_in_end',
 		'check_in_late_1',
@@ -67,7 +66,6 @@ class AttendanceShiftTime extends Model
 		'check_out_early_2',
 		'check_out_start',
 		'check_out_end',
-		'status',
 	];
 
 	public function getShiftNameAttribute(): string

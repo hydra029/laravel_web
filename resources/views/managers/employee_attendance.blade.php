@@ -2,7 +2,6 @@
 @include('managers.menu')
 @push('css')
 	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-	<link href="{{ asset('css/style.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
 	<style>
         .fc-daygrid-event {
             margin: 0;
@@ -110,6 +109,14 @@
             text-align: center;
         }
 
+        .modal-header, .modal-footer {
+            display: block;
+
+        }
+
+        .btn-modal {
+            margin: 0 10px;
+        }
 	</style>
 @endpush
 @section('content')
@@ -219,10 +226,34 @@
 	<div class="col-10 p-1">
 		<div id="calendar"></div>
 	</div>
+	<div id="success-alert-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel"
+	     aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+			<div class="modal-content modal-filled bg-success">
+				<div class="modal-header text-center">
+					<h4 class="modal-title" id="standard-modalLabel">Confirmation</h4>
+				</div>
+				<div class="modal-body p-4">
+					<div class="text-center">
+						<i class="dripicons-checkmark h1"></i>
+						<h4 class="mt-2">Be careful !!!</h4>
+						<p class="mt-3">It's your last choice ?</p>
+						<p class="mt-3"> You can't change after confirm !</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="text-center">
+						<button id="confirm" type="button" class="btn btn-primary btn-modal">Confirm</button>
+						<button id="cancel" type="button" class="btn btn-light btn-modal" data-dismiss="modal">Cancel
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 @endsection
 @push('js')
 	<script src="{{ asset('js/main.min.js' )}}"></script>
-	<script src="{{ asset('js/cute-alert.js' )}}"></script>
 	<script>
         $(document).ready(function () {
             $.ajaxSetup({
@@ -425,7 +456,7 @@
             $(".fc-prevYear-button")
                 .before($('<button>')
                     .attr({
-                        id   : 'confirm',
+                        id   : 'confirm0',
                         style: 'margin: 0 3px'
                     })
                     .addClass('btn btn-primary d-none')
@@ -439,8 +470,9 @@
                     .addClass('btn btn-primary d-none')
                     .text('Back')
                 )
-            let back    = $("#back");
-            let confirm = $("#confirm");
+            let back     = $("#back");
+            let confirm0 = $("#confirm0");
+            let confirm  = $("#confirm");
             emp();
 
             let crYear = new Date(today).toISOString().slice(0, 4);
@@ -980,12 +1012,12 @@
                                         e.push(event);
                                         num--;
                                     }
-                                    let l_date    = response[k][i]['attendance'][length - 1]['date'];
-                                    let days      = getDay(l_date);
-                                    let day       = getDay(new Date());
+                                    let l_date = response[k][i]['attendance'][length - 1]['date'];
+                                    let days   = getDay(l_date);
+                                    let day    = getDay(new Date());
                                     if (days < day) {
                                         let date = getFullDate(today);
-                                        addEvent(3,num,date,e);
+                                        addEvent(3, num, date, e);
                                         num -= 3;
                                     }
                                     let total_day = 7;
@@ -995,7 +1027,7 @@
                                     if (days < total_day) {
                                         let date = getNextDate(l_date);
                                         if (crTime === tdTime) {
-                                            total_day = days - 1;
+                                            total_day = day - days;
                                         }
                                         if (s_num === 2) {
                                             addEvent(2, num, l_date, e);
@@ -1114,13 +1146,13 @@
                             })
                                 .done(function (response) {
                                     if (response[0] !== null) {
-                                        confirm.prop('disabled', true);
-                                        confirm.removeClass('btn-primary');
-                                        confirm.addClass('btn-secondary');
+                                        confirm0.prop('disabled', true);
+                                        confirm0.removeClass('btn-primary');
+                                        confirm0.addClass('btn-secondary');
                                     } else {
-                                        confirm.prop('disabled', false);
-                                        confirm.addClass('btn-primary');
-                                        confirm.removeClass('btn-secondary');
+                                        confirm0.prop('disabled', false);
+                                        confirm0.addClass('btn-primary');
+                                        confirm0.removeClass('btn-secondary');
                                     }
                                     let shift_num    = response[1].length;
                                     let s_num        = 1;
@@ -1139,6 +1171,7 @@
                                     let WT  = S1 + S2;
                                     let WT1 = 0;
                                     let TT  = 0;
+                                    let TT1 = 0;
                                     if (shift_num > 0) {
                                         let emp_id = response[1][0]['emp_id'];
                                         for (let i = 0; i < shift_num; i++) {
@@ -1191,13 +1224,14 @@
                                             }
                                             if (d2 !== d1) {
                                                 if (sun1 === 0) {
-                                                    TT += 2 * WT1 / WT;
+                                                    TT1 += 2 * WT1 / WT;
                                                 } else {
                                                     let WTX = WT1 - WT;
                                                     if (WTX <= 0) {
                                                         TT += 1 + WTX / WT;
                                                     } else {
-                                                        TT += 1 + 1.5 * WTX / WT;
+                                                        TT1 += 1.5 * WTX / WT;
+                                                        TT += 1;
                                                     }
                                                 }
                                                 WT1 = 0;
@@ -1485,13 +1519,14 @@
                                             }
                                             if (i === shift_num - 1) {
                                                 if (sun === 0) {
-                                                    TT += 2 * WT1 / WT;
+                                                    TT1 += 2 * WT1 / WT;
                                                 } else {
                                                     let WTX = WT1 - WT;
                                                     if (WTX <= 0) {
                                                         TT += 1 + WTX / WT;
                                                     } else {
-                                                        TT += 1 + 1.5 * WTX / WT;
+                                                        TT += 1;
+                                                        TT1 += 1.5 * WTX / WT;
                                                     }
                                                 }
                                             }
@@ -1582,18 +1617,23 @@
                                                 let L1 = L11 + L12 + L13;
                                                 let L2 = L21 + L22 + L23;
                                                 let MS = MS1 + MS2 + MS3;
-                                                confirm.removeClass('d-none');
+                                                confirm0.removeClass('d-none')
+                                                    .attr({
+                                                        "data-toggle": 'modal',
+                                                        "data-target": "#success-alert-modal",
+                                                    });
                                                 confirm.attr({
-                                                    "data-id"     : emp_id,
-                                                    "data-workday": TT,
-                                                    "data-miss"   : MS,
-                                                    "data-early1" : E1,
-                                                    "data-early2" : E2,
-                                                    "data-late1"  : L1,
-                                                    "data-late2"  : L2,
-                                                    "data-dept"   : dept,
-                                                    "data-role"   : role,
-                                                    "data-role_id": role_id,
+                                                    "data-id"          : emp_id,
+                                                    "data-workday"     : TT,
+                                                    "data-over-workday": TT1,
+                                                    "data-miss"        : MS,
+                                                    "data-early1"      : E1,
+                                                    "data-early2"      : E2,
+                                                    "data-late1"       : L1,
+                                                    "data-late2"       : L2,
+                                                    "data-dept"        : dept,
+                                                    "data-role"        : role,
+                                                    "data-role_id"     : role_id,
                                                 })
                                             }
                                         }
@@ -1660,55 +1700,49 @@
             })
 
             confirm.click(function () {
-                let cf = $(this);
-                cuteAlert({
-                    type      : "success",
-                    title     : "Confirmation",
-                    message   : "Be careful !!!",
-                    buttonText: "Okay",
-                }).then((e) => {
-                    if (e === 'ok') {
-                        let m       = sl2.children(':selected').text();
-                        let y       = sl1.children(':selected').text();
-                        let ID      = cf.data('id');
-                        let role    = cf.data('role');
-                        let dept    = cf.data('dept');
-                        let role_id = cf.data('role_id');
-                        let TT      = cf.data('workday');
-                        let MS      = cf.data('miss');
-                        let E1      = cf.data('early1');
-                        let E2      = cf.data('early2');
-                        let L1      = cf.data('late1');
-                        let L2      = cf.data('late2');
-                        $.ajax({
-                            url     : '{{route('managers.salary_api')}}',
-                            type    : 'POST',
-                            dataType: 'json',
-                            data    : {
-                                ID     : ID,
-                                role   : role,
-                                dept   : dept,
-                                role_id: role_id,
-                                TT     : TT,
-                                MS     : MS,
-                                E1     : E1,
-                                E2     : E2,
-                                L1     : L1,
-                                L2     : L2,
-                                m      : m,
-                                y      : y,
-                            },
-                        })
-                        back.click();
-                    }
+                let cf      = $(this);
+                let m       = sl2.children(':selected').text();
+                let y       = sl1.children(':selected').text();
+                let id      = cf.data('id');
+                let role    = cf.data('role');
+                let dept    = cf.data('dept');
+                let role_id = cf.data('role_id');
+                let TT      = cf.data('workday');
+                let TT1     = cf.data('over-workday');
+                let MS      = cf.data('miss');
+                let E1      = cf.data('early1');
+                let E2      = cf.data('early2');
+                let L1      = cf.data('late1');
+                let L2      = cf.data('late2');
+                $.ajax({
+                    url     : '{{route('managers.salary_api')}}',
+                    type    : 'POST',
+                    dataType: 'json',
+                    data    : {
+                        emp_id       : id,
+                        role_name    : role,
+                        dept_name    : dept,
+                        role_id      : role_id,
+                        work_day     : TT,
+                        over_work_day: TT1,
+                        miss         : MS,
+                        early_1      : E1,
+                        early_2      : E2,
+                        late_1       : L1,
+                        late_2       : L2,
+                        month        : m,
+                        year         : y,
+                    },
                 })
-                $('.alert-img').attr('src', 'img/question.svg');
+                cf.removeData()
+                back.click();
+                $('#cancel').click()
             })
 
             back.click(function () {
                 calendar.changeView('dayGridWeek');
                 $('#sl-1, #sl-2, #sl-3, .fc-button').removeClass('d-none');
-                $('#back, #emp_detail, #confirm, .fc-goto-button').addClass('d-none');
+                $('#back, #emp_detail, #confirm0, .fc-goto-button').addClass('d-none');
                 $(".fc-goto-button").click();
             })
 

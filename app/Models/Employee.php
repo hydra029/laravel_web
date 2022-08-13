@@ -65,6 +65,23 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read string $date_of_birth
  * @property-read Role $roles
  * @method static Builder|Employee whereAvatar($value)
+ * @property string $city
+ * @property string $district
+ * @property string $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read string $address
+ * @property-read string $role_name
+ * @method static \Illuminate\Database\Query\Builder|Employee onlyTrashed()
+ * @method static Builder|Employee whereCity($value)
+ * @method static Builder|Employee whereCreatedAt($value)
+ * @method static Builder|Employee whereDeletedAt($value)
+ * @method static Builder|Employee whereDistrict($value)
+ * @method static Builder|Employee wherePhone($value)
+ * @method static Builder|Employee whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Employee withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Employee withoutTrashed()
  */
 class Employee extends Model
 {

@@ -1021,7 +1021,7 @@
                                     if (days < total_day) {
                                         let date = getNextDate(l_date);
                                         if (crTime === tdTime) {
-                                            total_day = days - 1;
+                                            total_day = day - days;
                                         }
                                         if (s_num === 2) {
                                             addEvent(2, num, l_date, e);

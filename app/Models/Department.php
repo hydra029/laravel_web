@@ -28,6 +28,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Manager|null $manager
  * @property-read Employee|null $members
  * @property-read Role|null $roles
+ * @property string|null $created_at
+ * @property string|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read int|null $members_count
+ * @property-read int|null $roles_count
+ * @method static \Illuminate\Database\Query\Builder|Department onlyTrashed()
+ * @method static Builder|Department whereCreatedAt($value)
+ * @method static Builder|Department whereDeletedAt($value)
+ * @method static Builder|Department whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Department withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Department withoutTrashed()
  */
 class Department extends Model
 {

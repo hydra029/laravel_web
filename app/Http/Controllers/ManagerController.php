@@ -233,7 +233,6 @@ class ManagerController extends Controller
 		return view('managers.attendance_history');
 	}
 
-
 	public function employee_attendance(): Renderable
 	{
 		return view('managers.employee_attendance');
@@ -241,8 +240,8 @@ class ManagerController extends Controller
 
 	public function history_api(Request $request): array
 	{
-		$f = $request->f;
-		$l = $request->l;
+		$f     = $request->f;
+		$l     = $request->l;
 		$arr[] = AttendanceShiftTime::get();
 		$arr[] = Attendance::query()
 			->where('date', '<=', $l)
@@ -315,8 +314,8 @@ class ManagerController extends Controller
 	public function emp_attendance_api(Request $request): array
 	{
 		$emp_id   = $request->get('id');
-		$dept  = $request->get('dept');
-		$role  = $request->get('role');
+		$dept     = $request->get('dept');
+		$role     = $request->get('role');
 		$month    = date('m', strtotime('last month'));
 		$year     = date('Y', strtotime('last month'));
 		$data[]   = Salary::query()
@@ -326,9 +325,9 @@ class ManagerController extends Controller
 			->where('month', '=', $month)
 			->where('year', '=', $year)
 			->first();
-		$date = $request->get('date');
+		$date     = $request->get('date');
 		$emp_role = $request->get('emp_role');
-		$data[] = Attendance::query()
+		$data[]   = Attendance::query()
 			->where('date', 'like', "%$date%")
 			->where('emp_role', '=', $emp_role)
 			->where('emp_id', '=', $emp_id)
@@ -368,23 +367,19 @@ class ManagerController extends Controller
 		return redirect()->route('managers.index');
 	}
 
-	public function salary_api(Request $request)
+	public function salary_api(Request $request): void
 	{
-		$emp_id    = $request->get('ID');
-		$role_id   = $request->get('role_id');
-		$role_name = $request->get('role');
-		$dept_name = $request->get('dept');
-		$work_day  = $request->get('TT');
-		$miss      = $request->get('MS');
-		$E1        = $request->get('E1');
-		$E2        = $request->get('E2');
-		$L1        = $request->get('L1');
-		$L2        = $request->get('L2');
-		$month     = $request->get('m');
-		$year      = $request->get('y');
-		$mgr_id    = session('id');
-		$pay_rate  = 0;
-		$pay_rates = Role::query()
+		$role_id       = $request->get('role_id');
+		$miss          = $request->get('miss');
+		$E1            = $request->get('early_1');
+		$E2            = $request->get('early_2');
+		$L1            = $request->get('late_1');
+		$L2            = $request->get('late_2');
+		$over_work_day = $request->get('over_work_day');
+		$work_day      = $request->get('work_day');
+		$mgr_id        = session('id');
+		$pay_rate      = 0;
+		$pay_rates     = Role::query()
 			->where('id', '=', $role_id)
 			->first('pay_rate');
 		if ($pay_rates) {
@@ -397,27 +392,27 @@ class ManagerController extends Controller
 		$fine_L2   = $fines['L2'];
 		$fine_MS   = $fines['MS'];
 		$deduction = $E1 * $fine_E1 + $E2 * $fine_E2 + $L1 * $fine_L1 + $L2 * $fine_L2 + $miss * $fine_MS;
-		$salary    = $work_day * $pay_rate / 26;
-		Salary::insert(
-			[
-				'emp_id'    => $emp_id,
-				'month'     => $month,
-				'year'      => $year,
-				'role_name' => $role_name,
-				'dept_name' => $dept_name,
-				'work_day'  => $work_day,
-				'pay_rate'  => $pay_rate,
-				'deduction' => $deduction,
-				'salary'    => $salary,
-				'mgr_id'    => $mgr_id,
-			]
-		);
-		//		return [$emp_id, $role_name, $dept_name, $work_day, number_format($pay_rate), number_format($deduction), $E1, $E2, $L1, $L2, $miss, number_format((int)$salary)];
+
+		$salary    = ($work_day + $over_work_day) * $pay_rate / 26 - $deduction;
+		$data      = new Salary;
+		$data->fill($request->except('role_id'));
+		$data->deduction = $deduction;
+		$data->salary    = $salary;
+		$data->mgr_id    = $mgr_id;
+		$data->pay_rate  = $pay_rate;
+		$data->save();
+//		return [$emp_id, $role_name, $dept_name, $work_day, number_format($pay_rate), number_format($deduction), $E1, $E2, $L1, $L2, $miss, number_format((int)$salary)];
+
 	}
 
 	public function salary()
 	{
 		return view('managers.salary');
+	}
+
+	public function assignment()
+	{
+		return view('managers.assignment');
 	}
 
 	/**
