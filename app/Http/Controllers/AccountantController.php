@@ -9,7 +9,9 @@ use App\Http\Requests\UpdateAccountantRequest;
 use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
+use App\Models\Fines;
 use App\Models\Manager;
+use App\Models\Salary;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -105,6 +107,39 @@ class AccountantController extends Controller
         ]);
 
         return redirect()->route('accountants.index');
+    }
+
+    public function salary_api(Request $request)
+    {
+        $month = $request->month;
+        $year = $request->year;
+        $salary = Salary::query()->with('emp')
+        ->where('month', $month)
+        ->where('year', $year)
+        ->get()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day']);
+        return $salary;
+    }
+
+    public function salary_detail(Request $request)
+    {
+        $id = $request->id;
+        $dept_name = $request->dept_name;
+        $role_name = $request->role_name;
+        $month = $request->month;
+        $year = $request->year;
+        $fines = Fines::query()->get()->append('deduction_detail');
+        $salary = Salary::query()->with('emp')
+        ->where('emp_id', $id)
+        ->where('month', $month)
+        ->where('year', $year)
+        ->where('dept_name', $dept_name)
+        ->where('role_name', $role_name)
+        ->first()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
+        $arr['salary'] = $salary;
+        $arr['fines'] = $fines;
+        return $arr;
     }
 	/**
      * Show the form for creating a new resource.

@@ -5,30 +5,6 @@
         <link rel="stylesheet" type="text/css"
             href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <style>
-            .div-change-page {
-                width: 200px;
-                top: -40px
-            }
-
-            .div-change-page .change-page {
-                background-color: rgb(234, 226, 226);
-                width: 100px;
-                margin-bottom: 10px;
-                border: 1px rgb(242, 199, 199) solid;
-                cursor: pointer;
-            }
-
-            .div-change-page .change-page span {
-                line-height: 30px
-            }
-
-            .btn-add-pay-rate,
-            .btn-add-fines {
-                margin-left: 48%;
-                margin-top: 10px;
-            }
-        </style>
     @endpush
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -41,19 +17,19 @@
     @endif
 
     <div class="fines col-12">
-        <div class="col-12 p-2 border border-1 border-light bg-dark text-white ">
+        <div class="col-12 p-2 border border-1 border-light">
             <div >
                 <h4 class="tittle-pay-rate ">Fines</h4>
             </div>
         </div>
-        <div class="col-12 p-2 border border-1 border-light fines-details">
+        <div class="col-12 p-2 border border-0 border-light fines-details">
             <table class="table table-striped table-bordered">
                 <thead>
                     <th>#</th>
                     <th>Name</th>
                     <th>Fines</th>
                     <th>Deduction</th>
-                    <th>Action</th>
+                    <th class="text-center">Action</th>
                 </thead>
                 <tbody class="roles_list_body">
 
@@ -86,9 +62,10 @@
                         <input type="text" class="inp-deduction d-none"  name="deduction"  pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"  data-type="currency"  value="{{ $each->deduction }}">
                         </td>
                         <td class="col-2">
-                        <div class="">
-                        <button type="button" class="btn btn-change-fines btn-primary">Change</button>
-                        <button type="button" class="btn btn-submit-change-fines btn-primary d-none">Save</button>
+                        <div align="center">
+                        <i type="button" class="btn-change-fines fa-solid fa-pen btn-edit-role text-warning"></i>
+                        <i class="fa-solid btn-submit-change-fines fa-circle-check text-success d-none"></i>
+                        <i class="fa-solid btn-cancel-change-fines fa-circle-xmark text-danger d-none"></i>
                         </div>
                         </td>
                     </form>
@@ -97,31 +74,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="div-inp-add-fines d-none">
-            <form action="{{ route('ceo.fines_store') }}" method="post">
-                @csrf
-                <table  class="table">
-                   <tr>
-                       <td>
-                           <span>Name : </span>
-                           <input type="text" name="name" class="input-fines-name">
-                       </td>
-                       <td>
-                           <span>Fines : </span>
-                           <input type="text" name="fines" class="input-fines">
-                       </td>
-                       <td>
-                           <span>Deduction : </span>
-                           <input type="text" name="deduction" class="input-fines-deduction" >
-                       </td>
-                       <td>
-                           <button type="submit" name="" class="btn-save-add-fines btn btn-primary" >save</button>
-                       </td>
-                   </tr>
-                </table>
-            </form>
-        </div>
-        <div class="btn btn-add-fines btn-success "><i class="fa-solid fa-circle-plus"></i> Add</div>
     </div>
 @endsection
 @push('js')
@@ -134,10 +86,10 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('.title-name').text(' > Fines');
             $('.btn-change-fines').click(function(event) {
                 $(this).addClass('d-none');
                 $(this).parents('tr').find('.btn-submit-change-fines').removeClass('d-none');
+                $(this).parents('tr').find('.btn-cancel-change-fines').removeClass('d-none');
                 $(this).parents('tr').find('.inp-deduction').removeClass('d-none');
                 $(this).parents('tr').find('.inp-fines-name').removeClass('d-none');
                 $(this).parents('tr').find('.inp-fines-time').removeClass('d-none');
@@ -145,10 +97,22 @@
                 $(this).parents('tr').find('.fines_name').addClass('d-none');
                 $(this).parents('tr').find('.deduction_detail').addClass('d-none');
             });
+            $('.btn-cancel-change-fines').click(function(event) {
+                $(this).addClass('d-none');
+                $(this).parents('tr').find('.btn-submit-change-fines').addClass('d-none');
+                $(this).parents('tr').find('.btn-change-fines').removeClass('d-none');
+                $(this).parents('tr').find('.inp-deduction').addClass('d-none');
+                $(this).parents('tr').find('.inp-fines-name').addClass('d-none');
+                $(this).parents('tr').find('.inp-fines-time').addClass('d-none');
+                $(this).parents('tr').find('.fines_time').removeClass('d-none');
+                $(this).parents('tr').find('.fines_name').removeClass('d-none');
+                $(this).parents('tr').find('.deduction_detail').removeClass('d-none');
+            });
             $('.btn-submit-change-fines').click(function(event) {
                 var this_btn = $(this);
                 var id = $(this).parents('tr').find('.inp-fines-id').val();
-                var deduction = $(this).parents('tr').find('.inp-deduction').val();
+                var deduction_val = $(this).parents('tr').find('.inp-deduction').val();
+                var deduction = deduction_val.replace(/[^0-9\.]+/g, "");
                 var name = $(this).parents('tr').find('.inp-fines-name').val();
                 var fines = $(this).parents('tr').find('.inp-fines-time').val();
                 $.ajax({
@@ -165,6 +129,7 @@
                         console.log('2');
                         this_btn.parents('tr').find('.btn-change-fines').removeClass('d-none');
                         this_btn.addClass('d-none');
+                        this_btn.parents('tr').find('.btn-cancel-change-fines').addClass('d-none');
                         this_btn.parents('tr').find('.inp-deduction').addClass('d-none');
                         this_btn.parents('tr').find('.inp-fines-name').addClass('d-none');
                         this_btn.parents('tr').find('.inp-fines-time').addClass('d-none');
@@ -178,84 +143,38 @@
                     }
                 })
              });
-            $('.btn-add-fines').click(function(){
-                $(this).addClass('d-none');
-                $('.div-inp-add-fines').removeClass('d-none');
+            var currencyInput = document.querySelector('input[data-type="currency"]')
+            var currency = 'VND'; // https://www.currency-iso.org/dam/downloads/lists/list_one.xml
 
-            })
-            $("input[data-type='currency']").on({
-                keyup: function() {
-                formatCurrency($(this));
-                },
-            });
-
-            function formatNumber(n) {
-                // format number 1000000 to 1,234,567
-                return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
+            // format inital value
+            onBlur({target:currencyInput})
+            currencyInput.addEventListener('focus', onFocus)
+            currencyInput.addEventListener('blur', onBlur)
 
 
-                function formatCurrency(input) {
-                // appends $ to value, validates decimal side
-                // and puts cursor back in right position.
+            function localStringToNumber( s ){
+            return Number(String(s).replace(/[^0-9.-]+/g,""))
+            }
 
-                // get input value
-                var input_val = input.val();
+            function onFocus(e){
+            var value = e.target.value;
+            e.target.value = value ? localStringToNumber(value) : ''
+            }
 
-                // don't validate empty input
-                if (input_val === "") { return; }
+            function onBlur(e){
+            var value = e.target.value
 
-                // original length
-                var original_len = input_val.length;
-
-                // initial caret position
-                var caret_pos = input.prop("selectionStart");
-
-                // check for decimal
-                if (input_val.indexOf(".") >= 0) {
-
-                    // get position of first decimal
-                    // this prevents multiple decimals from
-                    // being entered
-                    var decimal_pos = input_val.indexOf(".");
-
-                    // split number by decimal point
-                    var left_side = input_val.substring(0, decimal_pos);
-                    var right_side = input_val.substring(decimal_pos);
-
-                    // add commas to left side of number
-                    left_side = formatNumber(left_side);
-
-                    // validate right side
-                    right_side = formatNumber(right_side);
-
-                    // On blur make sure 2 numbers after decimal
-
-
-                    // Limit decimal to only 2 digits
-                    right_side = right_side.substring(0, 2);
-
-                    // join number by .
-                    input_val = left_side + "." + right_side + "VND";
-
-                } else {
-                    // no decimal entered
-                    // add commas to number
-                    // remove all non-digits
-                    input_val = formatNumber(input_val);
-                    input_val = input_val + "VND";
-
-                }
-
-                // send updated string to input
-                input.val(input_val);
-
-                // put caret back in the right position
-                var updated_len = input_val.length;
-                caret_pos = updated_len - original_len + caret_pos;
-                input[0].setSelectionRange(caret_pos, caret_pos);
-                }
-
+            var options = {
+                maximumFractionDigits : 2,
+                currency              : currency,
+                style                 : "currency",
+                currencyDisplay       : "symbol"
+            }
+            
+            e.target.value = (value || value === 0) 
+                ? localStringToNumber(value).toLocaleString(undefined, options)
+                : ''
+            }
         });
     </script>
 @endpush

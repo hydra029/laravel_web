@@ -5,10 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Salary;
 use App\Http\Requests\StoreSalaryRequest;
 use App\Http\Requests\UpdateSalaryRequest;
+use App\Models\Fines;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
+use Yajra\DataTables\DataTables;
+use Illuminate\Database\Eloquent\Builder;
 class SalaryController extends Controller
 {
+    public function __construct()
+	{
+		$this->model = Salary::query();
+		$routeName   = Route::currentRouteName();
+		$arr         = explode('.', $routeName);
+		$arr[1]      = explode('_', $arr[1]);
+		$arr[1]      = array_map('ucfirst', $arr[1]);
+		$arr[1]      = implode(' ', $arr[1]);
+		$arr         = array_map('ucfirst', $arr);
+		$title       = implode(' - ', $arr);
+
+		View::share('title', $title);
+	}
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +34,41 @@ class SalaryController extends Controller
      */
     public function index()
     {
-        //
+        return view('ceo.salary');
     }
 
+    public function get_salary(Request $request)
+    {
+        $month = $request->month;
+        $year = $request->year;
+        $salary = $this->model->with('emp')
+        ->where('month', $month)
+        ->where('year', $year)
+        ->get()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day']);
+        return $salary;
+    }
+
+    public function salary_detail(Request $request)
+    {
+        $id = $request->id;
+        $dept_name = $request->dept_name;
+        $role_name = $request->role_name;
+        $month = $request->month;
+        $year = $request->year;
+        $fines = Fines::query()->get()->append('deduction_detail');
+        $salary = $this->model->with('emp')
+        ->where('emp_id', $id)
+        ->where('month', $month)
+        ->where('year', $year)
+        ->where('dept_name', $dept_name)
+        ->where('role_name', $role_name)
+        ->first()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
+        $arr['salary'] = $salary;
+        $arr['fines'] = $fines;
+        return $arr;
+    }
     /**
      * Show the form for creating a new resource.
      *

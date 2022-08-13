@@ -60,6 +60,11 @@ class Department extends Model
         return $this->hasMany(Employee::class, 'dept_id');
     }
 
+    public function acctmembers(): hasMany
+    {
+        return $this->hasMany(Accountant::class, 'dept_id');
+    }
+
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class, 'dept_id');

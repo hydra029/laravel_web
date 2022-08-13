@@ -9,6 +9,7 @@ use App\Http\Controllers\FinesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalaryController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,9 @@ Route::post('/managers/attendance_api', [ManagerController::class, 'attendance_a
 Route::post('/managers/emp_attendance_api', [ManagerController::class, 'emp_attendance_api'])->name('managers.emp_attendance_api');
 Route::post('/managers/salary_api', [ManagerController::class, 'salary_api'])->name('managers.salary_api');
 Route::get('/managers/salary', [ManagerController::class, 'salary'])->name('managers.salary');
+Route::post('/managers/get_salary', [ManagerController::class, 'get_salary'])->name('managers.get_salary');
+Route::post('/managers/salary_detail', [SalaryController::class, 'salary_detail'])->name('managers.salary_detail');
+
 Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->name('managers.assignment');
 
 Route::post('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
@@ -46,6 +50,8 @@ Route::get('/accountants/attendance_history', [AccountantController::class, 'att
 Route::post('/accountants/history_api', [AccountantController::class, 'history_api'])->name('accountants.history_api');
 Route::post('/accountants/attendance_api', [AccountantController::class, 'attendance_api'])->name('accountants.attendance_api');
 Route::get('/accountants/salary', [AccountantController::class, 'salary'])->name('accountants.salary');
+Route::post('/accountants/get_salary', [SalaryController::class, 'get_salary'])->name('accountants.get_salary');
+Route::post('/accountants/salary_detail', [SalaryController::class, 'salary_detail'])->name('accountants.salary_detail');
 
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
@@ -55,12 +61,17 @@ Route::post('/ceo/fines_update', [FinesController::class, 'update'])->name('ceo.
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
 
+Route::get('/ceo/salary', [CeoController::class, 'salary'])->name('ceo.salary');
+Route::post('/ceo/get_salary', [SalaryController::class, 'get_salary'])->name('ceo.get_salary');
+Route::post('/ceo/salary_detail', [SalaryController::class, 'salary_detail'])->name('ceo.salary_detail');
+
 Route::get('/ceo/roles', [RoleController::class, 'index'])->name('ceo.roles');
 Route::post('/ceo/roles/store', [RoleController::class, 'store'])->name('ceo.roles.store');
 Route::post('/ceo/roles/update', [RoleController::class, 'update'])->name('ceo.roles.update');
 Route::post('/ceo/roles/destroy', [RoleController::class, 'destroy'])->name('ceo.roles.destroy');
 
 Route::post('/ceo/department_employees', [DepartmentController::class, 'department_employees'])->name('ceo.department_employees');
+Route::post('/ceo/department_accountants', [DepartmentController::class, 'department_accountants'])->name('ceo.department_accountants');
 Route::post('/ceo/department/store', [DepartmentController::class, 'store'])->name('ceo.department.store');
 Route::post('/ceo/department/update', [DepartmentController::class, 'update'])->name('ceo.department.update');
 Route::post('/ceo/department/destroy', [DepartmentController::class, 'destroy'])->name('ceo.department.destroy');

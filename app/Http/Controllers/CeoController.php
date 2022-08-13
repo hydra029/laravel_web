@@ -73,11 +73,12 @@ class CeoController extends Controller
 			->with(['roles', 'departments'])
 			->paginate(11);
 		return view(
-			'ceo.index', ([
-			'acc'  => $acc,
-			'data' => $data,
-			'num'  => 1,
-		])
+			'ceo.index',
+			([
+				'acc'  => $acc,
+				'data' => $data,
+				'num'  => 1,
+			])
 		);
 	}
 
@@ -105,10 +106,12 @@ class CeoController extends Controller
 
 	public function time_change(Request $request)
 	{
+
 		$time = AttendanceShiftTime::where('id','=',$request->get('id'))->first();
 		if ($time) {
 			$time->fill($request->all());
 			$time->save();
+
 		}
 		return $time;
 	}
@@ -200,10 +203,10 @@ class CeoController extends Controller
 		$fines     = $request->fines;
 		$deduction = $request->deduction;
 		return Fines::create([
-			                     'name'      => $name,
-			                     'fines'     => $fines,
-			                     'deduction' => $deduction,
-		                     ])->append(['fines_time', 'deduction_detail'])->toArray();
+			'name'      => $name,
+			'fines'     => $fines,
+			'deduction' => $deduction,
+		])->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
 	public function fines_update(Request $request): array
@@ -215,18 +218,18 @@ class CeoController extends Controller
 		Fines::query()
 			->where('id', $id)
 			->update([
-				         'name'      => $name,
-				         'fines'     => $fines,
-				         'deduction' => $deduction,
-			         ]);
+				'name'      => $name,
+				'fines'     => $fines,
+				'deduction' => $deduction,
+			]);
 		return Fines::whereId($id)->get()->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
 	public function import_employee(Request $request): void
 	{
 		$request->validate([
-			                   'file' => 'required|max:10000|mimes:xlsx,xls',
-		                   ]);
+			'file' => 'required|max:10000|mimes:xlsx,xls',
+		]);
 		$path = $request->file;
 
 		Excel::import(new EmployeesImport, $path);
@@ -235,8 +238,8 @@ class CeoController extends Controller
 	public function import_acct(Request $request): void
 	{
 		$request->validate([
-			                   'file' => 'required|max:10000|mimes:xlsx,xls',
-		                   ]);
+			'file' => 'required|max:10000|mimes:xlsx,xls',
+		]);
 		$path = $request->file;
 
 		Excel::import(new AccountantsImport, $path);
@@ -245,8 +248,8 @@ class CeoController extends Controller
 	public function import_mgr(Request $request): void
 	{
 		$request->validate([
-			                   'file' => 'required|max:10000|mimes:xlsx,xls',
-		                   ]);
+			'file' => 'required|max:10000|mimes:xlsx,xls',
+		]);
 		$path = $request->file;
 
 		Excel::import(new  ManagersImport, $path);
@@ -300,8 +303,8 @@ class CeoController extends Controller
 		$id = $request->get('id');
 		Employee::query()->whereId($id)->delete();
 		return $this->successResponse([
-			                              'message' => 'Delete success',
-		                              ]);
+			'message' => 'Delete success',
+		]);
 	}
 
 	public function store_acct(StoreAccountantRequest $storeAccountantRequest): array
@@ -337,6 +340,12 @@ class CeoController extends Controller
 		$emp             = Manager::query()->create($arr)->append(['full_name', 'date_of_birth', 'gender_name', 'address'])->toArray();
 		return [$role, $emp];
 	}
+
+	
+    public function salary()
+    {
+        return view('ceo.salary');
+    }
 
 	/**
 	 * Show the form for creating a new resource.

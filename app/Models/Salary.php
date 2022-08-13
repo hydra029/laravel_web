@@ -110,10 +110,55 @@ class Salary extends Model
 	{
 		return $this->hasMany(Accountant::class, 'acct_id');
 	}
-
-	public function pay_rate(): HasMany
+	public function getSalaryMoneyAttribute()
 	{
-		return $this->hasMany(Role::class, 'pay_rate');
+		return number_format((float)($this->salary)). ' đ' ;
+	}
+	public function getPayRateMoneyAttribute()
+	{
+		return number_format((float)($this->pay_rate)). ' đ' ;
+	}
+	public function getDeductionDetailAttribute()
+    {
+        return '-' . number_format((float)($this->deduction)). ' đ';
+    }
+	public function getDeductionLateOneDetailAttribute()
+    {
+		$deduction = Fines::select('deduction')->whereId(1)->first();
+        return '-' . number_format((float)($this->late_1 * $deduction['deduction'])). ' đ';
+    }
+	public function getDeductionLateTwoDetailAttribute()
+    {
+		$deduction = Fines::select('deduction')->whereId(2)->first();
+        return '-' . number_format((float)($this->late_2 * $deduction['deduction'])). ' đ';
+    }
+	public function getDeductionEarlyOneDetailAttribute()
+    {
+		$deduction = Fines::select('deduction')->whereId(3)->first();
+        return '-' . number_format((float)($this->early_1 * $deduction['deduction'])). ' đ';
+    }
+	public function getDeductionEarlyTwoDetailAttribute()
+    {
+		$deduction = Fines::select('deduction')->whereId(4)->first();
+        return '-' . number_format((float)($this->early_2 * $deduction['deduction'])). ' đ';
+    }
+	public function getDeductionMissDetailAttribute()
+    {
+		$deduction = Fines::select('deduction')->whereId(5)->first();
+        return '-' . number_format((float)($this->miss * $deduction['deduction'])). ' đ';
+    }
+	public function getBounusSalaryOverWorkDayAttribute()
+	{	
+		$salary_over_day = ($this->pay_rate / $this->work_day) * 0.75;
+		return number_format((float)($salary_over_day * $this->over_work_day)). ' đ';
+	}
+	public function getPayRateOverWorkDayAttribute()
+	{	
+		return number_format((float)(($this->pay_rate / $this->work_day) * 0.75)). ' đ';
+	}
+	public function getPayRateWorkDayAttribute()
+	{	
+		return number_format((float)($this->pay_rate / $this->work_day)). ' đ';
 	}
 
 }

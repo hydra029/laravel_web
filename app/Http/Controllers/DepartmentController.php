@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use App\Models\Accountant;
 use App\Models\Employee;
 use App\Models\Manager;
 use App\Models\Role;
@@ -37,7 +38,7 @@ class DepartmentController extends Controller
 
     public function index()
     {
-        $dept = $this->models->with('manager')->withCount(['members', 'roles'])->paginate(10);
+        $dept = $this->models->with('manager')->withCount(['members', 'roles', 'acctmembers'])->paginate(10);
         $manager = Manager::all();
         return view('ceo.department', [
             'dept' => $dept,
@@ -49,6 +50,25 @@ class DepartmentController extends Controller
     {
         $dept_id = $request->get('dept_id');
         $data = Employee::query()->with(['departments', 'roles' => function ($query) use ($dept_id) {
+            $query->where('dept_id', '=', $dept_id);
+        }
+        ])
+            ->where('dept_id', '=', $dept_id)
+            ->paginate(10);
+        foreach ($data as $each) {
+            $each->full_name = $each->full_name;
+            $each->gender_name = $each->gender_name;
+            $each->address = $each->address;
+            $each->date_of_birth = $each->date_of_birth;
+        }
+        $arr['data'] = $data->getCollection();
+        $arr['pagination'] = $data->linkCollection();
+        return $this->successResponse($arr);
+    }
+    public function department_accountants(Request $request): JsonResponse
+    {
+        $dept_id = $request->get('dept_id');
+        $data = Accountant::query()->with(['departments', 'roles' => function ($query) use ($dept_id) {
             $query->where('dept_id', '=', $dept_id);
         }
         ])
@@ -81,35 +101,34 @@ class DepartmentController extends Controller
         //
     }
 
-    public function store(StoreDepartmentRequest $request): RedirectResponse
-    {
-        $arr = $request->validated();
-        $data['name'] = $arr['name'];
-        $this->models::create($data);
-        $dept_id = $this->models::max('id');
-        if ($arr['manager_id'] !== null) {
-            $manager = Manager::find($arr['manager_id']);
-            $manager->dept_id = $dept_id;
-            $manager->save();
-        }
-        session()->flash('noti', [
-            'heading' => 'Add department successfully',
-            'text' => '',
-            'icon' => 'success',
-        ]);
-        return redirect()->route('ceo.department');
-    }
+    
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Department $department
-     * @return void
-     */
-    public function show(Department $department)
-    {
-        //
-    }
+	public function store(StoreDepartmentRequest $request)
+	{
+		$arr = $request->validated();
+		$data['name'] = $arr['name'];	
+		 $this->models::create($data);
+		$dept_id = $this->models::max('id');
+		Role::create([
+			'name' => $data['name'] . ' Manager',
+			'dept_id' => $dept_id,
+			'pay_rate' => 1000000,
+		]);
+		$role_id = Role::max('id');
+		if($arr['manager_id'] != null){
+			$manager = Manager::find($arr['manager_id']);
+			$manager->dept_id = $dept_id;
+			$manager->role_id = $role_id;
+			$manager->save();
+		}
+		session()->flash('noti', [
+			'heading' => 'Add department successfully',
+			'text' => '',
+			'icon' => 'success',
+		]);
+		return redirect()->route('ceo.department');
+	
+	}
 
     /**
      * Show the form for editing the specified resource.

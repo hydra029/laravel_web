@@ -1,13 +1,28 @@
 @extends('layout.master')
-@include('managers.menu')
+@include('ceo.menu')
+@push('css')
+    <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
+    {{-- <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs4/dt-1.12.1/af-2.4.0/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/date-1.1.2/fh-3.2.4/r-2.3.0/rg-1.2.0/sb-1.3.4/sp-2.0.2/datatables.min.css" />
+
+    <link href="{{ asset('css/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" id="light-style" />
+    <link href="{{ asset('css/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" id="light-style" /> --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css"/>
+     --}}
+    <style>
+
+    </style>
+@endpush
 @section('content')
-<div class="table-salary col-12">
+<div class="table-salary">
     <div class="date w-100" >
         Month: <select name="month" id="select-month"></select>
         Year: <select name="year" id="select-year"></select>
          <input type="hidden" style="width: 1.5em" name="month" value="" readonly>
          <input type="hidden" style="width: 3em" name="year" value="" readonly>
-        <span class="d-none dept_id">{{ session()->get('dept_id') }}</span>
+        <span class="btn btn-primary float-right m-1" >Sign</span>
     </div>
     <table id="salary-table" class="table table-striped w-100 text-center"  cellspacing="0" cellpadding="0" width="100%" height="100%">
         <thead>
@@ -22,6 +37,11 @@
                 <th>Deduction</th>
                 <th>Salary</th>
                 <th>Action</th>
+                <th>
+                    <span>Sign</span>
+                    <br>
+                    <input type="checkbox" class="checkAll" name="approve_all">
+                </th>
         </thead>
         <tbody>
 
@@ -29,139 +49,146 @@
     </table>
 
 </div>
+    
+        <div class="table-show-salary-detail d-none col-12" >
+            <div class="popup-show-salary-detail-content">
+                <div class="card-header">
+                    <span class="card-title h2">Salary Detail</span>
+                    <button class="btn btn-danger btn-sm close-popup float-right">X</button>
+                </div>
+                <div class="popup-show-salary-detail-body">
+                    <table class="table table-striped table-bordered" id="table-salary-detail" >
+                        <thead>
+                            <th>
+                                <span class="detail-employee-name"></span>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Work day</td>
+                                <td>Days</td>
+                                <td>
+                                    <span class="detail-work_day"></span>
+                                </td>
+                                <td>
+                                    <span class="detail-pay_rate"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="detail-basic_salary"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Over time work day</td>
+                                <td>Days</td>
+                                <td>
+                                    <span class="detail-over_work_day"></span>
+                                </td>
+                                <td>
+                                    <span class="detail-pay_rate_over_work_day"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="detail-bounus_salary_over_work_day"></span>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td>Check in late 1</td>
+                                <td>Time(s)</td>
+                                <td>
+                                    <span class="detail-late_1"></span>
+                                </td>
+                                <td>
+                                    <span class="detail-deduction_late_1"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="detail-deduction_salary_late_1"></span>
+                                </td>
 
-<div class="table-show-salary-detail d-none col-12" >
-    <div class="popup-show-salary-detail-content">
-        <div class="card-header">
-            <span class="card-title h2">Salary Detail</span>
-            <button class="btn btn-danger btn-sm close-popup float-right">X</button>
-        </div>
-        <div class="popup-show-salary-detail-body">
-            <table class="table table-striped table-bordered" id="table-salary-detail" >
-                <thead>
-                    <th>
-                        <span class="detail-employee-name"></span>
-                    </th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Work day</td>
-                        <td>Days</td>
-                        <td>
-                            <span class="detail-work_day"></span>
-                        </td>
-                        <td>
-                            <span class="detail-pay_rate"></span>
-                        </td>
-                        <td class="text-right">
-                            <span class="detail-basic_salary"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Over time work day</td>
-                        <td>Days</td>
-                        <td>
-                            <span class="detail-over_work_day"></span>
-                        </td>
-                        <td>
-                            <span class="detail-pay_rate_over_work_day"></span>
-                        </td>
-                        <td class="text-right">
-                            <span class="detail-bounus_salary_over_work_day"></span>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                        <td>Check in late 1</td>
-                        <td>Time(s)</td>
-                        <td>
-                            <span class="detail-late_1"></span>
-                        </td>
-                        <td>
-                            <span class="detail-deduction_late_1"></span>
-                        </td>
-                        <td class="text-right">
-                            <span class="detail-deduction_salary_late_1"></span>
-                        </td>
+                            </tr>
+                            <tr>
+                                <td>Check in late 2</td>
+                                <td>Time(s)</td>
+                                <td>
+                                    <span class="detail-late_2"></span>
+                                </td>
+                                <td>
+                                    <span class="detail-deduction_late_2"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="detail-deduction_salary_late_2"></span>
+                                </td>
 
-                    </tr>
-                    <tr>
-                        <td>Check in late 2</td>
-                        <td>Time(s)</td>
-                        <td>
-                            <span class="detail-late_2"></span>
-                        </td>
-                        <td>
-                            <span class="detail-deduction_late_2"></span>
-                        </td>
-                        <td class="text-right">
-                            <span class="detail-deduction_salary_late_2"></span>
-                        </td>
+                            </tr>
+                            <tr>
+                                <td>Check out early 1</td>
+                                <td>Time(s)</td>
+                                <td>
+                                    <span class="detail-early_1"></span>
+                                </td>
+                                <td>
+                                    <span class="detail-deduction_early_1"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="detail-deduction_salary_early_1"></span>
+                                </td>
 
-                    </tr>
-                    <tr>
-                        <td>Check out early 1</td>
-                        <td>Time(s)</td>
-                        <td>
-                            <span class="detail-early_1"></span>
-                        </td>
-                        <td>
-                            <span class="detail-deduction_early_1"></span>
-                        </td>
-                        <td class="text-right">
-                            <span class="detail-deduction_salary_early_1"></span>
-                        </td>
+                            </tr>
+                            <tr>
+                                <td>Check out early 2</td>
+                                <td>Time(s)</td>
+                                <td>
+                                    <span class="detail-early_2"></span>
+                                </td>
+                                <td>
+                                    <span class="detail-deduction_early_2"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="detail-deduction_salary_early_2"></span>
+                                </td>
 
-                    </tr>
-                    <tr>
-                        <td>Check out early 2</td>
-                        <td>Time(s)</td>
-                        <td>
-                            <span class="detail-early_2"></span>
-                        </td>
-                        <td>
-                            <span class="detail-deduction_early_2"></span>
-                        </td>
-                        <td class="text-right">
-                            <span class="detail-deduction_salary_early_2"></span>
-                        </td>
+                            </tr>
+                            <tr>
+                                <td>Miss</td>
+                                <td>Time(s)</td>
+                                <td>
+                                    <span class="detail-miss"></span>
+                                </td>
+                                <td>
+                                    <span class="detail-deduction_miss"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="detail-deduction_salary_miss"></span>
+                                </td>
 
-                    </tr>
-                    <tr>
-                        <td>Miss</td>
-                        <td>Time(s)</td>
-                        <td>
-                            <span class="detail-miss"></span>
-                        </td>
-                        <td>
-                            <span class="detail-deduction_miss"></span>
-                        </td>
-                        <td class="text-right">
-                            <span class="detail-deduction_salary_miss"></span>
-                        </td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right">
+                                    <span class="detail-salary"></span>
+                                </td>
 
-                    </tr>
-                    <tr>
-                        <td>Total</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-right">
-                            <span class="detail-salary"></span>
-                        </td>
-
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-</div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    </div>
 @endsection
 @push('js')
-<script src="{{ asset('js/main.min.js') }}"></script>
+    <script src="{{ asset('js/main.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/demo.datatable-init.js' )}}"></script> --}}
+    {{-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script> --}}
+
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(async function() {
@@ -200,29 +227,27 @@
                     
                 })()
 
-                var dept_id = $('.dept_id').text();
                 var detail_salary = $(".table-show-salary-detail");
                 var month =  $('.date input[name="month"]').val();
                 var year =   $('.date input[name="year"]').val();
                 $('#select-month').change(function (e) { 
                     month = $(this).val();
                     $("#salary-table tbody").empty();
-                    getSalary(dept_id,month, year);
+                    getSalary(month, year);
                 });
                 $('#select-year').change(function (e) { 
                     year = $(this).val();
                     $("#salary-table tbody").empty();
-                    getSalary(dept_id,month, year);
+                    getSalary(month, year);
                 });
-                getSalary(dept_id,month, year);
+                getSalary(month, year);
 
-                function getSalary(dept_id,month, year) {
+                function getSalary(month, year) {
                         
                     $.ajax({
                         type: "post",
-                        url: "{{ route('managers.get_salary') }}",
+                        url: "{{ route('ceo.get_salary') }}",
                         data: {
-                            dept_id: dept_id,
                             month: month,
                             year: year
                         },
@@ -268,13 +293,6 @@
                         }
                     });
                 }
-                $(".checkAll").click(function() {
-                    if (this.checked) {
-                        $(".check_box").prop("checked", true);
-                    } else {
-                        $(".check_box").prop("checked", false);
-                    }  
-                });
 
                 function showDetailSalary(){
                     $(".btn-show-salary").click(function() {
@@ -285,7 +303,7 @@
                         var year =   $('.date input[name="year"]').val();
                         $.ajax({
                             type: "post",
-                            url: "{{ route('managers.salary_detail') }}",
+                            url: "{{ route('ceo.salary_detail') }}",
                             data: {
                                 id: id,
                                 dept_name : dept_name,
