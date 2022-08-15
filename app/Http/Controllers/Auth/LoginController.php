@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\AssignRequest;
 use App\Models\Accountant;
 use App\Models\Ceo;
 use App\Models\Department;
@@ -22,7 +22,7 @@ class LoginController extends Controller
 		return view('auth.login');
 	}
 
-	public function processLogin(LoginRequest $request)
+	public function processLogin(AssignRequest $request): int
 	{
 		$email    = $request->get('email');
 		$password = $request->get('password');

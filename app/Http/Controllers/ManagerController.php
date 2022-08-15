@@ -1,9 +1,12 @@
 <?php
+/** @noinspection NullPointerExceptionInspection */
 
 namespace App\Http\Controllers;
 
 use App\Enums\EmpRoleEnum;
 use App\Enums\ShiftEnum;
+use App\Http\Requests\AssignRequest;
+use App\Http\Requests\AttendanceRequest;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateManagerRequest;
 use App\Models\Accountant;
@@ -42,170 +45,14 @@ class ManagerController extends Controller
 
 	public function index()
 	{
-		$date = date('Y-m-d');
-		$data = Attendance::with('shifts')
-			->where('emp_id', '=', session('id'))
-			->where('date', '=', $date)
-			->where('emp_role', '=', session('level'))
+		$data = AttendanceShiftTime::query()
 			->get();
 		return view('managers.index', [
 			'data' => $data,
 		]);
 	}
 
-	//    public function add(): RedirectResponse
-	//    {
-	//        $data = [];
-	//        $shift_11 = [];
-	//        $shift_12 = [];
-	//        $shift_21 = [];
-	//        $shift_22 = [];
-	//        $shift_31 = [];
-	//        $shift_32 = [];
-	//
-	//        for ($i = 0; $i <= 59; $i++) {
-	//            if ($i < 10) {
-	//                $a = '0' . $i;
-	//            } else {
-	//                $a = $i;
-	//            }
-	//            $shift11 = '07:' . $a;
-	//            $shift12 = '11:' . $a;
-	//            $shift32 = '21:' . $a;
-	//            $shift_11[] = $shift11;
-	//            $shift_12[] = $shift12;
-	//            $shift_32[] = $shift32;
-	//        }
-	//        for ($i = 31; $i <= 59; $i++) {
-	//            $shift21 = '13:' . $a;
-	//            $shift22 = '17:' . $a;
-	//            $shift31 = '17:' . $a;
-	//            $shift_21[] = $shift21;
-	//            $shift_22[] = $shift22;
-	//            $shift_31[] = $shift31;
-	//        }
-	//        for ($i = 0; $i <= 30; $i++) {
-	//            if ($i < 10) {
-	//                $a = '0' . $i;
-	//            } else {
-	//                $a = $i;
-	//            }
-	//            $shift21 = '14:' . $a;
-	//            $shift22 = '18:' . $a;
-	//            $shift31 = '18:' . $a;
-	//            $shift_21[] = $shift21;
-	//            $shift_22[] = $shift22;
-	//            $shift_31[] = $shift31;
-	//        }
-	//        for ($i = 1; $i <= 30; $i++) {
-	//            if ($i < 10) {
-	//                $a = '0' . $i;
-	//            } else {
-	//                $a = $i;
-	//            }
-	//            $date = '2022-07-' . $a;
-	//
-	//            for ($j = 1; $j <= 40; $j++) {
-	//                $start1 = $shift_11[array_rand($shift_11)];
-	//                $end1 = $shift_12[array_rand($shift_12)];
-	//                $start2 = $shift_21[array_rand($shift_21)];
-	//                $end2 = $shift_22[array_rand($shift_22)];
-	//                $start3 = $shift_31[array_rand($shift_31)];
-	//                $end3 = $shift_32[array_rand($shift_32)];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 1,
-	//                    'shift' => 1,
-	//                    'check_in' => $start1,
-	//                    'check_out' => $end1,
-	//                ];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 1,
-	//                    'shift' => 2,
-	//                    'check_in' => $start2,
-	//                    'check_out' => $end2,
-	//                ];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 1,
-	//                    'shift' => 3,
-	//                    'check_in' => $start3,
-	//                    'check_out' => $end3,
-	//                ];
-	//            }
-	//            for ($j = 1; $j <= 5; $j++) {
-	//                $start1 = $shift_11[array_rand($shift_11)];
-	//                $end1 = $shift_12[array_rand($shift_12)];
-	//                $start2 = $shift_21[array_rand($shift_21)];
-	//                $end2 = $shift_22[array_rand($shift_22)];
-	//                $start3 = $shift_31[array_rand($shift_31)];
-	//                $end3 = $shift_32[array_rand($shift_32)];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 2,
-	//                    'shift' => 1,
-	//                    'check_in' => $start1,
-	//                    'check_out' => $end1,
-	//                ];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 2,
-	//                    'shift' => 2,
-	//                    'check_in' => $start2,
-	//                    'check_out' => $end2,
-	//                ];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 2,
-	//                    'shift' => 3,
-	//                    'check_in' => $start3,
-	//                    'check_out' => $end3,
-	//                ];
-	//            }
-	//            for ($j = 1; $j <= 5; $j++) {
-	//                $start1 = $shift_11[array_rand($shift_11)];
-	//                $end1 = $shift_12[array_rand($shift_12)];
-	//                $start2 = $shift_21[array_rand($shift_21)];
-	//                $end2 = $shift_22[array_rand($shift_22)];
-	//                $start3 = $shift_31[array_rand($shift_31)];
-	//                $end3 = $shift_32[array_rand($shift_32)];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 3,
-	//                    'shift' => 1,
-	//                    'check_in' => $start1,
-	//                    'check_out' => $end1,
-	//                ];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 3,
-	//                    'shift' => 2,
-	//                    'check_in' => $start2,
-	//                    'check_out' => $end2,
-	//                ];
-	//                $data[] = [
-	//                    'date' => $date,
-	//                    'emp_id' => $j,
-	//                    'emp_role' => 3,
-	//                    'shift' => 3,
-	//                    'check_in' => $start3,
-	//                    'check_out' => $end3,
-	//                ];
-	//            }
-	//        }
-	//        dd($data);
-	//        Attendance::insert($data);
-	//        return redirect()->route('managers.index');
-	//    }
+	public function add(): RedirectResponse {}
 
 	public function today_attendance()
 	{
@@ -213,10 +60,10 @@ class ManagerController extends Controller
 		$date    = date('Y-m-d');
 		$dept_id = session('dept_id');
 		$data    = Employee::with([
-			'attendance' => function ($query) use ($date) {
-				$query->where('date', '=', $date);
-			}, 'roles'
-		])
+			                          'attendance' => function ($query) use ($date) {
+				                          $query->where('date', '=', $date);
+			                          }, 'roles'
+		                          ])
 			->where('dept_id', '=', $dept_id)
 			->whereNull('deleted_at')
 			->paginate($limit);
@@ -335,36 +182,104 @@ class ManagerController extends Controller
 		return $data;
 	}
 
-	public function checkin(Request $request): RedirectResponse
+	public function checkin(AttendanceRequest $request): int
 	{
-		Attendance::where('emp_id', '=', session('id'))
+		$time       = date('H:i');
+		$shift1     = AttendanceShiftTime::where('id', '=', 1)->first();
+		$shift2     = AttendanceShiftTime::where('id', '=', 2)->first();
+		$shift3     = AttendanceShiftTime::where('id', '=', 3)->first();
+		$in_start_1 = $shift1->check_in_start;
+		$in_start_2 = $shift2->check_in_start;
+		$in_start_3 = $shift3->check_in_start;
+		$in_end_1   = $shift1->check_in_late_2;
+		$in_end_2   = $shift2->check_in_late_2;
+		$in_end_3   = $shift3->check_in_late_2;
+		$shift      = 0;
+		if ($time >= $in_start_1 && $time <= $in_end_1) {
+			$shift = 1;
+		}
+		if ($time >= $in_start_2 && $time <= $in_end_2) {
+			$shift = 2;
+		}
+		if ($time >= $in_start_3 && $time <= $in_end_3) {
+			$shift = 3;
+		}
+		$attendance = Attendance::query()
+			->where('emp_id', '=', session('id'))
 			->where('emp_role', '=', EmpRoleEnum::MANAGER)
 			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $request->get('shift'))
-			->update(['check_in' => date('H:i')]);
-		session()->flash('noti', [
-			'heading' => 'Check in successfully',
-			'text'    => 'You\'ve checked in shift ' . $request->get('shift') . ' successfully',
-			'icon'    => 'success',
-		]);
-
-		return redirect()->route('managers.index');
+			->where('shift', '=', $shift)
+			->first();
+		if ($attendance === null) {
+			Attendance::query()
+				->insert(
+					[
+						'date'      => date('Y-m-d'),
+						'emp_id'    => session('id'),
+						'emp_role'  => EmpRoleEnum::MANAGER,
+						'shift'     => $shift,
+						'check_out' => $time,
+					]
+				);
+		} else {
+			Attendance::query()
+				->where('emp_id', '=', session('id'))
+				->where('emp_role', '=', EmpRoleEnum::MANAGER)
+				->where('date', '=', date('Y-m-d'))
+				->where('shift', '=', $shift)
+				->update(['check_out' => $time]);
+		}
+		return 1;
 	}
 
-	public function checkout(Request $request): RedirectResponse
+	public function checkout(AttendanceRequest $request): int
 	{
-		Attendance::where('emp_id', '=', session('id'))
+		$time        = date('H:i');
+		$shift1      = AttendanceShiftTime::where('id', '=', 1)->first();
+		$shift2      = AttendanceShiftTime::where('id', '=', 2)->first();
+		$shift3      = AttendanceShiftTime::where('id', '=', 3)->first();
+		$out_start_1 = $shift1->check_out_early_1;
+		$out_start_2 = $shift2->check_out_early_1;
+		$out_start_3 = $shift3->check_out_early_1;
+		$out_end_1   = $shift1->check_out_end;
+		$out_end_2   = $shift2->check_out_end;
+		$out_end_3   = $shift3->check_out_end;
+		$shift       = 0;
+		if ($time >= $out_start_1 && $time <= $out_end_1) {
+			$shift = 1;
+		}
+		if ($time >= $out_start_2 && $time <= $out_end_2) {
+			$shift = 2;
+		}
+		if ($time >= $out_start_3 && $time <= $out_end_3) {
+			$shift = 3;
+		}
+		$attendance = Attendance::query()
+			->where('emp_id', '=', session('id'))
 			->where('emp_role', '=', EmpRoleEnum::MANAGER)
 			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $request->get('shift'))
-			->update(['check_out' => date('H:i')]);
-		session()->flash('noti', [
-			'heading' => 'Check out successfully',
-			'text'    => 'You\'ve checked out shift ' . $request->get('shift') . ' successfully',
-			'icon'    => 'success',
-		]);
-
-		return redirect()->route('managers.index');
+			->where('shift', '=', $shift)
+			->first();
+		if ($attendance === null) {
+			Attendance::query()
+				->insert(
+					[
+						'date'      => date('Y-m-d'),
+						'emp_id'    => session('id'),
+						'emp_role'  => EmpRoleEnum::MANAGER,
+						'shift'     => $shift,
+						'check_out' => $time,
+					]
+				);
+		} else {
+			Attendance::query()
+				->where('emp_id', '=', session('id'))
+				->where('emp_role', '=', EmpRoleEnum::MANAGER)
+				->where('date', '=', date('Y-m-d'))
+				->where('shift', '=', $shift)
+				->update(['check_out' => $time]);
+		}
+		return 1;
 	}
 
 	public function salary_api(Request $request): void
@@ -380,6 +295,7 @@ class ManagerController extends Controller
 		$mgr_id        = session('id');
 		$pay_rate      = 0;
 		$pay_rates     = Role::query()
+			->whereNull('deleted_at')
 			->where('id', '=', $role_id)
 			->first('pay_rate');
 		if ($pay_rates) {
@@ -393,8 +309,8 @@ class ManagerController extends Controller
 		$fine_MS   = $fines['MS'];
 		$deduction = $E1 * $fine_E1 + $E2 * $fine_E2 + $L1 * $fine_L1 + $L2 * $fine_L2 + $miss * $fine_MS;
 
-		$salary    = ($work_day + $over_work_day) * $pay_rate / 26 - $deduction;
-		$data      = new Salary;
+		$salary = ($work_day + $over_work_day) * $pay_rate / 26 - $deduction;
+		$data   = new Salary;
 		$data->fill($request->except('role_id'));
 		$data->deduction = $deduction;
 		$data->salary    = $salary;
@@ -411,47 +327,82 @@ class ManagerController extends Controller
 	}
 
 	public function get_salary(Request $request)
-    {	
+	{
 		$dept_id = $request->dept_id;
-        $month = $request->month;
-        $year = $request->year;
+		$month   = $request->month;
+		$year    = $request->year;
 
 		$dept = Department::query()->where('id', '=', $dept_id)->first();
 		// dd($dept->toArray());
-        $salary = Salary::query()->with('emp')
-		->where('dept_name', $dept->name)
-        ->where('month', $month)
-        ->where('year', $year)
-        ->get()
-        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day']);
-		
-        return $salary;
-    }
-	
-    public function salary_detail(Request $request)
-    {
-        $id = $request->id;
-        $dept_name = $request->dept_name;
-        $role_name = $request->role_name;
-        $month = $request->month;
-        $year = $request->year;
-        $fines = Fines::query()->get()->append('deduction_detail');
-        $salary = Salary::query()->with('emp')
-        ->where('emp_id', $id)
-        ->where('month', $month)
-        ->where('year', $year)
-        ->where('dept_name', $dept_name)
-        ->where('role_name', $role_name)
-        ->first()
-        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
-        $arr['salary'] = $salary;
-        $arr['fines'] = $fines;
-        return $arr;
-    }
+		$salary = Salary::query()->with('emp')
+			->where('dept_name', $dept->name)
+			->where('month', $month)
+			->where('year', $year)
+			->get()
+			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bounus_salary_over_work_day']);
+
+		return $salary;
+	}
+
+	public function salary_detail(Request $request): array
+	{
+		$id            = $request->id;
+		$dept_name     = $request->dept_name;
+		$role_name     = $request->role_name;
+		$month         = $request->month;
+		$year          = $request->year;
+		$fines         = Fines::query()->get()->append('deduction_detail');
+		$salary        = Salary::query()->with('emp')
+			->where('emp_id', $id)
+			->where('month', $month)
+			->where('year', $year)
+			->where('dept_name', $dept_name)
+			->where('role_name', $role_name)
+			->first()
+			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bounus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_work_day'])->toArray();
+		$arr['salary'] = $salary;
+		$arr['fines']  = $fines;
+		return $arr;
+	}
 
 	public function assignment()
 	{
-		return view('managers.assignment');
+		$data = Department::whereNull('deleted_at')
+			->get(['id', 'name', 'acct_id']);
+		return view(
+			'managers.assignment',
+			[
+				'data' => $data,
+			]
+		);
+	}
+
+	public function accountant_api()
+	{
+		return Accountant::whereNull('deleted_at')
+			->get(['id', 'fname', 'lname']);
+	}
+
+	public function assign_accountant(AssignRequest $request): int
+	{
+		$dept_id = $request->dept_id;
+		$acct_id = $request->acct_id;
+		if ($acct_id === '0') {
+			Department::whereNull('deleted_at')
+				->where('id', '=', $dept_id)
+				->update(['acct_id' => null]);
+			return 0;
+		}
+		$acc     = Accountant::whereNull('deleted_at')
+			->where('id', '=', $acct_id)
+			->first();
+		if ($acc !== null) {
+			Department::whereNull('deleted_at')
+				->where('id', '=', $dept_id)
+				->update(['acct_id' => $acct_id]);
+			return 0;
+		}
+		return 1;
 	}
 
 	/**

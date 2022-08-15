@@ -10,7 +10,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalaryController;
-use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', [HomeController::class, 'test'])->name('test');
@@ -41,8 +40,9 @@ Route::post('/managers/salary_api', [ManagerController::class, 'salary_api'])->n
 Route::get('/managers/salary', [ManagerController::class, 'salary'])->name('managers.salary');
 Route::post('/managers/get_salary', [ManagerController::class, 'get_salary'])->name('managers.get_salary');
 Route::post('/managers/salary_detail', [SalaryController::class, 'salary_detail'])->name('managers.salary_detail');
-
-Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->name('managers.assignment');
+Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->name('managers.assignment')->middleware('mgr_acct');
+Route::get('/managers/accountant_api', [ManagerController::class, 'accountant_api'])->name('managers.accountant_api')->middleware('mgr_acct');
+Route::post('/managers/assign_accountant', [ManagerController::class, 'assign_accountant'])->name('managers.assign_accountant')->middleware('mgr_acct');
 
 Route::post('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::post('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
@@ -96,15 +96,19 @@ Route::post('/ceo/attendance_api', [CeoController::class, 'attendance_api'])->na
 Route::get('/ceo/department_api', [CeoController::class, 'department_api'])->name('ceo.department_api');
 Route::post('/ceo/emp_attendance_api', [CeoController::class, 'emp_attendance_api'])->name('ceo.emp_attendance_api');
 
-Route::resource('employees', EmployeeController::class)->except([
-	'show',
-]);
-Route::resource('accountants', AccountantController::class)->except([
-	'show',
-]);
-Route::resource('managers', ManagerController::class)->except([
-	'show',
-]);
-Route::resource('ceo', CeoController::class)->except([
-	'show',
-]);
+Route::resource('employees', EmployeeController::class)
+	->except([
+		         'show',
+	         ]);
+Route::resource('accountants', AccountantController::class)
+	->except([
+		         'show',
+	         ]);
+Route::resource('managers', ManagerController::class)
+	->except([
+		         'show',
+	         ]);
+Route::resource('ceo', CeoController::class)
+	->except([
+		         'show',
+	         ]);

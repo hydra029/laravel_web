@@ -86,23 +86,17 @@ class EmployeeController extends Controller
 
 	public function checkin(AttendanceRequest $request): int
 	{
-		$time        = date('H:i');
-		$shift1      = AttendanceShiftTime::where('id', '=', 1)->first();
-		$shift2      = AttendanceShiftTime::where('id', '=', 2)->first();
-		$shift3      = AttendanceShiftTime::where('id', '=', 3)->first();
-		$in_start_1  = $shift1->check_in_start;
-		$in_start_2  = $shift2->check_in_start;
-		$in_start_3  = $shift3->check_in_start;
-		$in_end_1    = $shift1->check_in_late_2;
-		$in_end_2    = $shift2->check_in_late_2;
-		$in_end_3    = $shift3->check_in_late_2;
-		$shift       = 0;
-		$attendance  = Attendance::query()
-			->where('emp_id', '=', session('id'))
-			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
-			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $shift)
-			->first();
+		$time       = date('H:i');
+		$shift1     = AttendanceShiftTime::where('id', '=', 1)->first();
+		$shift2     = AttendanceShiftTime::where('id', '=', 2)->first();
+		$shift3     = AttendanceShiftTime::where('id', '=', 3)->first();
+		$in_start_1 = $shift1->check_in_start;
+		$in_start_2 = $shift2->check_in_start;
+		$in_start_3 = $shift3->check_in_start;
+		$in_end_1   = $shift1->check_in_late_2;
+		$in_end_2   = $shift2->check_in_late_2;
+		$in_end_3   = $shift3->check_in_late_2;
+		$shift      = 0;
 		if ($time >= $in_start_1 && $time <= $in_end_1) {
 			$shift = 1;
 		}
@@ -112,30 +106,31 @@ class EmployeeController extends Controller
 		if ($time >= $in_start_3 && $time <= $in_end_3) {
 			$shift = 3;
 		}
-		if ($attendance) {
+		$attendance = Attendance::query()
+			->where('emp_id', '=', session('id'))
+			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
+			->where('date', '=', date('Y-m-d'))
+			->where('shift', '=', $shift)
+			->first();
+		if ($attendance === null) {
+			Attendance::query()
+				->insert(
+					[
+						'date'      => date('Y-m-d'),
+						'emp_id'    => session('id'),
+						'emp_role'  => EmpRoleEnum::EMPLOYEE,
+						'shift'     => $shift,
+						'check_out' => $time,
+					]
+				);
+		} else {
 			Attendance::query()
 				->where('emp_id', '=', session('id'))
 				->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
 				->where('date', '=', date('Y-m-d'))
 				->where('shift', '=', $shift)
-				->update(['check_in' => $time]);
-		} else {
-			Attendance::query()
-				->insert(
-					[
-						'date'     => date('Y-m-d'),
-						'emp_id'   => session('id'),
-						'emp_role' => EmpRoleEnum::EMPLOYEE,
-						'shift'    => $shift,
-						'check_in' => $time,
-					]
-				);
+				->update(['check_out' => $time]);
 		}
-		session()->flash('noti', [
-			'heading' => 'Check in successfully',
-			'text'    => 'You\'ve checked in successfully',
-			'icon'    => 'success',
-		]);
 		return 1;
 	}
 
@@ -152,12 +147,6 @@ class EmployeeController extends Controller
 		$out_end_2   = $shift2->check_out_end;
 		$out_end_3   = $shift3->check_out_end;
 		$shift       = 0;
-		$attendance  = Attendance::query()
-			->where('emp_id', '=', session('id'))
-			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
-			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $shift)
-			->first();
 		if ($time >= $out_start_1 && $time <= $out_end_1) {
 			$shift = 1;
 		}
@@ -167,30 +156,31 @@ class EmployeeController extends Controller
 		if ($time >= $out_start_3 && $time <= $out_end_3) {
 			$shift = 3;
 		}
-		if ($attendance) {
+		$attendance = Attendance::query()
+			->where('emp_id', '=', session('id'))
+			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
+			->where('date', '=', date('Y-m-d'))
+			->where('shift', '=', $shift)
+			->first();
+		if ($attendance === null) {
+			Attendance::query()
+				->insert(
+					[
+						'date'      => date('Y-m-d'),
+						'emp_id'    => session('id'),
+						'emp_role'  => EmpRoleEnum::EMPLOYEE,
+						'shift'     => $shift,
+						'check_out' => $time,
+					]
+				);
+		} else {
 			Attendance::query()
 				->where('emp_id', '=', session('id'))
 				->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
 				->where('date', '=', date('Y-m-d'))
 				->where('shift', '=', $shift)
 				->update(['check_out' => $time]);
-		} else {
-			Attendance::query()
-				->insert(
-					[
-						'date'     => date('Y-m-d'),
-						'emp_id'   => session('id'),
-						'emp_role' => EmpRoleEnum::EMPLOYEE,
-						'shift'    => $shift,
-						'check_out' => $time,
-					]
-				);
 		}
-		session()->flash('noti', [
-			'heading' => 'Check out successfully',
-			'text'    => 'You\'ve checked out successfully',
-			'icon'    => 'success',
-		]);
 		return 1;
 	}
 

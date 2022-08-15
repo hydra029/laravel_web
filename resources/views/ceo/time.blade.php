@@ -207,7 +207,7 @@
                             });
 
                         })
-	                    .fail(function () {
+                        .fail(function () {
                             $.toast({
                                 heading  : 'Something went wrong',
                                 text     : "Your time input format is incorrect",
@@ -215,7 +215,7 @@
                                 position : 'top-right',
                                 hideAfter: 2000,
                             });
-	                    })
+                        })
                 } else {
                     $.toast({
                         heading  : 'Something went wrong',
@@ -224,7 +224,6 @@
                         position : 'top-right',
                         hideAfter: 2000,
                     });
-
                 }
             });
 
@@ -264,7 +263,7 @@
                     $(this).attr('placeholder', value);
                     inp.blur();
                 } else {
-                    let value        = $(this).val();
+                    let value = $(this).val();
                     if (value === '' || value.match(time_regex) === false) {
                         let placeholder = $(this).attr('placeholder');
                         $(this).val(placeholder);

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection NullPointerExceptionInspection */
 
 namespace App\Models;
 
@@ -110,53 +110,53 @@ class Salary extends Model
 	{
 		return $this->hasMany(Accountant::class, 'acct_id');
 	}
-	public function getSalaryMoneyAttribute()
+	public function getSalaryMoneyAttribute(): string
 	{
 		return number_format((float)($this->salary)). ' đ' ;
 	}
-	public function getPayRateMoneyAttribute()
+	public function getPayRateMoneyAttribute(): string
 	{
 		return number_format((float)($this->pay_rate)). ' đ' ;
 	}
-	public function getDeductionDetailAttribute()
-    {
+	public function getDeductionDetailAttribute(): string
+	{
         return '-' . number_format((float)($this->deduction)). ' đ';
     }
-	public function getDeductionLateOneDetailAttribute()
-    {
+	public function getDeductionLateOneDetailAttribute(): string
+	{
 		$deduction = Fines::select('deduction')->whereId(1)->first();
         return '-' . number_format((float)($this->late_1 * $deduction['deduction'])). ' đ';
     }
-	public function getDeductionLateTwoDetailAttribute()
-    {
+	public function getDeductionLateTwoDetailAttribute(): string
+	{
 		$deduction = Fines::select('deduction')->whereId(2)->first();
         return '-' . number_format((float)($this->late_2 * $deduction['deduction'])). ' đ';
     }
-	public function getDeductionEarlyOneDetailAttribute()
-    {
+	public function getDeductionEarlyOneDetailAttribute(): string
+	{
 		$deduction = Fines::select('deduction')->whereId(3)->first();
         return '-' . number_format((float)($this->early_1 * $deduction['deduction'])). ' đ';
     }
-	public function getDeductionEarlyTwoDetailAttribute()
-    {
+	public function getDeductionEarlyTwoDetailAttribute(): string
+	{
 		$deduction = Fines::select('deduction')->whereId(4)->first();
         return '-' . number_format((float)($this->early_2 * $deduction['deduction'])). ' đ';
     }
-	public function getDeductionMissDetailAttribute()
-    {
+	public function getDeductionMissDetailAttribute(): string
+	{
 		$deduction = Fines::select('deduction')->whereId(5)->first();
         return '-' . number_format((float)($this->miss * $deduction['deduction'])). ' đ';
     }
-	public function getBounusSalaryOverWorkDayAttribute()
+	public function getBonusSalaryOverWorkDayAttribute(): string
 	{	
 		$salary_over_day = ($this->pay_rate / $this->work_day) * 0.75;
 		return number_format((float)($salary_over_day * $this->over_work_day)). ' đ';
 	}
-	public function getPayRateOverWorkDayAttribute()
+	public function getPayRateOverWorkDayAttribute(): string
 	{	
 		return number_format((float)(($this->pay_rate / $this->work_day) * 0.75)). ' đ';
 	}
-	public function getPayRateWorkDayAttribute()
+	public function getPayRateWorkDayAttribute(): string
 	{	
 		return number_format((float)($this->pay_rate / $this->work_day)). ' đ';
 	}

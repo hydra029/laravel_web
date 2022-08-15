@@ -128,46 +128,61 @@
                 },
             })
                 .done(function (response) {
-                    let time        = moment().format('HH:mm');
-                    let len         = response[1].length;
-                    let in_shift, out_shift    = 0;
-                    let shift    = 0;
-                    let checkin  = '';
-                    let checkout = '';
+                    let time      = moment().format('HH:mm');
+                    let len       = response[1].length;
+                    let in_shift,
+                        out_shift = 0;
+                    let num       = 0;
+                    let checkin,
+                        checkout;
                     if (time >= in_start_1 && time <= in_end_1) {
                         in_shift = 1;
+                        num      = 1;
                     }
                     if (time >= in_start_2 && time <= in_end_2) {
                         in_shift = 2;
+                        num      = 1;
                     }
                     if (time >= in_start_3 && time <= in_end_3) {
                         in_shift = 3;
+                        num      = 1;
                     }
                     if (time >= out_start_1 && time <= out_end_1) {
                         out_shift = 1;
+                        num       = 2;
                     }
                     if (time >= out_start_2 && time <= out_end_2) {
                         out_shift = 2;
+                        num       = 2;
                     }
                     if (time >= out_start_3 && time <= out_end_3) {
                         out_shift = 3;
+                        num       = 2;
                     }
-
+                    if (num === 1) {
+                        checkin = '';
+                    }
+                    if (num === 2) {
+                        checkout = '';
+                    }
                     for (let i = 0; i < len; i++) {
                         let shift = response[1][i]['shift'];
                         if (shift === in_shift) {
-                            checkin  = response[1][i]['check_in'];
+                            checkin = response[1][i]['check_in'];
                         }
                         if (shift === out_shift) {
                             checkout = response[1][i]['check_out'];
-                            console.log(check_out);
                         }
                     }
-                    if(checkin === 0 || checkin === null) {
-                        check_in.prop(disabled, true);
+                    if (checkin === '' || checkin === null) {
+                        check_in.removeAttr('disabled');
+                    } else {
+                        check_in.attr('disabled', 'disabled');
                     }
-                    if(checkout === 0 || checkout === null) {
-                        check_out.prop(disabled, true);
+                    if (checkout === '' || checkout === null) {
+                        check_out.removeAttr('disabled');
+                    } else {
+                        check_out.attr('disabled', 'disabled');
                     }
                 });
             check_in.click(function () {
@@ -179,7 +194,14 @@
                     data    : {time: time},
                 })
                     .done(function () {
-                        check_in.prop(disabled, true);
+                        check_in.attr('disabled', 'disabled');
+                        $.toast({
+                            heading  : 'Successful Execution',
+                            text     : 'You\'ve check in successfully',
+                            icon     : 'success',
+                            position : 'top-right',
+                            hideAfter: 2000,
+                        });
                     });
             })
             check_out.click(function () {
@@ -191,7 +213,14 @@
                     data    : {time: time},
                 })
                     .done(function () {
-                        check_out.prop(disabled, true);
+                        check_out.attr('disabled', 'disabled');
+                        $.toast({
+                            heading  : 'Successful Execution',
+                            text     : 'You\'ve check out successfully',
+                            icon     : 'success',
+                            position : 'top-right',
+                            hideAfter: 2000,
+                        });
                     })
             })
         })

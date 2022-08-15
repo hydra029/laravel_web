@@ -3,7 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\CheckAcct;
+use App\Http\Middleware\CheckMgrAcct;
 use App\Http\Middleware\CheckCeo;
 use App\Http\Middleware\CheckEmp;
 use App\Http\Middleware\CheckLogin;
@@ -84,11 +84,11 @@ class Kernel extends HttpKernel
 			EncryptCookies::class,
 			AddQueuedCookiesToResponse::class,
 			StartSession::class,
-//		    AuthenticateSession::class,
+			//		    AuthenticateSession::class,
 			ShareErrorsFromSession::class,
 			VerifyCsrfToken::class,
 			SubstituteBindings::class,
-			CheckAcct::class,
+			CheckMgrAcct::class,
 		],
 		'manager' => [
 			EncryptCookies::class,
@@ -133,7 +133,8 @@ class Kernel extends HttpKernel
 		'employee' => CheckEmp::class,
 		'ceo' => CheckCeo::class,
 		'manager' => CheckMgr::class,
-		'accountant' => CheckAcct::class,
+		'accountant' => CheckMgrAcct::class,
+		'mgr_acct' => CheckMgrAcct::class,
 		'login' => CheckLogin::class,
 	];
 }
