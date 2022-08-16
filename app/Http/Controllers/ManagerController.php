@@ -368,6 +368,7 @@ class ManagerController extends Controller
         $arr['salary'] = $salary;
         $arr['fines'] = $fines;
         return $arr;
+	}
 
 	public function assignment()
 	{
@@ -408,6 +409,35 @@ class ManagerController extends Controller
 		}
 		return 1;
 	}
+	
+	public function sign_salary(Request $request): JsonResponse
+	{
+		try {
+			$response = $request->all();
+			foreach ($response['data'] as $request => $data ) {
+				$id = $data['id'];
+				$dept_name = $data['dept_name'];
+				$role_name = $data['role_name'];
+				$month = $data['month'];
+				$year = $data['year'];
+				$salary = Salary::query()
+				->where('emp_id', $id)
+				->where('dept_name', $dept_name)
+				->where('role_name', $role_name)
+				->where('month', $month)
+				->where('year', $year)
+				->update(['sign' => 1]);
+			}
+			return $this->successResponse([
+				'message' => 'Sign success',
+			]);
+		} catch (\Exception $e) {
+			return $this->errorResponse([
+				'message' => $e->getMessage(),
+			]);
+		}
+	}
+
 
 	/**
 	 * Show the form for creating a new resource.

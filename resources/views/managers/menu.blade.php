@@ -24,7 +24,6 @@
 			<span> Employee Attendance </span>
 		</a>
 	</li>
-	@if(session('dept_id') !== 1)
 		<li class="side-nav-item">
 			{{-- <a href="{{route('managers.assignment')}}" class="side-nav-link">
 				<i class="uil-money-bill"></i>
@@ -35,5 +34,4 @@
 				<span> Salary </span>
 			</a>
 		</li>
-	@endif
 @endsection

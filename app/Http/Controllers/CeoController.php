@@ -364,7 +364,7 @@ class CeoController extends Controller
 				->where('role_name', $role_name)
 				->where('month', $month)
 				->where('year', $year)
-				->update(['sign' => 1]);
+				->update(['sign' => 2]);
 			}
 			return $this->successResponse([
 				'message' => 'Sign success',

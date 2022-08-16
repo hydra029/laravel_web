@@ -47,6 +47,7 @@ class SalaryController extends Controller
         $salary = $this->model->with('emp')
         ->where('month', $month)
         ->where('year', $year)
+        ->whereNotNull('acct_id')
         ->paginate(20);
         $salary
         ->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day']);

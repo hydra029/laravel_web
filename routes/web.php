@@ -27,6 +27,9 @@ Route::post('/employees/checkin', [EmployeeController::class, 'checkin'])->name(
 Route::post('/employees/checkout', [EmployeeController::class, 'checkout'])->name('employees.checkout');
 Route::get('/employees/attendance_history', [EmployeeController::class, 'attendance_history'])->name('employees.attendance_history');
 Route::post('/employees/history_api', [EmployeeController::class, 'history_api'])->name('employees.history_api');
+Route::post('/employees/salary', [EmployeeController::class, 'salary'])->name('employees.salary');
+Route::post('/employees/salary_detail', [EmployeeController::class, 'salary_detail'])->name('employees.salary_detail');
+Route::post('/employees/confirm_salary', [EmployeeController::class, 'confirm_salary'])->name('employees.confirm_salary');
 
 Route::post('/managers/add', [ManagerController::class, 'add'])->name('managers.add');
 Route::post('/managers/checkin', [ManagerController::class, 'checkin'])->name('managers.checkin');
@@ -40,6 +43,8 @@ Route::post('/managers/emp_attendance_api', [ManagerController::class, 'emp_atte
 Route::post('/managers/salary_api', [ManagerController::class, 'salary_api'])->name('managers.salary_api');
 Route::get('/managers/salary', [ManagerController::class, 'salary'])->name('managers.salary');
 Route::post('/managers/get_salary', [ManagerController::class, 'get_salary'])->name('managers.get_salary');
+Route::post('/managers/sign_salary', [ManagerController::class, 'sign_salary'])->name('managers.sign_salary');
+Route::post('/managers/accountants/get_salary', [SalaryController::class, 'get_salary'])->name('managers.accountants.get_salary');
 Route::post('/managers/salary_detail', [SalaryController::class, 'salary_detail'])->name('managers.salary_detail');
 Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->name('managers.assignment')->middleware('mgr_acct');
 Route::get('/managers/accountant_api', [ManagerController::class, 'accountant_api'])->name('managers.accountant_api')->middleware('mgr_acct');
@@ -48,6 +53,7 @@ Route::post('/managers/assign_accountant', [ManagerController::class, 'assign_ac
 Route::post('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::post('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
 Route::post('/accountants/test', [AccountantController::class, 'test'])->name('accountants.test');
+Route::post('/accountants/approve', [AccountantController::class, 'approve'])->name('accountants.approve');
 Route::get('/accountants/attendance_history', [AccountantController::class, 'attendance_history'])->name('accountants.attendance_history');
 Route::post('/accountants/history_api', [AccountantController::class, 'history_api'])->name('accountants.history_api');
 Route::post('/accountants/attendance_api', [AccountantController::class, 'attendance_api'])->name('accountants.attendance_api');

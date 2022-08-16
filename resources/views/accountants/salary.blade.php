@@ -285,7 +285,7 @@
                                     var img =
                                         `<img  src="{{ asset('') }}img/${v.emp[0].avatar} "  style=" border-radius:50% " width="40px"/>`
                                 }
-                                if (v.acct_id == null) {
+                                if (v.acct_id == null ) {
                                     var approve =
                                     ` <input type="checkbox" name="approve" class="check_box" data-id="${v.emp_id}" data-dept_name="${v.dept_name}" data-role_name="${v.role_name}"> `
                                 } else {
@@ -472,9 +472,8 @@
                             dataType: "json",
                             success: function (response) {
                                 if(response.success == true){
-                                    toastr.success(response.data.message);
                                     $.toast({
-                                        heading: 'response.data.message',
+                                        heading: response.data.message,
                                         text: '',
                                         icon: 'success',
                                         showHideTransition: 'slide',
@@ -490,7 +489,7 @@
                                     }, 1000);
                                 }else{
                                     $.toast({
-                                        heading: 'response.data.message',
+                                        heading: response.data.message,
                                         text: '',
                                         icon: 'error',
                                         showHideTransition: 'slide',
