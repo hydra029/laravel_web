@@ -101,7 +101,7 @@
                             if (id === acct_id) {
                                 dd.append($('<a>')
                                     .attr({
-                                        href          : '#',
+                                        href          : 'javascript: void(0)',
                                         "data-acct_id": id,
                                     })
                                     .addClass('dropdown-item active')
@@ -110,7 +110,7 @@
                             } else {
                                 dd.append($('<a>')
                                     .attr({
-                                        href          : '#',
+                                        href          : 'javascript: void(0)',
                                         "data-acct_id": id
                                     })
                                     .addClass('dropdown-item')
@@ -166,21 +166,24 @@
                         }
                     })
             })
-	        del.click(function() {
+            del.click(function () {
                 let tr      = $(this).parents('tr');
                 let dept_id = $(this).data('id');
                 $.ajax({
-	              type: 'POST',
-	              datatype: 'json',
-	              url: '{{ route("managers.assign_accountant")}}',
-	              data: { dept_id: dept_id, acct_id: 0 },
+                    type    : 'POST',
+                    datatype: 'json',
+                    url     : '{{ route("managers.assign_accountant")}}',
+                    data    : {
+                        dept_id: dept_id,
+                        acct_id: 0
+                    },
                 })
-	                .done(function() {
+                    .done(function () {
                         tr.find('.acc').text('unassigned');
                         tr.find('.default-acct').text('unassigned');
                         tr.find('.fa-check').removeData('acct_id');
-	                })
-	        })
+                    })
+            })
         })
 	</script>
 @endpush
