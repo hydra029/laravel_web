@@ -12,7 +12,9 @@ use App\Models\Accountant;
 use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
+use App\Models\Fines;
 use App\Models\Manager;
+use App\Models\Salary;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
@@ -182,6 +184,62 @@ class EmployeeController extends Controller
 				->update(['check_out' => $time]);
 		}
 		return 1;
+	}
+
+	public function salary()
+	{
+		return view('employees.salary');
+	}
+
+	
+    public function salary_detail(Request $request)
+    {
+        $id = $request->id;
+        $dept_name = $request->dept_name;
+        $role_name = $request->role_name;
+        $month = $request->month;
+        $year = $request->year;
+        $fines = Fines::query()->get()->append('deduction_detail');
+        $salary = Salary::query()->with('emp')
+        ->where('emp_id', $id)
+        ->where('month', $month)
+        ->where('year', $year)
+        ->where('dept_name', $dept_name)
+        ->where('role_name', $role_name)
+		->where('sign', 2 )
+        ->first()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
+        $arr['salary'] = $salary;
+        $arr['fines'] = $fines;
+        return $arr;
+    }
+
+	public function approve(Request $request): JsonResponse
+	{
+		try {
+			$response = $request->all();
+			foreach ($response['data'] as $request => $data ) {
+				$id = $data['id'];
+				$dept_name = $data['dept_name'];
+				$role_name = $data['role_name'];
+				$month = $data['month'];
+				$year = $data['year'];
+				$salary = Salary::query()
+				->where('emp_id', $id)
+				->where('dept_name', $dept_name)
+				->where('role_name', $role_name)
+				->where('month', $month)
+				->where('year', $year)
+				->update(['sign' => 3]);
+			}
+			return $this->successResponse([
+				'message' => 'Sign success',
+			]);
+		} catch (\Exception $e) {
+			return $this->errorResponse([
+				'message' => $e->getMessage(),
+			]);
+		}
 	}
 
 	/**

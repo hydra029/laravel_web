@@ -19,6 +19,7 @@ use App\Models\Manager;
 use App\Models\Role;
 use App\Models\Salary;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\View;
 
 class ManagerController extends Controller
 {
+	use ResponseTrait;
 
 	public function __construct()
 	{
@@ -60,10 +62,10 @@ class ManagerController extends Controller
 		$date    = date('Y-m-d');
 		$dept_id = session('dept_id');
 		$data    = Employee::with([
-			                          'attendance' => function ($query) use ($date) {
-				                          $query->where('date', '=', $date);
-			                          }, 'roles'
-		                          ])
+			'attendance' => function ($query) use ($date) {
+				$query->where('date', '=', $date);
+			}, 'roles'
+		])
 			->where('dept_id', '=', $dept_id)
 			->whereNull('deleted_at')
 			->paginate($limit);
@@ -309,8 +311,8 @@ class ManagerController extends Controller
 		$fine_MS   = $fines['MS'];
 		$deduction = $E1 * $fine_E1 + $E2 * $fine_E2 + $L1 * $fine_L1 + $L2 * $fine_L2 + $miss * $fine_MS;
 
-		$salary = ($work_day + $over_work_day) * $pay_rate / 26 - $deduction;
-		$data   = new Salary;
+		$salary    = ($work_day + $over_work_day) * $pay_rate / 26 - $deduction;
+		$data      = new Salary;
 		$data->fill($request->except('role_id'));
 		$data->deduction = $deduction;
 		$data->salary    = $salary;
@@ -326,43 +328,46 @@ class ManagerController extends Controller
 		return view('managers.salary');
 	}
 
-	public function get_salary(Request $request)
-	{
+	public function get_salary(Request $request): JsonResponse
+    {	
 		$dept_id = $request->dept_id;
-		$month   = $request->month;
-		$year    = $request->year;
+        $month = $request->month;
+        $year = $request->year;
 
 		$dept = Department::query()->where('id', '=', $dept_id)->first();
 		// dd($dept->toArray());
-		$salary = Salary::query()->with('emp')
-			->where('dept_name', $dept->name)
-			->where('month', $month)
-			->where('year', $year)
-			->get()
-			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bounus_salary_over_work_day']);
-
-		return $salary;
-	}
-
-	public function salary_detail(Request $request): array
-	{
-		$id            = $request->id;
-		$dept_name     = $request->dept_name;
-		$role_name     = $request->role_name;
-		$month         = $request->month;
-		$year          = $request->year;
-		$fines         = Fines::query()->get()->append('deduction_detail');
-		$salary        = Salary::query()->with('emp')
-			->where('emp_id', $id)
-			->where('month', $month)
-			->where('year', $year)
-			->where('dept_name', $dept_name)
-			->where('role_name', $role_name)
-			->first()
-			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bounus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_work_day'])->toArray();
-		$arr['salary'] = $salary;
-		$arr['fines']  = $fines;
-		return $arr;
+        $salary = Salary::query()->with('emp')
+		->where('dept_name', $dept->name)
+        ->where('month', $month)
+        ->where('year', $year)
+        ->paginate(20);
+		$salary
+        ->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day']);
+		
+        $arr['data'] = $salary->getCollection();
+        $arr['pagination'] = $salary->linkCollection();
+        return $this->successResponse($arr);
+    }
+	
+    public function salary_detail(Request $request)
+    {
+        $id = $request->id;
+        $dept_name = $request->dept_name;
+        $role_name = $request->role_name;
+        $month = $request->month;
+        $year = $request->year;
+        $fines = Fines::query()->get()->append('deduction_detail');
+        $salary = Salary::query()->with('emp')
+        ->where('emp_id', $id)
+        ->where('month', $month)
+        ->where('year', $year)
+        ->where('dept_name', $dept_name)
+        ->where('role_name', $role_name)
+        ->first()
+        ->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
+        $arr['salary'] = $salary;
+        $arr['fines'] = $fines;
+        return $arr;
 	}
 
 	public function assignment()
@@ -404,6 +409,35 @@ class ManagerController extends Controller
 		}
 		return 1;
 	}
+	
+	public function sign_salary(Request $request): JsonResponse
+	{
+		try {
+			$response = $request->all();
+			foreach ($response['data'] as $request => $data ) {
+				$id = $data['id'];
+				$dept_name = $data['dept_name'];
+				$role_name = $data['role_name'];
+				$month = $data['month'];
+				$year = $data['year'];
+				$salary = Salary::query()
+				->where('emp_id', $id)
+				->where('dept_name', $dept_name)
+				->where('role_name', $role_name)
+				->where('month', $month)
+				->where('year', $year)
+				->update(['sign' => 1]);
+			}
+			return $this->successResponse([
+				'message' => 'Sign success',
+			]);
+		} catch (\Exception $e) {
+			return $this->errorResponse([
+				'message' => $e->getMessage(),
+			]);
+		}
+	}
+
 
 	/**
 	 * Show the form for creating a new resource.

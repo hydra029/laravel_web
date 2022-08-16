@@ -11,4 +11,10 @@
 			<span> Attendance History </span>
 		</a>
 	</li>
+	<li class="side-nav-item">
+		<a href="{{route('employees.salary')}}" class="side-nav-link">
+			<i class="uil-calendar-alt"></i>
+			<span> My salary </span>
+		</a>
+	</li>
 @endsection
