@@ -127,9 +127,9 @@
             <span class="btn-label">
                 <i class="fa-solid fa-circle-arrow-left"></i>
             </span>
-            back
-        </button>
-        <br>
+			back
+		</button>
+		<br>
 
         <div class="col-12 p-2 border border-1 border-light department_employees ">
             <table class="table table-striped table-striped" id="table-department-employees">
@@ -170,8 +170,8 @@
                     <th class="col-2"><span>Manager</span></th>
                     <th class="col-1"><span>Action</span></th>
 
-                </thead>
-                <tbody>
+				</thead>
+				<tbody>
 
                     @foreach ($dept as $each)
                         <tr class="div-dept">
@@ -351,72 +351,72 @@
                 <span class="btn-label">
                     <i class="fa-solid fa-circle-xmark"></i>
                 </span>
-                Close
-            </button>
-            <div class="profile-card-img float-left ">
+				Close
+			</button>
+			<div class="profile-card-img float-left ">
 
-                <span><img src="" width="100%" alt="Logo"></span>
-            </div>
-            <div class="profile-card-info float-left">
-                <div class="profile-card-info-basic">
-                    <table class="table">
-                        <tr>
-                            <td class="col-5">Name:</td>
-                            <td><span class="profile-card-name "></span></td>
-                        </tr>
-                        <tr>
-                            <td>Gender:</td>
-                            <td><span class="profile-card-gender"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Date of birth:</td>
-                            <td><span class="profile-card-dob"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Email:</td>
-                            <td><span class="profile-card-email"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Number phone:</td>
-                            <td><span class="profile-card-number-phone"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Address:</td>
-                            <td><span class="profile-card-address"></span></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="profile-card-roles ">
-                    <table class="table">
-                        <tr>
-                            <th>
-                                <div>
-                                    <i class="fa-solid fa-medal"></i>
-                                    <i class="fa-solid fa-book-circle-arrow-right"></i>
-                                    <span class="profile-card-department"></span>
-                                </div>
-                            </th>
-                            <th>
-                                <div>
-                                    <span class="profile-card-role"></span>
-                                </div>
-                            </th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- roles --}}
-    <div class="dept-roles col-12 d-none">
-        <button class="btn-warning btn-back-roles rounded-pill " type="button">
+				<span><img src="" width="100%" alt="Logo"></span>
+			</div>
+			<div class="profile-card-info float-left">
+				<div class="profile-card-info-basic">
+					<table class="table">
+						<tr>
+							<td class="col-5">Name:</td>
+							<td><span class="profile-card-name "></span></td>
+						</tr>
+						<tr>
+							<td>Gender:</td>
+							<td><span class="profile-card-gender"></span></td>
+						</tr>
+						<tr>
+							<td>Date of birth:</td>
+							<td><span class="profile-card-dob"></span></td>
+						</tr>
+						<tr>
+							<td>Email:</td>
+							<td><span class="profile-card-email"></span></td>
+						</tr>
+						<tr>
+							<td>Number phone:</td>
+							<td><span class="profile-card-number-phone"></span></td>
+						</tr>
+						<tr>
+							<td>Address:</td>
+							<td><span class="profile-card-address"></span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="profile-card-roles ">
+					<table class="table">
+						<tr>
+							<th>
+								<div>
+									<i class="fa-solid fa-medal"></i>
+									<i class="fa-solid fa-book-circle-arrow-right"></i>
+									<span class="profile-card-department"></span>
+								</div>
+							</th>
+							<th>
+								<div>
+									<span class="profile-card-role"></span>
+								</div>
+							</th>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{-- roles --}}
+	<div class="dept-roles col-12 d-none">
+		<button class="btn-warning btn-back-roles rounded-pill " type="button">
             <span class="btn-label">
                 <i class="fa-solid fa-circle-arrow-left"></i>
             </span>
-            back
-        </button>
+			back
+		</button>
 
-        <div class="col-12 p-2 border border-1 border-light pay-rate">
+		<div class="col-12 p-2 border border-1 border-light pay-rate">
 
             <table class="table table-striped table-bordered " id="table-pay-rate">
                 <thead>
@@ -430,52 +430,51 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination float-right" id="roles-pagination">
 
-                </ul>
-            </nav>
-        </div>
-        <div class="btn btn-add-roles btn-success "><i class="fa-solid fa-circle-plus"></i> Add</div>
-        <div class="div-inp-add-roles d-none col-8">
-            <form class="form-add-roles" action="" method="post">
-                @csrf
-                <table class="table">
-                    <tr>
-                        <td>
-                            <span>Name: </span>
-                            <input type="text" name="name" class="inp-role-name">
-                            <input type="hidden" name="dept_id" class="inp-dept-role-id">
-                        </td>
-                        <td>
-                            <span>Pay rate: </span>
-                            <input type="text" name="pay_rate" class="inp-role-pay_rate">
-                        </td>
-                        <td>
-                            <button type="submit" name="" class="btn btn-primary btn-save-add-role">Save</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </div>
+				</ul>
+			</nav>
+		</div>
+		<div class="btn btn-add-roles btn-success "><i class="fa-solid fa-circle-plus"></i> Add</div>
+		<div class="div-inp-add-roles d-none col-8">
+			<form class="form-add-roles" action="" method="post">
+				@csrf
+				<table class="table">
+					<tr>
+						<td>
+							<span>Name: </span>
+							<input type="text" name="name" class="inp-role-name">
+							<input type="hidden" name="dept_id" class="inp-dept-role-id">
+						</td>
+						<td>
+							<span>Pay rate: </span>
+							<input type="text" name="pay_rate" class="inp-role-pay_rate">
+						</td>
+						<td>
+							<button type="submit" name="" class="btn btn-primary btn-save-add-role">Save</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
 
-    {{-- edit profile --}}
-    <div class="div-form-update-employee d-none ">
-        <button class="btn-warning btn-back-form-update-employee rounded-pill " type="button">
+	{{-- edit profile --}}
+	<div class="div-form-update-employee d-none ">
+		<button class="btn-warning btn-back-form-update-employee rounded-pill " type="button">
             <span class="btn-label">
                 <i class="fa-solid fa-circle-arrow-left"></i>
             </span>
-            back
-        </button>
-        <br>
-        <form action="" method="post" id="form-update-employees">
-            @csrf
-            <div class="profile-card-edit col-12">
-                <div class="profile-card-img float-left ">
-                    <div class="image-upload">
-                        <label for="file-input" class="text-center">
-                            <img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
-                            <span>Click here to chage avatar</span>
-                        </label>
-
+			back
+		</button>
+		<br>
+		<form action="" method="post" id="form-update-employees">
+			@csrf
+			<div class="profile-card-edit col-12">
+				<div class="profile-card-img float-left ">
+					<div class="image-upload">
+						<label for="file-input" class="text-center">
+							<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
+							<span>Click here to chage avatar</span>
+						</label>
                         <input id="file-input" type="file" class="d-none" />
                     </div>
                 </div>
@@ -584,11 +583,10 @@
                             </tr>
                         </table>
                     </div>
-
-                </div>
-            </div>
-        </form>
-    </div>
+				</div>
+			</div>
+		</form>
+	</div>
 @endsection
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -642,8 +640,8 @@
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-popup').removeClass('d-none');
                 $('.popup-edit-department').removeClass('d-none');
-                var dept_id = $(this).data('id');
-                var dept_name = $(this).parents('tr').find('.dept-name').text();
+                var dept_id    = $(this).data('id');
+                var dept_name  = $(this).parents('tr').find('.dept-name').text();
                 var id_manager = $(this).parents('tr').find('.manager-id').text();
                 $('.id-department-edit').val(dept_id);
                 $('.name-department-edit').val(dept_name);
@@ -656,8 +654,8 @@
                     e.preventDefault();
                     var form = $(this);
                     $.ajax({
-                        url: "{{ route('ceo.department.update') }}",
-                        method: "POST",
+                        url     : "{{ route('ceo.department.update') }}",
+                        method  : "POST",
                         datatype: 'json',
                         data: form.serialize(),
                         success: function(response) {
@@ -698,16 +696,16 @@
 
             $('.btn-delete-department').click(function() {
                 var dept_row = $(this).parents('tr');
-                var dept_id = $(this).data('id');
+                var dept_id  = $(this).data('id');
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-ask-delete').removeClass('d-none');
                 $('.btn-delete-departments').removeClass('d-none');
                 $(".model-ask-delete").find(".btn-delete-departments").data('id', dept_id);
                 $('.btn-delete-departments').click(function() {
                     $.ajax({
-                        type: "POST",
-                        url: "{{ route('ceo.department.destroy') }}",
-                        data: {
+                        type    : "POST",
+                        url     : "{{ route('ceo.department.destroy') }}",
+                        data    : {
                             dept_id: dept_id,
                         },
                         dataType: "json",
@@ -726,8 +724,8 @@
             $('.btn-show-department').click(function() {
                 $('.dept').removeClass('d-none');
                 $('.dept-list').addClass('d-none');
-                var dept_id = $(this).data('id');
-                var dept_name = $(this).parents('tr').find('.dept-name').text();
+                var dept_id      = $(this).data('id');
+                var dept_name    = $(this).parents('tr').find('.dept-name').text();
                 var manager_name = $(this).parents('tr').find('.manager-name').text();
                 var url;
                 if (dept_id == 1) {
@@ -744,7 +742,7 @@
                     url: url,
                     method: "POST",
                     datatype: 'json',
-                    data: {
+                    data    : {
                         dept_id: dept_id
                     },
                     success: function(response) {
@@ -752,10 +750,10 @@
                         $.each(response.data.data, function(index, value) {
                             if (value.avatar == null) {
                                 var img =
-                                    `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
+                                        `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
                             } else {
                                 var img =
-                                    `<img  src="{{ asset('') }}img/${value.avatar} "  style=" border-radius:50% " width="40px"/>`
+                                        `<img  src="{{ asset('') }}img/${value.avatar} "  style=" border-radius:50% " width="40px"/>`
                             }
                             $('#table-department-employees').append($(
                                     '<tr class="employee-row">')
@@ -806,10 +804,10 @@
                     console.log(url);
                     $('#table-department-employees').find('tbody').empty();
                     $.ajax({
-                        url: url,
-                        method: "POST",
+                        url     : url,
+                        method  : "POST",
                         datatype: 'json',
-                        data: {
+                        data    : {
                             dept_id: dept_id
                         },
                         success: function(response) {
@@ -853,9 +851,9 @@
                     var id = $(this).data('id');
                     $('.model-popup-div ').removeClass('d-none');
                     $.ajax({
-                        type: "post",
-                        url: "{{ route('ceo.employee_infor') }}",
-                        data: {
+                        type    : "post",
+                        url     : "{{ route('ceo.employee_infor') }}",
+                        data    : {
                             id: id,
                         },
                         dataType: "json",
@@ -901,9 +899,9 @@
                     $('.div-form-update-employee').removeClass('d-none');
                     $('.dept').addClass('d-none');
                     $.ajax({
-                        type: "post",
-                        url: "{{ route('ceo.employee_infor') }}",
-                        data: {
+                        type    : "post",
+                        url     : "{{ route('ceo.employee_infor') }}",
+                        data    : {
                             id: id,
                         },
                         dataType: "json",
@@ -957,16 +955,16 @@
             function delete_emp() {
                 $('.btn-delete-employee').click(function() {
                     var employee_delete = $(this).parents('tr');
-                    var id = $(this).data('id');
+                    var id              = $(this).data('id');
                     $(".model-popup-div").removeClass('d-none');
                     $(".model-ask-delete").removeClass('d-none');
                     $(".btn-delete-members").removeClass('d-none');
                     $(".model-ask-delete").find(".btn-delete-members").data('id', id);
                     $('.btn-delete-members').click(function() {
                         $.ajax({
-                            type: "delete",
-                            url: `{{ route('ceo.delete_emp') }}`,
-                            data: {
+                            type    : "delete",
+                            url     : `{{ route('ceo.delete_emp') }}`,
+                            data    : {
                                 "id": id,
                             },
                             dataType: "json",
@@ -1007,9 +1005,9 @@
                 e.preventDefault();
                 var form = $(this);
                 $.ajax({
-                    type: 'post',
-                    url: "{{ route('ceo.update_emp') }}",
-                    data: form.serialize(),
+                    type    : 'post',
+                    url     : "{{ route('ceo.update_emp') }}",
+                    data    : form.serialize(),
                     dataType: 'json',
                     success: function(response) {
                         $.notify('success', 'edit success');
@@ -1070,8 +1068,8 @@
 
             async function loadDistrict() {
                 $('#select-district').empty();
-                const path = $("#select-city option:selected").data('path');
-                const response = await fetch('{{ asset('locations/') }}' + path);
+                const path      = $("#select-city option:selected").data('path');
+                const response  = await fetch('{{ asset('locations/') }}' + path);
                 const districts = await response.json();
                 $.each(districts.district, function(index, each) {
                     if (each.pre === "Quận" || each.pre === "Huyện") {
@@ -1093,9 +1091,9 @@
             function select_role(dept_id) {
                 $("#select-role").empty();
                 $.ajax({
-                    type: "post",
-                    url: "{{ route('ceo.select_role') }}",
-                    data: {
+                    type    : "post",
+                    url     : "{{ route('ceo.select_role') }}",
+                    data    : {
                         dept_id: dept_id
                     },
                     dataType: "json",
@@ -1114,15 +1112,15 @@
                 // values: e.clientX, e.clientY, e.pageX, e.pageY
                 // over
                 $('.model-popup-div ').removeClass('d-none');
-                var id_manager = $(this).parents('tr').find('.manager-id').text();
-                var name_manager = $(this).parents('tr').find('.manager-name').text();
-                var gender_manager = $(this).parents('tr').find('.manager-gender').text();
-                var dob_manager = $(this).parents('tr').find('.manager-dob').text();
-                var email_manager = $(this).parents('tr').find('.manager-email').text();
-                var phone_manager = $(this).parents('tr').find('.manager-phone').text();
+                var id_manager      = $(this).parents('tr').find('.manager-id').text();
+                var name_manager    = $(this).parents('tr').find('.manager-name').text();
+                var gender_manager  = $(this).parents('tr').find('.manager-gender').text();
+                var dob_manager     = $(this).parents('tr').find('.manager-dob').text();
+                var email_manager   = $(this).parents('tr').find('.manager-email').text();
+                var phone_manager   = $(this).parents('tr').find('.manager-phone').text();
                 var address_manager = $(this).parents('tr').find('.manager-address').text();
                 var id_role_manager = $(this).parents('tr').find('.manager-role').text();
-                var avatar_manager = $(this).parents('tr').find('.manager-avatar').text();
+                var avatar_manager  = $(this).parents('tr').find('.manager-avatar').text();
                 $('.profile-card').find('.profile-card-info').find('.profile-card-name').text(
                     name_manager);
                 $('.profile-card').find('.profile-card-info').find('.profile-card-gender').text(
@@ -1144,10 +1142,10 @@
                     $('.profile-card').find('.profile-card-img').find('img').attr('src', img);
                 }
                 $.ajax({
-                    url: "{{ route('ceo.department.manager_role') }}",
-                    type: 'POST',
+                    url     : "{{ route('ceo.department.manager_role') }}",
+                    type    : 'POST',
                     dataType: 'json',
-                    data: {
+                    data    : {
                         role_id: id_role_manager,
                     },
                     success: function(response) {
@@ -1178,5 +1176,5 @@
                 }
             })
         });
-    </script>
+	</script>
 @endpush

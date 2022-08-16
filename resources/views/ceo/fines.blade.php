@@ -77,10 +77,10 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    // searching by department
-    <script type="text/javascript">
-        $(document).ready(function() {
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	// searching by department
+	<script type="text/javascript">
+        $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -116,16 +116,16 @@
                 var name = $(this).parents('tr').find('.inp-fines-name').val();
                 var fines = $(this).parents('tr').find('.inp-fines-time').val();
                 $.ajax({
-                    url: "{{ route('ceo.fines_update') }}",
-                    method: "POST",
+                    url     : "{{ route('ceo.fines_update') }}",
+                    method  : "POST",
                     datatype: 'json',
-                    data: {
-                        id: id,
-                        name: name,
-                        fines: fines,
+                    data    : {
+                        id       : id,
+                        name     : name,
+                        fines    : fines,
                         deduction: deduction,
                     },
-                    success: function(response) {
+                    success : function (response) {
                         console.log('2');
                         this_btn.parents('tr').find('.btn-change-fines').removeClass('d-none');
                         this_btn.addClass('d-none');
@@ -176,5 +176,5 @@
                 : ''
             }
         });
-    </script>
+	</script>
 @endpush

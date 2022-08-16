@@ -1,6 +1,7 @@
 @extends('layout.master')
 @include('accountants.menu')
 @push('css')
+
     <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
     {{-- <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/v/bs4/dt-1.12.1/af-2.4.0/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/date-1.1.2/fh-3.2.4/r-2.3.0/rg-1.2.0/sb-1.3.4/sp-2.0.2/datatables.min.css" />
@@ -221,7 +222,7 @@
                     }else {
                         month = month - 1;
                     }
-                    
+ 
                         for (let i = year; i >= 2018; i--) {
                             $('#select-year').append(`<option value="${i}">${i}</option>`);
                         }

@@ -3,18 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Accountant;
-use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
-use App\Models\Employee;
-use App\Models\Fines;
-use App\Models\Manager;
-use App\Models\Salary;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
 	public function test()
 	{
+		$acct = Accountant::pluck('id');
 		return view('test', [
 			'title' => 'Test'
 		]);
@@ -31,11 +27,10 @@ class HomeController extends Controller
 
 	public function emp_attendance_api(Request $request): void
 	{
-		$emp_id   = $request->get('id');
-		$dept  = $request->get('dept');
-		$role  = $request->get('role');
-		$month    = date('m', strtotime('last month'));
-		$year     = date('Y', strtotime('last month'));
-
+		$emp_id = $request->get('id');
+		$dept   = $request->get('dept');
+		$role   = $request->get('role');
+		$month  = date('m', strtotime('last month'));
+		$year   = date('Y', strtotime('last month'));
 	}
 }

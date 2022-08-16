@@ -1,21 +1,20 @@
 @extends('layout.master')
 @include('ceo.menu')
 @section('content')
-@push('css')
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        ul li {
-            list-style-type: none;
-        }
-        a,
-        i,
-        img {
-            cursor: pointer;
-        }
+	@push('css')
+		<link rel="stylesheet" type="text/css"
+		      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css"/>
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+		<style>
+            ul li {
+                list-style-type: none;
+            }
 
-        .model-popup-div {
+            a, i, img {
+                cursor: pointer;
+            }
+
+            .model-popup-div {
                 background-color: rgba(0, 0, 0, 0.5);
                 width: 100%;
                 height: 100%;
@@ -189,82 +188,82 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
-    <script type="text/javascript">
-        $(document).ready(function() {
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            
-            $('.btn-close-model').click(function() {
+
+            $('.btn-close-model').click(function () {
                 $('.model-popup-div ').addClass('d-none');
                 $('.model-popup').addClass('d-none');
                 $('.model-popup').find('form')[0].reset();
             });
 
-            $('.btn-add-role').click(function() {
+            $('.btn-add-role').click(function () {
                 var table = $(this).closest('table');
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-popup').removeClass('d-none');
                 $('.model-popup').find('form')[0].reset();
                 $('.dept-id').val($(this).data('id'));
                 $('.tilte-popup').text('Add Roles');
-                $('.model-popup').find('form').submit(function (e) { 
+                $('.model-popup').find('form').submit(function (e) {
                     e.preventDefault();
-                    var form = $(this);
+                    var form     = $(this);
                     var formData = new FormData(form[0]);
                     $.ajax({
-                        url: "{{ route('ceo.roles.store') }}",
-                        type: 'POST',
-                        data: formData,
+                        url        : "{{ route('ceo.roles.store') }}",
+                        type       : 'POST',
+                        data       : formData,
                         contentType: false,
                         processData: false,
-                        success: function (response) {
-                            if(response.success == true) {
+                        success    : function (response) {
+                            if (response.success == true) {
                                 $('.model-popup-div ').addClass('d-none');
                                 $('.model-popup').addClass('d-none');
                                 $('.model-popup').find('form')[0].reset();
                                 $.toast({
-                                heading: 'Success',
-                                text: response.message,
-                                icon: 'success',
-                                showHideTransition: 'slide',
-                                allowToastClose: false,
-                                hideAfter: 3000,
-                                stack: 5,
-                                position: 'top-right',
-                                textAlign: 'left',
-                                loader: true,
-                            });
+                                    heading           : 'Success',
+                                    text              : response.message,
+                                    icon              : 'success',
+                                    showHideTransition: 'slide',
+                                    allowToastClose   : false,
+                                    hideAfter         : 3000,
+                                    stack             : 5,
+                                    position          : 'top-right',
+                                    textAlign         : 'left',
+                                    loader            : true,
+                                });
                             }
-                            
-                            if(response.success == false) {
+
+                            if (response.success == false) {
                                 $('.model-popup-div ').addClass('d-none');
                                 $('.model-popup').addClass('d-none');
                                 $('.model-popup').find('form')[0].reset();
                                 $.toast({
-                                heading: 'Error',
-                                text: response.message,
-                                icon: 'error',
-                                showHideTransition: 'slide',
-                                allowToastClose: false,
-                                hideAfter: 3000,
-                                stack: 5,
-                                position: 'top-right',
-                                textAlign: 'left',
-                                loader: true,
-                            });
+                                    heading           : 'Error',
+                                    text              : response.message,
+                                    icon              : 'error',
+                                    showHideTransition: 'slide',
+                                    allowToastClose   : false,
+                                    hideAfter         : 3000,
+                                    stack             : 5,
+                                    position          : 'top-right',
+                                    textAlign         : 'left',
+                                    loader            : true,
+                                });
                             }
                         }
-                        
+
                     });
-                });;
+                });
+
             });
 
-            $('.btn-edit-role').click(function() {
+            $('.btn-edit-role').click(function () {
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-popup').removeClass('d-none');
                 $('.model-popup').find('form')[0].reset();
@@ -276,12 +275,12 @@
                 $('.model-popup').find('form').attr('action', '{{ route('ceo.roles.update') }}');
             });
 
-            $('.btn-delete-role').click(function() {
+            $('.btn-delete-role').click(function () {
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-ask-delete').removeClass('d-none');
                 $('.delete-id').val($(this).data('id'));
                 $('.model-ask-delete').find('form').attr('action', '{{ route('ceo.roles.destroy') }}');
             });
         });
-    </script>
+	</script>
 @endpush

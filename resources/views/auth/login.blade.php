@@ -100,8 +100,9 @@
 @include('layout.notify')
 <script>
     $(function () {
-        let email    = $('#email');
-        let password = $('#password');
+        let email           = $('#email');
+        let password        = $('#password');
+        let checkbox_signin = $('#checkbox_signin');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -122,9 +123,10 @@
         })
         $('#login-form').submit(function (e) {
             e.preventDefault()
-            let email_val    = email.val();
-            let password_val = password.val();
-            let len          = password_val.length;
+            let email_val           = email.val();
+            let password_val        = password.val();
+            let checkbox_signin_val = checkbox_signin.val();
+            let len                 = password_val.length;
             if (len < 3) {
                 $.toast({
                     heading           : 'Your password is too short!',
@@ -155,9 +157,10 @@
                     type    : 'POST',
                     dataType: 'JSON',
                     data    : {
-                        "_token": "{{ csrf_token() }}",
-                        email   : email_val,
-                        password: password_val
+                        "_token"       : "{{ csrf_token() }}",
+                        email          : email_val,
+                        password       : password_val,
+                        checkbox_signin: checkbox_signin_val,
                     },
                 })
                     .done(function (response) {

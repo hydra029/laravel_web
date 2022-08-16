@@ -484,7 +484,7 @@
                 let dept_id = dept.children(':selected').val();
                 let m       = getMon(d).toISOString().slice(0, 10);
                 let s       = getSun(d).toISOString().slice(0, 10);
-                let crTime = new Date(m).getTime();
+                let crTime  = new Date(m).getTime();
                 $.ajax({
                     url     : '{{route('ceo.attendance_api')}}',
                     type    : 'POST',
@@ -1006,12 +1006,12 @@
                                         e.push(event);
                                         num--;
                                     }
-                                    let l_date    = response[k][i]['attendance'][length - 1]['date'];
-                                    let days      = getDay(l_date);
-                                    let day       = getDay(new Date());
+                                    let l_date = response[k][i]['attendance'][length - 1]['date'];
+                                    let days   = getDay(l_date);
+                                    let day    = getDay(new Date());
                                     if (days < day) {
                                         let date = getFullDate(today);
-                                        addEvent(3,num,date,e);
+                                        addEvent(3, num, date, e);
                                         num -= 3;
                                     }
                                     let total_day = 7;

@@ -49,6 +49,16 @@ class Department extends Model
         'name',
     ];
 
+	public function getAcctAttribute(): string
+	{
+		$acc = Accountant::where('id','=', $this->acct_id)->first(['fname','lname']);
+		return $acc ? $acc['fname'] . ' ' . $acc['lname']: 'unassigned';
+	}
+
+	public function getAcctNameAttribute(): string
+	{
+		return $this->acct_id ?? 0;
+	}
 
     public function manager(): HasOne
     {

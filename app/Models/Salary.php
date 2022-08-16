@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection NullPointerExceptionInspection */
 
 namespace App\Models;
 
@@ -151,7 +151,7 @@ class Salary extends Model
 	{	
 		$salary_over_day = ($this->pay_rate / $this->work_day) * 0.75;
 		return number_format((float)($salary_over_day * $this->over_work_day)). ' đ';
-	}
+
 	public function getPayRateOverWorkDayAttribute()
 	{	
 		return number_format((float)(($this->pay_rate / $this->work_day) * 0.75)). ' đ';

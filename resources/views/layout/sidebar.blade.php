@@ -6,20 +6,20 @@
             <span class="leftbar-user-name m-0">
                 {{session('name')}}
             </span>
-        </a>
-        <span class="m-0">
+		</a>
+		<span class="m-0">
             @if(!session('dept_name'))
-                {{session('role_name')}}
-            @else
-                {{session('dept_name')}}
-                <br>
-                {{session('role_name')}}
-            @endif
+				{{session('role_name')}}
+			@else
+				{{session('dept_name')}}
+				<br>
+				{{session('role_name')}}
+			@endif
         </span>
-    </div>
-    <ul class="metismenu side-nav">
-        <li class="side-nav-title side-nav-item">Navigation</li>
-        @yield('menu')
-    </ul>
-    <div class="clearfix"></div>
+	</div>
+	<ul class="metismenu side-nav">
+		<li class="side-nav-title side-nav-item">Navigation</li>
+		@yield('menu')
+	</ul>
+	<div class="clearfix"></div>
 </div>

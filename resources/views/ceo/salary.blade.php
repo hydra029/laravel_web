@@ -223,14 +223,12 @@
                     }else {
                         month = month - 1;
                     }
-                    
                         for (let i = year; i >= 2018; i--) {
                             $('#select-year').append(`<option value="${i}">${i}</option>`);
                         }
                         for (let i = month; i >= 1; i--) {
                             $('#select-month').append(`<option value="${i}">${i}</option>`);
                         }
-
                     $('.date input[name="month"]').val(month);
                     $('.date input[name="year"]').val(year);
                     
