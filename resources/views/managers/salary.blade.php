@@ -1,5 +1,16 @@
 @extends('layout.master')
 @include('managers.menu')
+@push('css')
+<style>
+    
+    <style>
+        table tr{
+            font-size: 14px;
+            height: 20px !important;
+        }
+    </style>
+</style>
+@endpush
 @section('content')
 <div class="table-salary col-12">
     <div class="date w-100" >
@@ -9,24 +20,29 @@
          <input type="hidden" style="width: 3em" name="year" value="" readonly>
         <span class="d-none dept_id">{{ session()->get('dept_id') }}</span>
     </div>
-    <table id="salary-table" class="table table-striped w-100 text-center"  cellspacing="0" cellpadding="0" width="100%" height="100%">
+    <table id="salary-table" class="table table-striped table-bordered w-100 table-sm text-center"  cellspacing="0" width="100%">
         <thead>
-                <th>#</th>
-                <th></th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Role</th>
-                <th>Work days</th>
-                <th>Basic salary</th>
-                <th>Allowance</th>
-                <th>Deduction</th>
-                <th>Salary</th>
-                <th>Action</th>
+            <th class="th-sm">#</th>
+            <th class="th-sm"></th>
+            <th class="th-sm">Name</th>
+            <th class="th-sm">Department</th>
+            <th class="th-sm">Role</th>
+            <th class="th-sm">Work days</th>
+            <th class="th-sm">Basic salary</th>
+            <th class="th-sm">Overtime</th>
+            <th class="th-sm">Deduction</th>
+            <th class="th-sm">Salary</th>
+            <th class="th-sm">Action</th>
         </thead>
         <tbody>
 
         </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-rounded mb-0 float-right" id="salary-pagination">
+    
+        </ul>
+    </nav>
 
 </div>
 
@@ -178,7 +194,7 @@
                 
             });
             // table salary
-                (function (){
+            (function (){
                     const d = new Date();
                     var month = d.getMonth();
                     var year = d.getFullYear();
@@ -188,12 +204,13 @@
                     }else {
                         month = month - 1;
                     }
-                    for (let i = year; i >= 2018; i--) {
-                        $('#select-year').append(`<option value="${i}">${i}</option>`);
-                    }
-                    for (let i = month; i >= 1; i--) {
-                        $('#select-month').append(`<option value="${i}">${i}</option>`);
-                    }
+                    
+                        for (let i = year; i >= 2018; i--) {
+                            $('#select-year').append(`<option value="${i}">${i}</option>`);
+                        }
+                        for (let i = month; i >= 1; i--) {
+                            $('#select-month').append(`<option value="${i}">${i}</option>`);
+                        }
 
                     $('.date input[name="month"]').val(month);
                     $('.date input[name="year"]').val(year);
@@ -211,12 +228,27 @@
                 });
                 $('#select-year').change(function (e) { 
                     year = $(this).val();
+                    
+                    if( $('#select-year').val() < (new Date()).getFullYear()){
+                        month = 12;
+                        $('#select-month').empty();
+                        for (let i = month; i >= 1; i--) {
+                            $('#select-month').append(`<option value="${i}">${i}</option>`);
+                        }
+                    }else{
+                        month = (new Date()).getMonth() - 1;
+                        $('#select-month').empty();
+                        for (let i = month; i >= 1; i--) {
+                            $('#select-month').append(`<option value="${i}">${i}</option>`);
+                        }
+                    }
                     $("#salary-table tbody").empty();
-                    getSalary(dept_id,month, year);
+                getSalary(dept_id,month, year);
                 });
                 getSalary(dept_id,month, year);
 
                 function getSalary(dept_id,month, year) {
+                    $('#salary-pagination').empty();
                         
                     $.ajax({
                         type: "post",
@@ -228,14 +260,14 @@
                         },
                         dataType: "json",
                         success: function (response) {
-                            $.each(response, function(k, v) {
+                            $.each(response.data.data, function(k, v) {
                                 /// do stuff
                                 if (v.emp[0].avatar == null) {
                                     var img =
-                                        `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
+                                        `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="20px">`
                                 } else {
                                     var img =
-                                        `<img  src="{{ asset('') }}img/${v.emp[0].avatar} "  style=" border-radius:50% " width="40px"/>`
+                                        `<img  src="{{ asset('') }}img/${v.emp[0].avatar} "  style=" border-radius:50% " width="20px"/>`
                                 }
                                 if (v.sign == null) {
                                     var approve =
@@ -265,16 +297,21 @@
                                         );
                             });
                             showDetailSalary();
+                            renderSalaryPagination(response.data.pagination);
                         }
                     });
                 }
-                $(".checkAll").click(function() {
-                    if (this.checked) {
-                        $(".check_box").prop("checked", true);
-                    } else {
-                        $(".check_box").prop("checked", false);
-                    }  
-                });
+                function renderSalaryPagination(links) {
+                    links.forEach(function(each) {
+                        $('#salary-pagination').append($('<li>').attr('class',
+                                `page-item ${each.active ? 'active' : ''}`)
+                            .append(`<a class="page-link"
+                                    href="${each.url}">
+                                        ${each.label}
+                                    </a>
+                                `))
+                    })
+                }
 
                 function showDetailSalary(){
                     $(".btn-show-salary").click(function() {

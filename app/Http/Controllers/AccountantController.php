@@ -8,11 +8,14 @@ use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\UpdateAccountantRequest;
 use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Manager;
+use App\Models\Role;
 use App\Models\Salary;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -20,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
 class AccountantController extends Controller
-{
+{   
+    use ResponseTrait;
+
 	public function __construct()
 	{
 		$this->middleware('accountant');
@@ -109,16 +114,24 @@ class AccountantController extends Controller
         return redirect()->route('accountants.index');
     }
 
-    public function salary_api(Request $request)
+    public function get_salary(Request $request): JsonResponse
     {
+        $acct = session('id');
         $month = $request->month;
         $year = $request->year;
+        $dept = Department::query()
+            ->where('acct_id', '=', $acct)
+            ->first();
         $salary = Salary::query()->with('emp')
         ->where('month', $month)
         ->where('year', $year)
-        ->get()
-        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day']);
-        return $salary;
+        ->where('dept_name', $dept->name)
+        ->paginate(20);
+        $salary->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day']);
+
+        $arr['data'] = $salary->getCollection();
+        $arr['pagination'] = $salary->linkCollection();
+        return $this->successResponse($arr);
     }
 
     public function salary_detail(Request $request)
@@ -140,6 +153,51 @@ class AccountantController extends Controller
         $arr['salary'] = $salary;
         $arr['fines'] = $fines;
         return $arr;
+    }
+
+    public function test(Request $request)
+    {
+        for ($i = 1; $i <= 6; $i++) {
+            $emp = Employee::query()->get();
+            foreach ($emp as $e) {
+                $id = $e->id;
+                $dept_id = $e->dept_id;
+                $role_id = $e->role_id;
+                $dept = Department::query()->where('id', $dept_id)->first();
+                $role = Role::query()->where('id', $role_id)->first();
+                $pay_rate = $role->pay_rate;
+                $dept_name = $dept->name;
+                $role_name = $role->name;
+                $work_day = rand(15, 26);
+                $over_work_day = rand(0, 26);
+                $late_1 = rand(0, 26);
+                $late_2 = rand(0, 26);
+                $early_1 = rand(0, 26);
+                $early_2 = rand(0, 26);
+                $miss = rand(0, 26);
+                $deduction = $late_1 * 15000 + $late_2 * 30000 + $early_1 * 15000 + $early_2 * 30000 + $miss * 50000;
+                $salary = (( $pay_rate / 26) * $work_day + ( $pay_rate / 26) * $over_work_day * 0.75) - $deduction;
+                $data = Salary::query()
+                ->create([
+                    'emp_id' => $id,
+                    'dept_name' => $dept_name,
+                    'role_name' => $role_name,
+                    'month' => $i,
+                    'year' => 2022,
+                    'work_day' => $work_day,
+                    'over_work_day' => $over_work_day,
+                    'pay_rate' => $pay_rate,
+                    'late_one' => $late_1,
+                    'late_two' => $late_2,
+                    'early_one' => $early_1,
+                    'early_two' => $early_2,
+                    'miss' => $miss,
+                    'mgr_id' => rand(1,5),
+                    'deduction' => $deduction,
+                    'salary' => $salary,
+                ]);
+            }
+        }
     }
 	/**
      * Show the form for creating a new resource.

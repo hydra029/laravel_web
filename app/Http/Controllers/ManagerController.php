@@ -16,6 +16,7 @@ use App\Models\Manager;
 use App\Models\Role;
 use App\Models\Salary;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\View;
 
 class ManagerController extends Controller
 {
+	use ResponseTrait;
 
 	public function __construct()
 	{
@@ -410,7 +412,7 @@ class ManagerController extends Controller
 		return view('managers.salary');
 	}
 
-	public function get_salary(Request $request)
+	public function get_salary(Request $request): JsonResponse
     {	
 		$dept_id = $request->dept_id;
         $month = $request->month;
@@ -422,10 +424,13 @@ class ManagerController extends Controller
 		->where('dept_name', $dept->name)
         ->where('month', $month)
         ->where('year', $year)
-        ->get()
-        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day']);
+        ->paginate(20);
+		$salary
+        ->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day']);
 		
-        return $salary;
+        $arr['data'] = $salary->getCollection();
+        $arr['pagination'] = $salary->linkCollection();
+        return $this->successResponse($arr);
     }
 	
     public function salary_detail(Request $request)
@@ -443,7 +448,7 @@ class ManagerController extends Controller
         ->where('dept_name', $dept_name)
         ->where('role_name', $role_name)
         ->first()
-        ->append(['salary_money','deduction_detail','pay_rate_money','bounus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
+        ->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
         $arr['salary'] = $salary;
         $arr['fines'] = $fines;
         return $arr;

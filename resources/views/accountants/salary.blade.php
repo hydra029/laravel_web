@@ -16,28 +16,28 @@
     </style>
 @endpush
 @section('content')
-<div class="table-salary">
+<div class="table-salary col-12">
     <div class="date w-100" >
         Month: <select name="month" id="select-month"></select>
         Year: <select name="year" id="select-year"></select>
          <input type="hidden" style="width: 1.5em" name="month" value="" readonly>
          <input type="hidden" style="width: 3em" name="year" value="" readonly>
-        <span class="btn btn-primary float-right m-1" >Approve</span>
+        <span class="btn btn-primary float-right m-1 btn-approve" >Approve</span>
     </div>
-    <table id="salary-table" class="table table-striped w-100 text-center"  cellspacing="0" cellpadding="0" width="100%" height="100%">
+    <table id="salary-table" class="table table-striped table-bordered w-100 table-sm text-center"  cellspacing="0" width="100%">
         <thead>
-                <th>#</th>
-                <th></th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Role</th>
-                <th>Work days</th>
-                <th>Basic salary</th>
-                <th>Allowance</th>
-                <th>Deduction</th>
-                <th>Salary</th>
-                <th>Action</th>
-                <th>
+                <th class="th-sm">#</th>
+                <th class="th-sm"></th>
+                <th class="th-sm">Name</th>
+                <th class="th-sm">Department</th>
+                <th class="th-sm">Role</th>
+                <th class="th-sm">Work days</th>
+                <th class="th-sm">Basic salary</th>
+                <th class="th-sm">Overtime</th>
+                <th class="th-sm">Deduction</th>
+                <th class="th-sm">Salary</th>
+                <th class="th-sm">Action</th>
+                <th class="th-sm">
                     <span>Approve</span>
                 </th>
         </thead>
@@ -45,7 +45,15 @@
 
         </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-rounded mb-0 float-right" id="salary-pagination">
+    
+        </ul>
+    </nav>
 
+    <div>
+        <button class="btn btn-danger btn-sm btn-test float-right">Tạo bảng luơng</button>
+    </div>
 </div>
     
         <div class="table-show-salary-detail d-none col-12" >
@@ -63,7 +71,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th></th>
+                            <th class="text-right"> <i class="fa-solid fa-pen btn-edit-salary text-warning" data-id="${v.emp_id}" data-dept_name="${v.dept_name}" data-role_name="${v.role_name}"></i></th>
                         </thead>
                         <tbody>
                             <tr>
@@ -213,12 +221,13 @@
                     }else {
                         month = month - 1;
                     }
-                    for (let i = year; i >= 2018; i--) {
-                        $('#select-year').append(`<option value="${i}">${i}</option>`);
-                    }
-                    for (let i = month; i >= 1; i--) {
-                        $('#select-month').append(`<option value="${i}">${i}</option>`);
-                    }
+                    
+                        for (let i = year; i >= 2018; i--) {
+                            $('#select-year').append(`<option value="${i}">${i}</option>`);
+                        }
+                        for (let i = month; i >= 1; i--) {
+                            $('#select-month').append(`<option value="${i}">${i}</option>`);
+                        }
 
                     $('.date input[name="month"]').val(month);
                     $('.date input[name="year"]').val(year);
@@ -235,12 +244,27 @@
                 });
                 $('#select-year').change(function (e) { 
                     year = $(this).val();
+                    
+                    if( $('#select-year').val() < (new Date()).getFullYear()){
+                        month = 12;
+                        $('#select-month').empty();
+                        for (let i = month; i >= 1; i--) {
+                            $('#select-month').append(`<option value="${i}">${i}</option>`);
+                        }
+                    }else{
+                        month = (new Date()).getMonth() - 1;
+                        $('#select-month').empty();
+                        for (let i = month; i >= 1; i--) {
+                            $('#select-month').append(`<option value="${i}">${i}</option>`);
+                        }
+                    }
                     $("#salary-table tbody").empty();
                     getSalary(month, year);
                 });
                 getSalary(month, year);
 
                 function getSalary(month, year) {
+                    $('#salary-pagination').empty();
                         
                     $.ajax({
                         type: "post",
@@ -251,7 +275,7 @@
                         },
                         dataType: "json",
                         success: function (response) {
-                            $.each(response, function(k, v) {
+                            $.each(response.data.data, function(k, v) {
                                 /// do stuff
                                 if (v.emp[0].avatar == null) {
                                     var img =
@@ -260,9 +284,9 @@
                                     var img =
                                         `<img  src="{{ asset('') }}img/${v.emp[0].avatar} "  style=" border-radius:50% " width="40px"/>`
                                 }
-                                if (v.sign == null) {
+                                if (v.acct_id == null) {
                                     var approve =
-                                    ` <input type="checkbox" name="approve[]" class="check_box" data-id="${v.emp_id}" data-dept_name="${v.dept_name}" data-role_name="${v.role_name}"> `
+                                    ` <input type="checkbox" name="approve" class="check_box" data-id="${v.emp_id}" data-dept_name="${v.dept_name}" data-role_name="${v.role_name}"> `
                                 } else {
                                     var approve =
                                         `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -278,7 +302,7 @@
                                     .append($("<td class='align-middle'>").append( v.role_name ))
                                     .append($("<td class='align-middle'>").append( v.work_day ))
                                     .append($("<td class='align-middle'>").append( v.pay_rate_money ))
-                                    .append($("<td class='align-middle'>").append( v.bounus_salary_over_work_day ))
+                                    .append($("<td class='align-middle'>").append( v.bonus_salary_over_work_day ))
                                     .append($("<td class='align-middle'>").append( v.deduction_detail ))
                                     .append($("<td class='align-middle'>").append( v.salary_money ))
                                     .append($("<td class='align-middle'>").append( `
@@ -288,16 +312,11 @@
                                         );
                             });
                             showDetailSalary();
+                            renderSalaryPagination(response.data.pagination);
+                            changePage(month, year);
                         }
                     });
                 }
-                $(".checkAll").click(function() {
-                    if (this.checked) {
-                        $(".check_box").prop("checked", true);
-                    } else {
-                        $(".check_box").prop("checked", false);
-                    }  
-                });
 
                 function showDetailSalary(){
                     $(".btn-show-salary").click(function() {
@@ -326,7 +345,7 @@
                                 detail_salary.find(".detail-basic_salary").text(response.salary.pay_rate_money);
                                 detail_salary.find(".detail-over_work_day").text(response.salary.over_work_day);
                                 detail_salary.find(".detail-pay_rate_over_work_day").text(response.salary.pay_rate_over_work_day);
-                                detail_salary.find(".detail-bounus_salary_over_work_day").text(response.salary.bounus_salary_over_work_day);
+                                detail_salary.find(".detail-bounus_salary_over_work_day").text(response.salary.bonus_salary_over_work_day);
                                 detail_salary.find(".detail-late_1").text(response.salary.late_1);
                                 detail_salary.find(".detail-deduction_late_1").text(response.fines[0].deduction_detail);
                                 detail_salary.find(".detail-deduction_salary_late_1").text(response.salary.deduction_late_one_detail );
@@ -348,6 +367,144 @@
                         });
                     });
                 }
+                function changePage(month, year) {
+                    $(document).on('click', '#salary-pagination > li > a', function(event) {
+                        event.preventDefault();
+                        var url = $(this).attr('href');
+                        console.log(url);
+                        $('#salary-table').find('tbody').empty();
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            datatype: 'json',
+                            data: {
+                                month: month,
+                                year: year,
+                            },
+                            success: function (response) {
+                                $.each(response.data.data, function(k, v) {
+                                    /// do stuff
+                                    if (v.emp[0].avatar == null) {
+                                        var img =
+                                            `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="30px">`
+                                    } else {
+                                        var img =
+                                            `<img  src="{{ asset('') }}img/${v.emp[0].avatar} "  style=" border-radius:50% " width="30px"/>`
+                                    }
+                                    if (v.sign == null) {
+                                        var approve =
+                                        ` <input type="checkbox" name="sign" class="check_box" data-id="${v.emp_id}" data-dept_name="${v.dept_name}" data-role_name="${v.role_name}"> `
+                                    } else {
+                                        var approve =
+                                            `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                                            width="16" height="16"
+                                            viewBox="0 0 40 40"
+                                            style=" fill:#000000;"><path fill="#bae0bd" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="#5e9c76" d="M20,2c9.9,0,18,8.1,18,18s-8.1,18-18,18S2,29.9,2,20S10.1,2,20,2 M20,1C9.5,1,1,9.5,1,20s8.5,19,19,19	s19-8.5,19-19S30.5,1,20,1L20,1z"></path><path fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3" d="M11.2,20.1l5.8,5.8l13.2-13.2"></path></svg>`
+                                    }
+                                    $("#salary-table tbody").append($("<tr>")
+                                        .append($("<td class='align-middle'>").append( k + 1 ))
+                                        .append($("<td class='align-middle'>").append( img ))
+                                        .append($("<td class='align-middle'>").append( v.emp[0].fname + ' ' + v.emp[0].lname ))
+                                        .append($("<td class='align-middle'>").append( v.dept_name ))
+                                        .append($("<td class='align-middle'>").append( v.role_name ))
+                                        .append($("<td class='align-middle'>").append( v.work_day ))
+                                        .append($("<td class='align-middle'>").append( v.pay_rate_money ))
+                                        .append($("<td class='align-middle'>").append( v.bonus_salary_over_work_day ))
+                                        .append($("<td class='align-middle'>").append( v.deduction_detail ))
+                                        .append($("<td class='align-middle'>").append( v.salary_money ))
+                                        .append($("<td class='align-middle'>").append( `
+                                                    <i class="fa-solid fa-eye btn-show-salary text-primary" data-id="${v.emp_id}" data-dept_name="${v.dept_name}" data-role_name="${v.role_name}"></i>
+                                            ` ))
+                                        .append($("<td class='align-middle'>").append( approve ))
+                                            );
+                                });
+                                $('#salary-pagination').empty();
+                                showDetailSalary();
+                                renderSalaryPagination(response.data.pagination);
+                            }
+                        });
+                    });
+                }
+                function renderSalaryPagination(links) {
+                    links.forEach(function(each) {
+                        $('#salary-pagination').append($('<li>').attr('class',
+                                `page-item ${each.active ? 'active' : ''}`)
+                            .append(`<a class="page-link"
+                                    href="${each.url}">
+                                        ${each.label}
+                                    </a>
+                                `))
+                    })
+                }
+                $(".btn-test").click(function () {
+                    var data = 1 ;
+                    $.ajax({
+                        type: "post",
+                        url: "{{ route('accountants.test') }}",
+                        data: {
+                            data: data
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                        }
+                    });	
+                });
+                $(".btn-approve").click(function () {
+                    var data = [];
+                    $('input[name="approve"]:checked').each(function() {
+                        let obj = new Object();
+                        obj['id'] = $(this).data('id');
+                        obj['dept_name'] = $(this).data('dept_name');
+                        obj['role_name'] = $(this).data('role_name');
+                        obj['month'] =  $('.date input[name="month"]').val();
+                        obj['year'] =   $('.date input[name="year"]').val();
+                        data.push(obj);
+                    });
+                    var data_to_send = JSON.stringify({ data });
+                    if( data.lenght > 0 ){
+                        $.ajax({
+                            type: "post",
+                            url: "{{ route('accountants.approve') }}",
+                            data: data_to_send,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                if(response.success == true){
+                                    toastr.success(response.data.message);
+                                    $.toast({
+                                        heading: 'response.data.message',
+                                        text: '',
+                                        icon: 'success',
+                                        showHideTransition: 'slide',
+                                        allowToastClose: false,
+                                        hideAfter: 3000,
+                                        stack: 5,
+                                        position: 'top-right',
+                                        textAlign: 'left',
+                                        loader: true,
+                                    });
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 1000);
+                                }else{
+                                    $.toast({
+                                        heading: 'response.data.message',
+                                        text: '',
+                                        icon: 'error',
+                                        showHideTransition: 'slide',
+                                        allowToastClose: false,
+                                        hideAfter: 3000,
+                                        stack: 5,
+                                        position: 'top-right',
+                                        textAlign: 'left',
+                                        loader: true,
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
 
         });
     </script>

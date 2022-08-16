@@ -147,7 +147,7 @@ class Salary extends Model
 		$deduction = Fines::select('deduction')->whereId(5)->first();
         return '-' . number_format((float)($this->miss * $deduction['deduction'])). ' đ';
     }
-	public function getBounusSalaryOverWorkDayAttribute()
+	public function getBonusSalaryOverWorkDayAttribute()
 	{	
 		$salary_over_day = ($this->pay_rate / $this->work_day) * 0.75;
 		return number_format((float)($salary_over_day * $this->over_work_day)). ' đ';

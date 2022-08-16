@@ -46,11 +46,13 @@ Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->na
 
 Route::post('/accountants/checkin', [AccountantController::class, 'checkin'])->name('accountants.checkin');
 Route::post('/accountants/checkout', [AccountantController::class, 'checkout'])->name('accountants.checkout');
+Route::post('/accountants/test', [AccountantController::class, 'test'])->name('accountants.test');
 Route::get('/accountants/attendance_history', [AccountantController::class, 'attendance_history'])->name('accountants.attendance_history');
 Route::post('/accountants/history_api', [AccountantController::class, 'history_api'])->name('accountants.history_api');
 Route::post('/accountants/attendance_api', [AccountantController::class, 'attendance_api'])->name('accountants.attendance_api');
 Route::get('/accountants/salary', [AccountantController::class, 'salary'])->name('accountants.salary');
-Route::post('/accountants/get_salary', [SalaryController::class, 'get_salary'])->name('accountants.get_salary');
+Route::post('/accountants/get_salary', [AccountantController::class, 'get_salary'])->name('accountants.get_salary');
+Route::post('/accountants/approve', [AccountantController::class, 'approve'])->name('accountants.approve');
 Route::post('/accountants/salary_detail', [SalaryController::class, 'salary_detail'])->name('accountants.salary_detail');
 
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
@@ -64,6 +66,7 @@ Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo
 Route::get('/ceo/salary', [CeoController::class, 'salary'])->name('ceo.salary');
 Route::post('/ceo/get_salary', [SalaryController::class, 'get_salary'])->name('ceo.get_salary');
 Route::post('/ceo/salary_detail', [SalaryController::class, 'salary_detail'])->name('ceo.salary_detail');
+Route::post('/ceo/sign_salary', [CeoController::class, 'sign_salary'])->name('ceo.sign_salary');
 
 Route::get('/ceo/roles', [RoleController::class, 'index'])->name('ceo.roles');
 Route::post('/ceo/roles/store', [RoleController::class, 'store'])->name('ceo.roles.store');
