@@ -5,7 +5,7 @@
 				<?php
 				$date = date('Y');
 				?>
-				2021 - {{$date}} © Hail Hydra - Hydra.
+				2018 - {{$date}} © Sumo - Hydra.
 			</div>
 
 		</div>

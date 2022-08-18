@@ -177,7 +177,20 @@
                                 loader            : true,
                             });
                         } else {
-                            location.reload();
+                            $.toast({
+                                heading           : 'Login successfully!',
+                                text              : 'You are heading to home page!',
+                                icon              : 'success',
+                                showHideTransition: 'slide',
+                                allowToastClose   : false,
+                                hideAfter         : 1000,
+                                position          : 'top-right',
+                                textAlign         : 'left',
+                                loader            : true,
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
                         }
                     })
                     .fail(function (response) {

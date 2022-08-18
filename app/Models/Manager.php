@@ -130,6 +130,16 @@ class Manager extends Model
             ->where('emp_role', '=', 2);
     }
 
-	public $timestamps = true;
+    public function salary(): HasMany
+    {
+		$dept_name = Department::where('id', '=', $this->dept_id)->first();
+	    $month    = date('m', strtotime('last month'));
+	    $year     = date('Y', strtotime('last month'));
+        return $this->HasMany(Salary::class, 'emp_id', 'id')
+            ->where('emp_role', '=', 2)
+            ->where('month', '=', $month)
+            ->where('year', '=', $year);
+    }
+
 
 }

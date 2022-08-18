@@ -28,7 +28,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Fines whereId($value)
  * @method static Builder|Fines whereName($value)
  * @property string $type
- * @method static Builder|Fines query()
  * @method static Builder|Fines whereType($value)
  */
 
@@ -43,18 +42,18 @@ class Fines extends Model
         'fines',
         'deduction',
     ];
-    public function getFinesIdAttribute()
+    public function getFinesIdAttribute(): string
     {
         return $this->id . '.';
     }
 
-    public function getFinesTimeAttribute($fines)
+    public function getFinesTimeAttribute(): string
     {
-        return "{$this->fines} phút" ;
+        return $this->fines . " phút" ;
     }
 
-    public function getDeductionDetailAttribute()
+    public function getDeductionDetailAttribute(): string
     {
-        return '-' . number_format((float)($this->deduction)). ' đ';
+        return '-' . number_format($this->deduction). ' VNĐ';
     }
 }

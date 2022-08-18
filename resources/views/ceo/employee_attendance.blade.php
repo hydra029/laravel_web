@@ -411,11 +411,10 @@
             })
                 .done(function (response) {
                     let num = response.length;
-                    for (let i = 1; i < num; i++) {
+                    for (let i = 0; i < num; i++) {
                         dept.append($('<option>')
                             .attr('value', response[i]['id'])
                             .text(response[i]['name'])
-                            .addClass('m-opt')
                         )
                     }
                 })

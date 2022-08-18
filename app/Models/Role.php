@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Role whereDeptId($value)
  * @method static Builder|Role wherePayRate($value)
  * @property string|null $deleted_at
- * @property-read \App\Models\Department $departments
+ * @property-read Department $departments
  * @method static Builder|Role whereDeletedAt($value)
  */
 class Role extends Model
@@ -44,7 +44,7 @@ class Role extends Model
        'status',
    ];
 
-   public function getPayRateMoneyAttribute()
+   public function getPayRateMoneyAttribute(): string
    {
         return number_format((float)($this->pay_rate)) . ' đ';
    }
@@ -53,7 +53,6 @@ class Role extends Model
 	{
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
 			->select(['id', 'name']);
-
 	}
 
 }

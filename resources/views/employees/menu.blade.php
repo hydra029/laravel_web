@@ -13,8 +13,8 @@
 	</li>
 	<li class="side-nav-item">
 		<a href="{{route('employees.salary')}}" class="side-nav-link">
-			<i class="uil-calendar-alt"></i>
-			<span> My salary </span>
+			<i class="uil-money-bill"></i>
+			<span> Salary </span>
 		</a>
 	</li>
 @endsection

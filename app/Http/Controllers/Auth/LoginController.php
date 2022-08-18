@@ -47,11 +47,6 @@ class LoginController extends Controller
 					'level'     => 1,
 				]
 			);
-			session()->flash('noti', [
-				'heading' => 'Login successfully',
-				'text'    => 'You are now logged into system',
-				'icon'    => 'success',
-			]);
 			if ($user->password === null) {
 				$password = Hash::make($password);
 				Employee::query()
@@ -85,11 +80,6 @@ class LoginController extends Controller
 					'level'     => 2,
 				]
 			);
-			session()->flash('noti', [
-				'heading' => 'Login successfully',
-				'text'    => 'You are now logged into system',
-				'icon'    => 'success',
-			]);
 			if ($user->password === null) {
 				$password = Hash::make($password);
 				Manager::where('email', $email)
@@ -120,11 +110,6 @@ class LoginController extends Controller
 					'level'     => 3,
 				]
 			);
-			session()->flash('noti', [
-				'heading' => 'Login successfully',
-				'text'    => 'You are now logged into system',
-				'icon'    => 'success',
-			]);
 			if ($user->password === null) {
 				$password = Hash::make($password);
 				Accountant::where('email', $email)
@@ -155,11 +140,6 @@ class LoginController extends Controller
 					'level'     => 4,
 				]
 			);
-			session()->flash('noti', [
-				'heading' => 'Login successfully',
-				'text'    => 'You are now logged into system',
-				'icon'    => 'success',
-			]);
 			if ($user->password === null) {
 				$password = Hash::make($password);
 				Ceo::where('email', $email)

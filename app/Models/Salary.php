@@ -1,4 +1,5 @@
-<?php /** @noinspection NullPointerExceptionInspection */
+<?php
+/** @noinspection NullPointerExceptionInspection */
 
 namespace App\Models;
 
@@ -49,6 +50,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int|null $mgr_count
  * @property-read int|null $pay_rate_count
  * @property float $over_work_day
+ * @property float $off_work_day
  * @property int $late_1
  * @property int $late_2
  * @property int $early_1
@@ -66,6 +68,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Salary whereLate2($value)
  * @method static Builder|Salary whereMiss($value)
  * @method static Builder|Salary whereOverWorkDay($value)
+ * @method static Builder|Salary whereOffWorkDay($value)
  * @method static Builder|Salary whereSign($value)
  * @method static Builder|Salary whereUpdatedAt($value)
  */
@@ -81,6 +84,7 @@ class Salary extends Model
 		'role_id',
 		'work_day',
 		'over_work_day',
+		'off_work_day',
 		'miss',
 		'early_1',
 		'early_2',
@@ -110,55 +114,82 @@ class Salary extends Model
 	{
 		return $this->hasMany(Accountant::class, 'acct_id');
 	}
-	public function getSalaryMoneyAttribute()
+
+	public function getSalaryMoneyAttribute(): string
 	{
-		return number_format((float)($this->salary)). ' đ' ;
-	}
-	public function getPayRateMoneyAttribute()
-	{
-		return number_format((float)($this->pay_rate)). ' đ' ;
-	}
-	public function getDeductionDetailAttribute()
-    {
-        return '-' . number_format((float)($this->deduction)). ' đ';
-    }
-	public function getDeductionLateOneDetailAttribute()
-    {
-		$deduction = Fines::select('deduction')->whereId(1)->first();
-        return '-' . number_format((float)($this->late_1 * $deduction['deduction'])). ' đ';
-    }
-	public function getDeductionLateTwoDetailAttribute()
-    {
-		$deduction = Fines::select('deduction')->whereId(2)->first();
-        return '-' . number_format((float)($this->late_2 * $deduction['deduction'])). ' đ';
-    }
-	public function getDeductionEarlyOneDetailAttribute()
-    {
-		$deduction = Fines::select('deduction')->whereId(3)->first();
-        return '-' . number_format((float)($this->early_1 * $deduction['deduction'])). ' đ';
-    }
-	public function getDeductionEarlyTwoDetailAttribute()
-    {
-		$deduction = Fines::select('deduction')->whereId(4)->first();
-        return '-' . number_format((float)($this->early_2 * $deduction['deduction'])). ' đ';
-    }
-	public function getDeductionMissDetailAttribute()
-    {
-		$deduction = Fines::select('deduction')->whereId(5)->first();
-        return '-' . number_format((float)($this->miss * $deduction['deduction'])). ' đ';
-    }
-	public function getBonusSalaryOverWorkDayAttribute()
-	{	
-		$salary_over_day = ($this->pay_rate / $this->work_day) * 0.75;
-		return number_format((float)($salary_over_day * $this->over_work_day)). ' đ';
-	}
-	public function getPayRateOverWorkDayAttribute()
-	{	
-		return number_format((float)(($this->pay_rate / $this->work_day) * 0.75)). ' đ';
-	}
-	public function getPayRateWorkDayAttribute()
-	{	
-		return number_format((float)($this->pay_rate / $this->work_day)). ' đ';
+		return number_format((float)($this->salary)) . ' VNĐ';
 	}
 
+	public function getPayRateMoneyAttribute(): string
+	{
+		return number_format((float)($this->pay_rate)) . ' VNĐ';
+	}
+
+	public function getDeductionDetailAttribute(): string
+	{
+		return '-' . number_format((float)($this->deduction)) . ' VNĐ';
+	}
+
+	public function getDeductionLateOneDetailAttribute(): string
+	{
+		$deduction = Fines::select('deduction')->whereId(1)->first();
+		return '-' . number_format((float)($this->late_1 * $deduction['deduction'])) . ' VNĐ';
+	}
+
+	public function getDeductionLateTwoDetailAttribute(): string
+	{
+		$deduction = Fines::select('deduction')->whereId(2)->first();
+		return '-' . number_format((float)($this->late_2 * $deduction['deduction'])) . ' VNĐ';
+	}
+
+	public function getDeductionEarlyOneDetailAttribute(): string
+	{
+		$deduction = Fines::select('deduction')->whereId(3)->first();
+		return '-' . number_format((float)($this->early_1 * $deduction['deduction'])) . ' VNĐ';
+	}
+
+	public function getDeductionEarlyTwoDetailAttribute(): string
+	{
+		$deduction = Fines::select('deduction')->whereId(4)->first();
+		return '-' . number_format((float)($this->early_2 * $deduction['deduction'])) . ' VNĐ';
+	}
+
+	public function getDeductionMissDetailAttribute(): string
+	{
+		$deduction = Fines::select('deduction')->whereId(5)->first();
+		return '-' . number_format((float)($this->miss * $deduction['deduction'])) . ' VNĐ';
+	}
+
+	public function getBonusSalaryOverWorkDayAttribute(): string
+	{
+		$salary_over_day = ($this->pay_rate / 26) * 1.5;
+		return number_format($salary_over_day * $this->over_work_day) . ' VNĐ';
+	}
+
+	public function getPayRateOverWorkDayAttribute(): string
+	{
+		return number_format(($this->pay_rate / 26) * 1.5) . ' VNĐ';
+	}
+
+	public function getPayRateWorkDayAttribute(): string
+	{
+		return number_format((float)($this->pay_rate / 26)) . ' VNĐ';
+	}
+
+	public function getBonusSalaryOffWorkDayAttribute(): string
+	{
+		$salary_off_day = ($this->pay_rate / 26) * 2;
+		return number_format($salary_off_day * $this->off_work_day) . ' VNĐ';
+	}
+
+	public function getBonusSalaryTotalOffWorkDayAttribute(): string
+	{
+		$salary_over_day = ($this->pay_rate / 26) * 2 * $this->off_work_day + ($this->pay_rate / 26) * 1.5 * $this->over_work_day;
+		return number_format($salary_over_day) . ' VNĐ';
+	}
+
+	public function getPayRateOffWorkDayAttribute(): string
+	{
+		return number_format(($this->pay_rate / 26) * 2) . ' VNĐ';
+	}
 }

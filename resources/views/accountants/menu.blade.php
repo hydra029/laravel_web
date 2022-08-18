@@ -17,4 +17,10 @@
 			<span> Salary </span>
 		</a>
 	</li>
+	<li class="side-nav-item">
+		<a href="{{route('accountants.employee_salary')}}" class="side-nav-link">
+			<i class="uil-money-bill"></i>
+			<span> Employee Salary </span>
+		</a>
+	</li>
 @endsection

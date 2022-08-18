@@ -10,14 +10,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalaryController;
-use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', [HomeController::class, 'test'])->name('test');
-Route::post('/test', [HomeController::class, 'api'])->name('api');
-Route::get('/test/department_api', [HomeController::class, 'department_api'])->name('department_api');
-Route::post('/test/attendance_api', [HomeController::class, 'attendance_api'])->name('attendance_api');
-Route::post('/test/emp_attendance_api', [HomeController::class, 'emp_attendance_api'])->name('emp_attendance_api');
+Route::post('/test/get_salary', [HomeController::class, 'get_salary'])->name('get_salary');
+Route::post('/test/salary_detail', [HomeController::class, 'salary_detail'])->name('salary_detail');
 
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
@@ -42,10 +39,12 @@ Route::post('/managers/attendance_api', [ManagerController::class, 'attendance_a
 Route::post('/managers/emp_attendance_api', [ManagerController::class, 'emp_attendance_api'])->name('managers.emp_attendance_api');
 Route::post('/managers/salary_api', [ManagerController::class, 'salary_api'])->name('managers.salary_api');
 Route::get('/managers/salary', [ManagerController::class, 'salary'])->name('managers.salary');
+Route::get('/managers/employee_salary', [ManagerController::class, 'employee_salary'])->name('managers.employee_salary');
 Route::post('/managers/get_salary', [ManagerController::class, 'get_salary'])->name('managers.get_salary');
+Route::post('/managers/personal_salary', [ManagerController::class, 'personal_salary'])->name('managers.personal_salary');
 Route::post('/managers/sign_salary', [ManagerController::class, 'sign_salary'])->name('managers.sign_salary');
-Route::post('/managers/accountants/get_salary', [SalaryController::class, 'get_salary'])->name('managers.accountants.get_salary');
-Route::post('/managers/salary_detail', [SalaryController::class, 'salary_detail'])->name('managers.salary_detail');
+Route::post('/managers/salary_detail', [ManagerController::class, 'salary_detail'])->name('managers.salary_detail');
+Route::get('/managers/department_api', [ManagerController::class, 'department_api'])->name('managers.department_api');
 Route::get('/managers/assignment', [ManagerController::class, 'assignment'])->name('managers.assignment')->middleware('mgr_acct');
 Route::get('/managers/accountant_api', [ManagerController::class, 'accountant_api'])->name('managers.accountant_api')->middleware('mgr_acct');
 Route::post('/managers/assign_accountant', [ManagerController::class, 'assign_accountant'])->name('managers.assign_accountant')->middleware('mgr_acct');
@@ -58,9 +57,11 @@ Route::get('/accountants/attendance_history', [AccountantController::class, 'att
 Route::post('/accountants/history_api', [AccountantController::class, 'history_api'])->name('accountants.history_api');
 Route::post('/accountants/attendance_api', [AccountantController::class, 'attendance_api'])->name('accountants.attendance_api');
 Route::get('/accountants/salary', [AccountantController::class, 'salary'])->name('accountants.salary');
+Route::get('/accountants/employee_salary', [AccountantController::class, 'employee_salary'])->name('accountants.employee_salary');
 Route::post('/accountants/get_salary', [AccountantController::class, 'get_salary'])->name('accountants.get_salary');
 Route::post('/accountants/approve', [AccountantController::class, 'approve'])->name('accountants.approve');
-Route::post('/accountants/salary_detail', [SalaryController::class, 'salary_detail'])->name('accountants.salary_detail');
+Route::post('/accountants/salary_detail', [AccountantController::class, 'salary_detail'])->name('accountants.salary_detail');
+Route::get('/accountants/department_api', [AccountantController::class, 'department_api'])->name('accountants.department_api');
 
 Route::get('/ceo/time', [CeoController::class, 'time'])->name('ceo.time');
 Route::post('/ceo/time_change/', [CeoController::class, 'time_change'])->name('ceo.time_change');
@@ -70,7 +71,7 @@ Route::post('/ceo/fines_update', [FinesController::class, 'update'])->name('ceo.
 Route::post('/ceo/manager_name', [CeoController::class, 'manager_name'])->name('ceo.manager_name');
 Route::get('/ceo/department', [DepartmentController::class, 'index'])->name('ceo.department');
 
-Route::get('/ceo/salary', [CeoController::class, 'salary'])->name('ceo.salary');
+Route::get('/ceo/employee_salary', [CeoController::class, 'employee_salary'])->name('ceo.employee_salary');
 Route::post('/ceo/get_salary', [SalaryController::class, 'get_salary'])->name('ceo.get_salary');
 Route::post('/ceo/salary_detail', [SalaryController::class, 'salary_detail'])->name('ceo.salary_detail');
 Route::post('/ceo/sign_salary', [CeoController::class, 'sign_salary'])->name('ceo.sign_salary');

@@ -21,6 +21,7 @@ class CreateSalariesTable extends Migration
 			$table->string('role_name');
 			$table->double('work_day',10,3);
 			$table->double('over_work_day',10,3);
+			$table->double('off_work_day',10,3);
 			$table->unsignedTinyInteger('late_1');
 			$table->unsignedTinyInteger('late_2');
 			$table->unsignedTinyInteger('early_1');

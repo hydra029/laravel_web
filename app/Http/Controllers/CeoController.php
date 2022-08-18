@@ -195,7 +195,7 @@ class CeoController extends Controller
 
 	public function department_api()
 	{
-		return Department::get(['id', 'name']);
+		return Department::pluck(['id', 'name']);
 	}
 
 	public function fines_store(Request $request): array
@@ -347,6 +347,64 @@ class CeoController extends Controller
     {
         return view('ceo.salary');
     }
+
+    public function employee_salary()
+    {
+        return view('ceo.employee_salary');
+    }
+
+
+	public function get_salary(Request $request): JsonResponse
+	{
+		$month = $request->month;
+		$year  = $request->year;
+		$dept  = $request->department;
+		if ($dept === 'all') {
+			$dept_name = Department::query()
+				->whereNull('deleted_at')
+				->pluck('name');
+		} else {
+			$dept_name = Department::query()
+				->where('id', '=', $dept)
+				->whereNull('deleted_at')
+				->pluck('name');
+		}
+		$salary = Salary::query()
+			->with('emp')
+			->where('month', $month)
+			->where('year', $year)
+			->whereIn('dept_name', $dept_name)
+			->orderBy('dept_name')
+			->paginate(20);
+		$salary
+			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_over_work_day', 'bonus_salary_total_off_work_day']);
+
+		$arr['data']       = $salary->getCollection();
+		$arr['pagination'] = $salary->linkCollection();
+		return $this->successResponse($arr);
+	}
+
+	public function salary_detail(Request $request): array
+	{
+		$id            = $request->id;
+		$dept_name     = $request->dept_name;
+		$role_name     = $request->role_name;
+		$month         = $request->month;
+		$year          = $request->year;
+		$fines         = Fines::query()->get()->append('deduction_detail');
+		$salary        = Salary::query()->with('emp')
+			->where('emp_id', $id)
+			->where('month', $month)
+			->where('year', $year)
+			->where('dept_name', $dept_name)
+			->where('role_name', $role_name)
+			->first()
+			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_off_work_day', 'bonus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_off_work_day', 'pay_rate_work_day'])->toArray();
+		$arr['salary'] = $salary;
+		$arr['fines']  = $fines;
+		return $arr;
+	}
+
 
 	public function sign_salary(Request $request): JsonResponse
 	{

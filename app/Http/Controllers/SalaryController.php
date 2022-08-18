@@ -30,11 +30,7 @@ class SalaryController extends Controller
 
 		View::share('title', $title);
 	}
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
+
     public function index()
     {
         return view('ceo.salary');
@@ -56,7 +52,7 @@ class SalaryController extends Controller
         return $this->successResponse($arr);
     }
 
-    public function salary_detail(Request $request)
+    public function salary_detail(Request $request): array
     {
         $id = $request->id;
         $dept_name = $request->dept_name;

@@ -192,7 +192,7 @@ class EmployeeController extends Controller
 	}
 
 	
-    public function salary_detail(Request $request)
+    public function salary_detail(Request $request): array
     {
         $id = $request->id;
         $dept_name = $request->dept_name;

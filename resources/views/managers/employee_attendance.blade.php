@@ -734,13 +734,11 @@
                                                     num -= 2;
                                                     OW1 += 2;
                                                     OW2 += 2;
-
                                                 }
                                                 if (s_num === 3) {
                                                     addEvent(1, num, default_date, e);
                                                     num--;
                                                     OW1 += 2;
-
                                                 }
                                             }
                                             if (shift === 2) {
@@ -1172,6 +1170,7 @@
                                     let WT1 = 0;
                                     let TT  = 0;
                                     let TT1 = 0;
+                                    let TT2 = 0;
                                     if (shift_num > 0) {
                                         let emp_id = response[1][0]['emp_id'];
                                         for (let i = 0; i < shift_num; i++) {
@@ -1224,13 +1223,13 @@
                                             }
                                             if (d2 !== d1) {
                                                 if (sun1 === 0) {
-                                                    TT1 += 2 * WT1 / WT;
+                                                    TT2 += WT1 / WT;
                                                 } else {
                                                     let WTX = WT1 - WT;
                                                     if (WTX <= 0) {
                                                         TT += 1 + WTX / WT;
                                                     } else {
-                                                        TT1 += 1.5 * WTX / WT;
+                                                        TT1 += WTX / WT;
                                                         TT += 1;
                                                     }
                                                 }
@@ -1519,14 +1518,14 @@
                                             }
                                             if (i === shift_num - 1) {
                                                 if (sun === 0) {
-                                                    TT1 += 2 * WT1 / WT;
+                                                    TT2 += WT1 / WT;
                                                 } else {
                                                     let WTX = WT1 - WT;
                                                     if (WTX <= 0) {
                                                         TT += 1 + WTX / WT;
                                                     } else {
                                                         TT += 1;
-                                                        TT1 += 1.5 * WTX / WT;
+                                                        TT1 += WTX / WT;
                                                     }
                                                 }
                                             }
@@ -1617,6 +1616,30 @@
                                                 let L1 = L11 + L12 + L13;
                                                 let L2 = L21 + L22 + L23;
                                                 let MS = MS1 + MS2 + MS3;
+                                                let X1 = TT;
+                                                let X2 = TT + TT1;
+                                                let X3 = TT + TT1 + TT2;
+                                                if (X1 < 26) {
+                                                    if (X2 < 26) {
+                                                        if (X3 < 26) {
+                                                            TT  = X3;
+                                                            TT2 = 0;
+                                                        } else if (X3 === 26) {
+                                                            TT  = X3;
+                                                            TT1 = 0;
+                                                        } else {
+                                                            TT  = 26;
+                                                            TT2 = X3 - 26;
+                                                        }
+                                                        TT1 = 0;
+                                                    } else if (X2 === 26) {
+                                                        TT  = X2;
+                                                        TT1 = 0;
+                                                    }
+                                                } else if (X1 > 26) {
+                                                    TT = 26;
+                                                    TT1 += X1 - 26;
+                                                }
                                                 confirm0.removeClass('d-none')
                                                     .attr({
                                                         "data-toggle": 'modal',
@@ -1625,7 +1648,8 @@
                                                 confirm.attr({
                                                     "data-id"          : emp_id,
                                                     "data-workday"     : TT,
-                                                    "data-over-workday": TT1,
+                                                    "data-over_workday": TT1,
+                                                    "data-off_workday" : TT2,
                                                     "data-miss"        : MS,
                                                     "data-early1"      : E1,
                                                     "data-early2"      : E2,
@@ -1708,7 +1732,8 @@
                 let dept    = cf.data('dept');
                 let role_id = cf.data('role_id');
                 let TT      = cf.data('workday');
-                let TT1     = cf.data('over-workday');
+                let TT1     = cf.data('over_workday');
+                let TT2     = cf.data('off_workday');
                 let MS      = cf.data('miss');
                 let E1      = cf.data('early1');
                 let E2      = cf.data('early2');
@@ -1725,6 +1750,7 @@
                         role_id      : role_id,
                         work_day     : TT,
                         over_work_day: TT1,
+                        off_work_day : TT2,
                         miss         : MS,
                         early_1      : E1,
                         early_2      : E2,

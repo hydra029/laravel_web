@@ -1,5 +1,5 @@
 @extends('layout.master')
-@include('accountants.menu')
+@include('ceo.menu')
 @push('css')
 	<style>
         tr, th, td {
@@ -26,7 +26,10 @@
 			Year: <label for="select-year"></label><select name="year" id="select-year"></select>
 			<input type="hidden" style="width: 1.5em" name="month" value="" readonly>
 			<input type="hidden" style="width: 3em" name="year" value="" readonly>
-			<span class="btn btn-primary float-right m-1 btn-approve">Approve</span>
+			<label for="select-department"></label><select name="department" id="select-department">
+				<option value="all" selected>Department</option>
+			</select>
+			<span class="btn btn-primary float-right m-1 btn-sign">Sign</span>
 		</div>
 		<table id="salary-table" class="table table-striped table-bordered w-100 table-sm" cellspacing="0"
 		       width="100%">
@@ -42,9 +45,7 @@
 			<th class="th-sm">Deduction</th>
 			<th class="th-sm">Salary</th>
 			<th class="th-sm">Action</th>
-			<th class="th-sm">
-				<span>Approve</span>
-			</th>
+			<th class="th-sm">Sign</th>
 			</thead>
 			<tbody>
 			</tbody>
@@ -209,6 +210,7 @@
             });
             let slM = $('#select-month');
             let slY = $('#select-year');
+            let slD = $('#select-department');
             $('.close-popup').click(function () {
                 $('.table-show-salary-detail').addClass('d-none');
                 $('.table-salary').removeClass('d-none');
@@ -238,37 +240,59 @@
                 $('.date input[name="year"]').val(year);
             })()
 
+            let dept          = slD.val();
             let detail_salary = $(".table-show-salary-detail");
             let month         = $('.date input[name="month"]').val();
             let year          = $('.date input[name="year"]').val();
+            $.ajax({
+                url     : '{{route('ceo.department_api')}}',
+                type    : 'GET',
+                dataType: 'json',
+            })
+                .done(function (response) {
+                    let num = response.length;
+                    for (let i = 0; i < num; i++) {
+                        dept.append($('<option>')
+                            .attr('value', response[i]['id'])
+                            .text(response[i]['name'])
+                        )
+                    }
+                })
+            getSalary(dept, month, year);
 
-            getSalary(month, year);
-
-            function getSalary(month, year) {
+            function getSalary(dept, month, year) {
                 $('#salary-pagination').empty();
-
+                let url = "{{ route('ceo.get_salary') }}";
                 $.ajax({
                     type    : "post",
-                    url     : "{{ route('accountants.get_salary') }}",
+                    url     : url,
                     data    : {
-                        month: month,
-                        year : year
+                        department: dept,
+                        month     : month,
+                        year      : year
                     },
                     dataType: "json",
                     success : function (response) {
                         $.each(response.data.data, function (k, v) {
                             /// do stuff
-                            let img =
+                            let sign = `<i class="fa-solid fa-square-xmark text-danger"></i>`
+                            let img  =
                                     `<img  src="{{ asset('') }}img/${v['emp'][0]['avatar']} "  style=" border-radius:50% " width="40px"/>`
-                            if (v['emp'][0]['avatar'] === null) {
+                            if (v['emp'][0]['avatar'] == null) {
                                 img =
                                     `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
                             }
-                            let approve = `<i class="mdi mdi-check-circle text-success"></i>`
-                            if (v.acct_id == null) {
-                                approve =
-                                    ` <input type="checkbox" name="approve" class="check_box" data-id="${v['emp_id']}"
-										data-dept_name="${v['dept_name']}" data-role_name="${v.role_name}"> `
+                            if (v['acct_id'] !== null) {
+                                if (v['sign'] == null) {
+                                    sign =
+                                        ` <input type="checkbox" name="sign" class="check_box" data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}" data-role_name="${v.role_name}"> `
+                                } else {
+                                    sign = `<i class="fa-solid fa-square-check text-success"></i>`
+                                }
+                            }
+                            if (v['dept_name'] === 'Accountant' && v['acct_id'] === null) {
+                                sign =
+                                    ` <input type="checkbox" name="sign" class="check_box" data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}" data-role_name="${v.role_name}"> `
                             }
                             $("#salary-table tbody").append($("<tr>")
                                 .append($("<td class='am'>").append(k + 1))
@@ -282,16 +306,15 @@
                                 .append($("<td class='ar'>").append(v['deduction_detail']))
                                 .append($("<td class='ar'>").append(v['salary_money']))
                                 .append($("<td class='am'>")
-	                                .append(`<i class="fa-solid fa-eye btn-show-salary text-primary"
+                                    .append(`<i class="fa-solid fa-eye btn-show-salary text-primary"
 												data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}"
 												data-role_name="${v['role_name']}"></i>
                                         `))
-                                .append($("<td class='am'>").append(approve))
+                                .append($("<td class='am'>").append(sign))
                             );
                         });
                         showDetailSalary();
-                        renderSalaryPagination(response.data.pagination);
-                        changePage(month, year);
+                        renderSalaryPagination(response['data']['pagination']);
                     }
                 });
             }
@@ -305,7 +328,7 @@
                     let year      = $('.date input[name="year"]').val();
                     $.ajax({
                         type    : "post",
-                        url     : "{{ route('accountants.salary_detail') }}",
+                        url     : "{{ route('ceo.salary_detail') }}",
                         data    : {
                             id       : id,
                             dept_name: dept_name,
@@ -349,80 +372,82 @@
                 });
             }
 
-            function changePage(month, year) {
-                $(document).on('click', '#salary-pagination > li > a', function (event) {
-                    event.preventDefault();
-                    let url = $(this).attr('href');
-                    if (url !== 'null') {
-                        $('#salary-table').find('tbody').empty();
-                        $.ajax({
-                            url     : url,
-                            method  : "POST",
-                            datatype: 'json',
-                            data    : {
-                                month: month,
-                                year : year,
-                            },
-                            success : function (response) {
-                                $.each(response.data.data, function (k, v) {
-                                    /// do stuff
-	                                let img =
-                                    `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="30px">`
-                                    let approve =
-                                            ` <input type="checkbox" name="sign" class="check_box" data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}" data-role_name="${v['role_name']}"> `
-
-                                    if (v['emp'][0]['avatar']) {
-                                        img =
-	                                        `<img  src="{{ asset('') }}img/${v['emp'][0]['avatar']} "  style=" border-radius:50% " width="30px"/>`
-                                    }
-                                    if (v.sign) {
-                                        approve = `<i class="mdi mdi-check-circle text-success"></i>`
-                                    }
-                                    $("#salary-table tbody").append($("<tr>")
-                                        .append($("<td class='am'>").append(k + 1))
-                                        .append($("<td class='am'>").append(img))
-                                        .append($("<td class='al'>").append(v['emp'][0]['fname'] + ' ' + v['emp'][0]['lname']))
-                                        .append($("<td class='am'>").append(v['dept_name']))
-                                        .append($("<td class='am'>").append(v['role_name']))
-                                        .append($("<td class='am'>").append(v['work_day']))
-                                        .append($("<td class='ar'>").append(v['pay_rate_money']))
-                                        .append($("<td class='ar'>").append(v['bonus_salary_over_work_day']))
-                                        .append($("<td class='ar'>").append(v['deduction_detail']))
-                                        .append($("<td class='ar'>").append(v['salary_money']))
-                                        .append($("<td class='am'>").append(`<i class="fa-solid fa-eye btn-show-salary text-primary" 
-														data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}" 
-														data-role_name="${v['role_name']}"></i> `))
-                                        .append($("<td class='am'>").append(approve))
-                                    );
-                                });
-                                $('#salary-pagination').empty();
-                                showDetailSalary();
-                                renderSalaryPagination(response['data']['pagination']);
-                            }
-                        });
-                    }
-                });
-            }
-
             function renderSalaryPagination(links) {
                 links.forEach(function (each) {
-                    $('#salary-pagination').append($('<li>').attr('class',
-                        `page-item ${each.active ? 'active' : ''}`)
-                        .append(`<a class="page-link"
-                                    href="${each.url}">
-                                        ${each.label}
-                                    </a>
-                                `))
+                    $('#salary-pagination').append($('<li>')
+                        .attr('class', `page-item ${each['active'] ? 'active' : ''}`)
+                        .append(`<a class="page-link" href="${each['url']}"> ${each['label']} </a>`))
                 })
             }
 
+            $(document).on('click', '#salary-pagination > li > a', function (event) {
+                event.preventDefault();
+                let url = $(this).attr('href');
+                let li = $(this).parent();
+                if (url !== 'null' && !li.hasClass('active')) {
+                    $('#salary-table').find('tbody').empty();
+                    $.ajax({
+                        url     : url,
+                        method  : "POST",
+                        datatype: 'json',
+                        data    : {
+                            month     : month,
+                            year      : year,
+                            department: dept,
+                        },
+                        success : function (response) {
+                            $.each(response.data.data, function (k, v) {
+                                /// do stuff
+                                let approve0 = `<i class="fa-solid fa-square-check text-success d-none"></i>`
+                                let img      =
+                                        `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="30px">`
+                                let approve  =
+                                        `<input type="checkbox" name="sign" class="check_box" data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}" data-role_name="${v['role_name']}"> `
+                                if (v['emp'][0]['avatar']) {
+                                    img = `<img  src="{{ asset('') }}img/${v['emp'][0]['avatar']} "  style=" border-radius:50% " width="30px"/>`
+                                }
+                                if (v['sign']) {
+                                    approve = `<i class="fa-solid fa-square-check text-success"></i>`
+                                }
+                                $("#salary-table tbody").append($("<tr>")
+                                    .append($("<td class='am'>").append(k + 1))
+                                    .append($("<td class='am'>").append(img))
+                                    .append($("<td class='al'>").append(v['emp'][0]['fname'] + ' ' + v['emp'][0]['lname']))
+                                    .append($("<td class='am'>").append(v['dept_name']))
+                                    .append($("<td class='am'>").append(v['role_name']))
+                                    .append($("<td class='am'>").append(v['work_day']))
+                                    .append($("<td class='ar'>").append(v['pay_rate_money']))
+                                    .append($("<td class='ar'>").append(v['bonus_salary_over_work_day']))
+                                    .append($("<td class='ar'>").append(v['bonus_salary_total_off_work_day']))
+                                    .append($("<td class='ar'>").append(v['deduction_detail']))
+                                    .append($("<td class='ar'>").append(v['salary_money']))
+                                    .append($("<td class='am'>").append(`<i class="fa-solid fa-eye btn-show-salary text-primary"
+														data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}"
+														data-role_name="${v['role_name']}"></i> `))
+                                    .append($("<td class='am'>").append(approve).append(approve0))
+                                );
+                            });
+                            $('#salary-pagination').empty();
+                            showDetailSalary();
+                            renderSalaryPagination(response['data']['pagination']);
+                        }
+                    });
+                }
+            });
+
+            slD.change(function (e) {
+                let d = slD.val()
+                $("#salary-table tbody").empty();
+                getSalary(month, year, d);
+            });
             slM.change(function (e) {
                 month = $(this).val();
                 $("#salary-table tbody").empty();
-                getSalary(month, year);
+                getSalary(dept, month, year);
             });
             slY.change(function (e) {
                 year = $(this).val();
+
                 if (slY.val() < (new Date()).getFullYear()) {
                     month = 12;
                     slM.empty();
@@ -434,7 +459,7 @@
                         slM.append(`<option value="${i}">${j}</option>`);
                     }
                 } else {
-                    month = (new Date()).getMonth();
+                    month = (new Date()).getMonth() - 1;
                     slM.empty();
                     for (let i = month; i >= 1; i--) {
                         let j = i;
@@ -445,12 +470,12 @@
                     }
                 }
                 $("#salary-table tbody").empty();
-                getSalary(month, year);
+                getSalary(dept, month, year);
             });
 
-            $(".btn-approve").click(function () {
+            $(".btn-sign").click(function () {
                 let data = [];
-                $('input[name="approve"]:checked').each(function () {
+                $('input[name="sign"]:checked').each(function () {
                     let obj          = {};
                     obj['id']        = $(this).data('id');
                     obj['dept_name'] = $(this).data('dept_name');
@@ -463,7 +488,7 @@
                 if (data.length > 0) {
                     $.ajax({
                         type       : "post",
-                        url        : "{{ route('accountants.approve') }}",
+                        url        : "{{ route('ceo.sign_salary') }}",
                         data       : data_to_send,
                         contentType: "application/json; charset=utf-8",
                         dataType   : "json",
