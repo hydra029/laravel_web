@@ -1,0 +1,121 @@
+.fc-daygrid-event {
+    margin: 0;
+}
+
+#external-events, #external-events > .fc-event {
+    cursor: pointer !important;
+}
+
+#calendar .fc-day-today {
+    background: #F8F8FF !important
+}
+
+#calendar .fc-daygrid-event {
+    padding: 2px !important;
+}
+
+#calendar .fc-header-toolbar {
+    margin: 0 !important;
+}
+
+#calendar .page-title-box {
+    height: 60px;
+}
+
+#calendar .fc-daygrid {
+    margin-top: 10px;
+}
+
+#calendar .fc-daygrid-day-top {
+    height: 25px;
+}
+
+#external-events .fc-event:hover {
+    cursor: pointer;
+}
+
+select {
+    margin: 0 1px;
+}
+
+.event-0 {
+    text-align: left;
+}
+
+.event-1 {
+    background: #9761ed;
+}
+
+.event-2 {
+    background: #8ca5ff;
+}
+
+.event-3 {
+    background: #00c67f;
+}
+
+.event-4 {
+    background: #f07171;
+}
+
+.event-5 {
+    background: #f57542;
+}
+
+.event-6 {
+    background: #9299a0;
+}
+
+.event-7 {
+    background: #f03e44;
+}
+
+.emp-name {
+    margin: 8px 0;
+}
+
+.E11, .E21, .OT1, .L11, .L21, .OW1, .MS1,
+.E12, .E22, .OT2, .L12, .L22, .OW2, .MS2,
+.E13, .E23, .OT3, .L13, .L23, .OW3, .MS3 {
+    float: right;
+    text-align: center;
+    padding: 0;
+}
+
+#table_salary {
+    margin: 5px 7px;
+    border: 1px solid #3788d8;
+    border-radius: 5px !important;
+    font-size: 13px;
+    text-align: center;
+    width: 94%;
+    cursor: default;
+}
+
+#table_salary tr > th {
+    border: 1px solid #3788d8;
+    height: 32px;
+    padding: 0 !important;
+    width: 50% !important;
+}
+
+.type {
+    width: 20%;
+    text-align: center;
+}
+
+#emp-name {
+    height: 25px;
+    font-style: italic;
+    background-color: #F0F8FF;
+}
+
+.odd {
+    background: #F0F8FF;
+}
+
+.div-name {
+    height: 82px;
+    padding: 22px 0;
+    cursor: pointer;
+}

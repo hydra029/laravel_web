@@ -195,7 +195,8 @@ class CeoController extends Controller
 
 	public function department_api()
 	{
-		return Department::pluck(['id', 'name']);
+		return Department::whereNull('deleted_at')
+		->get(['id', 'name']);
 	}
 
 	public function fines_store(Request $request): array

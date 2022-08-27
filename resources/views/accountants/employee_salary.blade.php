@@ -251,7 +251,7 @@
                 .done(function (response) {
                     let num = response.length;
                     for (let i = 0; i < num; i++) {
-                        dept.append($('<option>')
+                        slD.append($('<option>')
                             .attr('value', response[i]['id'])
                             .text(response[i]['name'])
                         )

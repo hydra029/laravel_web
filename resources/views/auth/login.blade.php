@@ -97,6 +97,7 @@
 <script src="{{ asset('js/jquery.min.js' )}}"></script>
 <script src="{{ asset('js/vendor.min.js' )}}"></script>
 <script src="{{ asset('js/app.min.js' )}}"></script>
+<script src="{{ asset('js/helper.js' )}}"></script>
 @include('layout.notify')
 <script>
     $(function () {
@@ -125,87 +126,36 @@
             e.preventDefault()
             let email_val           = email.val();
             let password_val        = password.val();
-            let checkbox_signin_val = checkbox_signin.val();
+            let checkbox_signin_val = checkbox_signin.prop('checked') ? 1 : 0;
             let len                 = password_val.length;
             if (len < 3) {
-                $.toast({
-                    heading           : 'Your password is too short!',
-                    text              : 'Password is at least 8 characters.',
-                    icon              : 'error',
-                    showHideTransition: 'slide',
-                    allowToastClose   : false,
-                    hideAfter         : 3000,
-                    position          : 'top-right',
-                    textAlign         : 'left',
-                    loader            : true,
-                });
+                notifyError(['Your password is too short', 'Password is at least 8 characters.'])
             } else if (len > 255) {
-                $.toast({
-                    heading           : 'Your password is too long!',
-                    text              : 'The supported maximum password length is 255 characters.',
-                    icon              : 'error',
-                    showHideTransition: 'slide',
-                    allowToastClose   : false,
-                    hideAfter         : 3000,
-                    position          : 'top-right',
-                    textAlign         : 'left',
-                    loader            : true,
-                });
+                notifyError(['Your password is too long', ' Maximum is 255 characters.'])
             } else {
                 $.ajax({
                     url     : "{{ route('process_login') }}",
                     type    : 'POST',
                     dataType: 'JSON',
                     data    : {
-                        "_token"       : "{{ csrf_token() }}",
-                        email          : email_val,
-                        password       : password_val,
-                        checkbox_signin: checkbox_signin_val,
+                        "_token": "{{ csrf_token() }}",
+                        email   : email_val,
+                        password: password_val,
+                        remember: checkbox_signin_val,
                     },
                 })
                     .done(function (response) {
                         if (response === 1) {
-                            $.toast({
-                                heading           : 'Wrong information!',
-                                text              : 'Please enter the correct email and password.',
-                                icon              : 'error',
-                                showHideTransition: 'slide',
-                                allowToastClose   : false,
-                                hideAfter         : 3000,
-                                position          : 'top-right',
-                                textAlign         : 'left',
-                                loader            : true,
-                            });
+                            notifyError('Please enter your email and password correctly.');
                         } else {
-                            $.toast({
-                                heading           : 'Login successfully!',
-                                text              : 'You are heading to home page!',
-                                icon              : 'success',
-                                showHideTransition: 'slide',
-                                allowToastClose   : false,
-                                hideAfter         : 1000,
-                                position          : 'top-right',
-                                textAlign         : 'left',
-                                loader            : true,
-                            });
+                            notifySuccess(['Login successfully.', 'You\'re heading to homepage.']);
                             setTimeout(function () {
                                 location.reload();
                             }, 1000);
                         }
                     })
-                    .fail(function (response) {
-                        console.log(response);
-                        $.toast({
-                            heading           : 'Wrong information!',
-                            text              : 'Please enter the correct email and password format.',
-                            icon              : 'error',
-                            showHideTransition: 'slide',
-                            allowToastClose   : false,
-                            hideAfter         : 3000,
-                            position          : 'top-right',
-                            textAlign         : 'left',
-                            loader            : true,
-                        });
+                    .fail(function () {
+                        notifyError('Please enter the correct email and password format.')
                     })
             }
         })

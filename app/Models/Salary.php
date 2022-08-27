@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Thiagoprz\CompositeKey\HasCompositeKey;
 
 /**
  * App\Models\Salary
@@ -74,30 +75,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Salary extends Model
 {
-	use HasFactory;
+	use HasFactory, HasCompositeKey;
 
 	public    $timestamps = false;
-	protected $fillable   = [
+	protected $guarded    = [];
+	protected $primaryKey = [
 		'emp_id',
-		'role_name',
-		'dept_name',
-		'role_id',
-		'work_day',
-		'over_work_day',
-		'off_work_day',
-		'miss',
-		'early_1',
-		'early_2',
-		'late_1',
-		'late_2',
 		'month',
 		'year',
-		'deduction',
-		'pay_rate',
-		'salary',
-		'mgr_id',
-		'acct_id',
-		'sign',
+		'dept_name',
+		'role_name',
 	];
 
 	public function emp(): HasMany

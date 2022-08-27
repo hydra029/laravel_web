@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Accountant;
-use App\Models\AttendanceShiftTime;
 use App\Models\Department;
 use App\Models\Fines;
 use App\Models\Salary;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,13 +12,11 @@ class HomeController extends Controller
 {
 	public function test()
 	{
-
-		return view('test', [
-			'title' => 'Test'
-		]);
+		return view('test',['title' => 'Test']);
 	}
 
-	public function get_salary(Request $request): JsonResponse
+	public function get_salary(
+		Request $request): JsonResponse
 	{
 		$acct   = session('id');
 		$month  = $request->month;
@@ -42,7 +37,8 @@ class HomeController extends Controller
 		return $this->successResponse($arr);
 	}
 
-	public function salary_detail(Request $request): array
+	public function salary_detail(
+		Request $request): array
 	{
 		$id            = $request->id;
 		$dept_name     = $request->dept_name;
@@ -62,5 +58,4 @@ class HomeController extends Controller
 		$arr['fines']  = $fines;
 		return $arr;
 	}
-
 }

@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use App\Enums\EmpRoleEnum;
 use App\Enums\ShiftEnum;
 use App\Http\Requests\AssignRequest;
-use App\Http\Requests\AttendanceRequest;
 use App\Http\Requests\StoreManagerRequest;
 use App\Http\Requests\UpdateManagerRequest;
 use App\Models\Accountant;
@@ -18,10 +17,12 @@ use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Role;
 use App\Models\Salary;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -52,8 +53,6 @@ class ManagerController extends Controller
 			'data' => $data,
 		]);
 	}
-
-	public function add() {}
 
 	public function today_attendance()
 	{
@@ -86,18 +85,16 @@ class ManagerController extends Controller
 		return view('managers.employee_attendance');
 	}
 
-	public function history_api(Request $request): array
+	public function history_api(Request $request)
 	{
-		$f     = $request->f;
-		$l     = $request->l;
-		$arr[] = AttendanceShiftTime::get();
-		$arr[] = Attendance::query()
-			->where('date', '<=', $l)
-			->where('date', '>=', $f)
+		$first_day = $request->first_day;
+		$last_day = $request->last_day;
+		return Attendance::query()
+			->where('date', '<=', $last_day)
+			->where('date', '>=', $first_day)
 			->where('emp_id', '=', session('id'))
 			->where('emp_role', '=', session('level'))
 			->get();
-		return $arr;
 	}
 
 	public function attendance_api(Request $request): array
@@ -161,18 +158,23 @@ class ManagerController extends Controller
 
 	public function emp_attendance_api(Request $request): array
 	{
-		$emp_id   = $request->get('id');
-		$dept     = $request->get('dept');
-		$role     = $request->get('role');
-		$month    = date('m', strtotime('last month'));
-		$year     = date('Y', strtotime('last month'));
-		$data[]   = Salary::query()
+		$emp_id = $request->get('id');
+		$dept   = $request->get('dept');
+		$role   = $request->get('role');
+		$month  = date('m', strtotime('last month'));
+		$year   = date('Y', strtotime('last month'));
+		$salary = Salary::query()
 			->where('dept_name', '=', $dept)
 			->where('role_name', '=', $role)
 			->where('emp_id', '=', $emp_id)
 			->where('month', '=', $month)
 			->where('year', '=', $year)
-			->first();
+			->exists();
+		if ($salary) {
+			$data[] = 1;
+		} else {
+			$data[] = null;
+		}
 		$date     = $request->get('date');
 		$emp_role = $request->get('emp_role');
 		$data[]   = Attendance::query()
@@ -183,105 +185,81 @@ class ManagerController extends Controller
 		return $data;
 	}
 
-	public function checkin(AttendanceRequest $request): int
+	public function checkin(): int
 	{
-		$time       = date('H:i');
-		$shift1     = AttendanceShiftTime::where('id', '=', 1)->first();
-		$shift2     = AttendanceShiftTime::where('id', '=', 2)->first();
-		$shift3     = AttendanceShiftTime::where('id', '=', 3)->first();
-		$in_start_1 = $shift1->check_in_start;
-		$in_start_2 = $shift2->check_in_start;
-		$in_start_3 = $shift3->check_in_start;
-		$in_end_1   = $shift1->check_in_late_2;
-		$in_end_2   = $shift2->check_in_late_2;
-		$in_end_3   = $shift3->check_in_late_2;
-		$shift      = 0;
-		if ($time >= $in_start_1 && $time <= $in_end_1) {
-			$shift = 1;
+		$time  = date('H:i');
+		$shift =$this->getShift($time, 'check_in');
+		if ($shift === 0) {
+			return 0;
 		}
-		if ($time >= $in_start_2 && $time <= $in_end_2) {
-			$shift = 2;
-		}
-		if ($time >= $in_start_3 && $time <= $in_end_3) {
-			$shift = 3;
-		}
-		$attendance = Attendance::query()
-			->where('emp_id', '=', session('id'))
-			->where('emp_role', '=', EmpRoleEnum::MANAGER)
-			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $shift)
-			->first();
-		if ($attendance === null) {
-			Attendance::query()
-				->insert(
-					[
-						'date'      => date('Y-m-d'),
-						'emp_id'    => session('id'),
-						'emp_role'  => EmpRoleEnum::MANAGER,
-						'shift'     => $shift,
-						'check_out' => $time,
-					]
-				);
-		} else {
-			Attendance::query()
-				->where('emp_id', '=', session('id'))
-				->where('emp_role', '=', EmpRoleEnum::MANAGER)
-				->where('date', '=', date('Y-m-d'))
-				->where('shift', '=', $shift)
-				->update(['check_out' => $time]);
-		}
+		Attendance::updateOrCreate(
+			[
+				'date'     => date('Y-m-d'),
+				'emp_id'   => session('id'),
+				'emp_role' => EmpRoleEnum::MANAGER,
+				'shift'    => $shift,
+			],
+			[
+				'check_in' => $time,
+			]
+		);
 		return 1;
 	}
 
-	public function checkout(AttendanceRequest $request): int
+	public function checkout(): int
 	{
-		$time        = date('H:i');
-		$shift1      = AttendanceShiftTime::where('id', '=', 1)->first();
-		$shift2      = AttendanceShiftTime::where('id', '=', 2)->first();
-		$shift3      = AttendanceShiftTime::where('id', '=', 3)->first();
-		$out_start_1 = $shift1->check_out_early_1;
-		$out_start_2 = $shift2->check_out_early_1;
-		$out_start_3 = $shift3->check_out_early_1;
-		$out_end_1   = $shift1->check_out_end;
-		$out_end_2   = $shift2->check_out_end;
-		$out_end_3   = $shift3->check_out_end;
-		$shift       = 0;
-		if ($time >= $out_start_1 && $time <= $out_end_1) {
-			$shift = 1;
+		$time  = date('H:i');
+		$shift =$this->getShift($time, 'check_out');
+		if ($shift === 0) {
+			return 0;
 		}
-		if ($time >= $out_start_2 && $time <= $out_end_2) {
-			$shift = 2;
-		}
-		if ($time >= $out_start_3 && $time <= $out_end_3) {
-			$shift = 3;
-		}
-		$attendance = Attendance::query()
-			->where('emp_id', '=', session('id'))
-			->where('emp_role', '=', EmpRoleEnum::MANAGER)
-			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $shift)
-			->first();
-		if ($attendance === null) {
-			Attendance::query()
-				->insert(
-					[
-						'date'      => date('Y-m-d'),
-						'emp_id'    => session('id'),
-						'emp_role'  => EmpRoleEnum::MANAGER,
-						'shift'     => $shift,
-						'check_out' => $time,
-					]
-				);
-		} else {
-			Attendance::query()
-				->where('emp_id', '=', session('id'))
-				->where('emp_role', '=', EmpRoleEnum::MANAGER)
-				->where('date', '=', date('Y-m-d'))
-				->where('shift', '=', $shift)
-				->update(['check_out' => $time]);
-		}
+		Attendance::updateOrCreate(
+			[
+				'date'     => date('Y-m-d'),
+				'emp_id'   => session('id'),
+				'emp_role' => EmpRoleEnum::MANAGER,
+				'shift'    => $shift,
+			],
+			[
+				'check_out' => $time,
+			]
+		);
 		return 1;
 	}
+
+	public function getShift($time, $type): int
+	{
+		$shift1 = AttendanceShiftTime::where('id', '=', 1)->first();
+		$shift2 = AttendanceShiftTime::where('id', '=', 2)->first();
+		$shift3 = AttendanceShiftTime::where('id', '=', 3)->first();
+		if ($type === 'check_out') {
+			$first_shift_start  = $shift1->check_out_early_1;
+			$second_shift_start = $shift2->check_out_early_1;
+			$last_shift_start   = $shift3->check_out_early_1;
+			$first_shift_end    = $shift1->check_out_end;
+			$second_shift_end   = $shift2->check_out_end;
+			$last_shift_end     = $shift3->check_out_end;
+		} else {
+			$first_shift_start  = $shift1->check_in_start;
+			$second_shift_start = $shift2->check_in_start;
+			$last_shift_start   = $shift3->check_in_start;
+			$first_shift_end    = $shift1->check_in_late_2;
+			$second_shift_end   = $shift2->check_in_late_2;
+			$last_shift_end     = $shift3->check_in_late_2;
+		}
+		$shift = 0;
+		if ($time >= $first_shift_start && $time <= $first_shift_end) {
+			$shift = 1;
+		}
+		if ($time >= $second_shift_start && $time <= $second_shift_end) {
+			$shift = 2;
+		}
+		if ($time >= $last_shift_start && $time <= $last_shift_end) {
+			$shift = 3;
+		}
+		return $shift;
+	}
+
 
 	public function salary_api(Request $request): void
 	{
@@ -310,8 +288,8 @@ class ManagerController extends Controller
 		$fine_L2   = $fines['L2'];
 		$fine_MS   = $fines['MS'];
 		$deduction = $E1 * $fine_E1 + $E2 * $fine_E2 + $L1 * $fine_L1 + $L2 * $fine_L2 + $miss * $fine_MS;
-		$salary = ($work_day + 1.5 * $over_work_day + 2 * $off_work_day) * $pay_rate / 26 - $deduction;
-		$data   = new Salary;
+		$salary    = ($work_day + 1.5 * $over_work_day + 2 * $off_work_day) * $pay_rate / 26 - $deduction;
+		$data      = new Salary;
 		$data->fill($request->except('role_id'));
 		$data->deduction = $deduction;
 		$data->salary    = $salary;
@@ -395,13 +373,13 @@ class ManagerController extends Controller
 		);
 	}
 
-	public function accountant_api()
+	public function accountant_api(): Collection
 	{
 		return Accountant::whereNull('deleted_at')
 			->get(['id', 'fname', 'lname']);
 	}
 
-	public function department_api()
+	public function department_api(): Collection
 	{
 		return Department::whereNull('deleted_at')
 			->get(['id', 'name']);
@@ -433,7 +411,7 @@ class ManagerController extends Controller
 	{
 		try {
 			$response = $request->all();
-			foreach ($response['data'] as $request => $data) {
+			foreach ($response['data'] as $rq => $data) {
 				$id        = $data['id'];
 				$dept_name = $data['dept_name'];
 				$role_name = $data['role_name'];
@@ -466,7 +444,7 @@ class ManagerController extends Controller
 				                              'message' => 'Sign success',
 			                              ]);
 		}
-		catch (\Exception $e) {
+		catch (Exception $e) {
 			return $this->errorResponse([
 				                            'message' => $e->getMessage(),
 			                            ]);

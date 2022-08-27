@@ -4,21 +4,17 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EmpRoleEnum;
-use App\Enums\ShiftStatusEnum;
-use App\Http\Requests\AttendanceRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\Models\Accountant;
 use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
 use App\Models\Fines;
-use App\Models\Manager;
 use App\Models\Salary;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -72,173 +68,147 @@ class EmployeeController extends Controller
 		return view('employees.attendance_history');
 	}
 
-	public function history_api(Request $request): array
+	public function history_api(Request $request)
 	{
-		$f     = $request->f;
-		$l     = $request->l;
-		$arr[] = AttendanceShiftTime::get();
-		$arr[] = Attendance::query()
-			->where('date', '<=', $l)
-			->where('date', '>=', $f)
+		$first_day = $request->first_day;
+		$last_day  = $request->last_day;
+		return Attendance::query()
+			->where('date', '<=', $last_day)
+			->where('date', '>=', $first_day)
 			->where('emp_id', '=', session('id'))
 			->where('emp_role', '=', session('level'))
 			->get();
-		return $arr;
 	}
 
-	public function checkin(AttendanceRequest $request): int
+	public function checkin(): int
 	{
-		$time       = date('H:i');
-		$shift1     = AttendanceShiftTime::where('id', '=', 1)->first();
-		$shift2     = AttendanceShiftTime::where('id', '=', 2)->first();
-		$shift3     = AttendanceShiftTime::where('id', '=', 3)->first();
-		$in_start_1 = $shift1->check_in_start;
-		$in_start_2 = $shift2->check_in_start;
-		$in_start_3 = $shift3->check_in_start;
-		$in_end_1   = $shift1->check_in_late_2;
-		$in_end_2   = $shift2->check_in_late_2;
-		$in_end_3   = $shift3->check_in_late_2;
-		$shift      = 0;
-		if ($time >= $in_start_1 && $time <= $in_end_1) {
-			$shift = 1;
+		$time  = date('H:i');
+		$shift =$this->getShift($time, 'check_in');
+		if ($shift === 0) {
+			return 0;
 		}
-		if ($time >= $in_start_2 && $time <= $in_end_2) {
-			$shift = 2;
-		}
-		if ($time >= $in_start_3 && $time <= $in_end_3) {
-			$shift = 3;
-		}
-		$attendance = Attendance::query()
-			->where('emp_id', '=', session('id'))
-			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
-			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $shift)
-			->first();
-		if ($attendance === null) {
-			Attendance::query()
-				->insert(
-					[
-						'date'      => date('Y-m-d'),
-						'emp_id'    => session('id'),
-						'emp_role'  => EmpRoleEnum::EMPLOYEE,
-						'shift'     => $shift,
-						'check_out' => $time,
-					]
-				);
-		} else {
-			Attendance::query()
-				->where('emp_id', '=', session('id'))
-				->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
-				->where('date', '=', date('Y-m-d'))
-				->where('shift', '=', $shift)
-				->update(['check_out' => $time]);
-		}
+		Attendance::updateOrCreate(
+			[
+				'date'     => date('Y-m-d'),
+				'emp_id'   => session('id'),
+				'emp_role' => EmpRoleEnum::EMPLOYEE,
+				'shift'    => $shift,
+			],
+			[
+				'check_in' => $time,
+			]
+		);
 		return 1;
 	}
 
-	public function checkout(AttendanceRequest $request): int
+	public function checkout(): int
 	{
-		$time        = date('H:i');
-		$shift1      = AttendanceShiftTime::where('id', '=', 1)->first();
-		$shift2      = AttendanceShiftTime::where('id', '=', 2)->first();
-		$shift3      = AttendanceShiftTime::where('id', '=', 3)->first();
-		$out_start_1 = $shift1->check_out_early_1;
-		$out_start_2 = $shift2->check_out_early_1;
-		$out_start_3 = $shift3->check_out_early_1;
-		$out_end_1   = $shift1->check_out_end;
-		$out_end_2   = $shift2->check_out_end;
-		$out_end_3   = $shift3->check_out_end;
-		$shift       = 0;
-		if ($time >= $out_start_1 && $time <= $out_end_1) {
-			$shift = 1;
+		$time  = date('H:i');
+		$shift =$this->getShift($time, 'check_out');
+		if ($shift === 0) {
+			return 0;
 		}
-		if ($time >= $out_start_2 && $time <= $out_end_2) {
-			$shift = 2;
-		}
-		if ($time >= $out_start_3 && $time <= $out_end_3) {
-			$shift = 3;
-		}
-		$attendance = Attendance::query()
-			->where('emp_id', '=', session('id'))
-			->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
-			->where('date', '=', date('Y-m-d'))
-			->where('shift', '=', $shift)
-			->first();
-		if ($attendance === null) {
-			Attendance::query()
-				->insert(
-					[
-						'date'      => date('Y-m-d'),
-						'emp_id'    => session('id'),
-						'emp_role'  => EmpRoleEnum::EMPLOYEE,
-						'shift'     => $shift,
-						'check_out' => $time,
-					]
-				);
-		} else {
-			Attendance::query()
-				->where('emp_id', '=', session('id'))
-				->where('emp_role', '=', EmpRoleEnum::EMPLOYEE)
-				->where('date', '=', date('Y-m-d'))
-				->where('shift', '=', $shift)
-				->update(['check_out' => $time]);
-		}
+		Attendance::updateOrCreate(
+			[
+				'date'     => date('Y-m-d'),
+				'emp_id'   => session('id'),
+				'emp_role' => EmpRoleEnum::EMPLOYEE,
+				'shift'    => $shift,
+			],
+			[
+				'check_out' => $time,
+			]
+		);
 		return 1;
 	}
+
+	public function getShift($time, $type): int
+	{
+		$shift1 = AttendanceShiftTime::where('id', '=', 1)->first();
+		$shift2 = AttendanceShiftTime::where('id', '=', 2)->first();
+		$shift3 = AttendanceShiftTime::where('id', '=', 3)->first();
+		if ($type === 'check_out') {
+			$first_shift_start  = $shift1->check_out_early_1;
+			$second_shift_start = $shift2->check_out_early_1;
+			$last_shift_start   = $shift3->check_out_early_1;
+			$first_shift_end    = $shift1->check_out_end;
+			$second_shift_end   = $shift2->check_out_end;
+			$last_shift_end     = $shift3->check_out_end;
+		} else {
+			$first_shift_start  = $shift1->check_in_start;
+			$second_shift_start = $shift2->check_in_start;
+			$last_shift_start   = $shift3->check_in_start;
+			$first_shift_end    = $shift1->check_in_late_2;
+			$second_shift_end   = $shift2->check_in_late_2;
+			$last_shift_end     = $shift3->check_in_late_2;
+		}
+		$shift = 0;
+		if ($time >= $first_shift_start && $time <= $first_shift_end) {
+			$shift = 1;
+		}
+		if ($time >= $second_shift_start && $time <= $second_shift_end) {
+			$shift = 2;
+		}
+		if ($time >= $last_shift_start && $time <= $last_shift_end) {
+			$shift = 3;
+		}
+		return $shift;
+	}
+
 
 	public function salary()
 	{
 		return view('employees.salary');
 	}
 
-	
-    public function salary_detail(Request $request): array
-    {
-        $id = $request->id;
-        $dept_name = $request->dept_name;
-        $role_name = $request->role_name;
-        $month = $request->month;
-        $year = $request->year;
-        $fines = Fines::query()->get()->append('deduction_detail');
-        $salary = Salary::query()->with('emp')
-        ->where('emp_id', $id)
-        ->where('month', $month)
-        ->where('year', $year)
-        ->where('dept_name', $dept_name)
-        ->where('role_name', $role_name)
-		->where('sign', 2 )
-        ->first()
-        ->append(['salary_money','deduction_detail','pay_rate_money','bonus_salary_over_work_day','deduction_late_one_detail','deduction_late_two_detail','deduction_early_one_detail','deduction_early_two_detail','deduction_miss_detail','pay_rate_over_work_day','pay_rate_work_day'])->toArray();
-        $arr['salary'] = $salary;
-        $arr['fines'] = $fines;
-        return $arr;
-    }
+	public function salary_detail(Request $request): array
+	{
+		$id            = $request->id;
+		$dept_name     = $request->dept_name;
+		$role_name     = $request->role_name;
+		$month         = $request->month;
+		$year          = $request->year;
+		$fines         = Fines::query()->get()->append('deduction_detail');
+		$salary        = Salary::query()->with('emp')
+			->where('emp_id', $id)
+			->where('month', $month)
+			->where('year', $year)
+			->where('dept_name', $dept_name)
+			->where('role_name', $role_name)
+			->where('sign', 2)
+			->first()
+			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_work_day'])->toArray();
+		$arr['salary'] = $salary;
+		$arr['fines']  = $fines;
+		return $arr;
+	}
 
 	public function approve(Request $request): JsonResponse
 	{
 		try {
 			$response = $request->all();
-			foreach ($response['data'] as $request => $data ) {
-				$id = $data['id'];
+			foreach ($response['data'] as $rq => $data) {
+				$id        = $data['id'];
 				$dept_name = $data['dept_name'];
 				$role_name = $data['role_name'];
-				$month = $data['month'];
-				$year = $data['year'];
-				$salary = Salary::query()
-				->where('emp_id', $id)
-				->where('dept_name', $dept_name)
-				->where('role_name', $role_name)
-				->where('month', $month)
-				->where('year', $year)
-				->update(['sign' => 3]);
+				$month     = $data['month'];
+				$year      = $data['year'];
+				Salary::query()
+					->where('emp_id', $id)
+					->where('dept_name', $dept_name)
+					->where('role_name', $role_name)
+					->where('month', $month)
+					->where('year', $year)
+					->update(['sign' => 3]);
 			}
 			return $this->successResponse([
-				'message' => 'Sign success',
-			]);
-		} catch (\Exception $e) {
+				                              'message' => 'Sign success',
+			                              ]);
+		}
+		catch (Exception $e) {
 			return $this->errorResponse([
-				'message' => $e->getMessage(),
-			]);
+				                            'message' => $e->getMessage(),
+			                            ]);
 		}
 	}
 

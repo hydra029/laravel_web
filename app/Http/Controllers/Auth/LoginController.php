@@ -11,6 +11,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Manager;
 use App\Models\Role;
+use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,18 +19,19 @@ class LoginController extends Controller
 {
 	public function login()
 	{
-		$this->middleware('login');
 		return view('auth.login');
 	}
+
 
 	public function processLogin(LoginRequest $request): int
 	{
 		$email    = $request->get('email');
 		$password = $request->get('password');
+		$remember = $request->get('remember');
 		session()->put('email', $email);
 		session()->put('password', $password);
 		session()->put('remember', 0);
-		if ($request->has('checkbox_signin')) {
+		if ($remember === '1') {
 			session()->put('remember', 1);
 		}
 		if ($user = Employee::where('email', $email)
@@ -47,6 +49,7 @@ class LoginController extends Controller
 					'level'     => 1,
 				]
 			);
+
 			if ($user->password === null) {
 				$password = Hash::make($password);
 				Employee::query()
@@ -54,7 +57,6 @@ class LoginController extends Controller
 					->update(['password' => $password]);
 				return 0;
 			}
-
 			if (Hash::check($password, $user->password)) {
 				return 0;
 			}

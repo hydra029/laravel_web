@@ -15,6 +15,8 @@
     namespace Illuminate\Support\Facades {
 
 	    use Closure;
+	    use Illuminate\Auth\AuthManager;
+	    use Illuminate\Auth\SessionGuard;
 	    use Illuminate\Foundation\Application;
 	    use Illuminate\Routing\Router;
 	    use Illuminate\Session\SessionManager;
@@ -1642,7 +1644,7 @@
          */ 
         public static function guard($name = null)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->guard($name);
         }
                     /**
@@ -1650,12 +1652,12 @@
          *
          * @param string $name
          * @param array $config
-         * @return \Illuminate\Auth\SessionGuard 
+         * @return SessionGuard
          * @static 
          */ 
         public static function createSessionDriver($name, $config)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->createSessionDriver($name, $config);
         }
                     /**
@@ -1668,7 +1670,7 @@
          */ 
         public static function createTokenDriver($name, $config)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->createTokenDriver($name, $config);
         }
                     /**
@@ -1679,7 +1681,7 @@
          */ 
         public static function getDefaultDriver()
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->getDefaultDriver();
         }
                     /**
@@ -1691,7 +1693,7 @@
          */ 
         public static function shouldUse($name)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         $instance->shouldUse($name);
         }
                     /**
@@ -1703,7 +1705,7 @@
          */ 
         public static function setDefaultDriver($name)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         $instance->setDefaultDriver($name);
         }
                     /**
@@ -1711,12 +1713,12 @@
          *
          * @param string $driver
          * @param callable $callback
-         * @return \Illuminate\Auth\AuthManager 
+         * @return AuthManager
          * @static 
          */ 
         public static function viaRequest($driver, $callback)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->viaRequest($driver, $callback);
         }
                     /**
@@ -1727,19 +1729,19 @@
          */ 
         public static function userResolver()
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->userResolver();
         }
                     /**
          * Set the callback to be used to resolve users.
          *
          * @param Closure $userResolver
-         * @return \Illuminate\Auth\AuthManager 
+         * @return AuthManager
          * @static 
          */ 
         public static function resolveUsersUsing($userResolver)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->resolveUsersUsing($userResolver);
         }
                     /**
@@ -1747,12 +1749,12 @@
          *
          * @param string $driver
          * @param Closure $callback
-         * @return \Illuminate\Auth\AuthManager 
+         * @return AuthManager
          * @static 
          */ 
         public static function extend($driver, $callback)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->extend($driver, $callback);
         }
                     /**
@@ -1760,12 +1762,12 @@
          *
          * @param string $name
          * @param Closure $callback
-         * @return \Illuminate\Auth\AuthManager 
+         * @return AuthManager
          * @static 
          */ 
         public static function provider($name, $callback)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->provider($name, $callback);
         }
                     /**
@@ -1776,30 +1778,30 @@
          */ 
         public static function hasResolvedGuards()
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->hasResolvedGuards();
         }
                     /**
          * Forget all of the resolved guard instances.
          *
-         * @return \Illuminate\Auth\AuthManager 
+         * @return AuthManager
          * @static 
          */ 
         public static function forgetGuards()
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->forgetGuards();
         }
                     /**
          * Set the application instance used by the manager.
          *
          * @param \Illuminate\Contracts\Foundation\Application $app
-         * @return \Illuminate\Auth\AuthManager 
+         * @return AuthManager
          * @static 
          */ 
         public static function setApplication($app)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->setApplication($app);
         }
                     /**
@@ -1812,7 +1814,7 @@
          */ 
         public static function createUserProvider($provider = null)
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->createUserProvider($provider);
         }
                     /**
@@ -1823,7 +1825,7 @@
          */ 
         public static function getDefaultUserProvider()
         {
-                        /** @var \Illuminate\Auth\AuthManager $instance */
+                        /** @var AuthManager $instance */
                         return $instance->getDefaultUserProvider();
         }
                     /**
@@ -1834,7 +1836,7 @@
          */ 
         public static function user()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->user();
         }
                     /**
@@ -1845,7 +1847,7 @@
          */ 
         public static function id()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->id();
         }
                     /**
@@ -1857,7 +1859,7 @@
          */ 
         public static function once($credentials = [])
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->once($credentials);
         }
                     /**
@@ -1869,7 +1871,7 @@
          */ 
         public static function onceUsingId($id)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->onceUsingId($id);
         }
                     /**
@@ -1881,7 +1883,7 @@
          */ 
         public static function validate($credentials = [])
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->validate($credentials);
         }
                     /**
@@ -1894,7 +1896,7 @@
          */ 
         public static function basic($field = 'email', $extraConditions = [])
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->basic($field, $extraConditions);
         }
                     /**
@@ -1907,7 +1909,7 @@
          */ 
         public static function onceBasic($field = 'email', $extraConditions = [])
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->onceBasic($field, $extraConditions);
         }
                     /**
@@ -1920,7 +1922,7 @@
          */ 
         public static function attempt($credentials = [], $remember = false)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->attempt($credentials, $remember);
         }
                     /**
@@ -1934,7 +1936,7 @@
          */ 
         public static function attemptWhen($credentials = [], $callbacks = null, $remember = false)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->attemptWhen($credentials, $callbacks, $remember);
         }
                     /**
@@ -1947,7 +1949,7 @@
          */ 
         public static function loginUsingId($id, $remember = false)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->loginUsingId($id, $remember);
         }
                     /**
@@ -1960,7 +1962,7 @@
          */ 
         public static function login($user, $remember = false)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         $instance->login($user, $remember);
         }
                     /**
@@ -1971,7 +1973,7 @@
          */ 
         public static function logout()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         $instance->logout();
         }
                     /**
@@ -1984,7 +1986,7 @@
          */ 
         public static function logoutCurrentDevice()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         $instance->logoutCurrentDevice();
         }
                     /**
@@ -2000,7 +2002,7 @@
          */ 
         public static function logoutOtherDevices($password, $attribute = 'password')
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->logoutOtherDevices($password, $attribute);
         }
                     /**
@@ -2012,7 +2014,7 @@
          */ 
         public static function attempting($callback)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         $instance->attempting($callback);
         }
                     /**
@@ -2023,7 +2025,7 @@
          */ 
         public static function getLastAttempted()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getLastAttempted();
         }
                     /**
@@ -2034,7 +2036,7 @@
          */ 
         public static function getName()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getName();
         }
                     /**
@@ -2045,7 +2047,7 @@
          */ 
         public static function getRecallerName()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getRecallerName();
         }
                     /**
@@ -2056,19 +2058,19 @@
          */ 
         public static function viaRemember()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->viaRemember();
         }
                     /**
          * Set the number of minutes the remember me cookie should be valid for.
          *
          * @param int $minutes
-         * @return \Illuminate\Auth\SessionGuard 
+         * @return SessionGuard
          * @static 
          */ 
         public static function setRememberDuration($minutes)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->setRememberDuration($minutes);
         }
                     /**
@@ -2080,7 +2082,7 @@
          */ 
         public static function getCookieJar()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getCookieJar();
         }
                     /**
@@ -2092,7 +2094,7 @@
          */ 
         public static function setCookieJar($cookie)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         $instance->setCookieJar($cookie);
         }
                     /**
@@ -2103,7 +2105,7 @@
          */ 
         public static function getDispatcher()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getDispatcher();
         }
                     /**
@@ -2115,7 +2117,7 @@
          */ 
         public static function setDispatcher($events)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         $instance->setDispatcher($events);
         }
                     /**
@@ -2126,7 +2128,7 @@
          */ 
         public static function getSession()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getSession();
         }
                     /**
@@ -2137,19 +2139,19 @@
          */ 
         public static function getUser()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getUser();
         }
                     /**
          * Set the current user.
          *
          * @param \Illuminate\Contracts\Auth\Authenticatable $user
-         * @return \Illuminate\Auth\SessionGuard 
+         * @return SessionGuard
          * @static 
          */ 
         public static function setUser($user)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->setUser($user);
         }
                     /**
@@ -2160,19 +2162,19 @@
          */ 
         public static function getRequest()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getRequest();
         }
                     /**
          * Set the current request instance.
          *
          * @param \Symfony\Component\HttpFoundation\Request $request
-         * @return \Illuminate\Auth\SessionGuard 
+         * @return SessionGuard
          * @static 
          */ 
         public static function setRequest($request)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->setRequest($request);
         }
                     /**
@@ -2184,7 +2186,7 @@
          */ 
         public static function authenticate()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->authenticate();
         }
                     /**
@@ -2195,7 +2197,7 @@
          */ 
         public static function hasUser()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->hasUser();
         }
                     /**
@@ -2206,7 +2208,7 @@
          */ 
         public static function check()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->check();
         }
                     /**
@@ -2217,7 +2219,7 @@
          */ 
         public static function guest()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->guest();
         }
                     /**
@@ -2228,7 +2230,7 @@
          */ 
         public static function getProvider()
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         return $instance->getProvider();
         }
                     /**
@@ -2240,7 +2242,7 @@
          */ 
         public static function setProvider($provider)
         {
-                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        /** @var SessionGuard $instance */
                         $instance->setProvider($provider);
         }
                     /**
@@ -2253,7 +2255,7 @@
          */ 
         public static function macro($name, $macro)
         {
-                        \Illuminate\Auth\SessionGuard::macro($name, $macro);
+                        SessionGuard::macro($name, $macro);
         }
                     /**
          * Mix another object into the class.
@@ -2266,7 +2268,7 @@
          */ 
         public static function mixin($mixin, $replace = true)
         {
-                        \Illuminate\Auth\SessionGuard::mixin($mixin, $replace);
+                        SessionGuard::mixin($mixin, $replace);
         }
                     /**
          * Checks if macro is registered.
@@ -2277,7 +2279,7 @@
          */ 
         public static function hasMacro($name)
         {
-                        return \Illuminate\Auth\SessionGuard::hasMacro($name);
+                        return SessionGuard::hasMacro($name);
         }
                     /**
          * Flush the existing macros.
@@ -2287,7 +2289,7 @@
          */ 
         public static function flushMacros()
         {
-                        \Illuminate\Auth\SessionGuard::flushMacros();
+                        SessionGuard::flushMacros();
         }
          
     }

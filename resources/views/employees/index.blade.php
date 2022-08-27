@@ -1,6 +1,6 @@
 @extends('layout.master')
 @include('employees.menu')
-@section('content')
+@push('css')
 	<style>
         button {
             width: 90px;
@@ -14,6 +14,8 @@
             text-align: center;
         }
 	</style>
+@endpush
+@section('content')
 	<table class="table table-bordered table-striped table-centered mb-0" id="table-index">
 		<thead>
 		<tr>
@@ -129,7 +131,7 @@
             })
                 .done(function (response) {
                     let time      = moment().format('HH:mm');
-                    let len       = response[1].length;
+                    let len       = response.length;
                     let in_shift,
                         out_shift = 0;
                     let num       = 0;
@@ -166,12 +168,12 @@
                         checkout = '';
                     }
                     for (let i = 0; i < len; i++) {
-                        let shift = response[1][i]['shift'];
+                        let shift = response[i]['shift'];
                         if (shift === in_shift) {
-                            checkin = response[1][i]['check_in'];
+                            checkin = response[i]['check_in'];
                         }
                         if (shift === out_shift) {
-                            checkout = response[1][i]['check_out'];
+                            checkout = response[i]['check_out'];
                         }
                     }
                     if (checkin === '' || checkin === null) {

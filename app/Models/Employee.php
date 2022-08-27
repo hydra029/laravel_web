@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Database\Factories\EmployeeFactory;
 use Eloquent;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Carbon;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * App\Models\Employee
@@ -68,9 +71,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property string $city
  * @property string $district
  * @property string $phone
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property-read string $address
  * @property-read string $role_name
  * @method static \Illuminate\Database\Query\Builder|Employee onlyTrashed()
@@ -83,30 +86,20 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static \Illuminate\Database\Query\Builder|Employee withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Employee withoutTrashed()
  */
-class Employee extends Model
+class Employee extends Model implements Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasApiTokens;
 
-    protected $fillable = [
-        'fname',
-        'lname',
-        'gender',
-        'dob',
-        'avatar',
-        'city',
-        'phone',
-        'district',
-        'email',
-        'password',
-        'dept_id',
-        'role_id',
-        'status',
+    protected $guarded = [
+        'id',
     ];
 
+	protected $primaryKey = 'id';
     /**
      *
      * @return string
      */
+
     public function getAgeAttribute(): string
     {
         return date_diff(date_create($this->dob), date_create())->y;
@@ -215,4 +208,39 @@ class Employee extends Model
     }
 
     public $timestamps = true;
+
+	/**
+	 * @return string
+	 */
+	public function getAuthIdentifierName(): string
+	{
+		return 'id';
+	}
+
+
+	public function getAuthIdentifier()
+	{
+		return $this->id;
+	}
+
+	public function getAuthPassword(): string
+	{
+		return $this->password;
+	}
+
+	public function getRememberToken(): ?string
+	{
+		return $this->remember_token;
+	}
+
+
+	public function setRememberToken($value): void
+	{
+		$this->remember_token = $value;
+	}
+
+	public function getRememberTokenName(): string
+	{
+		return 'remember_token';
+	}
 }

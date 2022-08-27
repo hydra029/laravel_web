@@ -129,7 +129,6 @@
             })
                 .done(function (response) {
                     let time      = moment().format('HH:mm');
-                    let len       = response[1].length;
                     let in_shift,
                         out_shift = 0;
                     let num       = 0;
@@ -147,6 +146,7 @@
                         in_shift = 3;
                         num      = 1;
                     }
+
                     if (time >= out_start_1 && time <= out_end_1) {
                         out_shift = 1;
                         num       = 2;
@@ -159,27 +159,23 @@
                         out_shift = 3;
                         num       = 2;
                     }
-                    if (num === 1) {
-                        checkin = '';
-                    }
-                    if (num === 2) {
-                        checkout = '';
-                    }
-                    for (let i = 0; i < len; i++) {
-                        let shift = response[1][i]['shift'];
+                    checkin  = num === 1 && '';
+                    checkout = num === 2 && '';
+                    for (let i = 0; i < response.length; i++) {
+                        let shift = response[i]['shift'];
                         if (shift === in_shift) {
-                            checkin = response[1][i]['check_in'];
+                            checkin = response[i]['check_in'];
                         }
                         if (shift === out_shift) {
-                            checkout = response[1][i]['check_out'];
+                            checkout = response[i]['check_out'];
                         }
                     }
-                    if (checkin === '' || checkin === null) {
+                    if (!checkin) {
                         check_in.removeAttr('disabled');
                     } else {
                         check_in.attr('disabled', 'disabled');
                     }
-                    if (checkout === '' || checkout === null) {
+                    if (!checkout) {
                         check_out.removeAttr('disabled');
                     } else {
                         check_out.attr('disabled', 'disabled');
@@ -195,13 +191,7 @@
                 })
                     .done(function () {
                         check_in.attr('disabled', 'disabled');
-                        $.toast({
-                            heading  : 'Successful Execution',
-                            text     : 'You\'ve check in successfully',
-                            icon     : 'success',
-                            position : 'top-right',
-                            hideAfter: 2000,
-                        });
+                        notifySuccess("You've check in successfully");
                     });
             })
             check_out.click(function () {
@@ -214,13 +204,7 @@
                 })
                     .done(function () {
                         check_out.attr('disabled', 'disabled');
-                        $.toast({
-                            heading  : 'Successful Execution',
-                            text     : 'You\'ve check out successfully',
-                            icon     : 'success',
-                            position : 'top-right',
-                            hideAfter: 2000,
-                        });
+                        notifySuccess("You've check out successfully");
                     })
             })
         })

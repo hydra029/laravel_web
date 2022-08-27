@@ -2,13 +2,14 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\APIAccess;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckAcct;
-use App\Http\Middleware\CheckMgrAcct;
 use App\Http\Middleware\CheckCeo;
 use App\Http\Middleware\CheckEmp;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\CheckMgr;
+use App\Http\Middleware\CheckMgrAcct;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -30,6 +31,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class Kernel extends HttpKernel
 {
@@ -60,56 +62,16 @@ class Kernel extends HttpKernel
 			EncryptCookies::class,
 			AddQueuedCookiesToResponse::class,
 			StartSession::class,
-//			AuthenticateSession::class,
+			//			AuthenticateSession::class,
 			ShareErrorsFromSession::class,
 			VerifyCsrfToken::class,
 			SubstituteBindings::class,
-
 		],
 
 		'api' => [
 			'throttle:api',
 			SubstituteBindings::class,
-		],
-		'employee' => [
-			EncryptCookies::class,
-			AddQueuedCookiesToResponse::class,
-			StartSession::class,
-//		    AuthenticateSession::class,
-			ShareErrorsFromSession::class,
-			VerifyCsrfToken::class,
-			SubstituteBindings::class,
-			CheckEmp::class,
-		],
-		'accountant' => [
-			EncryptCookies::class,
-			AddQueuedCookiesToResponse::class,
-			StartSession::class,
-			//		    AuthenticateSession::class,
-			ShareErrorsFromSession::class,
-			VerifyCsrfToken::class,
-			SubstituteBindings::class,
-			CheckAcct::class,
-		],
-		'manager' => [
-			EncryptCookies::class,
-			AddQueuedCookiesToResponse::class,
-			StartSession::class,
-//		    AuthenticateSession::class,
-			ShareErrorsFromSession::class,
-			VerifyCsrfToken::class,
-			SubstituteBindings::class,
-			CheckMgr::class,
-		],
-		'ceo' => [
-			EncryptCookies::class,
-			AddQueuedCookiesToResponse::class,
-			StartSession::class,
-//		    AuthenticateSession::class,
-			ShareErrorsFromSession::class,
-			VerifyCsrfToken::class,
-			SubstituteBindings::class,
-			CheckCeo::class,
+			EnsureFrontendRequestsAreStateful::class,
 		],
 
 	];
@@ -122,20 +84,20 @@ class Kernel extends HttpKernel
 	 * @var array
 	 */
 	protected $routeMiddleware = [
-		'auth' => Authenticate::class,
-		'auth.basic' => AuthenticateWithBasicAuth::class,
-		'cache.headers' => SetCacheHeaders::class,
-		'can' => Authorize::class,
-		'guest' => RedirectIfAuthenticated::class,
+		'auth'             => Authenticate::class,
+		'auth.basic'       => AuthenticateWithBasicAuth::class,
+		'cache.headers'    => SetCacheHeaders::class,
+		'can'              => Authorize::class,
+		'guest'            => RedirectIfAuthenticated::class,
 		'password.confirm' => RequirePassword::class,
-		'signed' => ValidateSignature::class,
-		'throttle' => ThrottleRequests::class,
-		'verified' => EnsureEmailIsVerified::class,
-		'employee' => CheckEmp::class,
-		'ceo' => CheckCeo::class,
-		'manager' => CheckMgr::class,
-		'accountant' => CheckAcct::class,
-		'mgr_acct' => CheckMgrAcct::class,
-		'login' => CheckLogin::class,
+		'signed'           => ValidateSignature::class,
+		'throttle'         => ThrottleRequests::class,
+		'verified'         => EnsureEmailIsVerified::class,
+		'employee'         => CheckEmp::class,
+		'ceo'              => CheckCeo::class,
+		'manager'          => CheckMgr::class,
+		'accountant'       => CheckAcct::class,
+		'mgr_acct'         => CheckMgrAcct::class,
+		'login'            => CheckLogin::class,
 	];
 }

@@ -57,17 +57,12 @@ class AttendanceShiftTime extends Model
 	use HasFactory;
 
 	public $timestamps = false;
-	protected $fillable = [
-		'check_in_start',
-		'check_in_end',
-		'check_in_late_1',
-		'check_in_late_2',
-		'check_out_early_1',
-		'check_out_early_2',
-		'check_out_start',
-		'check_out_end',
+	protected $guarded = [
+		'id',
 	];
-
+	protected $hidden = [
+		'id',
+	];
 	public function getShiftNameAttribute(): string
 	{
 		return ShiftEnum::getKeyByValue($this->id);

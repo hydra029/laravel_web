@@ -58,8 +58,7 @@
 </div>
 <script src="{{ asset('js/vendor.min.js' )}}"></script>
 <script src="{{ asset('js/app.min.js' )}}"></script>
-<script src="{{ asset('js/jquery.min.js' )}}"></script>
-<script src="{{ asset('js/jquery.toast.js' )}}"></script>
+<script src="{{ asset('js/helper.js' )}}"></script>
 @include('layout.notify')
 <script src="https://kit.fontawesome.com/b0fe355241.js" crossorigin="anonymous"></script>
 <script src="{{asset('js/getInfor.js')}}" crossorigin="anonymous"></script>
