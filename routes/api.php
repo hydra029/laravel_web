@@ -14,4 +14,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('get_shift_time', [ApiController::class, 'getShiftTimes'])->name('api.get_shift_time');

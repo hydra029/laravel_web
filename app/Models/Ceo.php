@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Database\Factories\CeoFactory;
 use Eloquent;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -40,9 +41,9 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $city
  * @property string $district
  * @property string $phone
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property-read string $address
  * @property-read string $age
  * @property-read string $date
@@ -63,30 +64,30 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Ceo extends Model
 {
-    use HasFactory, SoftDeletes, HasApiTokens;
+	use HasFactory, SoftDeletes, HasApiTokens, Authenticatable;
 
 	protected $fillable = [
 		'fname',
 		'lname',
 		'gender',
-        'avatar',
-        'phone',
+		'avatar',
+		'phone',
 		'dob',
-        'city',
-        'district',
+		'city',
+		'district',
 		'email',
 		'password',
 	];
 
-    public function getAgeAttribute(): string
+	public function getAgeAttribute(): string
 	{
 		return date_diff(date_create($this->dob), date_create())->y;
 	}
 
-    public function getAddressAttribute(): string
-    {
-        return $this->district . ' ' . $this->city ;
-    }
+	public function getAddressAttribute(): string
+	{
+		return $this->district . ' ' . $this->city;
+	}
 
 	public function getDateOfBirthAttribute(): string
 	{

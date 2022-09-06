@@ -103,7 +103,7 @@
                 initialView              : 'dayGridMonth',
                 weekNumbers              : true,
                 weekNumberCalculation    : 'ISO',
-                editable                 : true,
+                editable                 : false,
                 selectable               : true,
                 height                   : 750,
                 contentHeight            : 100,
@@ -220,7 +220,7 @@
                 check_in,
                 check_out;
             $.ajax({
-                url     : '{{route('api.get_shift_time')}}',
+                url     : '{{route('accountants.get_shift_time')}}',
                 dataType: 'json',
                 method  : 'GET',
             })
@@ -270,16 +270,16 @@
 
             function loadAttendance(date) {
                 let first_day      = getFirstDate(date),
-                    last_day      = getLastDate(date),
-                    crTime = new Date(first_day).getTime(),
-                    crDate = getDate(todayDate);
+                    lastDay      = getLastDate(date),
+                    currentTime = new Date(first_day).getTime(),
+                    currentDate = getDate(todayDate);
                 $.ajax({
                     url     : '{{ route('accountants.history_api') }}',
                     type    : 'POST',
                     dataType: 'json',
                     data    : {
                         first_day: first_day,
-                        last_day: last_day
+                        lastDay: lastDay
                     },
                 })
                         .done(function (response) {
@@ -347,12 +347,12 @@
                                 }
                                 let lastDate = response[shift_num - 1]['date'];
                                 let days     = getDate(lastDate);
-                                let crDate   = new Date().getDate();
+                                let currentDate   = new Date().getDate();
                                 if (days < total_day) {
-                                    if (crTime === todayTime) {
-                                        total_day = crDate;
+                                    if (currentTime === todayTime) {
+                                        total_day = currentDate;
                                     }
-                                    if (crTime <= todayTime) {
+                                    if (currentTime <= todayTime) {
                                         addEvent(lastDate, '', 0, nextShift);
                                     }
                                     for (let i = days + 1; i <= total_day; i++) {
@@ -362,10 +362,10 @@
                                     }
                                 }
                             } else {
-                                if (todayTime === crTime) {
-                                    total_day = crDate;
+                                if (todayTime === currentTime) {
+                                    total_day = currentDate;
                                 }
-                                if (crTime <= todayTime) {
+                                if (currentTime <= todayTime) {
                                     for (let i = 1; i <= total_day; i++) {
                                         let date = getFullDate(new Date(selectedDate).setDate(i));
                                         addEvent(date);
@@ -402,10 +402,10 @@
             })
 
             function loadDate(date) {
-                let cm = date.getMonth() + 1;
-                let cy = date.getFullYear();
-                sl1.val(cy).change();
-                sl2.val(cm).change();
+                let currentMonth = date.getMonth() + 1;
+                let currentYear = date.getFullYear();
+                sl1.val(currentYear).change();
+                sl2.val(currentMonth).change();
             }
 
             function getFirstDate(date) {
@@ -415,14 +415,14 @@
 
             function getLastDate(date) {
                 date  = new Date(date);
-                let last_day = new Date(date.setMonth(date.getMonth() + 1));
-                return new Date(last_day.setDate(0)).toISOString().slice(0, 10);
+                let lastDay = new Date(date.setMonth(date.getMonth() + 1));
+                return new Date(lastDay.setDate(0)).toISOString().slice(0, 10);
             }
 
             function getDayCount(date) {
                 date  = new Date(date);
-                let last_day = new Date(date.setMonth(date.getMonth() + 1));
-                date  = new Date(last_day.setDate(0));
+                let lastDay = new Date(date.setMonth(date.getMonth() + 1));
+                date  = new Date(lastDay.setDate(0));
                 return new Date(date).getDate();
             }
 

@@ -6,7 +6,6 @@
 	<style>
         .modal-header, .modal-footer {
             display: block;
-
         }
 
         .btn-modal {
@@ -139,7 +138,7 @@
                 initialView              : 'dayGridWeek',
                 weekNumbers              : true,
                 weekNumberCalculation    : 'ISO',
-                editable                 : true,
+                editable                 : false,
                 selectable               : true,
                 height                   : 750,
                 contentHeight            : 100,
@@ -279,25 +278,25 @@
                 },
                 overTime     = {...workTime},
                 offTime      = {...workTime},
-                on_time      = '#00c67f',
-                miss         = '#9299a0',
-                off_work     = '#f03e44',
-                late_1       = '#f07171',
-                late_2       = '#f57542',
-                early_1      = '#9761ed',
-                early_2      = '#8ca5ff',
-                color_1      = off_work,
-                color_2      = off_work,
+                on_time      = '#00C67F',
+                miss         = '#9299A0',
+                off_work     = '#FF3C28',
+                late_1       = '#F38C8C',
+                late_2       = '#F57542',
+                early_1      = '#9761ED',
+                early_2      = '#8CA5FF',
                 firstShift   = [],
                 secondShift  = [],
                 lastShift    = [],
                 eventSource1 = [],
                 num          = 9998,
+                color_1,
+                color_2,
                 text_color,
                 check_in,
                 check_out;
             $.ajax({
-                url     : '{{route('api.get_shift_time')}}',
+                url     : '{{route('managers.get_shift_time')}}',
                 dataType: 'json',
                 method  : 'GET',
             })
@@ -439,15 +438,16 @@
                                 let date   = m;
                                 let length = response[k][i]['attendance'].length;
                                 if (length === 0) {
-                                    let total_day = 7;
                                     let crMon     = getMon(today).toISOString().slice(0, 10);
-                                    if (crMon === m) {
-                                        total_day = new Date(td).getDay();
-                                    }
-                                    date = getFullDate(m);
-                                    for (let i = 1; i <= total_day; i++) {
-                                        addEvent1(date)
-                                        date = getNextDate(date);
+                                    let crDay     = new Date(td).getDay();
+                                    crDay         = crDay === 0 ? 7 : crDay;
+                                    let total_day = crMon === m ? crDay : 7;
+                                    date          = getFullDate(m);
+                                    if (td >= date) {
+                                        for (let i = 1; i <= total_day; i++) {
+                                            addEvent1(date)
+                                            date = getNextDate(date);
+                                        }
                                     }
                                 } else {
                                     let default_date = m;
@@ -508,9 +508,8 @@
                                     let days      = getDay(l_date);
                                     let day       = getDay(new Date());
                                     let total_day = 7;
-                                    if (days === 0) {
-                                        days = 7;
-                                    }
+                                    days          = days === 0 ? 7 : days;
+                                    day           = day === 0 ? 7 : day;
                                     if (days < total_day) {
                                         let date = getNextDate(l_date);
                                         if (crTime === tdTime) {
@@ -759,8 +758,8 @@
                                             total_day = crDate;
                                         }
                                         if (crTime <= mTime) {
+                                            let d = new Date(default_date);
                                             for (let i = 1; i <= total_day; i++) {
-                                                let d = new Date(default_date);
                                                 d.setDate(i);
                                                 d        = new Date(d);
                                                 let date = getFullDate(d);
@@ -775,7 +774,7 @@
                     })
             }
 
-            loadDate(td,1);
+            loadDate(new Date(), 1);
             sl1.change(function () {
                 loadWeek();
             })
@@ -837,20 +836,28 @@
                 goTo.click();
             })
 
-            function loadDate(d,status = 0) {
-                d      = new Date(d);
-                let dd = d.getDay();
-                let cd = d.getDate();
-                let cm = d.getMonth() + 1;
-                let cy = d.getFullYear();
-                let m  = sl2.children(':selected').val();
-                let y  = sl1.children(':selected').val();
-                let cM = new Date(cy, cm - 1, cd - dd + 8).toISOString().slice(0, 10);
+            function loadDate(d, status = 0) {
+                d        = new Date(d);
+                let dd   = d.getDay();
+                let cd   = d.getDate();
+                let cm   = d.getMonth() + 1;
+                let cy   = d.getFullYear();
+                let m    = sl2.children(':selected').val();
+                let y    = sl1.children(':selected').val();
+                dd       = dd === 0 ? 7 : dd;
+                let sd   = cd - dd + 7;
+                let days = getDays(d);
+                if (sd >= days) {
+                    sd = days;
+                }
+                let cM = new Date(cy, cm - 1, sd).setHours(7);
+                cM     = getFullDate(cM);
+
                 cm !== m && sl1.val(cy).change();
                 cy !== y && sl2.val(cm).change();
                 loadWeek();
                 sl3.val(cM).change();
-                if(status === 1) {
+                if (status === 1) {
                     goTo.click();
                 }
             }
@@ -932,8 +939,8 @@
                     let mon = new Date(year, month - 1, -6).getDate(),
                         sun = '01/' + month;
                     mon += '/' + pMon;
-                    arr1.push(mon, sun),
-                        num++;
+                    arr1.push(mon, sun);
+                    num++;
                     let val = new Date(year, month - 1, 1).toISOString().slice(0, 10);
                     ar      = arr1[0] + '-' + arr1[1];
                     sl3.append($('<option>')
@@ -1022,10 +1029,11 @@
             }
 
             function getDays(d) {
-                d     = new Date(d);
-                let m = d.getMonth() + 1;
-                let l = new Date(d.setMonth(m));
-                d     = new Date(l.setDate(0));
+                d         = new Date(d);
+                let m     = d.getMonth() + 1;
+                let lDate = new Date(d.setDate(1));
+                let l     = new Date(lDate.setMonth(m));
+                d         = new Date(l.setDate(0));
                 return new Date(d).getDate();
             }
 
@@ -1068,7 +1076,7 @@
                                 start     : defaultDate,
                                 allDay    : true,
                                 overlap   : false,
-                                background: '#f03e44',
+                                background: off_work,
                             }
                             eventSource1.push(event);
                             num--;
@@ -1088,7 +1096,7 @@
                         start     : date,
                         allDay    : true,
                         overlap   : false,
-                        background: '#f03e44',
+                        background: off_work,
                     }
                     eventSource1.push(event);
                     num--;

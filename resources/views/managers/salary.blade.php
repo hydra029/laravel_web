@@ -1,5 +1,5 @@
 @extends('layout.master')
-@include('employees.menu')
+@include('managers.menu')
 @push('css')
 	<style>
         tr, th, td {
@@ -206,7 +206,6 @@
                     month = 11;
                     year  = year - 1;
                 }
-
                 for (let i = year; i >= 2018; i--) {
                     slY.append(`<option value="${i}">${i}</option>`);
                 }
@@ -217,8 +216,8 @@
                     }
                     slM.append(`<option value="${i}">${j}</option>`);
                 }
-                $('.date input[name="month"]').val(month);
-                $('.date input[name="year"]').val(year);
+                slM.val(month);
+                slY.val(year);
             })()
             showDetailSalary();
             slM.change(function () {
@@ -227,15 +226,16 @@
             slY.change(function () {
                 showDetailSalary();
             });
+
             function showDetailSalary() {
                 let id        = btn.data('id');
                 let dept_name = btn.data('dept');
                 let role_name = btn.data('role');
-                let month = slM.val();
-                let year  = slY.val();
+                let month     = slM.val();
+                let year      = slY.val();
                 $.ajax({
                     type    : "post",
-                    url     : "{{ route('employees.get_personal_salary') }}",
+                    url     : "{{ route('managers.get_personal_salary') }}",
                     data    : {
                         id       : id,
                         dept_name: dept_name,
@@ -249,38 +249,65 @@
                             empty.has('d-none') && empty.removeClass('d-none');
                             detail_salary.addClass('d-none');
                         } else {
-                            console.log(response['salary']['work_day']);
                             detail_salary.has('d-none') && detail_salary.removeClass('d-none');
                             empty.addClass('d-none');
-                            detail_salary.find(".detail-work_day").text(response['salary']['work_day']);
-                            detail_salary.find(".detail-pay_rate").text(response['salary']['pay_rate_work_day']);
-                            detail_salary.find(".detail-basic_salary").text(response['salary']['pay_rate_money']);
-                            detail_salary.find(".detail-over_work_day").text(response['salary']['over_work_day']);
-                            detail_salary.find(".detail-pay_rate_over_work_day").text(response['salary']['pay_rate_over_work_day']);
-                            detail_salary.find(".detail-bonus_salary_over_work_day").text(response['salary']['bonus_salary_over_work_day']);
-                            detail_salary.find(".detail-off_work_day").text(response['salary']['off_work_day']);
-                            detail_salary.find(".detail-pay_rate_off_work_day").text(response['salary']['pay_rate_off_work_day']);
-                            detail_salary.find(".detail-bonus_salary_off_work_day").text(response['salary']['bonus_salary_off_work_day']);
-                            detail_salary.find(".detail-late_1").text(response['salary']['late_1']);
-                            detail_salary.find(".detail-deduction_late_1").text(response['fines'][0]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_late_1").text(response['salary']['deduction_late_one_detail']);
-                            detail_salary.find(".detail-late_2").text(response['salary']['late_2']);
-                            detail_salary.find(".detail-deduction_late_2").text(response['fines'][1]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_late_2").text(response['salary']['deduction_late_two_detail']);
-                            detail_salary.find(".detail-early_1").text(response['salary']['early_1']);
-                            detail_salary.find(".detail-deduction_early_1").text(response['fines'][2]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_early_1").text(response['salary']['deduction_early_one_detail']);
-                            detail_salary.find(".detail-early_2").text(response['salary']['early_2']);
-                            detail_salary.find(".detail-deduction_early_2").text(response['fines'][3]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_early_2").text(response['salary']['deduction_early_two_detail']);
-                            detail_salary.find(".detail-miss").text(response['salary']['miss']);
-                            detail_salary.find(".detail-deduction_miss").text(response['fines'][4]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_miss").text(response['salary']['deduction_miss_detail']);
-                            detail_salary.find(".detail-salary").text(response['salary']['salary_money']);
+                            detail_salary.find(".detail-work_day")
+	                            .text(response['salary']['work_day']);
+                            detail_salary.find(".detail-pay_rate")
+	                            .text(response['salary']['pay_rate_work_day']);
+                            detail_salary.find(".detail-basic_salary")
+	                            .text(response['salary']['pay_rate_money']);
+                            detail_salary.find(".detail-over_work_day")
+	                            .text(response['salary']['over_work_day']);
+                            detail_salary.find(".detail-pay_rate_over_work_day")
+	                            .text(response['salary']['pay_rate_over_work_day']);
+                            detail_salary.find(".detail-bonus_salary_over_work_day")
+	                            .text(response['salary']['bonus_salary_over_work_day']);
+                            detail_salary.find(".detail-off_work_day")
+	                            .text(response['salary']['off_work_day']);
+                            detail_salary.find(".detail-pay_rate_off_work_day")
+	                            .text(response['salary']['pay_rate_off_work_day']);
+                            detail_salary.find(".detail-bonus_salary_off_work_day")
+	                            .text(response['salary']['bonus_salary_off_work_day']);
+                            detail_salary.find(".detail-late_1")
+	                            .text(response['salary']['late_1']);
+                            detail_salary.find(".detail-deduction_late_1")
+	                            .text(response['fines'][0]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_late_1")
+	                            .text(response['salary']['deduction_late_one_detail']);
+                            detail_salary.find(".detail-late_2")
+	                            .text(response['salary']['late_2']);
+                            detail_salary.find(".detail-deduction_late_2")
+	                            .text(response['fines'][1]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_late_2")
+	                            .text(response['salary']['deduction_late_two_detail']);
+                            detail_salary.find(".detail-early_1")
+	                            .text(response['salary']['early_1']);
+                            detail_salary.find(".detail-deduction_early_1")
+	                            .text(response['fines'][2]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_early_1")
+	                            .text(response['salary']['deduction_early_one_detail']);
+                            detail_salary.find(".detail-early_2")
+	                            .text(response['salary']['early_2']);
+                            detail_salary.find(".detail-deduction_early_2")
+	                            .text(response['fines'][3]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_early_2")
+	                            .text(response['salary']['deduction_early_two_detail']);
+                            detail_salary.find(".detail-miss")
+	                            .text(response['salary']['miss']);
+                            detail_salary.find(".detail-deduction_miss")
+	                            .text(response['fines'][4]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_miss")
+	                            .text(response['salary']['deduction_miss_detail']);
+                            detail_salary.find(".detail-salary")
+	                            .text(response['salary']['salary_money']);
                         }
                     }
                 });
             }
+            $('.btn-confirm').click(function() {
+
+            })
         })
 	</script>
 @endpush

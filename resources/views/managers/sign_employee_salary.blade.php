@@ -225,6 +225,7 @@
                         )
                     }
                 })
+
             $('.close-popup').click(function () {
                 $('.table-show-salary-detail').addClass('d-none');
                 $('.table-salary').removeClass('d-none');
@@ -250,14 +251,15 @@
                     }
                     slM.append(`<option value="${i}">${j}</option>`);
                 }
+                console.log(slM.val(),slY.val());
                 $('.date input[name="month"]').val(month);
                 $('.date input[name="year"]').val(year);
             })()
 
             let dept          = slD.val();
             let detail_salary = $(".table-show-salary-detail");
-            let month         = $('.date input[name="month"]').val();
-            let year          = $('.date input[name="year"]').val();
+            let month         = slM.val();
+            let year          = slY.val();
             getSalary(dept, month, year);
 
             function getSalary(dept, month, year) {
@@ -324,8 +326,8 @@
                     let id        = $(this).data('id');
                     let dept_name = $(this).data('dept_name');
                     let role_name = $(this).data('role_name');
-                    let month     = $('.date input[name="month"]').val();
-                    let year      = $('.date input[name="year"]').val();
+                    let month         = slM.val();
+                    let year          = slY.val();
                     $.ajax({
                         type    : "post",
                         url     : "{{ route('managers.salary_detail') }}",
@@ -435,18 +437,18 @@
                 }
             });
 
-            slD.change(function (e) {
+            slD.change(function () {
                 let d = slD.val()
                 $("#salary-table tbody").empty();
                 getSalary(d, month, year);
             });
-            slM.change(function (e) {
+            slM.change(function () {
                 let d = slD.val()
                 month = $(this).val();
                 $("#salary-table tbody").empty();
                 getSalary(d, month, year);
             });
-            slY.change(function (e) {
+            slY.change(function () {
                 let d = slD.val()
                 year  = $(this).val();
                 if (slY.val() < (new Date()).getFullYear()) {
@@ -481,8 +483,8 @@
                     obj['id']        = $(this).data('id');
                     obj['dept_name'] = $(this).data('dept_name');
                     obj['role_name'] = $(this).data('role_name');
-                    obj['month']     = $('.date input[name="month"]').val();
-                    obj['year']      = $('.date input[name="year"]').val();
+                    obj['month']     = slM.val();
+                    obj['year']      = slY.val();
                     data.push(obj);
                 });
                 let data_to_send = JSON.stringify({data});

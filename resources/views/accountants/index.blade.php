@@ -123,17 +123,18 @@
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    f: date,
-                    l: date
+                    first_day: date,
+                    last_day : date,
                 },
             })
                 .done(function (response) {
-                    let time      = moment().format('HH:mm');
-                    let in_shift,
-                        out_shift = 0;
-                    let num       = 0;
                     let checkin,
-                        checkout;
+                        checkout,
+                        in_shift,
+                        out_shift,
+                        num,
+                        time      = moment().format('HH:mm'),
+                        len       = response.length;
                     if (time >= in_start_1 && time <= in_end_1) {
                         in_shift = 1;
                         num      = 1;
@@ -159,23 +160,35 @@
                         out_shift = 3;
                         num       = 2;
                     }
-                    checkin  = num === 1 && '';
-                    checkout = num === 2 && '';
-                    for (let i = 0; i < response.length; i++) {
-                        let shift = response[i]['shift'];
+                    if (len === 0) {
+                        checkin = null;
+                        checkout = null;
+                    } else {
+                        let shift = response[len]['shift'];
                         if (shift === in_shift) {
-                            checkin = response[i]['check_in'];
+                            checkin = response[len]['check_in'];
+                        } else {
+                            checkin = response[len - 1]['check_in'];
+                            if (checkin !== null) {
+                                checkin = null;
+                            }
                         }
                         if (shift === out_shift) {
-                            checkout = response[i]['check_out'];
+                            checkout = response[len]['check_out'];
+                        } else {
+                            checkout = response[len - 1]['check_out'];
+                            if (checkout !== null) {
+                                checkout = null;
+                            }
                         }
                     }
-                    if (!checkin) {
+
+                    if (num === 1 && checkin === null) {
                         check_in.removeAttr('disabled');
                     } else {
                         check_in.attr('disabled', 'disabled');
                     }
-                    if (!checkout) {
+                    if (num === 2 && checkout === null) {
                         check_out.removeAttr('disabled');
                     } else {
                         check_out.attr('disabled', 'disabled');

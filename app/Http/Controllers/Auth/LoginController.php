@@ -11,9 +11,9 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Manager;
 use App\Models\Role;
-use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use function auth;
 
 class LoginController extends Controller
 {
@@ -21,7 +21,6 @@ class LoginController extends Controller
 	{
 		return view('auth.login');
 	}
-
 
 	public function processLogin(LoginRequest $request): int
 	{
@@ -60,13 +59,6 @@ class LoginController extends Controller
 			if (Hash::check($password, $user->password)) {
 				return 0;
 			}
-
-			if (session('remember') === 0) {
-				session()->flush();
-			}
-
-			session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
-			return 1;
 		}
 
 		if ($user = Manager::where('email', $email)->first()) {
@@ -91,12 +83,6 @@ class LoginController extends Controller
 			if (Hash::check($password, $user->password)) {
 				return 0;
 			}
-			if (session('remember') === 0) {
-				session()->flush();
-			}
-
-			session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
-			return 1;
 		}
 
 		if ($user = Accountant::where('email', $email)->first()) {
@@ -123,13 +109,6 @@ class LoginController extends Controller
 			if (Hash::check($password, $user->password)) {
 				return 0;
 			}
-
-			if (session('remember') === 0) {
-				session()->flush();
-			}
-
-			session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
-			return 1;
 		}
 
 		if ($user = Ceo::where('email', $email)->first()) {
@@ -151,14 +130,12 @@ class LoginController extends Controller
 			if (Hash::check($password, $user->password)) {
 				return 0;
 			}
-			if (session('remember') === 0) {
-				session()->flush();
-			}
-
-			session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
-			return 1;
+		}
+		if (session('remember') === 0) {
+			session()->flush();
 		}
 
+		session()->forget(['id', 'level', 'noti', 'dept_id', 'role_name', 'name', 'avatar']);
 		return 1;
 	}
 

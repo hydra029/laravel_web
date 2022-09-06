@@ -147,22 +147,9 @@
                     .done(function (response) {
                         dd.empty();
                         if (response === 0) {
-                            $.toast({
-                                heading  : 'Successful Execution',
-                                text     : 'You\'ve assigned an accountant successfully',
-                                icon     : 'success',
-                                position : 'top-right',
-                                hideAfter: 2000,
-                            });
-                        }
-                        if (response === 1) {
-                            $.toast({
-                                heading  : 'Failed Execution',
-                                text     : 'Do not try to break our system !',
-                                icon     : 'error',
-                                position : 'top-right',
-                                hideAfter: 2000,
-                            });
+                            notifySuccess('You\'ve assigned an accountant successfully');
+                        } else {
+                            notifyError('Do not try to break our system !');
                         }
                     })
             })

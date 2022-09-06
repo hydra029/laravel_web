@@ -1,5 +1,5 @@
 @extends('layout.master')
-@include('employees.menu')
+@include('accountants.menu')
 @push('css')
 	<style>
         tr, th, td {
@@ -235,7 +235,7 @@
                 let year  = slY.val();
                 $.ajax({
                     type    : "post",
-                    url     : "{{ route('employees.get_personal_salary') }}",
+                    url     : "{{ route('accountants.get_personal_salary') }}",
                     data    : {
                         id       : id,
                         dept_name: dept_name,

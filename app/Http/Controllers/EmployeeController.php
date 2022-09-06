@@ -4,21 +4,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EmpRoleEnum;
-use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
 use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Salary;
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -41,11 +35,6 @@ class EmployeeController extends Controller
 		View::share('title', $title);
 	}
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Application|Factory  \Contracts\View\View
-	 */
 	public function index()
 	{
 		$data = AttendanceShiftTime::query()
@@ -63,12 +52,12 @@ class EmployeeController extends Controller
 			->first();
 	}
 
-	public function attendance_history(): Renderable
+	public function attendanceHistory(): Renderable
 	{
 		return view('employees.attendance_history');
 	}
 
-	public function history_api(Request $request)
+	public function historyApi(Request $request)
 	{
 		$first_day = $request->first_day;
 		$last_day  = $request->last_day;
@@ -83,20 +72,18 @@ class EmployeeController extends Controller
 	public function checkin(): int
 	{
 		$time  = date('H:i');
-		$shift =$this->getShift($time, 'check_in');
+		$shift = $this->getShift($time, 'check_in');
 		if ($shift === 0) {
 			return 0;
 		}
-		Attendance::updateOrCreate(
+		Attendance::create(
 			[
 				'date'     => date('Y-m-d'),
 				'emp_id'   => session('id'),
 				'emp_role' => EmpRoleEnum::EMPLOYEE,
 				'shift'    => $shift,
-			],
-			[
 				'check_in' => $time,
-			]
+			],
 		);
 		return 1;
 	}
@@ -104,7 +91,7 @@ class EmployeeController extends Controller
 	public function checkout(): int
 	{
 		$time  = date('H:i');
-		$shift =$this->getShift($time, 'check_out');
+		$shift = $this->getShift($time, 'check_out');
 		if ($shift === 0) {
 			return 0;
 		}
@@ -155,13 +142,12 @@ class EmployeeController extends Controller
 		return $shift;
 	}
 
-
 	public function salary()
 	{
 		return view('employees.salary');
 	}
 
-	public function salary_detail(Request $request): array
+	public function salaryDetail(Request $request): array
 	{
 		$id            = $request->id;
 		$dept_name     = $request->dept_name;
@@ -201,74 +187,10 @@ class EmployeeController extends Controller
 					->where('year', $year)
 					->update(['sign' => 3]);
 			}
-			return $this->successResponse([
-				                              'message' => 'Sign success',
-			                              ]);
+			return $this->successResponse(['message' => 'Sign success']);
 		}
 		catch (Exception $e) {
-			return $this->errorResponse([
-				                            'message' => $e->getMessage(),
-			                            ]);
+			return $this->errorResponse(['message' => $e->getMessage()]);
 		}
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create(): Response
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param StoreEmployeeRequest $request
-	 * @return RedirectResponse
-	 */
-	public function store(StoreEmployeeRequest $request): RedirectResponse {}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param Employee $employee
-	 * @return void
-	 */
-	public function show(Employee $employee): void
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param Employee $employee
-	 * @return void
-	 */
-	public function edit(Employee $employee): void
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param UpdateEmployeeRequest $request
-	 * @param Employee $employee
-	 * @return void
-	 */
-	public function update(UpdateEmployeeRequest $request, Employee $employee): void {}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param Employee $employee
-	 * @return Response
-	 */
-	public function destroy(Employee $employee): Response
-	{
-		//
 	}
 }

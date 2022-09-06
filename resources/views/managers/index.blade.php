@@ -123,13 +123,13 @@
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    f: date,
-                    l: date
+                    first_day: date,
+                    last_day : date,
                 },
             })
                 .done(function (response) {
                     let time      = moment().format('HH:mm');
-                    let len       = response.length;
+                    let len       = response.length - 1;
                     let in_shift,
                         out_shift = 0;
                     let num       = 0;
@@ -159,27 +159,27 @@
                         out_shift = 3;
                         num       = 2;
                     }
-                    if (num === 1) {
-                        checkin = '';
+                    let shift = response[len]['shift'];
+                    if (shift === in_shift) {
+                        checkin = response[len]['check_in'];
+                    } else {
+                        checkin = null;
                     }
-                    if (num === 2) {
-                        checkout = '';
-                    }
-                    for (let i = 0; i < len; i++) {
-                        let shift = response[i]['shift'];
-                        if (shift === in_shift) {
-                            checkin = response[i]['check_in'];
+                    if (shift === out_shift) {
+                        checkout = response[len]['check_out'];
+                    } else {
+                        checkout = response[len - 1]['check_out'];
+                        if (checkout !== null) {
+                            checkout = null;
                         }
-                        if (shift === out_shift) {
-                            checkout = response[i]['check_out'];
-                        }
                     }
-                    if (checkin === '' || checkin === null) {
+
+                    if (num === 1 && checkin === null) {
                         check_in.removeAttr('disabled');
                     } else {
                         check_in.attr('disabled', 'disabled');
                     }
-                    if (checkout === '' || checkout === null) {
+                    if (num === 2 && checkout === null) {
                         check_out.removeAttr('disabled');
                     } else {
                         check_out.attr('disabled', 'disabled');
@@ -195,14 +195,7 @@
                 })
                     .done(function () {
                         check_in.attr('disabled', 'disabled');
-                        $.toast({
-                            heading  : 'Successful Execution',
-                            text     : 'You\'ve check in successfully',
-                            icon     : 'success',
-                            position : 'top-right',
-                            hideAfter: 2000,
-                        });
-
+                        notifySuccess("You've check in successfully");
                     });
             })
             check_out.click(function () {
@@ -215,13 +208,7 @@
                 })
                     .done(function () {
                         check_out.attr('disabled', 'disabled');
-                        $.toast({
-                            heading  : 'Successful Execution',
-                            text     : 'You\'ve check out successfully',
-                            icon     : 'success',
-                            position : 'top-right',
-                            hideAfter: 2000,
-                        });
+                        notifySuccess("You've check out successfully");
                     })
             })
         })

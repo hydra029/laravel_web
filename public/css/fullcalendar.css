@@ -2,7 +2,7 @@
     margin: 0;
 }
 
-#external-events, #external-events > .fc-event {
+#external-events, #external-events > .fc-event,.fc-event {
     cursor: pointer !important;
 }
 
@@ -55,7 +55,7 @@ select {
 }
 
 .event-4 {
-    background: #f07171;
+    background: #f38c8c;
 }
 
 .event-5 {
@@ -67,7 +67,7 @@ select {
 }
 
 .event-7 {
-    background: #f03e44;
+    background: #FF3C28;
 }
 
 .emp-name {

@@ -112,31 +112,31 @@
             let out_end_1   = $('table tr:nth-child(1) td:nth-child(9)').text().replace(/[^\d:]*/, '');
             let out_end_2   = $('table tr:nth-child(2) td:nth-child(9)').text().replace(/[^\d:]*/, '');
             let out_end_3   = $('table tr:nth-child(3) td:nth-child(9)').text().replace(/[^\d:]*/, '');
-            let time        = moment().format('HH:mm');
+            let time = moment().format('HH:mm');
             if (time <= in_end_1 && time >= in_start_1 || time <= in_end_2 && time >= in_start_2 || time <= in_end_3 && time >= in_start_3) {
                 check_in.removeAttr('disabled');
             }
             if (time <= out_end_1 && time >= out_start_1 || time <= out_end_2 && time >= out_start_2 || time <= out_end_3 && time >= out_start_3) {
                 check_out.removeAttr('disabled');
             }
-            let date = moment().format('YYYY-MM-DD');
+            let currentDate = moment().format('YYYY-MM-DD');
             $.ajax({
                 url     : "{{ route('employees.history_api') }}",
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    f: date,
-                    l: date
+                    first_day: currentDate,
+                    last_day : currentDate,
                 },
             })
                 .done(function (response) {
-                    let time      = moment().format('HH:mm');
-                    let len       = response.length;
+                    let time = moment().format('HH:mm');
+                    let len  = response.length - 1;
                     let in_shift,
-                        out_shift = 0;
-                    let num       = 0;
-                    let checkin,
-                        checkout;
+                        out_shift;
+                    let num  = 0;
+                    let checkin = null,
+                        checkout = null;
                     if (time >= in_start_1 && time <= in_end_1) {
                         in_shift = 1;
                         num      = 1;
@@ -161,28 +161,36 @@
                         out_shift = 3;
                         num       = 2;
                     }
-                    if (num === 1) {
-                        checkin = '';
-                    }
-                    if (num === 2) {
-                        checkout = '';
-                    }
-                    for (let i = 0; i < len; i++) {
-                        let shift = response[i]['shift'];
+                    if (len >= 0) {
+                        let shift = response[len]['shift'];
                         if (shift === in_shift) {
-                            checkin = response[i]['check_in'];
+                            checkin = response[len]['check_in'];
                         }
                         if (shift === out_shift) {
-                            checkout = response[i]['check_out'];
+                            checkout = response[len]['check_out'];
+                        } else {
+                            if ( len >= 1) {
+                                checkout = response[len - 1]['check_out'];
+                                if (checkout !== null) {
+                                    checkout = null;
+                                }
+                            }
                         }
                     }
-                    if (checkin === '' || checkin === null) {
+
+                    if (num === 1 ) {
                         check_in.removeAttr('disabled');
+                        if (checkin) {
+                            check_in.attr('disabled', 'disabled');
+                        }
                     } else {
                         check_in.attr('disabled', 'disabled');
                     }
-                    if (checkout === '' || checkout === null) {
+                    if (num === 2) {
                         check_out.removeAttr('disabled');
+                        if(checkout) {
+                            check_out.attr('disabled', 'disabled');
+                        }
                     } else {
                         check_out.attr('disabled', 'disabled');
                     }
@@ -197,13 +205,7 @@
                 })
                     .done(function () {
                         check_in.attr('disabled', 'disabled');
-                        $.toast({
-                            heading  : 'Successful Execution',
-                            text     : 'You\'ve check in successfully',
-                            icon     : 'success',
-                            position : 'top-right',
-                            hideAfter: 2000,
-                        });
+                        notifySuccess("You've check in successfully");
                     });
             })
             check_out.click(function () {
@@ -216,13 +218,7 @@
                 })
                     .done(function () {
                         check_out.attr('disabled', 'disabled');
-                        $.toast({
-                            heading  : 'Successful Execution',
-                            text     : 'You\'ve check out successfully',
-                            icon     : 'success',
-                            position : 'top-right',
-                            hideAfter: 2000,
-                        });
+                        notifySuccess("You've check out successfully");
                     })
             })
         })

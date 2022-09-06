@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\AttendanceEnum;
 use App\Enums\ShiftEnum;
 use App\Enums\ShiftStatusEnum;
 use Database\Factories\AttendanceFactory;
@@ -11,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Thiagoprz\CompositeKey\HasCompositeKey;
 
 /**
  * App\Models\Attendance
@@ -50,14 +50,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string $in_start
  * @property-read string $out_end
  * @property-read string $out_start
- * @property-read \App\Models\AttendanceShiftTime|null $shifts
+ * @property-read AttendanceShiftTime|null $shifts
  */
 class Attendance extends Model
 {
-	use HasFactory;
+	use HasFactory, HasCompositeKey;
 
-	public $timestamps = false;
-	protected $fillable = [
+	public    $timestamps = false;
+	protected $fillable   = [
 		'emp_id',
 		'shift',
 		'date',
@@ -65,7 +65,13 @@ class Attendance extends Model
 		'check_out',
 		'emp_role',
 	];
-	protected $casts = [
+	protected $primaryKey = [
+		'date',
+		'emp_id',
+		'emp_role',
+		'shift',
+	];
+	protected $casts      = [
 		'date' => 'timestamp:d-m-Y',
 	];
 
@@ -81,34 +87,33 @@ class Attendance extends Model
 
 	public function getInStartAttribute(): string
 	{
-		return substr($this->shifts->check_in_start,0,5);
+		return substr($this->shifts->check_in_start, 0, 5);
 	}
 
 	public function getInEndAttribute(): string
 	{
-		return substr($this->shifts->check_in_late_2,0,5);
+		return substr($this->shifts->check_in_late_2, 0, 5);
 	}
 
 	public function getOutStartAttribute(): string
 	{
-		return substr($this->shifts->check_out_early_1,0,5);
+		return substr($this->shifts->check_out_early_1, 0, 5);
 	}
 
 	public function getOutEndAttribute(): string
 	{
-		return substr($this->shifts->check_out_end,0,5);
+		return substr($this->shifts->check_out_end, 0, 5);
 	}
 
 	public function getCheckInTimeAttribute(): string
 	{
-		return substr($this->check_in,0,5);
+		return substr($this->check_in, 0, 5);
 	}
 
 	public function getCheckOutTimeAttribute(): string
 	{
-        return substr($this->check_out,0,5);
+		return substr($this->check_out, 0, 5);
 	}
-
 
 	public function emp(): BelongsTo
 	{
@@ -130,6 +135,5 @@ class Attendance extends Model
 	{
 		return $this->BelongsTo(AttendanceShiftTime::class, 'shift');
 	}
-
 
 }

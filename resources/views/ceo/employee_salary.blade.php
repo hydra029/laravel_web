@@ -31,8 +31,7 @@
 			</select>
 			<span class="btn btn-primary float-right m-1 btn-sign">Sign</span>
 		</div>
-		<table id="salary-table" class="table table-striped table-bordered w-100 table-sm" cellspacing="0"
-		       width="100%">
+		<table id="salary-table" class="table table-striped table-bordered w-100 table-sm">
 			<thead>
 			<th class="th-sm">#</th>
 			<th class="th-sm">Avatar</th>
@@ -236,14 +235,16 @@
                     }
                     slM.append(`<option value="${i}">${j}</option>`);
                 }
-                $('.date input[name="month"]').val(month);
-                $('.date input[name="year"]').val(year);
+                slM.val(month);
+                slY.val(year);
             })()
 
-            let dept          = slD.val();
+            let dept          = 'all';
             let detail_salary = $(".table-show-salary-detail");
-            let month         = $('.date input[name="month"]').val();
-            let year          = $('.date input[name="year"]').val();
+            let month         = slM.val();
+            let year          = slY.val();
+
+            //get departments
             $.ajax({
                 url     : '{{route('ceo.department_api')}}',
                 type    : 'GET',
@@ -324,8 +325,8 @@
                     let id        = $(this).data('id');
                     let dept_name = $(this).data('dept_name');
                     let role_name = $(this).data('role_name');
-                    let month     = $('.date input[name="month"]').val();
-                    let year      = $('.date input[name="year"]').val();
+                    let month     = slM.val();
+                    let year      = slY.val();
                     $.ajax({
                         type    : "post",
                         url     : "{{ route('ceo.salary_detail') }}",
@@ -381,9 +382,12 @@
             }
 
             $(document).on('click', '#salary-pagination > li > a', function (event) {
+                let dept  = slD.val()
+                let month = slM.val();
+                let year  = slY.val();
                 event.preventDefault();
                 let url = $(this).attr('href');
-                let li = $(this).parent();
+                let li  = $(this).parent();
                 if (url !== 'null' && !li.hasClass('active')) {
                     $('#salary-table').find('tbody').empty();
                     $.ajax({
@@ -435,19 +439,21 @@
                 }
             });
 
-            slD.change(function (e) {
-                let d = slD.val()
+            slD.change(function () {
                 $("#salary-table tbody").empty();
-                getSalary(month, year, d);
+                let dept  = slD.val()
+                let month = slM.val();
+                let year  = slY.val();
+                getSalary(dept, month, year);
             });
-            slM.change(function (e) {
-                month = $(this).val();
+            slM.change(function () {
+                let dept  = slD.val()
+                let month = slM.val();
+                let year  = slY.val();
                 $("#salary-table tbody").empty();
                 getSalary(dept, month, year);
             });
-            slY.change(function (e) {
-                year = $(this).val();
-
+            slY.change(function () {
                 if (slY.val() < (new Date()).getFullYear()) {
                     month = 12;
                     slM.empty();
@@ -469,6 +475,9 @@
                         slM.append(`<option value="${i}">${j}</option>`);
                     }
                 }
+                let dept  = slD.val()
+                let month = slM.val();
+                let year  = slY.val();
                 $("#salary-table tbody").empty();
                 getSalary(dept, month, year);
             });
@@ -480,8 +489,8 @@
                     obj['id']        = $(this).data('id');
                     obj['dept_name'] = $(this).data('dept_name');
                     obj['role_name'] = $(this).data('role_name');
-                    obj['month']     = $('.date input[name="month"]').val();
-                    obj['year']      = $('.date input[name="year"]').val();
+                    obj['month']     = slM.val();
+                    obj['year']      = slY.val();
                     data.push(obj);
                 });
                 let data_to_send = JSON.stringify({data});
@@ -494,34 +503,12 @@
                         dataType   : "json",
                         success    : function (response) {
                             if (response.success === true) {
-                                $.toast({
-                                    heading           : response.data.message,
-                                    text              : '',
-                                    icon              : 'success',
-                                    showHideTransition: 'slide',
-                                    allowToastClose   : false,
-                                    hideAfter         : 3000,
-                                    stack             : 5,
-                                    position          : 'top-right',
-                                    textAlign         : 'left',
-                                    loader            : true,
-                                });
+                                notifyError(response.data.message);
                                 setTimeout(function () {
                                     location.reload();
                                 }, 1000);
                             } else {
-                                $.toast({
-                                    heading           : response.data.message,
-                                    text              : '',
-                                    icon              : 'error',
-                                    showHideTransition: 'slide',
-                                    allowToastClose   : false,
-                                    hideAfter         : 3000,
-                                    stack             : 5,
-                                    position          : 'top-right',
-                                    textAlign         : 'left',
-                                    loader            : true,
-                                });
+                                notifyError(response.data.message);
                             }
                         }
                     });

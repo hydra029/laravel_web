@@ -11,12 +11,20 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 	public function test()
+
 	{
-		return view('test',['title' => 'Test']);
+		$data = Department::whereNull('deleted_at')
+			->get(['id', 'name', 'acct_id']);
+		return view(
+			'test',
+			[
+				'title' => 'test',
+				'data'  => $data,
+			]
+		);
 	}
 
-	public function get_salary(
-		Request $request): JsonResponse
+	public function getSalary(Request $request): JsonResponse
 	{
 		$acct   = session('id');
 		$month  = $request->month;
@@ -37,7 +45,7 @@ class HomeController extends Controller
 		return $this->successResponse($arr);
 	}
 
-	public function salary_detail(
+	public function salaryDetail(
 		Request $request): array
 	{
 		$id            = $request->id;

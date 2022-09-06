@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ShiftEnum;
+use App\Enums\SignEnum;
 use App\Http\Requests\StoreAccountantRequest;
-use App\Models\Attendance;
-use App\Models\AttendanceShiftTime;
-use App\Models\Ceo;
 use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\StoreManagerRequest;
@@ -15,16 +12,21 @@ use App\Imports\AccountantsImport;
 use App\Imports\EmployeesImport;
 use App\Imports\ManagersImport;
 use App\Models\Accountant;
+use App\Models\Attendance;
+use App\Models\AttendanceShiftTime;
+use App\Models\Ceo;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Role;
 use App\Models\Salary;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -55,35 +57,15 @@ class CeoController extends Controller
 	 */
 	public function index()
 	{
-		$limit  = 11;
-		$fields = [
-			'id',
-			'fname',
-			'lname',
-			'gender',
-			'dob',
-			'email',
-			'role_id',
-			'dept_id',
-		];
-		$data   = Employee::whereNull('deleted_at')
-			->with(['roles', 'departments'])
-			->orderBy('dept_id', 'ASC')
-			->paginate($limit, $fields);
-		$acc    = Accountant::whereNull('deleted_at')
-			->with(['roles', 'departments'])
-			->paginate(11);
-		return view(
-			'ceo.index',
-			([
-				'acc'  => $acc,
-				'data' => $data,
-				'num'  => 1,
-			])
-		);
+		$dept    = Department::with('manager')->withCount(['members', 'roles', 'acctmembers'])->paginate(10);
+		$manager = Manager::all();
+		return view('ceo.index', [
+			'dept'    => $dept,
+			'manager' => $manager,
+		]);
 	}
 
-	public function get_infor()
+	public function getInformation()
 	{
 		$id   = session('id');
 		$data = Ceo::whereId($id)->first();
@@ -105,83 +87,64 @@ class CeoController extends Controller
 		]);
 	}
 
-	public function time_change(Request $request)
+	public function timeChange(Request $request)
 	{
-
-		$time = AttendanceShiftTime::where('id','=',$request->get('id'))->first();
+		$time = AttendanceShiftTime::where('id', '=', $request->get('id'))->first();
 		if ($time) {
 			$time->fill($request->all());
 			$time->save();
-
 		}
 		return $time;
 	}
 
-	public function employee_attendance(): Renderable
+	public function employeeAttendance(): Renderable
 	{
 		return view('ceo.employee_attendance');
 	}
 
-	public function attendance_api(Request $request): array
+	public function accessToken()
+	{
+		return session('access_token');
+	}
+
+	public function attendanceApi(Request $request): array
 	{
 		$dept_id = $request->dept_id;
 		$s       = $request->s;
 		$m       = $request->m;
 		$data[]  = AttendanceShiftTime::get();
 		if ($dept_id === '1') {
-			$data[] = Manager::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->where('dept_id','=',$dept_id)
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
-			$data[] = Accountant::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+			$dept = Accountant::query();
 		} else {
-			$data[] = Manager::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->where('dept_id','=',$dept_id)
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
-			$data[] = Employee::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->where('dept_id','=',$dept_id)
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+			$dept = Employee::query();
 		}
+		$data[] = Manager::with(
+			[
+				'attendance' => function ($query) use ($s, $m) {
+					$query->where('date', '<=', $s)->where('date', '>=', $m);
+				},
+				'departments',
+				'roles',
+			]
+		)
+			->whereNull('deleted_at')
+			->where('dept_id', '=', $dept_id)
+			->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+		$data[] = $dept
+			->with([
+				       'attendance' => function ($query) use ($s, $m) {
+					       $query->where('date', '<=', $s)->where('date', '>=', $m);
+				       },
+				       'departments',
+				       'roles',
+			       ])
+			->whereNull('deleted_at')
+			->where('dept_id', '=', $dept_id)
+			->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
 		return $data;
 	}
 
-	public function emp_attendance_api(Request $request)
+	public function employeeAttendanceApi(Request $request)
 	{
 		$date     = $request->get('date');
 		$emp_role = $request->get('role');
@@ -193,10 +156,10 @@ class CeoController extends Controller
 			->get();
 	}
 
-	public function department_api()
+	public function departmentApi(): Collection
 	{
 		return Department::whereNull('deleted_at')
-		->get(['id', 'name']);
+			->get(['id', 'name']);
 	}
 
 	public function fines_store(Request $request): array
@@ -204,11 +167,23 @@ class CeoController extends Controller
 		$name      = $request->name;
 		$fines     = $request->fines;
 		$deduction = $request->deduction;
-		return Fines::create([
-			'name'      => $name,
-			'fines'     => $fines,
-			'deduction' => $deduction,
-		])->append(['fines_time', 'deduction_detail'])->toArray();
+		return Fines::create(
+			[
+				'name'      => $name,
+				'fines'     => $fines,
+				'deduction' => $deduction,
+			]
+		)->append(['fines_time', 'deduction_detail'])->toArray();
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//
 	}
 
 	public function fines_update(Request $request): array
@@ -219,45 +194,61 @@ class CeoController extends Controller
 		$deduction = $request->deduction;
 		Fines::query()
 			->where('id', $id)
-			->update([
-				'name'      => $name,
-				'fines'     => $fines,
-				'deduction' => $deduction,
-			]);
+			->update(
+				[
+					'name'      => $name,
+					'fines'     => $fines,
+					'deduction' => $deduction,
+				]
+			);
 		return Fines::whereId($id)->get()->append(['fines_time', 'deduction_detail'])->toArray();
 	}
 
-	public function import_employee(Request $request): void
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param UpdateCeoRequest $request
+	 * @param Ceo $ceo
+	 * @return Response
+	 */
+	public function update(UpdateCeoRequest $request, Ceo $ceo)
 	{
-		$request->validate([
-			'file' => 'required|max:10000|mimes:xlsx,xls',
-		]);
+		//
+	}
+
+	public function importEmployee(Request $request): void
+	{
+		$request->validate(
+			[
+				'file' => 'required|max:10000|mimes:xlsx,xls',
+			]
+		);
 		$path = $request->file;
 
 		Excel::import(new EmployeesImport, $path);
 	}
 
-	public function import_acct(Request $request): void
+	public function importAccountant(Request $request): void
 	{
 		$request->validate([
-			'file' => 'required|max:10000|mimes:xlsx,xls',
-		]);
+			                   'file' => 'required|max:10000|mimes:xlsx,xls',
+		                   ]);
 		$path = $request->file;
 
 		Excel::import(new AccountantsImport, $path);
 	}
 
-	public function import_mgr(Request $request): void
+	public function importManager(Request $request): void
 	{
 		$request->validate([
-			'file' => 'required|max:10000|mimes:xlsx,xls',
-		]);
+			                   'file' => 'required|max:10000|mimes:xlsx,xls',
+		                   ]);
 		$path = $request->file;
 
 		Excel::import(new  ManagersImport, $path);
 	}
 
-	public function create_emp()
+	public function createEmployee()
 	{
 		$dept = Department::get();
 		return view('ceo.create', [
@@ -265,13 +256,13 @@ class CeoController extends Controller
 		]);
 	}
 
-	public function select_role(Request $Request)
+	public function selectRole(Request $Request)
 	{
 		$dept_id = $Request->dept_id;
-		return Role::query()->where('dept_id', $dept_id)->get();
+		return Role::where('dept_id', $dept_id)->get();
 	}
 
-	public function store_emp(StoreEmployeeRequest $storeEmployeeRequest): array
+	public function storeEmployee(StoreEmployeeRequest $storeEmployeeRequest): array
 	{
 		$arr = $storeEmployeeRequest->validated();
 		if ($storeEmployeeRequest->file('avatar')) {
@@ -283,166 +274,125 @@ class CeoController extends Controller
 		$hashPassword    = Hash::make($storeEmployeeRequest->get('password'));
 		$arr['password'] = $hashPassword;
 		$role_id         = $storeEmployeeRequest->get('role_id');
-		$role            = Role::query()->with('departments')->where('id', $role_id)->get();
-		$emp             = Employee::query()->create($arr)->append(['full_name', 'date_of_birth', 'gender_name', 'address'])->toArray();
+		$role            = Role::with('departments')
+			->where('id', $role_id)
+			->get();
+		$emp             = Employee::create($arr)
+			->append(['full_name', 'date_of_birth', 'gender_name', 'address'])
+			->toArray();
 		return [$role, $emp];
 	}
 
-	public function employee_infor(Request $request): array
+	public function employeeInformation(Request $request): array
 	{
-		$id = $request->get('id');
-		return Employee::query()->with(['roles', 'departments'])->whereId($id)->get()->append(['full_name', 'date_of_birth', 'gender_name', 'address'])->toArray();
+		$id       = $request->get('id');
+		$employee = Employee::with(['roles', 'departments'])
+			->where('id', '=', $id)
+			->get();
+		return $employee
+			->append(['full_name', 'date_of_birth', 'gender_name', 'address'])
+			->toArray();
 	}
 
-	public function update_emp(StoreEmployeeRequest $storeEmployeeRequest): void
+	public function updateEmployee(StoreEmployeeRequest $request): void
 	{
-		$arr = $storeEmployeeRequest->validated();
+		$arr = $request->validated();
 		Employee::query()->update($arr);
 	}
 
-	public function delete_emp(Request $request): JsonResponse
+	public function deleteEmployee(Request $request): JsonResponse
 	{
 		$id = $request->get('id');
-		Employee::query()->whereId($id)->delete();
-		return $this->successResponse([
-			'message' => 'Delete success',
-		]);
+		Employee::where('id', '=', $id)->delete();
+		return $this->successResponse(
+			[
+				'message' => 'Delete success',
+			]
+		);
 	}
 
-	public function store_acct(StoreAccountantRequest $storeAccountantRequest): array
+	public function storeAccountant(StoreAccountantRequest $request): array
 	{
-		$arr = $storeAccountantRequest->validated();
-		if ($storeAccountantRequest->file('avatar')) {
-			$avatar     = $storeAccountantRequest->file('avatar');
+		$arr = $request->validated();
+		if ($request->file('avatar')) {
+			$avatar     = $request->file('avatar');
 			$avatarName = date('YmdHi') . $avatar->getClientOriginalName();
 			$avatar->move(public_path('img'), $avatarName);
 			$arr['avatar'] = $avatarName;
 		}
-		$hashPassword    = Hash::make($storeAccountantRequest->get('password'));
+		$hashPassword    = Hash::make($request->get('password'));
 		$arr['password'] = $hashPassword;
-		$role_id         = $storeAccountantRequest->get('role_id');
-		$role            = Role::query()->with('departments')->where('id', $role_id)->get();
-		$emp             = Accountant::query()->create($arr)->append(['full_name', 'date_of_birth', 'gender_name', 'address'])->toArray();
+		$role_id         = $request->get('role_id');
+		$role            = Role::with('departments')
+			->where('id', $role_id)
+			->get();
+		$emp             = Accountant::create($arr)
+			->append(['full_name', 'date_of_birth', 'gender_name', 'address'])->toArray();
 		return [$role, $emp];
 	}
 
-	public function store_mgr(StoreManagerRequest $storeManagerRequest): array
+	public function storeManager(StoreManagerRequest $request): array
 	{
-		$arr = $storeManagerRequest->validated();
-		if ($storeManagerRequest->file('avatar')) {
-			$avatar     = $storeManagerRequest->file('avatar');
+		$arr = $request->validated();
+		if ($request->file('avatar')) {
+			$avatar     = $request->file('avatar');
 			$avatarName = date('YmdHi') . $avatar->getClientOriginalName();
 			$avatar->move(public_path('img'), $avatarName);
 			$arr['avatar'] = $avatarName;
 		}
-		$hashPassword    = Hash::make($storeManagerRequest->get('password'));
+		$hashPassword    = Hash::make($request->get('password'));
 		$arr['password'] = $hashPassword;
-		$role_id         = $storeManagerRequest->get('role_id');
-		$role            = Role::query()->with('departments')->where('id', $role_id)->get();
-		$emp             = Manager::query()->create($arr)->append(['full_name', 'date_of_birth', 'gender_name', 'address'])->toArray();
+		$role_id         = $request->get('role_id');
+		$role            = Role::with('departments')
+			->where('id', $role_id)
+			->get();
+		$emp             = Manager::create($arr)
+			->append(['full_name', 'date_of_birth', 'gender_name', 'address'])
+			->toArray();
 		return [$role, $emp];
 	}
 
-	
-    public function salary()
-    {
-        return view('ceo.salary');
-    }
-
-    public function employee_salary()
-    {
-        return view('ceo.employee_salary');
-    }
-
-
-	public function get_salary(Request $request): JsonResponse
+	public function salary()
 	{
-		$month = $request->month;
-		$year  = $request->year;
-		$dept  = $request->department;
-		if ($dept === 'all') {
-			$dept_name = Department::query()
-				->whereNull('deleted_at')
-				->pluck('name');
-		} else {
-			$dept_name = Department::query()
-				->where('id', '=', $dept)
-				->whereNull('deleted_at')
-				->pluck('name');
-		}
-		$salary = Salary::query()
-			->with('emp')
-			->where('month', $month)
-			->where('year', $year)
-			->whereIn('dept_name', $dept_name)
-			->orderBy('dept_name')
-			->paginate(20);
-		$salary
-			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_over_work_day', 'bonus_salary_total_off_work_day']);
-
-		$arr['data']       = $salary->getCollection();
-		$arr['pagination'] = $salary->linkCollection();
-		return $this->successResponse($arr);
+		return view('ceo.salary');
 	}
 
-	public function salary_detail(Request $request): array
+	public function employeeSalary()
 	{
-		$id            = $request->id;
-		$dept_name     = $request->dept_name;
-		$role_name     = $request->role_name;
-		$month         = $request->month;
-		$year          = $request->year;
-		$fines         = Fines::query()->get()->append('deduction_detail');
-		$salary        = Salary::query()->with('emp')
-			->where('emp_id', $id)
-			->where('month', $month)
-			->where('year', $year)
-			->where('dept_name', $dept_name)
-			->where('role_name', $role_name)
-			->first()
-			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_off_work_day', 'bonus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_off_work_day', 'pay_rate_work_day'])->toArray();
-		$arr['salary'] = $salary;
-		$arr['fines']  = $fines;
-		return $arr;
+		return view('ceo.employee_salary');
 	}
 
-
-	public function sign_salary(Request $request): JsonResponse
+	public function signSalary(Request $request): JsonResponse
 	{
 		try {
 			$response = $request->all();
-			foreach ($response['data'] as $request => $data ) {
-				$id = $data['id'];
+			foreach ($response['data'] as $rq => $data) {
+				$id        = $data['id'];
 				$dept_name = $data['dept_name'];
 				$role_name = $data['role_name'];
-				$month = $data['month'];
-				$year = $data['year'];
-				$salary = Salary::query()
-				->where('emp_id', $id)
-				->where('dept_name', $dept_name)
-				->where('role_name', $role_name)
-				->where('month', $month)
-				->where('year', $year)
-				->update(['sign' => 2]);
+				$month     = $data['month'];
+				$year      = $data['year'];
+				$salary    = Salary::query()
+					->where('emp_id', $id)
+					->where('dept_name', $dept_name)
+					->where('role_name', $role_name)
+					->where('month', $month)
+					->where('year', $year)
+					->update(['sign' => SignEnum::CEO_SIGNED]);
 			}
-			return $this->successResponse([
-				'message' => 'Sign success',
-			]);
-		} catch (\Exception $e) {
-			return $this->errorResponse([
-				'message' => $e->getMessage(),
-			]);
+			return $this->successResponse(
+				[
+					'message' => 'Sign success',
+				]
+			);
 		}
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+		catch (Exception $e) {
+			return $this->errorResponse(
+				[
+					'message' => $e->getMessage(),
+				]
+			);
+		}
 	}
 
 	/**
@@ -474,18 +424,6 @@ class CeoController extends Controller
 	 * @return Response
 	 */
 	public function edit(Ceo $ceo)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param UpdateCeoRequest $request
-	 * @param Ceo $ceo
-	 * @return Response
-	 */
-	public function update(UpdateCeoRequest $request, Ceo $ceo)
 	{
 		//
 	}

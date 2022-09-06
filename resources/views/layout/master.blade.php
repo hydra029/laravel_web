@@ -40,7 +40,7 @@
 					<div class="col-12">
 						<div class="page-title-box">
 							<span class="page-title font-weight-bold">{{$title}}</span>
-							<span class="page-title  title-name"></span>
+							<span class="page-title font-weight-bold title-name"></span>
 						</div>
 					</div>
 				</div>

@@ -1,87 +1,87 @@
 @extends('layout.master')
 @include('ceo.menu')
 @push('css')
-    <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-    <link href="{{ asset('css/fullcalendar.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<link href="{{ asset('css/fullcalendar.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
 @endpush
 @section('content')
-    <div class="col-2 p-1">
-        <table id="table_salary">
-            <tr>
-                <th class="col-6">Type</th>
-                <th class="type col-2">WD</th>
-                <th class="type col-2">OT</th>
-                <th class="type col-2">OD</th>
-            </tr>
-        </table>
-        <div id='external-events'>
-            <div class='fc-event fc-h-event event-1'>
-                <div class='fc-event-main tc event-0'>
-                    <span class="text-left">Early 1:</span>
-                    <span class="E13 col-2"></span>
-                    <span class="E12 col-2"></span>
-                    <span class="E11 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-2'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Early 2:</span>
-                    <span class="E23 col-2"></span>
-                    <span class="E22 col-2"></span>
-                    <span class="E21 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-3'>
-                <div class='fc-event-main tc event-0'>
-                    <span>On Time:</span>
-                    <span class="OT3 col-2"></span>
-                    <span class="OT2 col-2"></span>
-                    <span class="OT1 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-4'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Late 1:</span>
-                    <span class="L13 col-2"></span>
-                    <span class="L12 col-2"></span>
-                    <span class="L11 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-5'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Late 2:</span>
-                    <span class="L23 col-2"></span>
-                    <span class="L22 col-2"></span>
-                    <span class="L21 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-6'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Miss:</span>
-                    <span class="MS3 col-2"></span>
-                    <span class="MS2 col-2"></span>
-                    <span class="MS1 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-7'>
-                <div class='fc-event-main tc event-0'>
+	<div class="col-2 p-1">
+		<table id="table_salary">
+			<tr>
+				<th class="col-6">Type</th>
+				<th class="type col-2">WD</th>
+				<th class="type col-2">OT</th>
+				<th class="type col-2">OD</th>
+			</tr>
+		</table>
+		<div id='external-events'>
+			<div class='fc-event fc-h-event event-1'>
+				<div class='fc-event-main tc event-0'>
+					<span class="text-left">Early 1:</span>
+					<span class="E13 col-2"></span>
+					<span class="E12 col-2"></span>
+					<span class="E11 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-2'>
+				<div class='fc-event-main tc event-0'>
+					<span>Early 2:</span>
+					<span class="E23 col-2"></span>
+					<span class="E22 col-2"></span>
+					<span class="E21 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-3'>
+				<div class='fc-event-main tc event-0'>
+					<span>On Time:</span>
+					<span class="OT3 col-2"></span>
+					<span class="OT2 col-2"></span>
+					<span class="OT1 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-4'>
+				<div class='fc-event-main tc event-0'>
+					<span>Late 1:</span>
+					<span class="L13 col-2"></span>
+					<span class="L12 col-2"></span>
+					<span class="L11 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-5'>
+				<div class='fc-event-main tc event-0'>
+					<span>Late 2:</span>
+					<span class="L23 col-2"></span>
+					<span class="L22 col-2"></span>
+					<span class="L21 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-6'>
+				<div class='fc-event-main tc event-0'>
+					<span>Miss:</span>
+					<span class="MS3 col-2"></span>
+					<span class="MS2 col-2"></span>
+					<span class="MS1 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-7'>
+				<div class='fc-event-main tc event-0'>
                     <span>
                         Off Work:
                     </span>
-                    <span class="OW3 col-2"></span>
-                    <span class="OW2 col-2"></span>
-                    <span class="OW1 col-2"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-10 p-1">
-        <div id="calendar"></div>
-    </div>
+					<span class="OW3 col-2"></span>
+					<span class="OW2 col-2"></span>
+					<span class="OW1 col-2"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-10 p-1">
+		<div id="calendar"></div>
+	</div>
 @endsection
 @push('js')
-    <script src="{{ asset('js/main.min.js' )}}"></script>
-    <script>
+	<script src="{{ asset('js/main.min.js' )}}"></script>
+	<script>
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -104,7 +104,7 @@
                 initialView              : 'dayGridWeek',
                 weekNumbers              : true,
                 weekNumberCalculation    : 'ISO',
-                editable                 : true,
+                editable                 : false,
                 selectable               : true,
                 height                   : 750,
                 contentHeight            : 100,
@@ -137,17 +137,10 @@
                                 idM = sl2.children(':selected').index(),
                                 idY = sl1.children(':selected').index();
                             if (idY === fY) {
-                                $.toast({
-                                    heading        : 'Something went wrong',
-                                    text           : 'There is no more data available',
-                                    icon           : 'info',
-                                    position       : 'top-right',
-                                    hideAfter      : 2000,
-                                    allowToastClose: false,
-                                });
+                                notifyError('There is no more data available');
                             } else {
                                 $('#sl-1 :nth-child(' + (idY + 2) + '), #sl-2 :nth-child(' + (idM + 1) + ')')
-                                        .prop('selected', true).change();
+                                    .prop('selected', true).change();
                                 $(' #sl-3 :nth-child(2)').prop('selected', true).change();
                             }
                         }
@@ -157,17 +150,10 @@
                             let idM = sl2.children(':selected').index(),
                                 idY = sl1.children(':selected').index();
                             if (idY === 1) {
-                                $.toast({
-                                    heading        : 'Something went wrong',
-                                    text           : 'There is no more data available',
-                                    icon           : 'info',
-                                    position       : 'top-right',
-                                    hideAfter      : 2000,
-                                    allowToastClose: false,
-                                });
+                                notifyError('There is no more data available');
                             } else {
                                 $('#sl-1 :nth-child(' + idY + '), #sl-2 :nth-child(' + (idM + 1) + ')')
-                                        .prop('selected', true).change();
+                                    .prop('selected', true).change();
                                 $(' #sl-3 :nth-child(2)').prop('selected', true).change();
                             }
                         }
@@ -182,14 +168,7 @@
                                 fSun   = new Date(slDate).getDate();
                             if (idD === 1) {
                                 if (idY === fY && idM === 12) {
-                                    $.toast({
-                                        heading        : 'Something went wrong',
-                                        text           : 'There is no more data available',
-                                        icon           : 'info',
-                                        position       : 'top-right',
-                                        hideAfter      : 2000,
-                                        allowToastClose: false,
-                                    });
+                                    notifyError('There is no more data available');
                                 } else {
                                     if (fSun < 7) {
                                         if (idM === 12) {
@@ -223,14 +202,7 @@
                             if (idD === lW) {
                                 if (idM === 1) {
                                     if (idY === 1) {
-                                        $.toast({
-                                            heading        : 'Something went wrong',
-                                            text           : 'There is no more data available',
-                                            icon           : 'info',
-                                            position       : 'top-right',
-                                            hideAfter      : 2000,
-                                            allowToastClose: false,
-                                        });
+                                        notifyError('There is no more data available');
                                     } else {
                                         $('#sl-1 :nth-child(' + idY + ')').prop('selected', true).change();
                                         $('#sl-2 :last-child').prop('selected', true).change();
@@ -261,78 +233,78 @@
                     }
                 }
             });
-
-            const keys       = ['Late_1', 'Late_2', 'OnTime', 'Early_1', 'Early_2', 'OffWork', 'Miss'];
-            let workTime     = {
+            const keys        = ['Late_1', 'Late_2', 'OnTime', 'Early_1', 'Early_2', 'OffWork', 'Miss'];
+            let workTime      = {
                     ...Object.fromEntries(
-                            keys.map(key => [key, 0])
+                        keys.map(key => [key, 0])
                     )
                 },
-                overTime     = {...workTime},
-                offTime      = {...workTime},
-                on_time      = '#00c67f',
-                miss         = '#9299a0',
-                off_work     = '#f03e44',
-                late_1       = '#f07171',
-                late_2       = '#f57542',
-                early_1      = '#9761ed',
-                early_2      = '#8ca5ff',
-                color_1      = off_work,
-                color_2      = off_work,
-                firstShift   = [],
-                secondShift  = [],
-                lastShift    = [],
-                eventSource1 = [],
-                num          = 9999,
+                overTime      = {...workTime},
+                offTime       = {...workTime},
+                on_time       = '#00C67F',
+                miss          = '#9299A0',
+                off_work      = '#FF3C28',
+                late_1        = '#F38C8C',
+                late_2        = '#F57542',
+                early_1       = '#9761ED',
+                early_2       = '#8CA5FF',
+                firstShift    = [],
+                secondShift   = [],
+                lastShift     = [],
+                eventSource   = [],
+                num           = 9999,
+                text_color,
+                color_1,
+                color_2,
                 check_in,
                 check_out;
             $.ajax({
-                url     : '{{route('api.get_shift_time')}}',
+                url     : '{{route('ceo.get_shift_time')}}',
                 dataType: 'json',
                 method  : 'GET',
             })
-                    .done(function (response) {
-                        for (let i = 0; i < response.length; i++) {
-                            Object.keys(response[i]).forEach(key => {
-                                response[i][key] = response[i][key].slice(0, 5);
-                            });
-                        }
-                        firstShift  = response[0];
-                        secondShift = response[1];
-                        lastShift   = response[2];
-                    })
+                .done(function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        Object.keys(response[i]).forEach(key => {
+                            response[i][key] = response[i][key].slice(0, 5);
+                        });
+                    }
+                    firstShift  = response[0];
+                    secondShift = response[1];
+                    lastShift   = response[2];
+                })
             calendar.render();
             let goTo = $(".fc-goto-button");
             goTo
-                    .after($('<a>').attr({
-                        id  : 'emp_detail',
-                        role: 'button',
-                        href: '#'
-                    }).addClass('btn btn-outline-primary disabled d-none'))
-                    .after($('<select>').attr('id', 'sl-3').append($('<option>').text('Day')))
-                    .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
-                    .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
-                    .addClass('d-none');
+                .after($('<a>').attr({
+                    id  : 'emp_detail',
+                    role: 'button',
+                    href: '#'
+                }).addClass('btn btn-outline-primary disabled d-none'))
+                .after($('<select>').attr('id', 'sl-3').append($('<option>').text('Day')))
+                .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
+                .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
+                .addClass('d-none');
 
 
             $(".fc-prevYear-button")
-                    .before($('<select>')
-                            .attr({
-                                id   : 'department',
-                                style: 'margin: 0 3px'
-                            })
-                            .append($('<option>')
-                                    .text('Accountant')
-                                    .attr('value', '1')
-                            ))
-                    .before($('<button>')
-                            .attr({
-                                id   : 'back',
-                                style: 'margin: 0 3px'
-                            })
-                            .addClass('btn btn-primary d-none')
-                            .text('Back')
-                    )
+                .before($('<select>')
+                    .attr({
+                        id   : 'department',
+                        style: 'margin: 0 3px'
+                    })
+                    .append($('<option>')
+                        .text('Accountant')
+                        .attr('value', '1')
+                    ))
+                .before($('<button>')
+                    .attr({
+                        id   : 'back',
+                        style: 'margin: 0 3px'
+                    })
+                    .addClass('btn btn-primary d-none')
+                    .text('Back')
+                )
             let sl1        = $('#sl-1'),
                 sl2        = $('#sl-2'),
                 sl3        = $('#sl-3'),
@@ -344,32 +316,30 @@
                 type    : 'GET',
                 dataType: 'json',
             })
-                    .done(function (response) {
-                        let departmentCount = response.length;
-                        for (let i = 1; i < departmentCount; i++) {
-                            $('#department').append($('<option>')
-                                    .attr('value', response[i]['id'])
-                                    .text(response[i]['name'])
-                            )
-                        }
-                    })
+                .done(function (response) {
+                    let departmentCount = response.length;
+                    for (let i = 1; i < departmentCount; i++) {
+                        $('#department').append($('<option>')
+                            .attr('value', response[i]['id'])
+                            .text(response[i]['name'])
+                        )
+                    }
+                })
 
             let currentYear = new Date(today).toISOString().slice(0, 4);
             for (let i = currentYear; i >= 2020; i--) {
                 sl1
-                        .append($('<option>')
-                                .attr('value', i)
-                                .text(i)
-                                .addClass('y-opt')
-                        )
+                    .append($('<option>')
+                        .attr('value', i)
+                        .text(i)
+                    )
             }
 
             for (let i = 12; i >= 1; i--) {
                 let j = i < 10 ? '0' + i : i;
                 sl2.append($('<option>')
-                        .attr('value', i)
-                        .text(j)
-                        .addClass('m-opt')
+                    .attr('value', i)
+                    .text(j)
                 )
             }
 
@@ -388,103 +358,233 @@
                         dept_id: dept_id
                     },
                 })
-                        .done(function (response) {
-                            $('.div-name').remove()
-                            let text_color = '#000000',
-                                emp_types  = response.length,
-                                e_num      = 0,
-                                nShift     = 0;
+                    .done(function (response) {
+                        $('.div-name').remove()
+                        let emp_types = response.length,
+                            e_num     = 0,
+                            nShift    = 0;
+                        Object.keys(workTime).forEach(key => {
+                            workTime[key] = 0;
+                        });
+                        overTime    = {...workTime};
+                        offTime     = {...workTime};
+                        eventSource = [];
+                        for (let k = 1; k < emp_types; k++) {
+                            let emp_id  = 0,
+                                emp_num = response[k].length;
+                            for (let i = 0; i < emp_num; i++) {
+                                emp_id = response[k][i]['id'];
+                                e_num++;
+                                let {
+                                        id  : dept_id,
+                                        name: department
+                                    }        = response[k][i]['departments'],
+                                    {
+                                        id  : role_id,
+                                        name: role
+                                    }        = response[k][i]['roles'],
+                                    emp_name = response[k][i]['fname'] + ' ' + response[k][i]['lname'];
+                                emp_name += role === 'Manager' ? '*' : '';
+                                let emp_role = role_id === 1 ? 2 : dept_id === 1 ? 3 : 1;
+                                $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
+                                    .append($('<div>')
+                                        .addClass('text-center div-name')
+                                        .append($('<a>')
+                                            .append($('<b>')
+                                                .addClass('emp-name text-center')
+                                                .attr({
+                                                    "data-id"  : emp_id,
+                                                    "data-role": emp_role,
+                                                })
+                                                .text(emp_name)
+                                            )
+                                            .append('<br>')
+                                            .append($('<p>')
+                                                .addClass('emp-dept text-center')
+                                                .text(department)
+                                            )
+                                        )
+                                    )
+                                if (e_num % 2 === 0) {
+                                    text_color = '#F5F5DC';
+                                    $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child > :last-child').css('background', '#F0F8FF')
+                                } else {
+                                    text_color = '#000000';
+                                }
+                                let date   = selectedMonday,
+                                    length = response[k][i]['attendance'].length;
+                                if (length === 0) {
+                                    let currentMonday = getMon(today).toISOString().slice(0, 10),
+                                        currentDay    = new Date(todayFullDate).getDay(),
+                                        totalDay      = currentMonday === selectedMonday ? currentDay === 0 ? 7 : currentDay : 7;
+                                    date              = getFullDate(selectedMonday);
+                                    if (date <= todayFullDate) {
+                                        for (let i = 1; i <= totalDay; i++) {
+                                            addEvent(date);
+                                            date = getNextDate(date);
+                                        }
+                                    }
+                                } else {
+                                    let defaultDate = selectedMonday;
+                                    for (let j = 0; j < length; j++) {
+                                        let shift      = response[k][i]['attendance'][j]['shift'],
+                                            date       = response[k][i]['attendance'][j]['date'],
+                                            defaultDay = getDay(defaultDate),
+                                            currentDay = getDay(date);
+                                        check_in       = response[k][i]['attendance'][j]['check_in'];
+                                        check_out      = response[k][i]['attendance'][j]['check_out'];
+                                        defaultDay     = defaultDay === 0 ? 7 : defaultDay;
+                                        currentDay     = currentDay === 0 ? 7 : currentDay;
+                                        if (j === 0) {
+                                            addEvent(date, defaultDay, shift);
+                                            if (defaultDay < currentDay) {
+                                                let offworkDate = selectedMonday;
+                                                for (let n = 1; n < currentDay; n++) {
+                                                    addEvent(offworkDate);
+                                                    offworkDate = getNextDate(offworkDate)
+                                                }
+                                            }
+                                        } else {
+                                            addEvent(date, defaultDate, shift, nShift);
+                                            if (defaultDay !== currentDay) {
+                                                if (currentDay - defaultDay > 0) {
+                                                    let offworkDate = getNextDate(defaultDate);
+                                                    for (let n = defaultDay + 1; n < currentDay; n++) {
+                                                        addEvent(offworkDate);
+                                                        offworkDate = getNextDate(offworkDate);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        defaultDate = date;
+                                        if (check_in !== null) {
+                                            check_in = check_in.slice(0, 5);
+                                        }
+                                        if (check_out !== null) {
+                                            check_out = check_out.slice(0, 5);
+                                        }
+                                        checkTime(check_in, check_out, shift, date);
+                                        nShift    = shift;
+                                        let title = check_in + Array(14).fill('\xa0').join('') + check_out;
+                                        let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                                        let event = {
+                                            id        : num,
+                                            title     : title,
+                                            start     : date,
+                                            allDay    : true,
+                                            overlap   : false,
+                                            background: color,
+                                            textColor : text_color,
+                                        }
+                                        eventSource.push(event);
+                                    }
+                                    let lastDate = response[k][i]['attendance'][length - 1]['date'],
+                                        days     = getDay(lastDate),
+                                        day      = getDay(new Date()),
+                                        totalDay = 7;
+                                    days         = days === 0 ? 7 : days;
+                                    day          = day === 0 ? 7 : day;
+                                    if (days < totalDay) {
+                                        let date = getNextDate(lastDate);
+                                        totalDay = selectedTime === tdTime ? day : totalDay;
+                                        if (selectedTime <= tdTime) {
+                                            addEvent(lastDate, '', 0, nShift);
+                                        }
+                                        for (let i = days + 1; i <= totalDay; i++) {
+                                            addEvent(date);
+                                            date = getNextDate(date);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        $('.E11').text(workTime['Early_1']);
+                        $('.E21').text(workTime['Early_2']);
+                        $('.OT1').text(workTime['OnTime']);
+                        $('.L11').text(workTime['Late_1']);
+                        $('.L21').text(workTime['Late_2']);
+                        $('.MS1').text(workTime['Miss']);
+                        $('.OW1').text(workTime['OffWork']);
+                        $('.E12').text(overTime['Early_1']);
+                        $('.E22').text(overTime['Early_2']);
+                        $('.OT2').text(overTime['OnTime']);
+                        $('.L12').text(overTime['Late_1']);
+                        $('.L22').text(overTime['Late_2']);
+                        $('.MS2').text(overTime['Miss']);
+                        $('.OW2').text(overTime['OffWork']);
+                        $('.E13').text(offTime['Early_1']);
+                        $('.E23').text(offTime['Early_2']);
+                        $('.OT3').text(offTime['OnTime']);
+                        $('.L13').text(offTime['Late_1']);
+                        $('.L23').text(offTime['Late_2']);
+                        $('.MS3').text(offTime['Miss']);
+                        $('.OW3').text(offTime['OffWork']);
+                        calendar.addEventSource(eventSource);
+                        $(".emp-name").click(function () {
                             Object.keys(workTime).forEach(key => {
                                 workTime[key] = 0;
                             });
-                            overTime     = {...workTime};
-                            offTime      = {...workTime};
-                            eventSource1 = [];
-                            for (let k = 1; k < emp_types; k++) {
-                                let emp_id  = 0,
-                                    emp_num = response[k].length;
-                                for (let i = 0; i < emp_num; i++) {
-                                    emp_id = response[k][i]['id'];
-                                    e_num++;
-                                    let {
-                                            id  : dept_id,
-                                            name: department
-                                        }        = response[k][i]['departments'],
-                                        {
-                                            id  : role_id,
-                                            name: role
-                                        }        = response[k][i]['roles'],
-                                        emp_name = response[k][i]['fname'] + ' ' + response[k][i]['lname'];
-                                    emp_name += role === 'Manager' ? '*' : '';
-                                    let emp_role = role_id === 1 ? 2 : dept_id === 1 ? 3 : 1;
-                                    $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child')
-                                            .append($('<div>')
-                                                    .attr('style', 'height: 82.005px; padding: 22px 0; cursor: pointer;')
-                                                    .addClass('text-center div-name')
-                                                    .append($('<a>')
-                                                            .append($('<b>')
-                                                                    .addClass('emp-name text-center')
-                                                                    .attr({
-                                                                        style      : 'font-size: 15px',
-                                                                        "data-id"  : emp_id,
-                                                                        "data-role": emp_role,
-                                                                    })
-                                                                    .text(emp_name)
-                                                            )
-                                                            .append('<br>')
-                                                            .append($('<p>')
-                                                                    .addClass('emp-dept text-center')
-                                                                    .attr({
-                                                                        style: 'font-size: 15px',
-                                                                    })
-                                                                    .text(department)
-                                                            )
-                                                    )
-                                            )
-                                    if (e_num % 2 === 0) {
-                                        text_color = '#F5F5DC';
-                                        $('table.fc-scrollgrid-sync-table tbody tr:first-child > :first-child > :first-child > :last-child').css('background', '#F0F8FF')
-                                    } else {
-                                        text_color = '#000000';
-                                    }
-                                    let date   = selectedMonday,
-                                        length = response[k][i]['attendance'].length;
-                                    if (length === 0) {
-                                        let currentMonday = getMon(today).toISOString().slice(0, 10),
-                                            totalDay      = currentMonday === selectedMonday ? new Date(todayFullDate).getDay() : 7;
-                                        date              = getFullDate(selectedMonday);
-                                        for (let i = 1; i <= totalDay; i++) {
-                                            addEvent1(date);
-                                            date = getNextDate(date);
-                                        }
-                                    } else {
-                                        let defaultDate = selectedMonday;
-                                        for (let j = 0; j < length; j++) {
-                                            let shift      = response[k][i]['attendance'][j]['shift'],
-                                                date       = response[k][i]['attendance'][j]['date'],
-                                                defaultDay = getDay(defaultDate),
-                                                currentDay = getDay(date);
-                                            check_in       = response[k][i]['attendance'][j]['check_in'];
-                                            check_out      = response[k][i]['attendance'][j]['check_out'];
-                                            defaultDay     = defaultDay === 0 ? 7 : defaultDay;
-                                            currentDay     = currentDay === 0 ? 7 : currentDay;
-                                            if (j === 0) {
-                                                addEvent1(date, defaultDay, shift);
-                                                if (defaultDay < currentDay) {
-                                                    let offworkDate = selectedMonday;
-                                                    for (let n = 1; n < currentDay; n++) {
-                                                        addEvent1(offworkDate);
-                                                        offworkDate = getNextDate(offworkDate)
+                            overTime       = {...workTime};
+                            offTime        = {...workTime};
+                            eventSource    = [];
+                            num            = 9999;
+                            nShift         = 0;
+                            let name       = $(this).text(),
+                                department = $(this).parent().find('.emp-dept').text(),
+                                text       = name + ' - ' + department;
+                            $('#emp_detail').text(text);
+                            $('#sl-1, #sl-2, #sl-3, #department, .fc-button').addClass('d-none');
+                            $('#back, #emp_detail').removeClass('d-none');
+                            calendar.removeAllEvents();
+                            del();
+                            calendar.changeView('dayGridMonth');
+                            let id             = $(this).data('id'),
+                                role           = $(this).data('role'),
+                                selectedMonday = sl2.children(':selected').text(),
+                                y              = sl1.children(':selected').text(),
+                                crD            = y + '-' + selectedMonday,
+                                selectedTime   = new Date(crD).getTime();
+                            $.ajax({
+                                url     : '{{route('ceo.emp_attendance_api')}}',
+                                type    : 'POST',
+                                dataType: 'json',
+                                data    : {
+                                    id  : id,
+                                    role: role,
+                                    date: crD
+                                },
+                            })
+                                .done(function (response) {
+                                    let shiftCount  = response.length,
+                                        defaultDate = getFullDate(crD),
+                                        totalDay    = getDays(crD),
+                                        crDate      = new Date(todayFullDate).getDate();
+                                    if (shiftCount > 0) {
+                                        for (let i = 0; i < shiftCount; i++) {
+                                            id--;
+                                            check_in  = response[i]['check_in'];
+                                            check_out = response[i]['check_out'];
+                                            let shift = response[i]['shift'],
+                                                date  = response[i]['date'],
+                                                d1    = getDate(defaultDate),
+                                                d2    = getDate(date);
+                                            if (i === 0) {
+                                                addEvent(date, defaultDate, shift)
+                                                if (d1 < d2) {
+                                                    let off_date = getFullDate(crD);
+                                                    for (let n = 1; n < d2; n++) {
+                                                        addEvent(off_date);
+                                                        off_date = getNextDate(off_date)
                                                     }
                                                 }
                                             } else {
-                                                addEvent1(date, defaultDate, shift, nShift);
-                                                if (defaultDay !== currentDay) {
-                                                    if (currentDay - defaultDay > 0) {
-                                                        let offworkDate = getNextDate(defaultDate);
-                                                        for (let n = defaultDay + 1; n < currentDay; n++) {
-                                                            addEvent1(offworkDate);
-                                                            offworkDate = getNextDate(offworkDate);
+                                                addEvent(date, defaultDate, shift, nShift)
+                                                if (d1 !== d2) {
+                                                    if (d2 - d1 > 0) {
+                                                        let off_date = getNextDate(defaultDate);
+                                                        for (let i = d1 + 1; i < d2; i++) {
+                                                            addEvent(off_date);
+                                                            off_date = getNextDate(off_date);
                                                         }
                                                     }
                                                 }
@@ -496,201 +596,69 @@
                                             if (check_out !== null) {
                                                 check_out = check_out.slice(0, 5);
                                             }
-                                            checkTime(check_in, check_out, shift, date);
+                                            checkTime(check_in, check_out, shift, date)
                                             nShift    = shift;
-                                            let title = check_in + Array(20).fill('\xa0').join('') + check_out;
-                                            let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
-                                            let event = {
-                                                id        : num,
-                                                title     : title,
-                                                start     : date,
-                                                allDay    : true,
-                                                overlap   : false,
-                                                background: color,
-                                                textColor : text_color,
-                                            }
-                                            eventSource1.push(event);
+                                            let title = check_in + Array(14).fill('\xa0').join('') + check_out,
+                                                color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)',
+                                                event = {
+                                                    id        : num,
+                                                    title     : title,
+                                                    start     : date,
+                                                    allDay    : true,
+                                                    overlap   : false,
+                                                    background: color,
+                                                }
+                                            eventSource.push(event);
                                         }
-                                        let lastDate = response[k][i]['attendance'][length - 1]['date'],
-                                            days     = getDay(lastDate),
-                                            day      = getDay(new Date()),
-                                            totalDay = 7;
-                                        days         = days === 0 ? 7 : days;
+                                        let lastDate = response[shiftCount - 1]['date'],
+                                            days     = getDate(lastDate);
                                         if (days < totalDay) {
-                                            let date = getNextDate(lastDate);
-                                            totalDay = selectedTime === tdTime ? day : totalDay;
-                                            if (selectedTime <= tdTime) {
-                                                addEvent1(lastDate, '', 0, nShift);
+                                            totalDay = selectedTime === firstDayTime ? crDate : totalDay;
+                                            if (selectedTime <= firstDayTime) {
+                                                addEvent(lastDate, '', 0, nShift)
+                                                for (let i = days + 1; i <= totalDay; i++) {
+                                                    let currentDate = new Date(lastDate).setDate(i),
+                                                        date        = getFullDate(currentDate);
+                                                    addEvent(date)
+                                                }
                                             }
-                                            for (let i = days + 1; i <= totalDay; i++) {
-                                                addEvent1(date);
-                                                date = getNextDate(date);
+                                        }
+                                    } else {
+                                        totalDay = firstDayTime === selectedTime ? crDate : totalDay;
+                                        if (selectedTime <= firstDayTime) {
+                                            for (let i = 1; i <= totalDay; i++) {
+                                                let currentDate = new Date(defaultDate);
+                                                currentDate.setDate(i);
+                                                let date = getFullDate(currentDate);
+                                                addEvent(date)
                                             }
                                         }
                                     }
-                                }
-                            }
-                            $('.E11').text(workTime['Early_1']);
-                            $('.E21').text(workTime['Early_2']);
-                            $('.OT1').text(workTime['OnTime']);
-                            $('.L11').text(workTime['Late_1']);
-                            $('.L21').text(workTime['Late_2']);
-                            $('.MS1').text(workTime['Miss']);
-                            $('.OW1').text(workTime['OffWork']);
-                            $('.E12').text(overTime['Early_1']);
-                            $('.E22').text(overTime['Early_2']);
-                            $('.OT2').text(overTime['OnTime']);
-                            $('.L12').text(overTime['Late_1']);
-                            $('.L22').text(overTime['Late_2']);
-                            $('.MS2').text(overTime['Miss']);
-                            $('.OW2').text(overTime['OffWork']);
-                            $('.E13').text(offTime['Early_1']);
-                            $('.E23').text(offTime['Early_2']);
-                            $('.OT3').text(offTime['OnTime']);
-                            $('.L13').text(offTime['Late_1']);
-                            $('.L23').text(offTime['Late_2']);
-                            $('.MS3').text(offTime['Miss']);
-                            $('.OW3').text(offTime['OffWork']);
-                            calendar.addEventSource(eventSource1);
-                            $(".emp-name").click(function () {
-                                Object.keys(workTime).forEach(key => {
-                                    workTime[key] = 0;
-                                });
-                                overTime       = {...workTime};
-                                offTime        = {...workTime};
-                                eventSource1   = [];
-                                num            = 9999;
-                                nShift         = 0;
-                                let name       = $(this).text(),
-                                    department = $(this).parent().find('.emp-dept').text(),
-                                    text       = name + ' - ' + department;
-                                $('#emp_detail').text(text);
-                                $('#sl-1, #sl-2, #sl-3, #department, .fc-button').addClass('d-none');
-                                $('#back, #emp_detail').removeClass('d-none');
-                                calendar.removeAllEvents();
-                                del();
-                                calendar.changeView('dayGridMonth');
-                                let id             = $(this).data('id'),
-                                    role           = $(this).data('role'),
-                                    selectedMonday = sl2.children(':selected').text(),
-                                    y              = sl1.children(':selected').text(),
-                                    crD            = y + '-' + selectedMonday,
-                                    selectedTime   = new Date(crD).getTime();
-                                $.ajax({
-                                    url     : '{{route('ceo.emp_attendance_api')}}',
-                                    type    : 'POST',
-                                    dataType: 'json',
-                                    data    : {
-                                        id  : id,
-                                        role: role,
-                                        date: crD
-                                    },
+                                    calendar.addEventSource(eventSource);
+                                    $('.E11').text(workTime['Early_1']);
+                                    $('.E21').text(workTime['Early_2']);
+                                    $('.OT1').text(workTime['OnTime']);
+                                    $('.L11').text(workTime['Late_1']);
+                                    $('.L21').text(workTime['Late_2']);
+                                    $('.MS1').text(workTime['Miss']);
+                                    $('.OW1').text(workTime['OffWork']);
+                                    $('.E12').text(overTime['Early_1']);
+                                    $('.E22').text(overTime['Early_2']);
+                                    $('.OT2').text(overTime['OnTime']);
+                                    $('.L12').text(overTime['Late_1']);
+                                    $('.L22').text(overTime['Late_2']);
+                                    $('.MS2').text(overTime['Miss']);
+                                    $('.OW2').text(overTime['OffWork']);
+                                    $('.E13').text(offTime['Early_1']);
+                                    $('.E23').text(offTime['Early_2']);
+                                    $('.OT3').text(offTime['OnTime']);
+                                    $('.L13').text(offTime['Late_1']);
+                                    $('.L23').text(offTime['Late_2']);
+                                    $('.MS3').text(offTime['Miss']);
+                                    $('.OW3').text(offTime['OffWork']);
                                 })
-                                        .done(function (response) {
-                                            let shiftCount  = response.length,
-                                                defaultDate = getFullDate(crD),
-                                                totalDay    = getDays(crD),
-                                                crDate      = new Date(todayFullDate).getDate();
-                                            if (shiftCount > 0) {
-                                                for (let i = 0; i < shiftCount; i++) {
-                                                    id--;
-                                                    check_in  = response[i]['check_in'];
-                                                    check_out = response[i]['check_out'];
-                                                    let shift = response[i]['shift'],
-                                                        date  = response[i]['date'],
-                                                        d1    = getDate(defaultDate),
-                                                        d2    = getDate(date);
-                                                    if (i === 0) {
-                                                        addEvent1(date, defaultDate, shift)
-                                                        if (d1 < d2) {
-                                                            let off_date = getFullDate(crD);
-                                                            for (let n = 1; n < d2; n++) {
-                                                                addEvent1(off_date);
-                                                                off_date = getNextDate(off_date)
-                                                            }
-                                                        }
-                                                    } else {
-                                                        addEvent1(date, defaultDate, shift, nShift)
-                                                        if (d1 !== d2) {
-                                                            if (d2 - d1 > 0) {
-                                                                let off_date = getNextDate(defaultDate);
-                                                                for (let i = d1 + 1; i < d2; i++) {
-                                                                    addEvent1(off_date);
-                                                                    off_date = getNextDate(off_date);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    defaultDate = date;
-                                                    if (check_in !== null) {
-                                                        check_in = check_in.slice(0, 5);
-                                                    }
-                                                    if (check_out !== null) {
-                                                        check_out = check_out.slice(0, 5);
-                                                    }
-                                                    checkTime(check_in, check_out, shift, date)
-                                                    nShift    = shift;
-                                                    let title = check_in + Array(20).fill('\xa0').join('') + check_out,
-                                                        color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)',
-                                                        event = {
-                                                            id        : num,
-                                                            title     : title,
-                                                            start     : date,
-                                                            allDay    : true,
-                                                            overlap   : false,
-                                                            background: color,
-                                                        }
-                                                    eventSource1.push(event);
-                                                }
-                                                let lastDate = response[shiftCount - 1]['date'],
-                                                    days     = getDate(lastDate);
-                                                if (days < totalDay) {
-                                                    totalDay = selectedTime === firstDayTime ? crDate : totalDay;
-                                                    if (selectedTime <= firstDayTime) {
-                                                        addEvent1(lastDate, '', 0, nShift)
-                                                        for (let i = days + 1; i <= totalDay; i++) {
-                                                            let currentDate = new Date(lastDate).setDate(i),
-                                                                date        = getFullDate(currentDate);
-                                                            addEvent1(date)
-                                                        }
-                                                    }
-                                                }
-                                            } else {
-                                                totalDay = firstDayTime === selectedTime ? crDate : totalDay;
-                                                if (selectedTime <= firstDayTime) {
-                                                    for (let i = 1; i <= totalDay; i++) {
-                                                        let currentDate = new Date(defaultDate);
-                                                        currentDate.setDate(i);
-                                                        let date = getFullDate(currentDate);
-                                                        addEvent1(date)
-                                                    }
-                                                }
-                                            }
-                                            calendar.addEventSource(eventSource1);
-                                            $('.E11').text(workTime['Early_1']);
-                                            $('.E21').text(workTime['Early_2']);
-                                            $('.OT1').text(workTime['OnTime']);
-                                            $('.L11').text(workTime['Late_1']);
-                                            $('.L21').text(workTime['Late_2']);
-                                            $('.MS1').text(workTime['Miss']);
-                                            $('.OW1').text(workTime['OffWork']);
-                                            $('.E12').text(overTime['Early_1']);
-                                            $('.E22').text(overTime['Early_2']);
-                                            $('.OT2').text(overTime['OnTime']);
-                                            $('.L12').text(overTime['Late_1']);
-                                            $('.L22').text(overTime['Late_2']);
-                                            $('.MS2').text(overTime['Miss']);
-                                            $('.OW2').text(overTime['OffWork']);
-                                            $('.E13').text(offTime['Early_1']);
-                                            $('.E23').text(offTime['Early_2']);
-                                            $('.OT3').text(offTime['OnTime']);
-                                            $('.L13').text(offTime['Late_1']);
-                                            $('.L23').text(offTime['Late_2']);
-                                            $('.MS3').text(offTime['Miss']);
-                                            $('.OW3').text(offTime['OffWork']);
-                                        })
-                            })
                         })
+                    })
             }
 
             loadDate(new Date(), 1);
@@ -721,8 +689,15 @@
                     currentMonth   = date.getMonth() + 1,
                     currentYear    = date.getFullYear(),
                     selectedMonday = sl2.children(':selected').val(),
-                    selectedYear   = sl1.children(':selected').val(),
-                    selectedDate   = new Date(currentYear, currentMonth - 1, currentDate - currentDay + 8).toISOString().slice(0, 10);
+                    selectedYear   = sl1.children(':selected').val();
+                currentDay         = currentDay === 0 ? 7 : currentDay;
+                let slDate         = getDays(date);
+                let crDate         = currentDate - currentDay + 7;
+                if (crDate >= slDate) {
+                    crDate = slDate;
+                }
+                let selectedDate = new Date(currentYear, currentMonth - 1, crDate).setHours(7);
+                selectedDate     = getFullDate(selectedDate);
                 if (currentMonth !== selectedMonday) {
                     sl1.val(currentYear).change();
                 }
@@ -743,30 +718,30 @@
 
             function emp() {
                 $('table.fc-col-header  > thead > tr:first-child')
-                        .prepend($('<th>')
-                                .attr('role', 'columnheader')
-                                .addClass('fc-col-header-cell fc-day')
-                                .append($('<div>')
-                                        .text('Employee')
-                                )
-                        );
+                    .prepend($('<th>')
+                        .attr('role', 'columnheader')
+                        .addClass('fc-col-header-cell fc-day')
+                        .append($('<div>')
+                            .text('Employee')
+                        )
+                    );
                 $('table.fc-scrollgrid-sync-table tbody tr')
-                        .prepend($('<td>')
-                                .addClass('fc-grid-day fc-day emp_td')
-                                .attr('role', 'gridcell')
-                                .append($('<div>')
-                                        .addClass('fc-daygrid-day-frame fc-scrollgrid-sync-inner')
-                                        .attr('id', 'emp_name_col')
-                                        .append($('<h5>')
-                                                .addClass('text-center m-0 p-1')
-                                                .attr({
-                                                    style: 'height: 25px; font-style: italic; background-color: #F0F8FF;',
-                                                    id   : 'emp_name'
-                                                })
-                                                .text('Name')
-                                        )
-                                )
-                        );
+                    .prepend($('<td>')
+                        .addClass('fc-grid-day fc-day emp_td')
+                        .attr('role', 'gridcell')
+                        .append($('<div>')
+                            .addClass('fc-daygrid-day-frame fc-scrollgrid-sync-inner')
+                            .attr('id', 'emp_name_col')
+                            .append($('<h5>')
+                                .addClass('text-center m-0 p-1')
+                                .attr({
+                                    style: 'height: 25px; font-style: italic; background-color: #F0F8FF;',
+                                    id   : 'emp_name'
+                                })
+                                .text('Name')
+                            )
+                        )
+                    );
             }
 
             function loadWeek() {
@@ -803,11 +778,10 @@
                         arr1.push(data);
                         ar = arr1[0] + '-' + arr1[1];
                         sl3.append($('<option>')
-                                .attr({
-                                    value: val,
-                                })
-                                .text(ar)
-                                .addClass('d-opt')
+                            .attr({
+                                value: val,
+                            })
+                            .text(ar)
                         )
                         arr1 = [];
                     } else {
@@ -819,11 +793,10 @@
                             arr1.push(checkSunday);
                             ar = arr1[0] + '-' + arr1[1];
                             sl3.append($('<option>')
-                                    .attr({
-                                        value: val,
-                                    })
-                                    .text(ar)
-                                    .addClass('d-opt')
+                                .attr({
+                                    value: val,
+                                })
+                                .text(ar)
                             )
                             arr1 = [];
                         }
@@ -874,7 +847,8 @@
             function getDays(date) {
                 date         = new Date(date);
                 let month    = date.getMonth() + 1;
-                let lastDate = new Date(date.setMonth(month));
+                let lDate    = new Date(date.setDate(1));
+                let lastDate = new Date(lDate.setMonth(month));
                 date         = new Date(lastDate.setDate(0));
                 return new Date(date).getDate();
             }
@@ -884,7 +858,7 @@
                 return new Date(date).getDay() === 0;
             }
 
-            function addEvent1(date, defaultDate = '', currentShift = 0, nextShift = 0) {
+            function addEvent(date, defaultDate = '', currentShift = 0, nextShift = 0) {
                 let event,
                     i,
                     shiftCount         = 0,
@@ -918,9 +892,9 @@
                                 start     : defaultDate,
                                 allDay    : true,
                                 overlap   : false,
-                                background: '#f03e44',
+                                background: off_work,
                             }
-                            eventSource1.push(event);
+                            eventSource.push(event);
                             num--;
                         }
                         shiftCount = currentShift - 1;
@@ -938,9 +912,9 @@
                         start     : date,
                         allDay    : true,
                         overlap   : false,
-                        background: '#f03e44',
+                        background: off_work,
                     }
-                    eventSource1.push(event);
+                    eventSource.push(event);
                     num--;
                 }
             }
@@ -983,5 +957,5 @@
                 }
             }
         })
-    </script>
+	</script>
 @endpush

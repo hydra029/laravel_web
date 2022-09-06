@@ -31,9 +31,9 @@
 			</a>
 		</li>
 		<li class="side-nav-item">
-			<a href="{{route('managers.employee_salary')}}" class="side-nav-link">
+			<a href="{{route('managers.sign_employee_salary')}}" class="side-nav-link">
 				<i class="uil-money-bill"></i>
-				<span> Employee Salary </span>
+				<span> Sign Employee Salary </span>
 			</a>
 		</li>
 	@endif

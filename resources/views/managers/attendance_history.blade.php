@@ -103,7 +103,7 @@
                 initialView              : 'dayGridMonth',
                 weekNumbers              : true,
                 weekNumberCalculation    : 'ISO',
-                editable                 : true,
+                editable                 : false,
                 selectable               : true,
                 height                   : 750,
                 contentHeight            : 100,
@@ -220,7 +220,7 @@
                 check_in,
                 check_out;
             $.ajax({
-                url     : '{{route('api.get_shift_time')}}',
+                url     : '{{route('managers.get_shift_time')}}',
                 dataType: 'json',
                 method  : 'GET',
             })

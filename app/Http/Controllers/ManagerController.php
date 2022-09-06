@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\EmpRoleEnum;
 use App\Enums\ShiftEnum;
+use App\Enums\SignEnum;
 use App\Http\Requests\AssignRequest;
-use App\Http\Requests\StoreManagerRequest;
-use App\Http\Requests\UpdateManagerRequest;
 use App\Models\Accountant;
 use App\Models\Attendance;
 use App\Models\AttendanceShiftTime;
@@ -21,7 +20,6 @@ use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -54,16 +52,18 @@ class ManagerController extends Controller
 		]);
 	}
 
-	public function today_attendance()
+	public function todayAttendance()
 	{
 		$limit   = 10;
 		$date    = date('Y-m-d');
 		$dept_id = session('dept_id');
-		$data    = Employee::with([
-			                          'attendance' => function ($query) use ($date) {
-				                          $query->where('date', '=', $date);
-			                          }, 'roles'
-		                          ])
+		$data    = Employee::with(
+			[
+				'attendance' => function ($query) use ($date) {
+					$query->where('date', '=', $date);
+				}, 'roles'
+			]
+		)
 			->where('dept_id', '=', $dept_id)
 			->whereNull('deleted_at')
 			->paginate($limit);
@@ -75,20 +75,20 @@ class ManagerController extends Controller
 		]);
 	}
 
-	public function attendance_history()
+	public function attendanceHistory()
 	{
 		return view('managers.attendance_history');
 	}
 
-	public function employee_attendance(): Renderable
+	public function employeeAttendance(): Renderable
 	{
 		return view('managers.employee_attendance');
 	}
 
-	public function history_api(Request $request)
+	public function historyApi(Request $request)
 	{
 		$first_day = $request->first_day;
-		$last_day = $request->last_day;
+		$last_day  = $request->last_day;
 		return Attendance::query()
 			->where('date', '<=', $last_day)
 			->where('date', '>=', $first_day)
@@ -97,66 +97,45 @@ class ManagerController extends Controller
 			->get();
 	}
 
-	public function attendance_api(Request $request): array
+	public function attendanceApi(Request $request): array
 	{
 		$dept_id = session('dept_id');
 		$s       = $request->s;
 		$m       = $request->m;
 		$data[]  = AttendanceShiftTime::get();
 		if ($dept_id === 1) {
-			$data[] = Manager::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->whereDeptId($dept_id)
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
-			$data[] = Accountant::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+			$dept = Accountant::query();
 		} else {
-			$data[] = Manager::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->whereDeptId($dept_id)
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
-			$data[] = Employee::with(
-				[
-					'attendance' => function ($query) use ($s, $m) {
-						$query->where('date', '<=', $s)->where('date', '>=', $m);
-					},
-					'departments',
-					'roles',
-				]
-			)
-				->whereNull('deleted_at')
-				->whereDeptId($dept_id)
-				->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+			$dept = Employee::query();
 		}
+		$data[] = Manager::with(
+			[
+				'attendance' => function ($query) use ($s, $m) {
+					$query->where('date', '<=', $s)->where('date', '>=', $m);
+				},
+				'departments',
+				'roles',
+			]
+		)
+			->whereNull('deleted_at')
+			->whereDeptId($dept_id)
+			->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
+		$data[] = $dept->with(
+			[
+				'attendance' => function ($query) use ($s, $m) {
+					$query->where('date', '<=', $s)->where('date', '>=', $m);
+				},
+				'departments',
+				'roles',
+			]
+		)
+			->whereNull('deleted_at')
+			->whereDeptId($dept_id)
+			->get(['id', 'lname', 'fname', 'dept_id', 'role_id']);
 		return $data;
 	}
 
-	public function emp_attendance_api(Request $request): array
+	public function empAttendanceApi(Request $request): array
 	{
 		$emp_id = $request->get('id');
 		$dept   = $request->get('dept');
@@ -188,41 +167,18 @@ class ManagerController extends Controller
 	public function checkin(): int
 	{
 		$time  = date('H:i');
-		$shift =$this->getShift($time, 'check_in');
+		$shift = $this->getShift($time, 'check_in');
 		if ($shift === 0) {
 			return 0;
 		}
-		Attendance::updateOrCreate(
+		Attendance::create(
 			[
 				'date'     => date('Y-m-d'),
 				'emp_id'   => session('id'),
 				'emp_role' => EmpRoleEnum::MANAGER,
 				'shift'    => $shift,
-			],
-			[
 				'check_in' => $time,
-			]
-		);
-		return 1;
-	}
-
-	public function checkout(): int
-	{
-		$time  = date('H:i');
-		$shift =$this->getShift($time, 'check_out');
-		if ($shift === 0) {
-			return 0;
-		}
-		Attendance::updateOrCreate(
-			[
-				'date'     => date('Y-m-d'),
-				'emp_id'   => session('id'),
-				'emp_role' => EmpRoleEnum::MANAGER,
-				'shift'    => $shift,
 			],
-			[
-				'check_out' => $time,
-			]
 		);
 		return 1;
 	}
@@ -260,8 +216,28 @@ class ManagerController extends Controller
 		return $shift;
 	}
 
+	public function checkout(): int
+	{
+		$time  = date('H:i');
+		$shift = $this->getShift($time, 'check_out');
+		if ($shift === 0) {
+			return 0;
+		}
+		Attendance::updateOrCreate(
+			[
+				'date'     => date('Y-m-d'),
+				'emp_id'   => session('id'),
+				'emp_role' => EmpRoleEnum::MANAGER,
+				'shift'    => $shift,
+			],
+			[
+				'check_out' => $time,
+			]
+		);
+		return 1;
+	}
 
-	public function salary_api(Request $request): void
+	public function salaryApi(Request $request): void
 	{
 		$role_id       = $request->get('role_id');
 		$miss          = $request->get('miss');
@@ -305,27 +281,27 @@ class ManagerController extends Controller
 		return view('managers.salary');
 	}
 
-	public function employee_salary()
+	public function signEmployeeSalary()
+	{
+		return view('managers.sign_employee_salary');
+	}
+
+	public function employeeSalary()
 	{
 		return view('managers.employee_salary');
 	}
 
-	public function get_salary(Request $request): JsonResponse
+	public function getSalary(Request $request): JsonResponse
 	{
 		$month = $request->month;
 		$year  = $request->year;
 		$dept  = $request->department;
-		if ($dept === 'all') {
-			$dept_name = Department::query()
-				->whereNull('deleted_at')
-				->pluck('name');
-		} else {
-			$dept_name = Department::query()
-				->where('id', '=', $dept)
-				->whereNull('deleted_at')
-				->pluck('name');
+		$query = Department::whereNull('deleted_at');
+		if ($dept !== 'all') {
+			$query->where('id', '=', $dept);
 		}
-		$salary = Salary::query()
+		$dept_name = $query->pluck('name');
+		$salary    = Salary::query()
 			->with('emp')
 			->where('month', $month)
 			->where('year', $year)
@@ -334,27 +310,27 @@ class ManagerController extends Controller
 			->paginate(20);
 		$salary
 			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_over_work_day', 'bonus_salary_total_off_work_day']);
-
 		$arr['data']       = $salary->getCollection();
 		$arr['pagination'] = $salary->linkCollection();
 		return $this->successResponse($arr);
 	}
 
-	public function salary_detail(Request $request): array
+	public function salaryDetail(Request $request): array
 	{
-		$id            = $request->id;
-		$dept_name     = $request->dept_name;
-		$role_name     = $request->role_name;
-		$month         = $request->month;
-		$year          = $request->year;
-		$fines         = Fines::query()->get()->append('deduction_detail');
-		$salary        = Salary::query()->with('emp')
+		$id        = $request->id;
+		$dept_name = $request->dept_name;
+		$role_name = $request->role_name;
+		$month     = $request->month;
+		$year      = $request->year;
+		$fines     = Fines::query()->get()->append('deduction_detail');
+		$salary    = Salary::query()
 			->where('emp_id', $id)
 			->where('month', $month)
 			->where('year', $year)
 			->where('dept_name', $dept_name)
 			->where('role_name', $role_name)
-			->first()
+			->first();
+		$salary
 			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_off_work_day', 'bonus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_off_work_day', 'pay_rate_work_day'])->toArray();
 		$arr['salary'] = $salary;
 		$arr['fines']  = $fines;
@@ -373,19 +349,19 @@ class ManagerController extends Controller
 		);
 	}
 
-	public function accountant_api(): Collection
+	public function accountantApi(): Collection
 	{
 		return Accountant::whereNull('deleted_at')
 			->get(['id', 'fname', 'lname']);
 	}
 
-	public function department_api(): Collection
+	public function departmentApi(): Collection
 	{
 		return Department::whereNull('deleted_at')
 			->get(['id', 'name']);
 	}
 
-	public function assign_accountant(AssignRequest $request): int
+	public function assignAccountant(AssignRequest $request): int
 	{
 		$dept_id = $request->dept_id;
 		$acct_id = $request->acct_id;
@@ -407,113 +383,32 @@ class ManagerController extends Controller
 		return 1;
 	}
 
-	public function sign_salary(Request $request): JsonResponse
+	public function signSalary(Request $request): JsonResponse
 	{
 		try {
 			$response = $request->all();
 			foreach ($response['data'] as $rq => $data) {
-				$id        = $data['id'];
-				$dept_name = $data['dept_name'];
-				$role_name = $data['role_name'];
-				$month     = $data['month'];
-				$year      = $data['year'];
+				$id            = $data['id'];
+				$dept_name     = $data['dept_name'];
+				$role_name     = $data['role_name'];
+				$month         = $data['month'];
+				$year          = $data['year'];
+				$array['sign'] = SignEnum::ACCOUNTANT_SIGNED;
 				if ($dept_name === 'Accountant') {
-					Salary::query()
-						->where('emp_id', $id)
-						->where('dept_name', $dept_name)
-						->where('role_name', $role_name)
-						->where('month', $month)
-						->where('year', $year)
-						->update(
-							[
-								'sign'    => 1,
-								'acct_id' => 1,
-							]
-						);
-				} else {
-					Salary::query()
-						->where('emp_id', $id)
-						->where('dept_name', $dept_name)
-						->where('role_name', $role_name)
-						->where('month', $month)
-						->where('year', $year)
-						->update(['sign' => 1]);
+					$array['acct_id'] = 1;
 				}
+				Salary::query()
+					->where('emp_id', $id)
+					->where('dept_name', $dept_name)
+					->where('role_name', $role_name)
+					->where('month', $month)
+					->where('year', $year)
+					->update($array);
 			}
-			return $this->successResponse([
-				                              'message' => 'Sign success',
-			                              ]);
+			return $this->successResponse(['message' => 'Sign success']);
 		}
 		catch (Exception $e) {
-			return $this->errorResponse([
-				                            'message' => $e->getMessage(),
-			                            ]);
+			return $this->errorResponse(['message' => $e->getMessage()]);
 		}
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create(): Response
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param StoreManagerRequest $request
-	 * @return Response
-	 */
-	public function store(StoreManagerRequest $request): Response
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param Manager $manager
-	 * @return Response
-	 */
-	public function show(Manager $manager): Response
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param Manager $manager
-	 * @return Response
-	 */
-	public function edit(Manager $manager): Response
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param UpdateManagerRequest $request
-	 * @param Manager $manager
-	 * @return Response
-	 */
-	public function update(UpdateManagerRequest $request, Manager $manager): Response
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param Manager $manager
-	 * @return Response
-	 */
-	public function destroy(Manager $manager): Response
-	{
-		//
 	}
 }

@@ -1,12 +1,7 @@
 @extends('layout.master')
 @include('ceo.menu')
-
 @push('css')
-	<link rel="stylesheet" type="text/css"
-	      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.5/af-2.3.7/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/sc-2.0.5/sb-1.3.2/sl-1.3.4/datatables.min.css"/>
-	<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
-	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-	<style type="text/css">
+	<style>
         .div-form-create table tr td {
             border: 0;
         }
@@ -111,18 +106,19 @@
 								<td class="col-6">
 									First Name:
 									<br>
-									<span class="error-message-fname text-danger"> </span><input type="text"
-									                                                             name="fname"
-									                                                             class="form-control inp-fname"
-									                                                             placeholder="First Name">
+									<span class="error-message-fname text-danger"></span
+									<label>
+										<input type="text" name="fname" class="form-control inp-fname"
+										       placeholder="First Name">
+									</label>
 								</td>
 								<td>
 									Last Name:
 									<br>
-									<span class="error-message-lname text-danger"> </span><input type="text"
-									                                                             name="lname"
-									                                                             class="form-control inp-lname "
-									                                                             placeholder="Last Name">
+									<span class="error-message-lname text-danger"> </span><label>
+										<input type="text" name="lname" class="form-control inp-lname"
+										       placeholder="Last Name">
+									</label>
 								</td>
 							</tr>
 							<tr>
@@ -130,9 +126,13 @@
 									Gender:
 								</td>
 								<td>
-									<input type="radio" name="gender" value="1" class="inp-gender"> Male
+									<label>
+										<input type="radio" name="gender" value="1" class="inp-gender">
+									</label> Male
 									<span> / </span>
-									<input type="radio" name="gender" value="0" class="inp-gender"> Female
+									<label>
+										<input type="radio" name="gender" value="0" class="inp-gender">
+									</label> Female
 									<span class="error-message-gender text-danger "> </span>
 								</td>
 							</tr>
@@ -140,12 +140,11 @@
 								<td colspan="2">
 									Date of birth:
 									<br>
-									<span class="error-message-dob text-danger"> </span> <input type="date"
-									                                                            name="dob" id="date"
-									                                                            class="form-control inp-dob"
-									                                                            style="width: 100%; display: inline;"
-									                                                            required value=""
-									                                                            placeholder="Date of birth">
+									<span class="error-message-dob text-danger"> </span> <label
+											for="date"></label>
+									<input type="date" name="dob" id="date" class="form-control inp-dob"
+									       style="width: 100%; display: inline;" required value=""
+									       placeholder="Date of birth">
 								</td>
 								<td></td>
 							</tr>
@@ -153,36 +152,37 @@
 								<td>
 									City:
 									<br>
-									<span class="error-message-city text-danger"> </span><select name="city"
-									                                                             id=""
-									                                                             class="form-control select-city"></select>
+									<span class="error-message-city text-danger"> </span>
+									<label for=""></label>
+									<select name="city" id="" class="form-control select-city"></select>
 								</td>
 								<td>
 									District:
 									<br>
-									<span class="error-message-district text-danger"> </span><select name="district"
-									                                                                 id=""
-									                                                                 class="form-control select-district"></select>
+									<span class="error-message-district text-danger"> </span>
+									<select name="district" id="" class="form-control select-district"></select>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
 									Number phone:
 									<br>
-									<span class="error-message-phone text-danger"> </span> <input type="number"
-									                                                              name="phone" value=""
-									                                                              placeholder="Number phone"
-									                                                              class="form-control inp-phone">
+									<span class="error-message-phone text-danger"> </span>
+									<label>
+										<input type="number" name="phone" value="" placeholder="Number phone"
+										       class="form-control inp-phone">
+									</label>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
 									Email:
 									<br>
-									<span class="error-message-email text-danger"> </span><input type="email"
-									                                                             name="email" value=""
-									                                                             placeholder="Email"
-									                                                             class="form-control inp-email">
+									<span class="error-message-email text-danger"> </span>
+									<label>
+										<input type="email" name="email" value="" placeholder="Email"
+										       class="form-control inp-email">
+									</label>
 								</td>
 							</tr>
 							<tr>
@@ -190,12 +190,10 @@
 									Password:
 									<span toggle="#password-field"
 									      class="fa fa-fw fa-eye field_icon toggle-password"></span>
-									<span class="error-message-password text-danger"> </span> <input type="password"
-									                                                                 name="password"
-									                                                                 value=""
-									                                                                 placeholder="Password"
-									                                                                 class="form-control inp-password"
-									                                                                 id="pass_log_id">
+									<span class="error-message-password text-danger"></span>
+									<label for="pass_log_id"></label>
+									<input type="password" name="password" value="" placeholder="Password"
+									       class="form-control inp-password" id="pass_log_id">
 								</td>
 							</tr>
 							<tr>
@@ -223,13 +221,10 @@
 							</tr>
 						</table>
 					</div>
-
-
 				</div>
 			</div>
 		</form>
 	</div>
-
 	{{-- profile-success --}}
 	<div class="div-profile-success d-none ">
 		<button class="btn-warning btn-back rounded-pill " type="button">
@@ -252,8 +247,8 @@
 					<div class="image-upload">
 						<label class="text-center">
 							<img class="avatar-alter-add-null"
-							     src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
-							<img class="avatar-alter-add" width="100%">
+							     src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%" alt="">
+							<img class="avatar-alter-add" width="100%" alt="">
 						</label>
 					</div>
 				</div>
@@ -315,7 +310,7 @@
 							<img class="avatar-alter-add-null"
 							     src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
 							<img class="avatar-alter-add" width="100%">
-							<span>Click here to chage avatar</span>
+							<span>Click here to change avatar</span>
 						</label>
 						<input id="file-input" type="file" name="avatar"/>
 					</div>
@@ -327,18 +322,20 @@
 								<td class="col-6">
 									First Name:
 									<br>
-									<span class="error-message-fname text-danger"> </span><input type="text"
-									                                                             name="fname"
-									                                                             class="form-control inp-fname"
-									                                                             placeholder="First Name">
+									<span class="error-message-fname text-danger"> </span>
+									<label>
+										<input type="text" name="fname" class="form-control inp-fname"
+										       placeholder="First Name">
+									</label>
 								</td>
 								<td>
 									Last Name:
 									<br>
-									<span class="error-message-lname text-danger"> </span><input type="text"
-									                                                             name="lname"
-									                                                             class="form-control inp-lname "
-									                                                             placeholder="Last Name">
+									<span class="error-message-lname text-danger"> </span>
+									<label>
+										<input type="text" name="lname" class="form-control inp-lname "
+										       placeholder="Last Name">
+									</label>
 								</td>
 							</tr>
 							<tr>
@@ -346,9 +343,13 @@
 									Gender:
 								</td>
 								<td>
-									<input type="radio" name="gender" value="1" class="inp-gender"> Male
+									<label>
+										<input type="radio" name="gender" value="1" class="inp-gender">
+									</label> Male
 									<span> / </span>
-									<input type="radio" name="gender" value="0" class="inp-gender"> Female
+									<label>
+										<input type="radio" name="gender" value="0" class="inp-gender">
+									</label> Female
 									<span class="error-message-gender text-danger "> </span>
 								</td>
 							</tr>
@@ -356,12 +357,12 @@
 								<td colspan="2">
 									Date of birth:
 									<br>
-									<span class="error-message-dob text-danger"> </span> <input type="date"
-									                                                            name="dob"
-									                                                            class="form-control inp-dob"
-									                                                            style="width: 100%; display: inline;"
-									                                                            required value=""
-									                                                            placeholder="Date of birth">
+									<span class="error-message-dob text-danger"> </span>
+									<label>
+										<input type="date" name="dob" class="form-control inp-dob"
+										       style="width: 100%; display: inline;" required value=""
+										       placeholder="Date of birth">
+									</label>
 								</td>
 								<td></td>
 							</tr>
@@ -369,36 +370,36 @@
 								<td>
 									City:
 									<br>
-									<span class="error-message-city text-danger"> </span><select name="city"
-									                                                             id=""
-									                                                             class="form-control select-city"></select>
+									<span class="error-message-city text-danger"></span>
+									<select name="city" id="" class="form-control select-city"></select>
 								</td>
 								<td>
 									District:
 									<br>
-									<span class="error-message-district text-danger"> </span><select name="district"
-									                                                                 id=""
-									                                                                 class="select-district form-control"></select>
+									<span class="error-message-district text-danger"> </span>
+									<select name="district" id="" class="select-district form-control"></select>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
 									Number phone:
 									<br>
-									<span class="error-message-phone text-danger"> </span> <input type="number"
-									                                                              name="phone" value=""
-									                                                              placeholder="Number phone"
-									                                                              class="form-control inp-phone">
+									<span class="error-message-phone text-danger"> </span>
+									<label>
+										<input type="number" name="phone" value="" placeholder="Number phone"
+										       class="form-control inp-phone">
+									</label>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
 									Email:
 									<br>
-									<span class="error-message-email text-danger"> </span><input type="email"
-									                                                             name="email" value=""
-									                                                             placeholder="Email"
-									                                                             class="form-control inp-email">
+									<span class="error-message-email text-danger"> </span>
+									<label>
+										<input type="email" name="email" value="" placeholder="Email"
+										       class="form-control inp-email">
+									</label>
 								</td>
 							</tr>
 							<tr>
@@ -406,11 +407,11 @@
 									Password:
 									<span toggle="#password-field"
 									      class="fa fa-fw fa-eye field_icon toggle-password"></span>
-									<span class="error-message-password text-danger"> </span> <input type="password"
-									                                                                 name="password"
-									                                                                 value=""
-									                                                                 placeholder="Password"
-									                                                                 class="form-control inp-password">
+									<span class="error-message-password text-danger"> </span>
+									<label>
+										<input type="password" name="password" value="" placeholder="Password"
+										       class="form-control inp-password">
+									</label>
 								</td>
 							</tr>
 							<tr>
@@ -446,6 +447,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>,
 	<script type="text/javascript">
         $(document).ready(async function () {
+            let profile_success = $('.div-profile-success');
+            let slCity          = $('.select-city');
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -453,7 +456,7 @@
             });
 
             $('.choose-card').click(function () {
-                var choose = $(this).data('id');
+                const choose = $(this).data('id');
                 $('.choose-card').addClass('d-none');
                 $('.div-form-create').removeClass('d-none');
                 create(choose);
@@ -463,7 +466,7 @@
                 $('.title-name').text('');
                 $('.choose-card').removeClass('d-none');
                 $('.div-form-create').addClass('d-none');
-                $('.div-profile-success').addClass('d-none');
+                profile_success.addClass('d-none');
                 $("#avatar_null").removeClass('d-none');
                 $("#output").addClass('d-none');
             });
@@ -482,7 +485,7 @@
                 $('.btn-update').removeClass('d-none');
             });
 
-            var array = [
+            let array = [
                 'fname',
                 'lname',
                 'gender',
@@ -493,7 +496,6 @@
             ];
             $.each(array, function (index, each) {
                 let text = each;
-                console.log(text);
                 $(`.inp-${each}`).on("change paste keyup", function (text) {
                     $(`.error-message-${each}`).empty();
                 });
@@ -501,7 +503,7 @@
             $('#avatar-input').change(function (event) {
                 $('#avatar_null').addClass('d-none');
                 $("#output").removeClass('d-none');
-                var output    = document.getElementById('output');
+                const output  = document.getElementById('output');
                 output.src    = URL.createObjectURL(event.target.files[0]);
                 output.onload = function () {
                     URL.revokeObjectURL(output.src) // free memory
@@ -513,7 +515,7 @@
                 // $('#avatar-input').change(function(event) {
                 //     const { avatar } = event.target;
                 // });
-                var url,
+                let url,
                     urlImport;
                 switch (choose) {
                     case 1:
@@ -530,10 +532,8 @@
                         break;
                 }
                 $('#import-csv').change(function (event) {
-                    var formData = new FormData();
+                    const formData = new FormData();
                     formData.append('file', $(this)[0].files[0]);
-
-
                     $.ajax({
                         type       : "post",
                         url        : urlImport,
@@ -543,22 +543,15 @@
                         contentType: false,
                         enctype    : 'multipart/form-data',
                         processData: false,
-                        success    : function (response) {
-                            $.toast({
-                                heading           : "Import CSV Success",
-                                text              : "Your CSV file has been successfully",
-                                showHidetransition: 'slide',
-                                position          : 'button-right',
-                                icon              : 'success',
-                            })
+                        success    : function () {
+                            notifySuccess("Your CSV file has been successfully");
                         }
 
                     });
                 });
                 $('#form-create').submit(function (e) {
                     e.preventDefault();
-                    var formData = new FormData($(this)[0]);
-
+                    const formData = new FormData($(this)[0]);
                     console.log(choose);
                     $.ajax({
                         type       : 'post',
@@ -568,25 +561,17 @@
                         data       : formData,
                         dataType   : "json",
 
-                        success: function(response) {
+                        success: function (response) {
                             $('.div-form-create').addClass('d-none');
-                            $('.div-profile-success').removeClass('d-none');
-                            $('.div-profile-success').find('.name-profile-success').text(
-                                response[1]['full_name']);
-                            $('.div-profile-success').find('.gender-profile-success').text(
-                                response[1]['gender_name']);
-                            $('.div-profile-success').find('.dob-profile-success').text(
-                                response[1]['date_of_birth']);
-                            $('.div-profile-success').find('.address-profile-success').text(
-                                response[1]['address']);
-                            $('.div-profile-success').find('.phone-profile-success').text(
-                                response[1]['phone']);
-                            $('.div-profile-success').find('.email-profile-success').text(
-                                response[1]['email']);
-                            $('.div-profile-success').find('.dept-profile-success').text(
-                                response[0][0]['departments']['name']);
-                            $('.div-profile-success').find('.role-profile-success').text(
-                                response[0][0]['name']);
+                            profile_success.removeClass('d-none');
+                            profile_success.find('.name-profile-success').text(response[1]['full_name']);
+                            profile_success.find('.gender-profile-success').text(response[1]['gender_name']);
+                            profile_success.find('.dob-profile-success').text(response[1]['date_of_birth']);
+                            profile_success.find('.address-profile-success').text(response[1]['address']);
+                            profile_success.find('.phone-profile-success').text(response[1]['phone']);
+                            profile_success.find('.email-profile-success').text(response[1]['email']);
+                            profile_success.find('.dept-profile-success').text(response[0][0]['departments']['name']);
+                            profile_success.find('.role-profile-success').text(response[0][0]['name']);
                             if (response[1]['avatar'] != null) {
                                 $(".avatar-alter-add-null").addClass('d-none');
                                 $(".avatar-alter-add").attr('src', `{{ asset('')}}/img/${response[1]['avatar']}  `);
@@ -594,15 +579,15 @@
 
                             $('#form-create')[0].reset();
                             $('#form-create').find('select').prop('selectedIndex', 0);
-                            $('.div-profile-success').find('input[name="fname"]').val(response[1]['fname']);
-                            $('.div-profile-success').find('input[name="lname"]').val(response[1]['lname']);
-                            $('.div-profile-success').find('input[name="dob"]').val(response[1]['dob']);
-                            $('.div-profile-success').find('input[name="phone"]').val(response[1]['phone']);
-                            $('.div-profile-success').find('input[name="email"]').val(response[1]['email']);
+                            profile_success.find('input[name="fname"]').val(response[1]['fname']);
+                            profile_success.find('input[name="lname"]').val(response[1]['lname']);
+                            profile_success.find('input[name="dob"]').val(response[1]['dob']);
+                            profile_success.find('input[name="phone"]').val(response[1]['phone']);
+                            profile_success.find('input[name="email"]').val(response[1]['email']);
 
                         },
                         error  : function (xhr, textStatus, errorThrown) {
-                            var err = JSON.parse(xhr.responseText);
+                            const err = JSON.parse(xhr.responseText);
                             $.each(err.errors, function (key, value) {
                                 $(`.error-message-${key}`).text(value);
                             })
@@ -612,17 +597,17 @@
             }
 
 
-            $('.select-city').select2();
+            slCity.select2();
             const response = await fetch('{{ asset('locations/index.json') }}');
             const cities   = await response.json();
             $.each(cities, function (index, each) {
-                $('.select-city').append(
+                slCity.append(
                     `<option value='${each.code}' data-path='${each.file_path}'>${index}</option>`);
             });
-            $('.select-city').change(function () {
+            slCity.change(function () {
                 loadDistrict();
             })
-            loadDistrict();
+            await loadDistrict();
             $('.select-district').select2();
 
             async function loadDistrict() {
@@ -640,10 +625,10 @@
                 });
             }
 
-            var dept_id = $(".select-department").val();
+            const dept_id = $(".select-department").val();
             select_role(dept_id);
             $(".select-department").change(function () {
-                var dept_id = $(this).val();
+                const dept_id = $(this).val();
                 select_role(dept_id);
             });
 
@@ -683,7 +668,7 @@
 
             $('#form-update').submit(function (e) {
                 e.preventDefault();
-                var formUpdate = $(this);
+                const formUpdate = $(this);
                 $.ajax({
                     type       : "post",
                     url        : "{{ route('ceo.update_emp') }}",
@@ -701,9 +686,7 @@
 
             $('.toggle-password').click(function () {
                 $(this).toggleClass("fa-eye fa-eye-slash");
-
-                var input = $("#pass_log_id");
-
+                const input = $("#pass_log_id");
                 if (input.attr("type") === "password") {
                     input.attr("type", "text");
                 } else {
