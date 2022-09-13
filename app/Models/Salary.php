@@ -4,6 +4,7 @@
 namespace App\Models;
 
 use Database\Factories\SalaryFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,7 +43,7 @@ use Thiagoprz\CompositeKey\HasCompositeKey;
  * @method static Builder|Salary whereStatus($value)
  * @method static Builder|Salary whereWorkDay($value)
  * @method static Builder|Salary whereYear($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @property-read Collection|Accountant[] $acct
  * @property-read int|null $acct_count
  * @property-read Collection|Employee[] $emp
@@ -72,6 +73,20 @@ use Thiagoprz\CompositeKey\HasCompositeKey;
  * @method static Builder|Salary whereOffWorkDay($value)
  * @method static Builder|Salary whereSign($value)
  * @method static Builder|Salary whereUpdatedAt($value)
+ * @property-read string $bonus_salary_off_work_day
+ * @property-read string $bonus_salary_over_work_day
+ * @property-read string $bonus_salary_total_off_work_day
+ * @property-read string $deduction_detail
+ * @property-read string $deduction_early_one_detail
+ * @property-read string $deduction_early_two_detail
+ * @property-read string $deduction_late_one_detail
+ * @property-read string $deduction_late_two_detail
+ * @property-read string $deduction_miss_detail
+ * @property-read string $pay_rate_money
+ * @property-read string $pay_rate_off_work_day
+ * @property-read string $pay_rate_over_work_day
+ * @property-read string $pay_rate_work_day
+ * @property-read string $salary_money
  */
 class Salary extends Model
 {

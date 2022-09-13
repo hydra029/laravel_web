@@ -1,278 +1,297 @@
 @extends('layout.master')
 @include('ceo.menu')
+@push('css')
+	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<style>
+        .div-form-create table tr td {
+            border: 0;
+        }
+
+        .image-upload {
+            width: 20%;
+            height: 100%;
+        }
+
+        .profile-card-info {
+            width: 80%;
+            height: 100%;
+        }
+
+        #information-form {
+            width: 100%;
+        }
+
+        #div-profile {
+            width: 100%;
+            padding: 15px;
+        }
+
+        .btn {
+            width: 15%;
+            min-width: 100px;
+        }
+
+        label {
+            padding-top: 10px;
+        }
+
+        .form-control[readonly], .disabled, .select2-selection {
+            background-color: white !important;
+        }
+
+        .na {
+            cursor: default;
+        }
+	</style>
+@endpush
 @section('content')
-	@push('css')
-		<style>
-            ul li {
-                list-style-type: none;
-            }
-
-            a, i, img {
-                cursor: pointer;
-            }
-
-            .model-popup-div {
-                background-color: rgba(0, 0, 0, 0.5);
-                width: 100%;
-                height: 100%;
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 1100;
-            }
-
-            .model-popup {
-                background-color: aliceblue;
-                position: absolute;
-                width: 500px;
-                height: 300px;
-                top: 20%;
-                left: 40%;
-                opacity: 1;
-                z-index: 1101;
-                animation-name: popup;
-                animation-duration: 1s;
-            }
-
-            @keyframes popup {
-                0% {
-                    opacity: 0;
-                    transform: translateY(-100px);
-                }
-
-                100% {
-                    opacity: 1;
-                    transform: translateY(0px);
-                }
-            }
-
-            .model-ask-delete, .popup-delete-department {
-                background-color: aliceblue;
-                position: absolute;
-                width: 400px;
-                height: 150px;
-                top: 20%;
-                left: 40%;
-                opacity: 1;
-                animation-name: popup;
-                animation-duration: 1s;
-            }
-
-            .color-icon {
-                border-radius: 50%;
-                width: 10px;
-                height: 10px;
-                display: inline-block;
-	            float: right;
-	            margin-right: 10px
-            }
-		</style>
-	@endpush
-	<div class="col-12">
-		<div class="col-1 position-fixed">
-			<div id="role-list" class="list-group">
-				@foreach($dept as $dk => $dv)
-					@if ($dv->id === 1)
-						<a class="list-group-item list-group-item-action active"
-						   href="#list-item-{{ $dv->id }}">{{ $dv->name}}</a>
-					@elseif ($dv->id <7)
-						<a class="list-group-item list-group-item-action"
-						   href="#list-item-{{ $dv->id }}">{{ $dv->name}}</a>
-					@endif
-				@endforeach
-			</div>
-		</div>
-		<div class="col-11 " style="margin-left: 10%" data-spy="scroll" data-target="#role-list" data-offset="1"
-		     class="scrollspy-example">
-			@foreach($dept as $dk => $dv)
-				<table class="table">
-					<tr class="bg-secondary " id="list-item-{{ $dv->id }}">
-						<td colspan="3">
-							<span class="mr-2 text-white">#{{ $dk + 1 }}.</span>
-							<span class="mr-2 text-white">{{ $dv->name}}</span>
-							<i class="fa-solid fa-circle-plus text-success h5 m-0 btn-add-role"
-							   data-id="{{ $dv->id}}"></i>
-
-						</td>
-						<td>
-							<div class="bg-danger color-icon"></div>
-							<div class="bg-warning color-icon"></div>
-							<div class="bg-primary color-icon"></div>
-						</td>
-					</tr>
-					<tr class="text-primary bg-light">
-						<td>id</td>
-						<td>Name</td>
-						<td>Pay rate</td>
-						<td>Action</td>
-					</tr>
-					@foreach($dv->roles as $rk => $rv)
-						<tr>
-							<td class="col-2">
-								<span>{{ $rk + 1 }}.</span>
-							</td>
-							<td class="col-4">
-								<span>{{ $rv->name}}</span>
-							</td>
-							<td class="col-5">
-								<span>{{ $rv->pay_rate_money}}</span>
-							</td>
-							<td class="col-1">
-								<i class="fa-solid fa-pen btn-edit-role text-warning"
-								   data-id="{{ $rv->id }}"
-								   data-dept_id="{{$dv->id }}"
-								   data-name="{{ $rv->name }}"
-								   data-pay_rate="{{ $rv->pay_rate }}"
-								></i>
-								<i class="fa-solid fa-square-xmark btn-delete-role text-danger"
-								   data-id="{{ $rv->id }}"></i>
-							</td>
-						</tr>
-					@endforeach
-				</table>
-			@endforeach
-		</div>
-	</div>
-	<div class=" model-popup-div d-none">
-		<div class="popup-add-roles d-none model-popup " align="center">
-			<form id="" action="" method="post">
-				@csrf
-				<div class="card-header card-header-icon" data-background-color="rose">
-					<i class="fa-solid fa-address-book fa-2x" aria-hidden="true"></i>
-					<span class=" card-title h2 title-popup"></span>
+	<div id="div-profile">
+		<form id="information-form" enctype="multipart/form-data">
+			<div class="profile-card col-12 table-profile-update form-row">
+				<div class="image-upload">
+					<label for="avatar" class="text-center">
+						@if($data->avatar === null )
+							<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%" alt="">
+						@else
+							<img src="{{ asset('') }}uploads/{{$data->avatar}}" width="90%" alt="">
+						@endif
+						<span>Click here to change avatar</span>
+					</label>
+					<input id="avatar" type="file" accept="image/*" name="avatar" class="disabled d-none">
 				</div>
-				<div class="card-content">
-					<table class="table form-table">
-						<tr>
-							<td class="form-group" width="100%" valign="top">
-								<input type="hidden" name="id" class="role-id form-control" value="">
-								<input type="hidden" name="dept_id" class="dept-id form-control" value="" required>
-								Name:
-								<label>
-									<input type="text" name="name" class="name-role form-control" value=""
-									       placeholder="Name role" required>
+				<div class="profile-card-info float-left">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<span class="error-message-fname text-danger"></span>
+							<label for="fname">
+								First Name:
+							</label>
+							<input type="text" name="fname" id="fname" class="form-control inp-fname disabled"
+							       placeholder="First Name" value="{{$data->fname}}" required>
+						</div>
+						<div class="form-group col-md-6">
+							<span class="error-message-lname text-danger"></span>
+							<label for="lname">
+								Last Name:
+							</label>
+							<input type="text" name="lname" id="lname" class="form-control inp-lname disabled"
+							       placeholder="Last Name" value="{{$data->lname}}" required>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-4">
+							<span class="error-message-lname text-danger"></span>
+							<label for="dob">
+								Date of birth:
+							</label>
+							<input type="date" name="dob" id="dob" class="form-control inp-dob disabled"
+							       value="{{$data->short_dob}}">
+						</div>
+						<div class="form-group col-md-4">
+							<span class="error-message-gender text-danger"></span>
+							<label for="gender">Gender</label>
+							<select name="gender" id="gender" class="form-control disabled">
+								<option value="0" @if($data->gender === '1')
+									selected
+										@endif>
+									Female
+								</option>
+								<option value="1">Male</option>
+							</select>
+						</div>
+						<div class="form-group col-md-4">
+							<span class="error-message-phone text-danger"></span>
+							<label for="phone">
+								Number phone:
+							</label>
+							<input type="text" name="phone" id="phone" class="form-control inp-phone disabled"
+							       value="{{$data->phone}}" required>
+						</div>
+					</div>
+					<div class="form-row disabled prevent">
+						<div class="form-group col-md-6">
+							<label for="department">Department</label>
+							<input type="text" id="department" class="form-control na" value="{{session('dept_name')}}"
+							       readonly>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="role">Role</label>
+							<input type="text" id="role" class="form-control na" value="{{session('role_name')}}"
+							       readonly>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6 mb-0">
+							<span class="error-message-city text-danger"></span>
+							<div class="form-group" id="city-select">
+								<label for="city">
+									City:
 								</label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Pay rate:
-								<label>
-									<input type="text" name="pay_rate" class="pay-rate form-control" value=""
-									       placeholder="Pay rate" required>
+								<select name="city" id="city" class="form-control select-city disabled"
+								        data-city="{{$data->city}}"></select>
+							</div>
+						</div>
+						<div class="form-group col-md-6 mb-0">
+							<span class="error-message-district text-danger"></span>
+							<div class="form-group" id="district-select">
+								<label for="district">
+									District:
 								</label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<button class="btn btn-primary btn-add-roles float-right ml-1"
-								        type="submit">Submit
-								</button>
-								<button class="btn btn-light btn-close-model float-right" type="button">Cancel</button>
-							</td>
-						</tr>
-					</table>
+								<select name="district" id="district" data-district="{{$data->district}}"
+								        class="form-control select-district disabled"></select>
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<span class="error-message-email text-danger"></span>
+							<label for="email">
+								Email:
+							</label>
+							<input type="text" id="email" class="form-control inp-email disabled"
+							       value="{{$data->email}}" readonly>
+						</div>
+						<div class="form-group col-md-6">
+							<span class="error-message-password text-danger"></span>
+							<label for="password">
+								Password:
+							</label>
+							<div class="input-group input-group-merge">
+								<input type="password" name="password" id="password"
+								       class="form-control inp-password disabled"
+								       placeholder="********" required>
+								<div class="input-group-append" data-password="false">
+									<div class="input-group-text">
+										<span class="password-eye"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-			</form>
-		</div>
-		<div class="model-ask-delete d-none">
-			<div class="card-header card-header-icon" data-background-color="rose">
-				<i class="fa-solid fa-address-book fa-2x" aria-hidden="true"></i>
-				<span class=" card-title h3 "> Are you sure you want to delete?</span>
 			</div>
-			<table class="table form-table">
-				<form action="" method="post">
-					<tr>
-						<input type="hidden" name="id" value="" class="delete-id"/>
-					</tr>
-					<tr>
-						<td align="center" valign="top">
-							<button class="btn btn-light btn-close-model " type="button">Cancel</button>
-						</td>
-						<td align="center" valign="top">
-							<button class="btn btn-danger btn-delete-role" type="button">Yes</button>
-						</td>
-					</tr>
-				</form>
-			</table>
-		</div>
+			<div class="form-row d-flex justify-content-center">
+				<button class="btn btn-info">Change</button>
+				<button class="btn btn-success d-none">Submit</button>
+			</div>
+		</form>
 	</div>
 @endsection
 @push('js')
-	<script type="text/javascript">
-        $(document).ready(function () {
+	<script src="{{ asset('js/main.min.js' )}}"></script>
+	<script>
+        $(document).ready(async function () {
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }
             });
-            let modelPopup = $('.model-popup');
-            let list       = $('.list-group-item-action');
-            $('.btn-close-model').click(function () {
-                $('.model-popup-div ').addClass('d-none');
-                modelPopup.addClass('d-none');
-                modelPopup.find('form')[0].reset();
+            $('.disabled').prop('disabled', true);
+            let selectCity     = $('#city');
+            let selectDistrict = $('#district');
+            let avatar         = $('#avatar');
+            let btnSave        = $('.btn-success');
+            let btnChange      = $('.btn-info');
+
+            selectCity.select2();
+            const response = await fetch('{{ asset('locations/Index.json') }}');
+            const cities   = await response.json();
+            $.each(cities, function (index, each) {
+                selectCity.append(
+                    `<option value='${each.code}' data-path='${each.file_path}'>${index}</option>`);
             });
+            selectCity.change(function () {
+                loadDistrict();
+            })
+            await loadDistrict();
+            selectDistrict.select2();
+            let keys     = Object.keys(cities);
+            let city     = selectCity.data('city');
+            let district = selectDistrict.data('district');
 
-            $('.btn-add-role').click(function () {
-                const table = $(this).closest('table');
-                $('.model-popup-div ').removeClass('d-none');
-                modelPopup.removeClass('d-none');
-                modelPopup.find('form')[0].reset();
-                $('.dept-id').val($(this).data('id'));
-                $('.title-popup').text('Add Roles');
-                modelPopup.find('form').submit(function (e) {
-                    e.preventDefault();
-                    let form     = $(this);
-                    let formData = new FormData(form[0]);
-                    $.ajax({
-                        url        : "{{ route('ceo.roles.store') }}",
-                        type       : 'POST',
-                        data       : formData,
-                        contentType: false,
-                        processData: false,
-                        success    : function (response) {
-                            if (response.success === true) {
-                                $('.model-popup-div ').addClass('d-none');
-                                modelPopup.addClass('d-none');
-                                modelPopup.find('form')[0].reset();
-                                notifySuccess(response.message)
-                            }
-
-                            if (response.success === false) {
-                                $('.model-popup-div ').addClass('d-none');
-                                modelPopup.addClass('d-none');
-                                modelPopup.find('form')[0].reset();
-                                notifyError(response.message)
-                            }
-                        }
-
-                    });
+            if (city === 'Hà Nội') {
+                $("#city").val('HN').trigger('change');
+                setTimeout(function () {
+                    $('#select2-district-container').text(district)
+                }, 100);
+            } else {
+                keys.forEach(function (key) {
+                    if (key === city) {
+                        $("#city").val(cities[key]['code']).trigger('change');
+                        setTimeout(function () {
+                            $('#select2-district-container').text(district)
+                        }, 100);
+                    }
                 });
+            }
 
-            });
+            async function loadDistrict() {
+                selectDistrict.empty();
+                const path      = $(".select-city option:selected").data('path');
+                const response  = await fetch('{{ asset('locations/') }}' + path);
+                const districts = await response.json();
+                $.each(districts.district, function (index, each) {
+                    if (each.pre === "Quận" || each.pre === "Huyện") {
+                        selectDistrict.append(`
+                            <option>
+                            	${each.name}
+                            </option>`);
+                    }
+                });
+            }
 
-            $('.btn-edit-role').click(function () {
-                $('.model-popup-div ').removeClass('d-none');
-                modelPopup.removeClass('d-none');
-                modelPopup.find('form')[0].reset();
-                $('.role-id').val($(this).data('id'));
-                $('.dept-id').val($(this).data('dept_id'));
-                $('.name-role').val($(this).data('name'));
-                $('.pay-rate').val($(this).data('pay_rate'));
-                $('.title-popup').text('Edit role');
-                modelPopup.find('form').attr('action', '{{ route('ceo.roles.update') }}');
-            });
+            btnChange.click(function (e) {
+                e.preventDefault();
+                $(this).addClass('d-none');
+                btnSave.removeClass('d-none');
+                $('.input-group-append').removeClass('d-none');
+                $('.disabled').prop('disabled', false);
+            })
 
-            $('.btn-delete-role').click(function () {
-                $('.model-popup-div ').removeClass('d-none');
-                $('.model-ask-delete').removeClass('d-none');
-                $('.delete-id').val($(this).data('id'));
-                $('.model-ask-delete').find('form').attr('action', '{{ route('ceo.roles.destroy') }}');
-            });
-            list.click(function () {
-                list.removeClass('active');
-                $(this).addClass('active');
+            if (btnSave.hasClass('d-none')) {
+                $('.input-group-append').addClass('d-none');
+            }
+
+            avatar.change(function () {
+                $('img').attr('src', $(this).val());
+            })
+
+            btnSave.click(function (e) {
+                e.preventDefault();
+                let img = $('#avatar').val();
+                if (!img) {
+                    avatar.prop('disabled', true);
+                }
+                let formUpdate = $('#information-form');
+                let data       = new FormData(formUpdate[0]);
+                let city       = $('#select2-city-container').prop('title');
+                let district   = $('#select2-district-container').prop('title').replace(/\s{2,}/g, '');
+                data.set('city', city);
+                data.set('district', district);
+                $.ajax({
+                    type       : "post",
+                    url        : "{{ route('ceo.update_information') }}",
+                    contentType: false,
+                    processData: false,
+                    data       : data,
+                })
+                    .done(function (response) {
+                        btnSave.addClass('d-none');
+                        $('.input-group-append').removeClass('d-none');
+                        btnChange.removeClass('d-none');
+                        $('.disabled').prop('disabled', true);
+                        notifySuccess(response);
+                    })
+            })
+
+            $('.toggle-password').click(function () {
+                $(this).toggleClass("mdi-eye mdi-eye-off");
+                let input = $("#password");
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
             })
         });
 	</script>

@@ -100,19 +100,20 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            let in_start_1  = $('table tr:nth-child(1) td:nth-child(2)').text().replace(/[^\d:]*/, '');
-            let in_start_2  = $('table tr:nth-child(2) td:nth-child(2)').text().replace(/[^\d:]*/, '');
-            let in_start_3  = $('table tr:nth-child(3) td:nth-child(2)').text().replace(/[^\d:]*/, '');
-            let in_end_1    = $('table tr:nth-child(1) td:nth-child(5)').text().replace(/[^\d:]*/, '');
-            let in_end_2    = $('table tr:nth-child(2) td:nth-child(5)').text().replace(/[^\d:]*/, '');
-            let in_end_3    = $('table tr:nth-child(3) td:nth-child(5)').text().replace(/[^\d:]*/, '');
-            let out_start_1 = $('table tr:nth-child(1) td:nth-child(6)').text().replace(/[^\d:]*/, '');
-            let out_start_2 = $('table tr:nth-child(2) td:nth-child(6)').text().replace(/[^\d:]*/, '');
-            let out_start_3 = $('table tr:nth-child(3) td:nth-child(6)').text().replace(/[^\d:]*/, '');
-            let out_end_1   = $('table tr:nth-child(1) td:nth-child(9)').text().replace(/[^\d:]*/, '');
-            let out_end_2   = $('table tr:nth-child(2) td:nth-child(9)').text().replace(/[^\d:]*/, '');
-            let out_end_3   = $('table tr:nth-child(3) td:nth-child(9)').text().replace(/[^\d:]*/, '');
-            let time = moment().format('HH:mm');
+            let regex       = /\d{2}:\d{2}/;
+            let in_start_1  = $('table tr:nth-child(1) td:nth-child(2)').text().match(regex)[0];
+            let in_start_2  = $('table tr:nth-child(2) td:nth-child(2)').text().match(regex)[0];
+            let in_start_3  = $('table tr:nth-child(3) td:nth-child(2)').text().match(regex)[0];
+            let in_end_1    = $('table tr:nth-child(1) td:nth-child(5)').text().match(regex)[0];
+            let in_end_2    = $('table tr:nth-child(2) td:nth-child(5)').text().match(regex)[0];
+            let in_end_3    = $('table tr:nth-child(3) td:nth-child(5)').text().match(regex)[0];
+            let out_start_1 = $('table tr:nth-child(1) td:nth-child(6)').text().match(regex)[0];
+            let out_start_2 = $('table tr:nth-child(2) td:nth-child(6)').text().match(regex)[0];
+            let out_start_3 = $('table tr:nth-child(3) td:nth-child(6)').text().match(regex)[0];
+            let out_end_1   = $('table tr:nth-child(1) td:nth-child(9)').text().match(regex)[0];
+            let out_end_2   = $('table tr:nth-child(2) td:nth-child(9)').text().match(regex)[0];
+            let out_end_3   = $('table tr:nth-child(3) td:nth-child(9)').text().match(regex)[0];
+            let time        = moment().format('HH:mm');
             if (time <= in_end_1 && time >= in_start_1 || time <= in_end_2 && time >= in_start_2 || time <= in_end_3 && time >= in_start_3) {
                 check_in.removeAttr('disabled');
             }
@@ -130,12 +131,12 @@
                 },
             })
                 .done(function (response) {
-                    let time = moment().format('HH:mm');
-                    let len  = response.length - 1;
+                    let time     = moment().format('HH:mm');
+                    let len      = response.length - 1;
                     let in_shift,
                         out_shift;
-                    let num  = 0;
-                    let checkin = null,
+                    let num      = 0;
+                    let checkin  = null,
                         checkout = null;
                     if (time >= in_start_1 && time <= in_end_1) {
                         in_shift = 1;
@@ -169,7 +170,7 @@
                         if (shift === out_shift) {
                             checkout = response[len]['check_out'];
                         } else {
-                            if ( len >= 1) {
+                            if (len >= 1) {
                                 checkout = response[len - 1]['check_out'];
                                 if (checkout !== null) {
                                     checkout = null;
@@ -178,7 +179,7 @@
                         }
                     }
 
-                    if (num === 1 ) {
+                    if (num === 1) {
                         check_in.removeAttr('disabled');
                         if (checkin) {
                             check_in.attr('disabled', 'disabled');
@@ -188,7 +189,7 @@
                     }
                     if (num === 2) {
                         check_out.removeAttr('disabled');
-                        if(checkout) {
+                        if (checkout) {
                             check_out.attr('disabled', 'disabled');
                         }
                     } else {

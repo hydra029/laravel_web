@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EmpRoleEnum;
+use App\Models\Accountant;
+use App\Models\Ceo;
 use App\Models\Department;
+use App\Models\Employee;
 use App\Models\Fines;
+use App\Models\Manager;
 use App\Models\Salary;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,17 +16,49 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 	public function test()
-
 	{
-		$data = Department::whereNull('deleted_at')
-			->get(['id', 'name', 'acct_id']);
-		return view(
-			'test',
-			[
-				'title' => 'test',
-				'data'  => $data,
-			]
-		);
+		$level = session('level');
+		$id    = session('id');
+		if ($level !== 4) {
+			switch ($level) {
+				case 1:
+					$user = Employee::query();
+					break;
+				case 2:
+					$user = Manager::query();
+					break;
+				default:
+					$user = Accountant::query();
+			}
+			$data = $user->with(['roles', 'departments'])
+				->where('id', '=', $id)
+				->first();
+			$data->makeHidden(
+				[
+					'deleted_at',
+					'updated_at',
+					'created_at',
+					'remember_token',
+					'password'
+				]
+			)->append(['full_name', 'date_of_birth', 'gender_name', 'address']);
+		} else {
+			$data = Ceo::where('id', '=', $id)
+				->first();
+			$data->makeHidden(
+				[
+					'deleted_at',
+					'updated_at',
+					'created_at',
+					'remember_token',
+					'password'
+				]
+			)->append(['full_name', 'date_of_birth', 'gender_name', 'address']);
+		}
+		return view('test', [
+			'data' => $data,
+			'title' => 'Test'
+		]);
 	}
 
 	public function getSalary(Request $request): JsonResponse

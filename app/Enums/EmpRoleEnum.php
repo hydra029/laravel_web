@@ -16,10 +16,10 @@ final class EmpRoleEnum extends Enum
     public static function getArrayView(): array
     {
         return [
-            'Morning'  => self::EMPLOYEE,
-            'Afternoon'  => self::MANAGER,
-            'Accountant' => self::ACCOUNTANT,
-            'Ceo' => self::CEO,
+            'employees'  => self::EMPLOYEE,
+            'managers'  => self::MANAGER,
+            'accountants' => self::ACCOUNTANT,
+            'ceo' => self::CEO,
         ];
     }
 

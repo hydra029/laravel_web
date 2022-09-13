@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use Database\Factories\AccountantFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * App\Models\Accountant
@@ -20,38 +24,20 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $lname
  * @property int $gender
  * @property string $dob
- * @property string $email
  * @property string|null $avatar
- * @property string $password
- * @property int $dept_id
- * @property int $role_id
- * @property int $status
- * @method static AccountantFactory factory(...$parameters)
- * @method static Builder|Accountant newModelQuery()
- * @method static Builder|Accountant newQuery()
- * @method static Builder|Accountant query()
- * @method static Builder|Accountant whereDeptId($value)
- * @method static Builder|Accountant whereDob($value)
- * @method static Builder|Accountant whereEmail($value)
- * @method static Builder|Accountant whereFname($value)
- * @method static Builder|Accountant whereGender($value)
- * @method static Builder|Accountant whereId($value)
- * @method static Builder|Accountant whereLname($value)
- * @method static Builder|Accountant wherePassword($value)
- * @method static Builder|Accountant whereRoleId($value)
- * @method static Builder|Accountant whereStatus($value)
- * @mixin \Eloquent
- * @property-read \App\Models\Department|null $department
- * @property-read \App\Models\Role|null $role
  * @property string $city
  * @property string $district
  * @property string $phone
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attendance[] $attendance
+ * @property string $email
+ * @property string|null $password
+ * @property int $dept_id
+ * @property int $role_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection|Attendance[] $attendance
  * @property-read int|null $attendance_count
- * @property-read \App\Models\Department $departments
+ * @property-read Department $departments
  * @property-read string $address
  * @property-read string $age
  * @property-read string $check1
@@ -63,49 +49,59 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read string $gender_name
  * @property-read string $role_name
  * @property-read string $shift_status
- * @property-read \App\Models\Role $roles
+ * @property-read Role $roles
+ * @property-read Collection|PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static AccountantFactory factory(...$parameters)
+ * @method static Builder|Accountant newModelQuery()
+ * @method static Builder|Accountant newQuery()
  * @method static \Illuminate\Database\Query\Builder|Accountant onlyTrashed()
+ * @method static Builder|Accountant query()
  * @method static Builder|Accountant whereAvatar($value)
  * @method static Builder|Accountant whereCity($value)
  * @method static Builder|Accountant whereCreatedAt($value)
  * @method static Builder|Accountant whereDeletedAt($value)
+ * @method static Builder|Accountant whereDeptId($value)
  * @method static Builder|Accountant whereDistrict($value)
+ * @method static Builder|Accountant whereDob($value)
+ * @method static Builder|Accountant whereEmail($value)
+ * @method static Builder|Accountant whereFname($value)
+ * @method static Builder|Accountant whereGender($value)
+ * @method static Builder|Accountant whereId($value)
+ * @method static Builder|Accountant whereLname($value)
+ * @method static Builder|Accountant wherePassword($value)
  * @method static Builder|Accountant wherePhone($value)
+ * @method static Builder|Accountant whereRoleId($value)
  * @method static Builder|Accountant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|Accountant withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Accountant withoutTrashed()
+ * @mixin Eloquent
  */
 class Accountant extends Model
 {
     use HasFactory, SoftDeletes, HasApiTokens;
 
-
-
-
-	protected $fillable = [
-		'fname',
-		'lname',
-		'gender',
-		'dob',
-        'avatar',
-        'phone',
-        'city',
-        'district',
-		'email',
-		'password',
-		'dept_id',
-		'role_id',
-        'status',
+	protected $guarded = [
+		'id',
+		'deleted_at',
+		'updated_at',
+		'created_at',
+		'remember_token',
 	];
 
     public function getAddressAttribute(): string
     {
-        return $this->district . ' ' . $this->city ;
+	    return $this->district . ' - ' . $this->city;
     }
 
 	public function getDateOfBirthAttribute(): string
 	{
 		return date_format(date_create($this->dob), "d/m/Y");
+	}
+
+	public function getShortDobAttribute(): string
+	{
+		return date_format(date_create($this->dob), 'Y-m-d');
 	}
 
 	public function getDateAttribute(): string

@@ -118,6 +118,7 @@ class LoginController extends Controller
 					'name'      => $user->fname,
 					'avatar'    => $user->avatar,
 					'role_name' => 'CEO',
+					'dept_name' => 'Inc.',
 					'level'     => 4,
 				]
 			);

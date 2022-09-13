@@ -1,6 +1,6 @@
 @extends('layout.master')
 @include('accountants.menu')
-@section('content')
+@push('css')
 	<style>
         button {
             width: 90px;
@@ -14,6 +14,8 @@
             text-align: center;
         }
 	</style>
+@endpush
+@section('content')
 	<table class="table table-bordered table-striped table-centered mb-0" id="table-index">
 		<thead>
 		<tr>
@@ -98,18 +100,19 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            let in_start_1  = $('table tr:nth-child(1) td:nth-child(2)').text().replace(/[^\d:]*/, '');
-            let in_start_2  = $('table tr:nth-child(2) td:nth-child(2)').text().replace(/[^\d:]*/, '');
-            let in_start_3  = $('table tr:nth-child(3) td:nth-child(2)').text().replace(/[^\d:]*/, '');
-            let in_end_1    = $('table tr:nth-child(1) td:nth-child(5)').text().replace(/[^\d:]*/, '');
-            let in_end_2    = $('table tr:nth-child(2) td:nth-child(5)').text().replace(/[^\d:]*/, '');
-            let in_end_3    = $('table tr:nth-child(3) td:nth-child(5)').text().replace(/[^\d:]*/, '');
-            let out_start_1 = $('table tr:nth-child(1) td:nth-child(6)').text().replace(/[^\d:]*/, '');
-            let out_start_2 = $('table tr:nth-child(2) td:nth-child(6)').text().replace(/[^\d:]*/, '');
-            let out_start_3 = $('table tr:nth-child(3) td:nth-child(6)').text().replace(/[^\d:]*/, '');
-            let out_end_1   = $('table tr:nth-child(1) td:nth-child(9)').text().replace(/[^\d:]*/, '');
-            let out_end_2   = $('table tr:nth-child(2) td:nth-child(9)').text().replace(/[^\d:]*/, '');
-            let out_end_3   = $('table tr:nth-child(3) td:nth-child(9)').text().replace(/[^\d:]*/, '');
+            let regex       = /\d{2}:\d{2}/;
+            let in_start_1  = $('table tr:nth-child(1) td:nth-child(2)').text().match(regex)[0];
+            let in_start_2  = $('table tr:nth-child(2) td:nth-child(2)').text().match(regex)[0];
+            let in_start_3  = $('table tr:nth-child(3) td:nth-child(2)').text().match(regex)[0];
+            let in_end_1    = $('table tr:nth-child(1) td:nth-child(5)').text().match(regex)[0];
+            let in_end_2    = $('table tr:nth-child(2) td:nth-child(5)').text().match(regex)[0];
+            let in_end_3    = $('table tr:nth-child(3) td:nth-child(5)').text().match(regex)[0];
+            let out_start_1 = $('table tr:nth-child(1) td:nth-child(6)').text().match(regex)[0];
+            let out_start_2 = $('table tr:nth-child(2) td:nth-child(6)').text().match(regex)[0];
+            let out_start_3 = $('table tr:nth-child(3) td:nth-child(6)').text().match(regex)[0];
+            let out_end_1   = $('table tr:nth-child(1) td:nth-child(9)').text().match(regex)[0];
+            let out_end_2   = $('table tr:nth-child(2) td:nth-child(9)').text().match(regex)[0];
+            let out_end_3   = $('table tr:nth-child(3) td:nth-child(9)').text().match(regex)[0];
             let time        = moment().format('HH:mm');
             if (time <= in_end_1 && time >= in_start_1 || time <= in_end_2 && time >= in_start_2 || time <= in_end_3 && time >= in_start_3) {
                 check_in.removeAttr('disabled');
@@ -133,8 +136,8 @@
                         in_shift,
                         out_shift,
                         num,
-                        time      = moment().format('HH:mm'),
-                        len       = response.length;
+                        time = moment().format('HH:mm'),
+                        len  = response.length;
                     if (time >= in_start_1 && time <= in_end_1) {
                         in_shift = 1;
                         num      = 1;
@@ -160,36 +163,36 @@
                         out_shift = 3;
                         num       = 2;
                     }
-                    if (len === 0) {
-                        checkin = null;
-                        checkout = null;
-                    } else {
+                    if (len >= 0) {
                         let shift = response[len]['shift'];
                         if (shift === in_shift) {
                             checkin = response[len]['check_in'];
-                        } else {
-                            checkin = response[len - 1]['check_in'];
-                            if (checkin !== null) {
-                                checkin = null;
-                            }
                         }
                         if (shift === out_shift) {
                             checkout = response[len]['check_out'];
                         } else {
-                            checkout = response[len - 1]['check_out'];
-                            if (checkout !== null) {
-                                checkout = null;
+                            if (len >= 1) {
+                                checkout = response[len - 1]['check_out'];
+                                if (checkout !== null) {
+                                    checkout = null;
+                                }
                             }
                         }
                     }
 
-                    if (num === 1 && checkin === null) {
+                    if (num === 1) {
                         check_in.removeAttr('disabled');
+                        if (checkin) {
+                            check_in.attr('disabled', 'disabled');
+                        }
                     } else {
                         check_in.attr('disabled', 'disabled');
                     }
-                    if (num === 2 && checkout === null) {
+                    if (num === 2) {
                         check_out.removeAttr('disabled');
+                        if (checkout) {
+                            check_out.attr('disabled', 'disabled');
+                        }
                     } else {
                         check_out.attr('disabled', 'disabled');
                     }

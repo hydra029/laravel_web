@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\RoleFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Role whereId($value)
  * @method static Builder|Role whereName($value)
  * @method static Builder|Role whereStatus($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @property int $dept_id
  * @property int $pay_rate
  * @property-read string $pay_rate_money

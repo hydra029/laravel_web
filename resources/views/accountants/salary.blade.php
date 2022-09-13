@@ -177,7 +177,7 @@
 				</tr>
 				<tr>
 					<td colspan="5" class="am">
-						<button class="btn btn-success btn-confirm">Confirm</button>
+						<button class="btn btn-success btn-confirm d-none">Confirm</button>
 					</td>
 				</tr>
 				</tbody>
@@ -195,30 +195,31 @@
             });
             let slM           = $('#select-month');
             let slY           = $('#select-year');
+            let btnConfirm    = $('.btn-confirm');
             let btn           = $('#btn-data');
             let detail_salary = $("#table-salary-detail");
             let empty         = $("#empty");
+            let currentDate  = new Date().getDate();
+            let currentMonth  = new Date().getMonth();
+            let currentYear   = new Date().getFullYear();
             (function () {
-                const d   = new Date();
-                let month = d.getMonth();
-                let year  = d.getFullYear();
-                if (month === 0) {
-                    month = 11;
-                    year  = year - 1;
+                if (currentMonth === 0) {
+                    currentMonth = 11;
+                    currentYear  = currentYear - 1;
                 }
 
-                for (let i = year; i >= 2018; i--) {
+                for (let i = currentYear; i >= 2018; i--) {
                     slY.append(`<option value="${i}">${i}</option>`);
                 }
-                for (let i = month; i >= 1; i--) {
+                for (let i = currentMonth; i >= 1; i--) {
                     let j = i;
                     if (j <= 9) {
                         j = '0' + i;
                     }
                     slM.append(`<option value="${i}">${j}</option>`);
                 }
-                $('.date input[name="month"]').val(month);
-                $('.date input[name="year"]').val(year);
+                slM.val(currentMonth);
+                slY.val(currentYear);
             })()
             showDetailSalary();
             slM.change(function () {
@@ -227,12 +228,13 @@
             slY.change(function () {
                 showDetailSalary();
             });
+
             function showDetailSalary() {
                 let id        = btn.data('id');
                 let dept_name = btn.data('dept');
                 let role_name = btn.data('role');
-                let month = slM.val();
-                let year  = slY.val();
+                let month     = slM.val();
+                let year      = slY.val();
                 $.ajax({
                     type    : "post",
                     url     : "{{ route('accountants.get_personal_salary') }}",
@@ -249,38 +251,83 @@
                             empty.has('d-none') && empty.removeClass('d-none');
                             detail_salary.addClass('d-none');
                         } else {
-                            console.log(response['salary']['work_day']);
                             detail_salary.has('d-none') && detail_salary.removeClass('d-none');
                             empty.addClass('d-none');
-                            detail_salary.find(".detail-work_day").text(response['salary']['work_day']);
-                            detail_salary.find(".detail-pay_rate").text(response['salary']['pay_rate_work_day']);
-                            detail_salary.find(".detail-basic_salary").text(response['salary']['pay_rate_money']);
-                            detail_salary.find(".detail-over_work_day").text(response['salary']['over_work_day']);
-                            detail_salary.find(".detail-pay_rate_over_work_day").text(response['salary']['pay_rate_over_work_day']);
-                            detail_salary.find(".detail-bonus_salary_over_work_day").text(response['salary']['bonus_salary_over_work_day']);
-                            detail_salary.find(".detail-off_work_day").text(response['salary']['off_work_day']);
-                            detail_salary.find(".detail-pay_rate_off_work_day").text(response['salary']['pay_rate_off_work_day']);
-                            detail_salary.find(".detail-bonus_salary_off_work_day").text(response['salary']['bonus_salary_off_work_day']);
-                            detail_salary.find(".detail-late_1").text(response['salary']['late_1']);
-                            detail_salary.find(".detail-deduction_late_1").text(response['fines'][0]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_late_1").text(response['salary']['deduction_late_one_detail']);
-                            detail_salary.find(".detail-late_2").text(response['salary']['late_2']);
-                            detail_salary.find(".detail-deduction_late_2").text(response['fines'][1]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_late_2").text(response['salary']['deduction_late_two_detail']);
-                            detail_salary.find(".detail-early_1").text(response['salary']['early_1']);
-                            detail_salary.find(".detail-deduction_early_1").text(response['fines'][2]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_early_1").text(response['salary']['deduction_early_one_detail']);
-                            detail_salary.find(".detail-early_2").text(response['salary']['early_2']);
-                            detail_salary.find(".detail-deduction_early_2").text(response['fines'][3]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_early_2").text(response['salary']['deduction_early_two_detail']);
-                            detail_salary.find(".detail-miss").text(response['salary']['miss']);
-                            detail_salary.find(".detail-deduction_miss").text(response['fines'][4]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_miss").text(response['salary']['deduction_miss_detail']);
-                            detail_salary.find(".detail-salary").text(response['salary']['salary_money']);
+                            detail_salary.find(".detail-work_day")
+                                .text(response['salary']['work_day']);
+                            detail_salary.find(".detail-pay_rate")
+                                .text(response['salary']['pay_rate_work_day']);
+                            detail_salary.find(".detail-basic_salary")
+                                .text(response['salary']['pay_rate_money']);
+                            detail_salary.find(".detail-over_work_day")
+                                .text(response['salary']['over_work_day']);
+                            detail_salary.find(".detail-pay_rate_over_work_day")
+                                .text(response['salary']['pay_rate_over_work_day']);
+                            detail_salary.find(".detail-bonus_salary_over_work_day")
+                                .text(response['salary']['bonus_salary_over_work_day']);
+                            detail_salary.find(".detail-off_work_day")
+                                .text(response['salary']['off_work_day']);
+                            detail_salary.find(".detail-pay_rate_off_work_day")
+                                .text(response['salary']['pay_rate_off_work_day']);
+                            detail_salary.find(".detail-bonus_salary_off_work_day")
+                                .text(response['salary']['bonus_salary_off_work_day']);
+                            detail_salary.find(".detail-late_1")
+                                .text(response['salary']['late_1']);
+                            detail_salary.find(".detail-deduction_late_1")
+                                .text(response['fines'][0]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_late_1")
+                                .text(response['salary']['deduction_late_one_detail']);
+                            detail_salary.find(".detail-late_2")
+                                .text(response['salary']['late_2']);
+                            detail_salary.find(".detail-deduction_late_2")
+                                .text(response['fines'][1]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_late_2")
+                                .text(response['salary']['deduction_late_two_detail']);
+                            detail_salary.find(".detail-early_1")
+                                .text(response['salary']['early_1']);
+                            detail_salary.find(".detail-deduction_early_1")
+                                .text(response['fines'][2]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_early_1")
+                                .text(response['salary']['deduction_early_one_detail']);
+                            detail_salary.find(".detail-early_2")
+                                .text(response['salary']['early_2']);
+                            detail_salary.find(".detail-deduction_early_2")
+                                .text(response['fines'][3]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_early_2")
+                                .text(response['salary']['deduction_early_two_detail']);
+                            detail_salary.find(".detail-miss")
+                                .text(response['salary']['miss']);
+                            detail_salary.find(".detail-deduction_miss")
+                                .text(response['fines'][4]['deduction_detail']);
+                            detail_salary.find(".detail-deduction_salary_miss")
+                                .text(response['salary']['deduction_miss_detail']);
+                            detail_salary.find(".detail-salary")
+                                .text(response['salary']['salary_money']);
+                        }
+                        if (month - 0 === currentMonth - 1 && year - 0 === currentYear) {
+                            if (currentDate >= 15 && currentDate <= 25) {
+                                btnConfirm.removeClass('d-none');
+                            }
                         }
                     }
                 });
             }
+
+            btnConfirm.click(function () {
+                $.ajax({
+                    url     : '{{route('accountants.confirm_salary')}}',
+                    dataType: 'json',
+                    method  : 'POST',
+                })
+                    .done(function (response) {
+                        if (response === 0) {
+                            notifySuccess("You\'ve successfully signed salary !");
+                            btnConfirm.addClass('d-none');
+                        } else {
+                            notifyError('Today is not the day to sign the salary !')
+                        }
+                    })
+            })
         })
 	</script>
 @endpush

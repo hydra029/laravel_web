@@ -1,5 +1,6 @@
+@php use App\Enums\EmpRoleEnum; @endphp
 <div class="navbar-custom topnav-navbar topnav-navbar-dark">
-    <div class="container-fluid">
+	<div class="container-fluid">
 
 		<!-- LOGO -->
 		{{--        <a href="index.html" class="topnav-logo">--}}
@@ -82,7 +83,6 @@
 				</div>
 			</li>
 
-
 			<li class="notification-list">
 				<a class="nav-link right-bar-toggle" href="javascript: void(0);">
 					<i class="dripicons-gear noti-icon"></i>
@@ -91,21 +91,18 @@
 
 			<li class="dropdown notification-list">
 				<a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" id="topbar-userdrop"
-				   href="#" role="button" aria-haspopup="true"
-				   aria-expanded="false">
-    <span class="account-user-avatar">
-        <img src="
-            @if(session('avatar') === null)
-            {{ asset('img/istockphoto-1223671392-612x612.jpg') }}
-            @else
-            {{ asset('') }}img/{{ session('avatar') }}
-            @endif
-        " alt="user-image" class="rounded-circle">
-    </span>
-					<span>
-        <span class="account-user-name">{{ session('name') }}</span>
-        <span class="account-position">{{ session('role_name') }}</span>
-    </span>
+				   href="#" role="button" aria-haspopup="true" aria-expanded="false">
+					<span class="account-user-avatar">
+						<img src="
+                    @if(session('avatar') === null)
+                    {{ asset('img/istockphoto-1223671392-612x612.jpg') }}
+                    @else
+                    {{ asset('') }}img/{{ session('avatar') }}
+                    @endif
+                    " alt="user-image" class="rounded-circle">
+                    </span>
+					<span class="account-user-name">{{ session('name') }}</span>
+					<span class="account-position">{{ session('role_name') }}</span>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown"
 				     aria-labelledby="topbar-userdrop">
@@ -115,7 +112,7 @@
 					</div>
 
 					<!-- item-->
-					<a href="{{ route('ceo.get_infor') }}" id="get-infor" class="dropdown-item notify-item">
+					<a href="{{ route(EmpRoleEnum::getKeyByValue(session('level')) . '.personal_information') }}" id="get-infor" class="dropdown-item notify-item">
 						<i class="mdi mdi-account-circle mr-1"></i>
 						<span>My Account</span>
 					</a>
@@ -132,16 +129,13 @@
 						<span>Support</span>
 					</a>
 
-
 					<!-- item-->
 					<a href="{{route('logout')}}" class="dropdown-item notify-item">
 						<i class="mdi mdi-logout mr-1"></i>
 						<span>Logout</span>
 					</a>
-
 				</div>
 			</li>
-
 		</ul>
 		<a class="button-menu-mobile disable-btn">
 			<div class="lines">
@@ -150,6 +144,5 @@
 				<span></span>
 			</div>
 		</a>
-
 	</div>
 </div>

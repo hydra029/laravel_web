@@ -26,7 +26,7 @@
 			<th rowspan="2">Shift</th>
 			<th colspan="4">Check In</th>
 			<th colspan="4">Check Out</th>
-			<th rowspan="2">Change</th>
+			<th rowspan="2">Action</th>
 		</tr>
 		<tr>
 			<th>Start</th>

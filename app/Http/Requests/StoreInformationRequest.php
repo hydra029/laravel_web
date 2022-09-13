@@ -2,13 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Department;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
-class StoreEmployeeRequest extends FormRequest
+class StoreInformationRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -72,17 +70,13 @@ class StoreEmployeeRequest extends FormRequest
                 'max:10',
                 'regex:/(0)[0-9]{9}/',
                 'unique:App\Models\Employee,phone',
-            ],
-            'email' => [
-                'required' ,
-                'email:rfc,dns',
-                'min:10',
-                'max:50',
-                'unique:App\Models\Employee,email',
+                'unique:App\Models\Manager,phone',
+                'unique:App\Models\Accountant,phone',
             ],
             'password' => [
                 'nullable',
                 'string',
+                'regex:^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$',
             ],
         ];
     }

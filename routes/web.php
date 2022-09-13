@@ -13,11 +13,12 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalaryController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', [RoleController::class, 'index'])->name('test');
+Route::get('/test', [HomeController::class, 'test'])->name('test');
 Route::post('/test/get_salary', [HomeController::class, 'getSalary'])->name('get_salary');
 Route::post('/test/salary_detail', [HomeController::class, 'salaryDetail'])->name('salary_detail');
 
 Route::get('/', [LoginController::class, 'login'])->name('login')->middleware('login');
+Route::get('/personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
 Route::post('/', [LoginController::class, 'processLogin'])->name('process_login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -25,12 +26,14 @@ Route::group(['prefix' => 'employees', 'as' => 'employees.', 'middleware' => 'em
 	Route::post('/checkin', [EmployeeController::class, 'checkin'])->name('checkin');
 	Route::post('/checkout', [EmployeeController::class, 'checkout'])->name('checkout');
 	Route::get('/attendance_history', [EmployeeController::class, 'attendanceHistory'])->name('attendance_history');
-	Route::post('/history_api', [EmployeeController::class, 'historyApi'])->name('history_api');
+	Route::post('/history_api', [ApiController::class, 'historyApi'])->name('history_api');
 	Route::get('/salary', [EmployeeController::class, 'salary'])->name('salary');
 	Route::post('/salary_detail', [EmployeeController::class, 'salaryDetail'])->name('salary_detail');
 	Route::post('/confirm_salary', [EmployeeController::class, 'confirmSalary'])->name('confirm_salary');
 	Route::get('/get_shift_time', [ApiController::class, 'getShiftTimes'])->name('get_shift_time');
 	Route::post('get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
+	Route::get('personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
+	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
 });
 
 Route::group(['prefix' => 'managers', 'as' => 'managers.', 'middleware' => 'manager'], static function () {
@@ -52,7 +55,10 @@ Route::group(['prefix' => 'managers', 'as' => 'managers.', 'middleware' => 'mana
 	Route::post('/salary_detail', [ManagerController::class, 'salaryDetail'])->name('salary_detail');
 	Route::get('/department_api', [ManagerController::class, 'departmentApi'])->name('department_api');
 	Route::get('/get_shift_time', [ApiController::class, 'getShiftTimes'])->name('get_shift_time');
-	Route::post('get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
+	Route::post('/get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
+	Route::get('/personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
+	Route::post('/confirm_salary', [EmployeeController::class, 'confirmSalary'])->name('confirm_salary');
+	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
 	Route::group(['middleware' => 'mgr_acct'], static function () {
 		Route::get('/sign_employee_salary', [ManagerController::class, 'signEmployeeSalary'])->name('sign_employee_salary');
 		Route::post('/assign_accountant', [ManagerController::class, 'assignAccountant'])->name('assign_accountant');
@@ -77,6 +83,8 @@ Route::group(['prefix' => 'accountants', 'as' => 'accountants.', 'middleware' =>
 	Route::get('/department_api', [AccountantController::class, 'departmentApi'])->name('department_api');
 	Route::get('/get_shift_time', [ApiController::class, 'getShiftTimes'])->name('get_shift_time');
 	Route::post('get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
+	Route::get('/personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
+	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
 });
 
 Route::group(['prefix' => 'ceo', 'as' => 'ceo.', 'middleware' => 'ceo'], static function () {
@@ -99,19 +107,19 @@ Route::group(['prefix' => 'ceo', 'as' => 'ceo.', 'middleware' => 'ceo'], static 
 	Route::post('/store_acct', [CeoController::class, 'storeAccountant'])->name('store_acct');
 	Route::post('/store_mgr', [CeoController::class, 'storeManager'])->name('store_mgr');
 	Route::post('/select_role', [CeoController::class, 'selectRole'])->name('select_role');
-	Route::post('/update_emp', [CeoController::class, 'updateEmployee'])->name('update_emp');
+	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
 	Route::delete('/delete_emp', [CeoController::class, 'deleteEmployee'])->name('delete_emp');
 	Route::post('/employee_infor', [CeoController::class, 'employeeInformation'])->name('employee_infor');
 	Route::post('/import_employee', [CeoController::class, 'importEmployee'])->name('import_employee');
 	Route::post('/import_acct', [CeoController::class, 'importAccountant'])->name('import_acct');
 	Route::post('/import_mgr', [CeoController::class, 'importManager'])->name('import_mgr');
-	Route::get('/get_infor', [CeoController::class, 'getInformation'])->name('get_infor');
 	Route::get('/employee_attendance', [CeoController::class, 'employeeAttendance'])->name('employee_attendance');
 	Route::post('/attendance_api', [CeoController::class, 'attendanceApi'])->name('attendance_api');
 	Route::get('/department_api', [CeoController::class, 'departmentApi'])->name('department_api');
 	Route::post('/emp_attendance_api', [CeoController::class, 'employeeAttendanceApi'])->name('emp_attendance_api');
 	Route::get('/get_shift_time', [ApiController::class, 'getShiftTimes'])->name('get_shift_time');
 	Route::post('get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
+	Route::get('/personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
 	Route::get('/access_token', [CeoController::class, 'accessToken'])->name('access_token');
 	Route::group(['prefix' => 'roles', 'as' => 'roles.'], static function () {
 		Route::post('/store', [RoleController::class, 'store'])->name('store');

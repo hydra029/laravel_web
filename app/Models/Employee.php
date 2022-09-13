@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * App\Models\Employee
@@ -26,20 +27,46 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $lname
  * @property int $gender
  * @property string $dob
+ * @property string|null $avatar
+ * @property string $city
+ * @property string $district
+ * @property string $phone
  * @property string $email
- * @property string $password
+ * @property string|null $password
  * @property int $dept_id
  * @property int $role_id
- * @property int $status
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property string|null $remember_token
+ * @property-read Collection|Attendance[] $attendance
+ * @property-read int|null $attendance_count
+ * @property-read Department $departments
+ * @property-read string $address
  * @property-read string $age
+ * @property-read string $check1
+ * @property-read string $check2
+ * @property-read string $check3
+ * @property-read string $date
+ * @property-read string $date_of_birth
  * @property-read string $full_name
  * @property-read string $gender_name
+ * @property-read string $role_name
+ * @property-read string $shift_status
+ * @property-read Role $roles
+ * @property-read Collection|PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
  * @method static EmployeeFactory factory(...$parameters)
  * @method static Builder|Employee newModelQuery()
  * @method static Builder|Employee newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Employee onlyTrashed()
  * @method static Builder|Employee query()
- * @method static Builder|Employee paginate()
+ * @method static Builder|Employee whereAvatar($value)
+ * @method static Builder|Employee whereCity($value)
+ * @method static Builder|Employee whereCreatedAt($value)
+ * @method static Builder|Employee whereDeletedAt($value)
  * @method static Builder|Employee whereDeptId($value)
+ * @method static Builder|Employee whereDistrict($value)
  * @method static Builder|Employee whereDob($value)
  * @method static Builder|Employee whereEmail($value)
  * @method static Builder|Employee whereFname($value)
@@ -47,44 +74,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static Builder|Employee whereId($value)
  * @method static Builder|Employee whereLname($value)
  * @method static Builder|Employee wherePassword($value)
- * @method static Builder|Employee whereRoleId($value)
- * @method static Builder|Employee whereStatus($value)
- * @mixin Eloquent
- * @property-read string $date
- * @property-read string $shift_status
- * @property-read string $check_in_1
- * @property-read string $check_in_2
- * @property-read string $check_in_3
- * @property-read string $check_out_1
- * @property-read string $check_out_2
- * @property-read string $check_out_3
- * @property string|null $avatar
- * @property-read Collection|Attendance[] $attendance
- * @property-read int|null $attendance_count
- * @property-read Department $departments
- * @property-read string $check1
- * @property-read string $check2
- * @property-read string $check3
- * @property-read string $date_of_birth
- * @property-read Role $roles
- * @method static Builder|Employee whereAvatar($value)
- * @property string $city
- * @property string $district
- * @property string $phone
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
- * @property-read string $address
- * @property-read string $role_name
- * @method static \Illuminate\Database\Query\Builder|Employee onlyTrashed()
- * @method static Builder|Employee whereCity($value)
- * @method static Builder|Employee whereCreatedAt($value)
- * @method static Builder|Employee whereDeletedAt($value)
- * @method static Builder|Employee whereDistrict($value)
  * @method static Builder|Employee wherePhone($value)
+ * @method static Builder|Employee whereRememberToken($value)
+ * @method static Builder|Employee whereRoleId($value)
  * @method static Builder|Employee whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|Employee withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Employee withoutTrashed()
+ * @mixin Eloquent
  */
 class Employee extends Model implements Authenticatable
 {
@@ -92,13 +88,11 @@ class Employee extends Model implements Authenticatable
 
     protected $guarded = [
         'id',
+        'deleted_at',
+        'updated_at',
+        'created_at',
+        'remember_token',
     ];
-
-	protected $primaryKey = 'id';
-    /**
-     *
-     * @return string
-     */
 
     public function getAgeAttribute(): string
     {
@@ -114,6 +108,11 @@ class Employee extends Model implements Authenticatable
     {
         return date_format(date_create($this->dob), "d/m/Y");
     }
+
+	public function getShortDobAttribute(): string
+	{
+		return date_format(date_create($this->dob), 'Y-m-d');
+	}
 
     public function getDateAttribute(): string
     {

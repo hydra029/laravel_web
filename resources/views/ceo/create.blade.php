@@ -671,7 +671,7 @@
                 const formUpdate = $(this);
                 $.ajax({
                     type       : "post",
-                    url        : "{{ route('ceo.update_emp') }}",
+                    {{--url        : "{{ route('ceo.update_emp') }}",--}}
                     dataType   : 'json',
                     async      : false,
                     cache      : false,

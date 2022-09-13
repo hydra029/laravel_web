@@ -12,9 +12,9 @@ class StoreAccountantRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return session('level') === 4;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class StoreAccountantRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'fname' => [

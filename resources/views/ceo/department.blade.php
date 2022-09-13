@@ -183,7 +183,7 @@
 						<td class="align-middle ">
 							<div>
                                     <span class="dept-members members-department ">
-                                        @if($each->id ==1)
+                                        @if($each->id === 1)
 		                                    {{ $each->acctmembers_count }}
 	                                    @else
 		                                    {{ $each->members_count }}
@@ -480,7 +480,7 @@
 					<div class="image-upload">
 						<label for="file-input" class="text-center">
 							<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%" alt="">
-							<span>Click here to chage avatar</span>
+							<span>Click here to change avatar</span>
 						</label>
 						<input id="file-input" type="file" class="d-none"/>
 					</div>
@@ -493,20 +493,16 @@
 									First Name:
 									<br>
 									<span class="error-message-fname text-danger"> </span><label>
-										<input type="text"
-										                                                             name="fname"
-										                                                             class="form-control inp-fname"
-										                                                             placeholder="First Name">
+										<input type="text" name="fname" class="form-control inp-fname"
+										       placeholder="First Name">
 									</label>
 								</td>
 								<td>
 									Last Name:
 									<br>
 									<span class="error-message-lname text-danger"> </span><label>
-										<input type="text"
-										                                                             name="lname"
-										                                                             class="form-control inp-lname "
-										                                                             placeholder="Last Name">
+										<input type="text" name="lname" class="form-control inp-lname"
+										       placeholder="Last Name">
 									</label>
 								</td>
 							</tr>
@@ -529,14 +525,11 @@
 								<td colspan="2">
 									Date of birth:
 									<br>
-									<span class="error-message-dob text-danger"> </span> <label
-											for="date"></label><label for="date"></label><label
-											for="date"></label><input type="date"
-									                                  name="dob" id="date"
-									                                  class="form-control inp-dob"
-									                                  style="width: 100%; display: inline;"
-									                                  required value=""
-									                                  placeholder="Date of birth">
+									<span class="error-message-dob text-danger"></span>
+									<label for="date">
+										<input type="date" name="dob" id="date" class="form-control inp-dob"
+										       style="width: 100%; display: inline;" required value=""
+										       placeholder="Date of birth"></label>
 								</td>
 								<td></td>
 							</tr>
@@ -544,19 +537,18 @@
 								<td>
 									City:
 									<br>
-									<span class="error-message-city text-danger"> </span><label
-											for="select-city"></label><label for="select-city"></label><select name="city"
-									                                                                           id="select-city"
-									                                                                           class="form-control"></select>
+									<span class="error-message-city text-danger"> </span>
+									<label for="select-city">
+										<select name="city" id="select-city" class="form-control"></select>
+									</label>
 								</td>
 								<td>
 									District:
 									<br>
-									<span class="error-message-district text-danger"> </span><label
-											for="select-district"></label><label
-											for="select-district"></label><select name="district"
-									                                              id="select-district"
-									                                              class="form-control"></select>
+									<span class="error-message-district text-danger"></span>
+									<label for="select-district">
+										<select name="district" id="select-district" class="form-control"></select>
+									</label>
 								</td>
 							</tr>
 							<tr>
@@ -564,10 +556,8 @@
 									Number phone:
 									<br>
 									<span class="error-message-phone text-danger"> </span> <label>
-										<input type="number"
-										                                                              name="phone" value=""
-										                                                              placeholder="Number phone"
-										                                                              class="form-control inp-phone">
+										<input type="number" name="phone" value="" placeholder="Number phone"
+										       class="form-control inp-phone">
 									</label>
 								</td>
 							</tr>
@@ -576,10 +566,8 @@
 									Email:
 									<br>
 									<span class="error-message-email text-danger"> </span><label>
-										<input type="email"
-										                                                             name="email" value=""
-										                                                             placeholder="Email"
-										                                                             class="form-control inp-email">
+										<input type="email" name="email" value="" placeholder="Email"
+										       class="form-control inp-email">
 									</label>
 								</td>
 							</tr>
@@ -590,11 +578,8 @@
 									      class="fa fa-fw fa-eye field_icon toggle-password"></span>
 									<br>
 									<span class="error-message-password text-danger"> </span> <label>
-										<input type="password"
-										                                                                 name="password"
-										                                                                 value=""
-										                                                                 placeholder="Password"
-										                                                                 class="form-control inp-password">
+										<input type="password" name="password" value="" placeholder="Password"
+										       class="form-control inp-password">
 									</label>
 								</td>
 							</tr>
@@ -602,18 +587,22 @@
 								<td>
 									<span>department</span>
 									<span class="error-message-dept_id text-danger"> </span>
-									<label for="select-department"></label><label
-											for="select-department"></label><label
-											for="select-department"></label><select id="select-department" name="dept_id" class="form-control inp-dept_id">
-										@foreach ($dept as $each)
-											<option value="{{ $each->id }}">{{ $each->name }}</option>
-										@endforeach
-									</select>
+									<label for="select-department">
+										<select id="select-department" name="dept_id"
+										        class="form-control inp-dept_id">
+											@foreach ($dept as $each)
+												<option value="{{ $each->id }}">{{ $each->name }}</option>
+											@endforeach
+										</select>
+									</label>
 								</td>
 								<td>
 									<span>role</span>
 									<span class="error-message-role_id text-danger"> </span>
-									<label for="select-role"></label><select id="select-role" name="role_id" class="form-control inp-role_id"></select>
+									<label for="select-role">
+										<select id="select-role" name="role_id"
+										        class="form-control inp-role_id"></select>
+									</label>
 								</td>
 							</tr>
 							<tr>
@@ -629,7 +618,6 @@
 	</div>
 @endsection
 @push('js')
-	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="{{ asset('js/imgHover.js') }}"></script>
 	<script type="text/javascript">
         $(document).ready(async function () {
@@ -638,12 +626,17 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            let modelPopup       = $('.model-popup');
+            let btnDelDepartment = $('.btn-delete-departments');
+            let profileCard      = $('.profile-card');
+            let profileCardEdit  = $('.profile-card-edit');
+            let modelAskDel      = $(".model-ask-delete");
+            let profileCardInfo  = profileCard.find('.profile-card-info');
             // add department
             $('.btn-close-model').click(function () {
                 $('.model-popup-div ').addClass('d-none');
-                $('.model-popup').addClass('d-none');
-                $('.model-popup').find('form')[0].reset();
+                modelPopup.addClass('d-none');
+                modelPopup.find('form')[0].reset();
             });
             $('.btn-add-dept').click(function () {
                 $('.model-popup-div ').removeClass('d-none');
@@ -678,7 +671,7 @@
             $('.btn-edit-department').click(function () {
                 let dept_row = $(this).parents('tr');
                 $('.model-popup-div ').removeClass('d-none');
-                $('.model-popup').removeClass('d-none');
+                modelPopup.removeClass('d-none');
                 $('.popup-edit-department').removeClass('d-none');
                 let dept_id    = $(this).data('id');
                 let dept_name  = $(this).parents('tr').find('.dept-name').text();
@@ -708,7 +701,7 @@
                                     .manager.avatar;
                             }
                             $('.model-popup-div ').addClass('d-none');
-                            $('.model-popup').addClass('d-none');
+                            modelPopup.addClass('d-none');
                             $('.popup-edit-department').addClass('d-none');
                             dept_row.find('.dept-name').text(response[0].name);
                             dept_row.find('.manager-id').text(response[0].manager
@@ -739,9 +732,9 @@
                 let dept_id  = $(this).data('id');
                 $('.model-popup-div ').removeClass('d-none');
                 $('.model-ask-delete').removeClass('d-none');
-                $('.btn-delete-departments').removeClass('d-none');
-                $(".model-ask-delete").find(".btn-delete-departments").data('id', dept_id);
-                $('.btn-delete-departments').click(function () {
+                btnDelDepartment.removeClass('d-none');
+                modelAskDel.find(".btn-delete-departments").data('id', dept_id);
+                btnDelDepartment.click(function () {
                     $.ajax({
                         type    : "POST",
                         url     : "{{ route('ceo.department.destroy') }}",
@@ -749,11 +742,11 @@
                             dept_id: dept_id,
                         },
                         dataType: "json",
-                        success : function (response) {
+                        success : function () {
                             dept_row.remove();
                             $('.model-popup-div ').addClass('d-none');
-                            $('.model-popup').addClass('d-none');
-                            $('.btn-delete-departments').addClass('d-none');
+                            modelPopup.addClass('d-none');
+                            btnDelDepartment.addClass('d-none');
                         }
                     })
                 });
@@ -768,7 +761,7 @@
                 let dept_name    = $(this).parents('tr').find('.dept-name').text();
                 let manager_name = $(this).parents('tr').find('.manager-name').text();
                 let url;
-                if (dept_id == 1) {
+                if (dept_id === 1) {
                     url = "{{ route('ceo.department_accountants') }}";
                 } else {
                     url = "{{ route('ceo.department_employees') }}";
@@ -788,26 +781,18 @@
                     success : function (response) {
 
                         $.each(response.data.data, function (index, value) {
-                            if (value.avatar == null) {
-                                let img =
-                                        `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
-                            } else {
-                                let img =
-                                        `<img  src="{{ asset('') }}img/${value.avatar} "  style=" border-radius:50% " width="40px"/>`
+                            let img = `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
+                            if (value.avatar !== null) {
+                                img =
+                                    `<img  src="{{ asset('') }}img/${value.avatar} "  style=" border-radius:50% " width="40px"/>`
                             }
                             $('#table-department-employees').append($(
                                 '<tr class="employee-row">')
-                                .append($('<td class="align-middle">').append((
-                                    index + 1) + '.'))
-                                .append($('<td class="align-middle">').append(
-                                    img
-                                ))
-                                .append($('<td class="align-middle">').append(
-                                    value.full_name))
-                                .append($('<td class="align-middle">').append(
-                                    value.gender_name))
-                                .append($('<td class="align-middle">').append(
-                                    value.roles.name))
+                                .append($('<td class="align-middle">').append((index + 1) + '.'))
+                                .append($('<td class="align-middle">').append(img))
+                                .append($('<td class="align-middle">').append(value.full_name))
+                                .append($('<td class="align-middle">').append(value.gender_name))
+                                .append($('<td class="align-middle">').append(value.roles.name))
                                 .append($('<td class="align-middle">').append(`
                                             <i class="fa-solid fa-eye btn-show-employee text-primary" data-id="${value.id}"></i>
                                             <i class="fa-solid fa-pen btn-edit-employee text-warning" data-id="${value.id}"></i>
@@ -829,11 +814,7 @@
                 links.forEach(function (each) {
                     $('#employees-pagination').append($('<li>').attr('class',
                         `page-item ${each.active ? 'active' : ''}`)
-                        .append(`<a class="page-link"
-                                href="${each.url}">
-                                    ${each.label}
-                                </a>
-                            `))
+                        .append(`<a class="page-link" href="${each.url}">${each.label}</a>`))
                 })
             }
 
@@ -853,23 +834,19 @@
                         success : function (response) {
 
                             $.each(response.data.data, function (index, value) {
-                                $('#table-department-employees').append($(
-                                        `<tr class="employee-row" data-id="${value.id}">`
-                                    )
-                                        .append($('<td class="align-middle">')
-                                            .append((index + 1) + '.'))
-                                        .append($('<td class="align-middle">')
-                                            .append(
-                                                `<img  src="{{ asset('') }}img/${value.avatar}" class="rounded" width="100px" />`
-                                            ))
-                                        .append($('<td class="align-middle">')
-                                            .append(value.full_name))
-                                        .append($('<td class="align-middle">')
-                                            .append(value.gender_name))
-                                        .append($('<td class="align-middle">')
-                                            .append(value.roles.name))
-                                        .append($('<td class="align-middle">')
-                                            .append(`
+                                $('#table-department-employees').append($(`<tr class="employee-row" data-id="${value.id}">`)
+                                    .append($('<td class="align-middle">')
+                                        .append((index + 1) + '.'))
+                                    .append($('<td class="align-middle">')
+                                        .append(`<img  src="{{ asset('') }}img/${value.avatar}" class="rounded" width="100px" />`))
+                                    .append($('<td class="align-middle">')
+                                        .append(value.full_name))
+                                    .append($('<td class="align-middle">')
+                                        .append(value.gender_name))
+                                    .append($('<td class="align-middle">')
+                                        .append(value.roles.name))
+                                    .append($('<td class="align-middle">')
+                                        .append(`
                                             <i class="fa-solid fa-eye btn-show-employee text-primary" data-id="${value.id}"></i>
                                             <i class="fa-solid fa-pen btn-edit-employee text-warning" data-id="${value.id}"></i>
                                             <i class="fa-solid fa-square-xmark btn-delete-employee text-danger" data-id="${value.id}"></i>
@@ -899,35 +876,42 @@
                         dataType: "json",
                         success : function (response) {
                             console.log(response);
-                            $('.profile-card').removeClass('d-none');
-                            $('.profile-card').find('.profile-card-info').find(
-                                '.profile-card-name').text(response[0].full_name);
-                            $('.profile-card').find('.profile-card-info').find(
-                                '.profile-card-gender').text(response[0].gender_name);
-                            $('.profile-card').find('.profile-card-info').find(
-                                '.profile-card-dob').text(response[0].date_of_birth);
-                            $('.profile-card').find('.profile-card-info').find(
-                                '.profile-card-email').text(response[0].email);
-                            $('.profile-card').find('.profile-card-info').find(
-                                '.profile-card-number-phone').text(response[0].phone);
-                            $('.profile-card').find('.profile-card-info').find(
-                                '.profile-card-address').text(response[0].address);
+                            profileCard.removeClass('d-none');
+                            profileCardInfo
+                                .find('.profile-card-name')
+                                .text(response[0].full_name);
+                            profileCardInfo
+                                .find('.profile-card-gender')
+                                .text(response[0].gender_name);
+                            profileCardInfo
+                                .find('.profile-card-dob')
+                                .text(response[0].date_of_birth);
+                            profileCardInfo
+                                .find('.profile-card-email')
+                                .text(response[0].email);
+                            profileCardInfo
+                                .find('.profile-card-number-phone')
+                                .text(response[0].phone);
+                            profileCardInfo
+                                .find('.profile-card-address')
+                                .text(response[0].address);
                             if (response[0].avatar == null) {
-                                $('.profile-card').find('.profile-card-img').find('img')
+                                profileCard.find('.profile-card-img').find('img')
                                     .attr('src',
                                         '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}'
                                     );
                             } else {
                                 let src = '{{ asset('') }}';
                                 let img = src + 'img/' + response[0].avatar;
-                                $('.profile-card').find('.profile-card-img').find('img')
+                                profileCard.find('.profile-card-img').find('img')
                                     .attr('src', img);
                             }
-                            $('.profile-card').find('.profile-card-roles').find(
-                                '.profile-card-role').text(response[0].roles.name);
-                            $('.profile-card').find('.profile-card-roles').find(
-                                '.profile-card-department').text(response[0].departments
-                                .name);
+                            profileCard.find('.profile-card-roles')
+                                .find('.profile-card-role')
+                                .text(response[0].roles.name);
+                            profileCard.find('.profile-card-roles')
+                                .find('.profile-card-department')
+                                .text(response[0].departments.name);
                         }
                     });
                 });
@@ -947,40 +931,43 @@
                         dataType: "json",
                         success : function (response) {
                             console.log(response);
-                            $('.profile-card-edit').find('.profile-card-info').find(
-                                '.inp-fname').val(response[0].fname);
-                            $('.profile-card-edit').find('.profile-card-info').find(
-                                '.inp-dob').val(response[0].dob);
-                            $('.profile-card-edit').find('.profile-card-info').find(
-                                '.inp-lname').val(response[0].lname);
-                            $('.profile-card-edit').find('.profile-card-info').find(
-                                '.inp-phone').val(response[0].phone);
-                            $('.profile-card-edit').find('.profile-card-info').find(
-                                '.inp-email').val(response[0].email);
-                            $('.profile-card-edit').find('.profile-card-info').find(
-                                '#select-city').find('option').each(function () {
-                                if ($(this).val() == response[0].city) {
-                                    $(this).attr('selected', 'selected');
-                                }
-                                ;
-                            });
-                            $('.profile-card-edit').find('.profile-card-info').find(
+                            profileCardEdit.find('.profile-card-info')
+                                .find('.inp-fname')
+                                .val(response[0].fname);
+                            profileCardEdit.find('.profile-card-info')
+                                .find('.inp-dob')
+                                .val(response[0].dob);
+                            profileCardEdit.find('.profile-card-info')
+                                .find('.inp-lname')
+                                .val(response[0].lname);
+                            profileCardEdit.find('.profile-card-info')
+                                .find('.inp-phone')
+                                .val(response[0].phone);
+                            profileCardEdit.find('.profile-card-info')
+                                .find('.inp-email')
+                                .val(response[0].email);
+                            profileCardEdit.find('.profile-card-info')
+                                .find('#select-city')
+                                .find('option')
+                                .each(function () {
+                                    if ($(this).val() === response[0].city) {
+                                        $(this).attr('selected', 'selected');
+                                    }
+                                });
+                            profileCardEdit.find('.profile-card-info').find(
                                 '#select-department').find('option').each(function () {
-                                if ($(this).val() == response[0].dept_id) {
+                                if ($(this).val() === response[0].dept_id) {
                                     $(this).attr('selected', 'selected');
                                 }
-                                ;
                             });
 
                             if (response[0].avatar == null) {
-                                $('.profile-card').find('.profile-card-img').find('img')
-                                    .attr('src',
-                                        '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}'
-                                    );
+                                profileCard.find('.profile-card-img').find('img')
+                                    .attr('src', '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}');
                             } else {
                                 let src = '{{ asset('') }}';
                                 let img = src + 'img/' + response[0].avatar;
-                                $('.profile-card').find('.profile-card-img').find('img')
+                                profileCard.find('.profile-card-img').find('img')
                                     .attr('src', img);
                             }
                         }
@@ -999,9 +986,9 @@
                     let employee_delete = $(this).parents('tr');
                     let id              = $(this).data('id');
                     $(".model-popup-div").removeClass('d-none');
-                    $(".model-ask-delete").removeClass('d-none');
+                    modelAskDel.removeClass('d-none');
                     $(".btn-delete-members").removeClass('d-none');
-                    $(".model-ask-delete").find(".btn-delete-members").data('id', id);
+                    modelAskDel.find(".btn-delete-members").data('id', id);
                     $('.btn-delete-members').click(function () {
                         $.ajax({
                             type    : "delete",
@@ -1012,7 +999,7 @@
                             dataType: "json",
                             success : function (response) {
                                 employee_delete.remove();
-                                $(".model-ask-delete").addClass('d-none');
+                                modelAskDel.addClass('d-none');
                                 $(".model-popup-div").addClass('d-none');
                                 $(".btn-delete-members").addClass('d-none');
                             }
@@ -1048,44 +1035,47 @@
                 let form = $(this);
                 $.ajax({
                     type    : 'post',
-                    url     : "{{ route('ceo.update_emp') }}",
                     data    : form.serialize(),
                     dataType: 'json',
                     success : function (response) {
                         $.notify('success', 'edit success');
-                        $('.profile-card').find('.profile-card-info').find(
-                            '.profile-card-name').text(response[0].full_name);
-                        $('.profile-card').find('.profile-card-info').find(
-                            '.profile-card-gender').text(response[0].gender);
-                        $('.profile-card').find('.profile-card-info').find(
-                            '.profile-card-dob').text(response[0].date_of_birth);
-                        $('.profile-card').find('.profile-card-info').find(
-                            '.profile-card-email').text(response[0].email);
-                        $('.profile-card').find('.profile-card-info').find(
-                            '.profile-card-number-phone').text(response[0].phone);
-                        $('.profile-card').find('.profile-card-info').find(
-                            '.profile-card-address').text(response[0].address);
+                        profileCardInfo
+                            .find('.profile-card-name')
+                            .text(response[0].full_name);
+                        profileCardInfo
+                            .find('.profile-card-gender')
+                            .text(response[0].gender);
+                        profileCardInfo
+                            .find('.profile-card-dob')
+                            .text(response[0].date_of_birth);
+                        profileCardInfo
+                            .find('.profile-card-email')
+                            .text(response[0].email);
+                        profileCardInfo
+                            .find('.profile-card-number-phone')
+                            .text(response[0].phone);
+                        profileCardInfo
+                            .find('.profile-card-address')
+                            .text(response[0].address);
                         if (response[0].avatar == null) {
-                            $('.profile-card').find('.profile-card-img').find(
-                                '.image-upload').find('img').attr(
-                                'src',
-                                '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}'
-                            );
+                            profileCard.find('.profile-card-img')
+                                .find('.image-upload')
+                                .find('img')
+                                .attr('src', '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}');
                         } else {
                             let src = '{{ asset('') }}';
                             let img = src + 'img/' + response[0].avatar;
-                            $('.profile-card').find('.profile-card-img').find(
-                                '.image-upload').find('img').attr(
-                                'src', img);
+                            profileCard.find('.profile-card-img').find('.image-upload')
+                                .find('img')
+                                .attr('src', img);
                         }
-                        $('.profile-card').find('.profile-card-roles').find(
-                            '.profile-card-role').text(response[0].roles.name);
-                        $('.profile-card').find('.profile-card-roles').find(
-                            '.profile-card-department').text(response[0].departments
-                            .name);
-
+                        profileCard.find('.profile-card-roles')
+                            .find('.profile-card-role')
+                            .text(response[0].roles.name);
+                        profileCard.find('.profile-card-roles')
+                            .find('.profile-card-department')
+                            .text(response[0].departments.name);
                         $('#form-update-employees')[0].reset();
-
                     },
                     error   : function (xhr, textStatus, errorThrown) {
                         let err = JSON.parse(xhr.responseText);
@@ -1095,27 +1085,31 @@
                     }
                 });
             });
-            $('#select-city').select2();
+            let selectCity       = $('#select-city');
+            let selectDistrict   = $('#select-district');
+            let selectDepartment = $("#select-department");
+            selectCity.select2();
             const response = await fetch('{{ asset('locations/index.json') }}');
             const cities   = await response.json();
             $.each(cities, function (index, each) {
-                $('#select-city').append(
+                selectCity.append(
                     `<option value='${each.code}' data-path='${each.file_path}'>${index}</option>`);
             });
-            $('#select-city').change(function () {
+            selectCity.change(function () {
                 loadDistrict();
             })
-            loadDistrict();
-            $('#select-district').select2();
+            await loadDistrict();
+            selectDistrict.select2();
 
             async function loadDistrict() {
-                $('#select-district').empty();
+                selectDistrict.empty();
                 const path      = $("#select-city option:selected").data('path');
                 const response  = await fetch('{{ asset('locations/') }}' + path);
                 const districts = await response.json();
                 $.each(districts.district, function (index, each) {
                     if (each.pre === "Quận" || each.pre === "Huyện") {
-                        $('#select-district').append(`
+                        selectDistrict.append(`
+
                             <option>
                                 ${each.name}
                             </option>`);
@@ -1123,9 +1117,9 @@
                 });
             }
 
-            let dept_id = $("#select-department").val();
+            let dept_id = selectDepartment.val();
             select_role(dept_id);
-            $("#select-department").change(function () {
+            selectDepartment.change(function () {
                 let dept_id = $(this).val();
                 select_role(dept_id);
             });
@@ -1163,25 +1157,31 @@
                 let address_manager = $(this).parents('tr').find('.manager-address').text();
                 let id_role_manager = $(this).parents('tr').find('.manager-role').text();
                 let avatar_manager  = $(this).parents('tr').find('.manager-avatar').text();
-                $('.profile-card').find('.profile-card-info').find('.profile-card-name').text(
-                    name_manager);
-                $('.profile-card').find('.profile-card-info').find('.profile-card-gender').text(
-                    gender_manager);
-                $('.profile-card').find('.profile-card-info').find('.profile-card-dob').text(
-                    dob_manager);
-                $('.profile-card').find('.profile-card-info').find('.profile-card-email').text(
-                    email_manager);
-                $('.profile-card').find('.profile-card-info').find('.profile-card-number-phone').text(
-                    phone_manager);
-                $('.profile-card').find('.profile-card-info').find('.profile-card-address').text(
-                    address_manager);
+                profileCardInfo
+                    .find('.profile-card-name')
+                    .text(name_manager);
+                profileCardInfo
+                    .find('.profile-card-gender')
+                    .text(gender_manager);
+                profileCardInfo
+                    .find('.profile-card-dob')
+                    .text(dob_manager);
+                profileCardInfo
+                    .find('.profile-card-email')
+                    .text(email_manager);
+                profileCardInfo
+                    .find('.profile-card-number-phone')
+                    .text(phone_manager);
+                profileCardInfo
+                    .find('.profile-card-address')
+                    .text(address_manager);
                 if (avatar_manager === '') {
-                    $('.profile-card').find('.profile-card-img').find('img').attr('src',
+                    profileCard.find('.profile-card-img').find('img').attr('src',
                         '{{ asset('img/istockphoto-1223671392-612x612.jpg') }}');
                 } else {
                     let src = '{{ asset('') }}';
                     let img = src + 'img/' + avatar_manager;
-                    $('.profile-card').find('.profile-card-img').find('img').attr('src', img);
+                    profileCard.find('.profile-card-img').find('img').attr('src', img);
                 }
                 $.ajax({
                     url     : "{{ route('ceo.department.manager_role') }}",
@@ -1191,20 +1191,20 @@
                         role_id: id_role_manager,
                     },
                     success : function (response) {
-                        $('.profile-card').find('.profile-card-roles').find(
+                        profileCard.find('.profile-card-roles').find(
                             '.profile-card-role').text(response[0]['name']);
-                        $('.profile-card').find('.profile-card-roles').find(
+                        profileCard.find('.profile-card-roles').find(
                             '.profile-card-department').text();
                     }
                 })
 
-                $('.profile-card').removeClass('d-none');
+                profileCard.removeClass('d-none');
 
 
             });
             $('.profile-close').click(function () {
                 $('.model-popup-div ').addClass('d-none');
-                $('.profile-card').addClass('d-none');
+                profileCard.addClass('d-none');
             });
             $('.toggle-password').click(function () {
                 $(this).toggleClass("fa-eye fa-eye-slash");

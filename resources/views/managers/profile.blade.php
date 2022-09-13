@@ -1,5 +1,5 @@
 @extends('layout.master')
-@include('ceo.menu')
+@include('managers.menu')
 @push('css')
 	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
 	<style>
@@ -269,7 +269,7 @@
                 data.district  = $('#select2-district-container').prop('title').replace(/\s{2,}/g, '');
                 $.ajax({
                     type    : "post",
-                    url     : "{{ route('ceo.update_information') }}",
+                    url     : "{{ route('managers.update_information') }}",
                     dataType: 'json',
                     data    : data,
                 })

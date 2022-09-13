@@ -20,6 +20,7 @@ class StoreDepartmentRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:50',
+                'unique:App\Models\Department,name'
             ],
             'id_manager' => [
                 'nullable',

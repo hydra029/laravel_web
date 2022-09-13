@@ -64,13 +64,8 @@
 		<div class="col-1 position-fixed">
 			<div id="role-list" class="list-group">
 				@foreach($dept as $dk => $dv)
-					@if ($dv->id === 1)
-						<a class="list-group-item list-group-item-action active"
-						   href="#list-item-{{ $dv->id }}">{{ $dv->name}}</a>
-					@elseif ($dv->id <7)
-						<a class="list-group-item list-group-item-action"
-						   href="#list-item-{{ $dv->id }}">{{ $dv->name}}</a>
-					@endif
+					<a class="list-group-item list-group-item-action"
+					   href="#list-item-{{ $dv->id }}">{{ $dv->name}}</a>
 				@endforeach
 			</div>
 		</div>

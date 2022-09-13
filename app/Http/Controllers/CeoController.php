@@ -6,7 +6,7 @@ use App\Enums\SignEnum;
 use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\StoreManagerRequest;
+use App\Http\Requests\StoreInformationRequest;
 use App\Http\Requests\UpdateCeoRequest;
 use App\Imports\AccountantsImport;
 use App\Imports\EmployeesImport;
@@ -68,8 +68,7 @@ class CeoController extends Controller
 	public function getInformation()
 	{
 		$id   = session('id');
-		$data = Ceo::whereId($id)->first();
-
+		$data = Ceo::where('id', '=', $id)->first();
 		$dept = Department::get();
 		return view('ceo.profile', [
 			'data' => $data,
@@ -294,11 +293,6 @@ class CeoController extends Controller
 			->toArray();
 	}
 
-	public function updateEmployee(StoreEmployeeRequest $request): void
-	{
-		$arr = $request->validated();
-		Employee::query()->update($arr);
-	}
 
 	public function deleteEmployee(Request $request): JsonResponse
 	{
@@ -331,7 +325,7 @@ class CeoController extends Controller
 		return [$role, $emp];
 	}
 
-	public function storeManager(StoreManagerRequest $request): array
+	public function storeManager(StoreInformationRequest $request): array
 	{
 		$arr = $request->validated();
 		if ($request->file('avatar')) {

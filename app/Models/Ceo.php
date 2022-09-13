@@ -6,11 +6,13 @@ use Database\Factories\CeoFactory;
 use Eloquent;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * App\Models\Ceo
@@ -20,27 +22,12 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $lname
  * @property int $gender
  * @property string $dob
- * @property string $dept_id
  * @property string|null $avatar
- * @property string $email
- * @property string $password
- * @method static CeoFactory factory(...$parameters)
- * @method static Builder|Ceo newModelQuery()
- * @method static Builder|Ceo newQuery()
- * @method static Builder|Ceo query()
- * @method static Builder|Ceo whereDob($value)
- * @method static Builder|Ceo whereEmail($value)
- * @method static Builder|Ceo whereFname($value)
- * @method static Builder|Ceo whereGender($value)
- * @method static Builder|Ceo whereId($value)
- * @method static Builder|Ceo whereLname($value)
- * @method static Builder|Ceo wherePassword($value)
- * @mixin Eloquent
- * @property-read Department|null $department
- * @property-read Role|null $role
  * @property string $city
  * @property string $district
  * @property string $phone
+ * @property string $email
+ * @property string|null $password
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -51,32 +38,41 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read string $full_name
  * @property-read string $gender_name
  * @property-read string $role_name
+ * @property-read Collection|PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static CeoFactory factory(...$parameters)
+ * @method static Builder|Ceo newModelQuery()
+ * @method static Builder|Ceo newQuery()
  * @method static \Illuminate\Database\Query\Builder|Ceo onlyTrashed()
+ * @method static Builder|Ceo query()
  * @method static Builder|Ceo whereAvatar($value)
  * @method static Builder|Ceo whereCity($value)
  * @method static Builder|Ceo whereCreatedAt($value)
  * @method static Builder|Ceo whereDeletedAt($value)
  * @method static Builder|Ceo whereDistrict($value)
+ * @method static Builder|Ceo whereDob($value)
+ * @method static Builder|Ceo whereEmail($value)
+ * @method static Builder|Ceo whereFname($value)
+ * @method static Builder|Ceo whereGender($value)
+ * @method static Builder|Ceo whereId($value)
+ * @method static Builder|Ceo whereLname($value)
+ * @method static Builder|Ceo wherePassword($value)
  * @method static Builder|Ceo wherePhone($value)
  * @method static Builder|Ceo whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|Ceo withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Ceo withoutTrashed()
+ * @mixin Eloquent
  */
 class Ceo extends Model
 {
-	use HasFactory, SoftDeletes, HasApiTokens, Authenticatable;
+	use HasFactory, SoftDeletes, HasApiTokens;
 
-	protected $fillable = [
-		'fname',
-		'lname',
-		'gender',
-		'avatar',
-		'phone',
-		'dob',
-		'city',
-		'district',
-		'email',
-		'password',
+	protected $guarded = [
+		'id',
+		'deleted_at',
+		'updated_at',
+		'created_at',
+		'remember_token',
 	];
 
 	public function getAgeAttribute(): string
@@ -86,12 +82,17 @@ class Ceo extends Model
 
 	public function getAddressAttribute(): string
 	{
-		return $this->district . ' ' . $this->city;
+		return $this->district . ' - ' . $this->city;
 	}
 
 	public function getDateOfBirthAttribute(): string
 	{
 		return date_format(date_create($this->dob), "d/m/Y");
+	}
+
+	public function getShortDobAttribute(): string
+	{
+		return date_format(date_create($this->dob), 'Y-m-d');
 	}
 
 	public function getDateAttribute(): string

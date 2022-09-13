@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Database\Factories\DepartmentFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Department
@@ -30,7 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Role|null $roles
  * @property string|null $created_at
  * @property string|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $deleted_at
  * @property-read int|null $members_count
  * @property-read int|null $roles_count
  * @method static \Illuminate\Database\Query\Builder|Department onlyTrashed()
@@ -39,6 +41,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder|Department whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|Department withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Department withoutTrashed()
+ * @property int|null $acct_id
+ * @property-read Collection|Accountant[] $acctmembers
+ * @property-read int|null $acctmembers_count
+ * @property-read string $acct
+ * @property-read string $acct_name
+ * @method static Builder|Department whereAcctId($value)
  */
 class Department extends Model
 {
