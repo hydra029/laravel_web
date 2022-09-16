@@ -341,32 +341,32 @@
                         success : function (response) {
                             $('.table-show-salary-detail').removeClass('d-none');
                             $('.table-salary').addClass('d-none');
-                            detail_salary.find(".detail-employee-name").text(response['salary']['emp'][0]['fname'] + ' ' + response['salary']['emp'][0]['lname']);
-                            detail_salary.find(".detail-work_day").text(response['salary']['work_day']);
-                            detail_salary.find(".detail-pay_rate").text(response['salary']['pay_rate_work_day']);
-                            detail_salary.find(".detail-basic_salary").text(response['salary']['pay_rate_money']);
-                            detail_salary.find(".detail-over_work_day").text(response['salary']['over_work_day']);
-                            detail_salary.find(".detail-pay_rate_over_work_day").text(response['salary']['pay_rate_over_work_day']);
-                            detail_salary.find(".detail-bonus_salary_over_work_day").text(response['salary']['bonus_salary_over_work_day']);
-                            detail_salary.find(".detail-off_work_day").text(response['salary']['off_work_day']);
-                            detail_salary.find(".detail-pay_rate_off_work_day").text(response['salary']['pay_rate_off_work_day']);
-                            detail_salary.find(".detail-bonus_salary_off_work_day").text(response['salary']['bonus_salary_off_work_day']);
-                            detail_salary.find(".detail-late_1").text(response['salary']['late_1']);
+                            detail_salary.find(".detail-employee-name").text(response['salary'][0]['emp'][0]['fname'] + ' ' + response['salary'][0]['emp'][0]['lname']);
+                            detail_salary.find(".detail-work_day").text(response['salary'][0]['work_day']);
+                            detail_salary.find(".detail-pay_rate").text(response['salary'][0]['pay_rate_work_day']);
+                            detail_salary.find(".detail-basic_salary").text(response['salary'][0]['pay_rate_money']);
+                            detail_salary.find(".detail-over_work_day").text(response['salary'][0]['over_work_day']);
+                            detail_salary.find(".detail-pay_rate_over_work_day").text(response['salary'][0]['pay_rate_over_work_day']);
+                            detail_salary.find(".detail-bonus_salary_over_work_day").text(response['salary'][0]['bonus_salary_over_work_day']);
+                            detail_salary.find(".detail-off_work_day").text(response['salary'][0]['off_work_day']);
+                            detail_salary.find(".detail-pay_rate_off_work_day").text(response['salary'][0]['pay_rate_off_work_day']);
+                            detail_salary.find(".detail-bonus_salary_off_work_day").text(response['salary'][0]['bonus_salary_off_work_day']);
+                            detail_salary.find(".detail-late_1").text(response['salary'][0]['late_1']);
                             detail_salary.find(".detail-deduction_late_1").text(response['fines'][0]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_late_1").text(response['salary']['deduction_late_one_detail']);
-                            detail_salary.find(".detail-late_2").text(response['salary']['late_2']);
+                            detail_salary.find(".detail-deduction_salary_late_1").text(response['salary'][0]['deduction_late_one_detail']);
+                            detail_salary.find(".detail-late_2").text(response['salary'][0]['late_2']);
                             detail_salary.find(".detail-deduction_late_2").text(response['fines'][1]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_late_2").text(response['salary']['deduction_late_two_detail']);
-                            detail_salary.find(".detail-early_1").text(response['salary']['early_1']);
+                            detail_salary.find(".detail-deduction_salary_late_2").text(response['salary'][0]['deduction_late_two_detail']);
+                            detail_salary.find(".detail-early_1").text(response['salary'][0]['early_1']);
                             detail_salary.find(".detail-deduction_early_1").text(response['fines'][2]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_early_1").text(response['salary']['deduction_early_one_detail']);
-                            detail_salary.find(".detail-early_2").text(response['salary']['early_2']);
+                            detail_salary.find(".detail-deduction_salary_early_1").text(response['salary'][0]['deduction_early_one_detail']);
+                            detail_salary.find(".detail-early_2").text(response['salary'][0]['early_2']);
                             detail_salary.find(".detail-deduction_early_2").text(response['fines'][3]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_early_2").text(response['salary']['deduction_early_two_detail']);
-                            detail_salary.find(".detail-miss").text(response['salary']['miss']);
+                            detail_salary.find(".detail-deduction_salary_early_2").text(response['salary'][0]['deduction_early_two_detail']);
+                            detail_salary.find(".detail-miss").text(response['salary'][0]['miss']);
                             detail_salary.find(".detail-deduction_miss").text(response['fines'][4]['deduction_detail']);
-                            detail_salary.find(".detail-deduction_salary_miss").text(response['salary']['deduction_miss_detail']);
-                            detail_salary.find(".detail-salary").text(response['salary']['salary_money']);
+                            detail_salary.find(".detail-deduction_salary_miss").text(response['salary'][0]['deduction_miss_detail']);
+                            detail_salary.find(".detail-salary").text(response['salary'][0]['salary_money']);
 
                         }
                     });
@@ -503,7 +503,7 @@
                         dataType   : "json",
                         success    : function (response) {
                             if (response.success === true) {
-                                notifyError(response.data.message);
+                                notifySuccess(response.data.message);
                                 setTimeout(function () {
                                     location.reload();
                                 }, 1000);

@@ -1,26 +1,49 @@
 @extends('layout.master')
 @include('ceo.menu')
 @push('css')
+	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
 	<style>
         .div-form-create table tr td {
             border: 0;
         }
 
-        /* @property --rotate {
-                            syntax: "<angle>";
-                            initial-value: 132deg;
-                            inherits: false;
-                            } */
-        :root {
-            --card-height: 65vh;
-            --card-width: calc(var(--card-height) / 1.5);
+        .image-upload {
+            width: 20%;
+            height: 100%;
+        }
+
+        .profile-card-info {
+            width: 80%;
+            height: 100%;
+        }
+
+        #information-form {
+            width: 100%;
+        }
+
+        #div-profile {
+            width: 100%;
+            padding: 15px;
+        }
+
+        .btn {
+            width: 15%;
+            min-width: 100px;
+        }
+
+        label {
+            padding-top: 10px;
+        }
+
+        .choose-card-add {
+            width: 100%;
         }
 
         .choose-card {
-            width: var(--card-width);
-            height: var(--card-height);
-            padding: 3px;
-            margin: 3%;
+            margin: 1%;
+            height: 600px;
+            width: 33% !important;
+            padding: 0;
             position: relative;
             border-radius: 6px;
             justify-content: center;
@@ -31,662 +54,327 @@
             cursor: pointer;
             font-family: cursive;
         }
-
-
-        .image-upload > input {
-            display: none;
-        }
-
-        .profile-card-img {
-            width: 30%;
-            height: 100%;
-        }
-
-        .profile-card-info {
-            width: 70%;
-            height: 100%;
-        }
-
-        .profile-card-info-basic {
-            height: 75%;
-        }
-
-        .profile-card-roles {
-            height: 25%;
-        }
 	</style>
 @endpush
 @section('content')
-	<div class="choose-card-add d-flex p-2">
-		<div class="choose-card float-left" style="background-color: rgb(88 199 250 / 100%)" data-id="1">
+	<div class="choose-card-add d-flex">
+		<div class="choose-card float-left" style="background-color: rgb(88 199 250 / 100%)" data-emp_type="1">
 			<i class="fa-solid fa-circle-plus"></i>
 			<span> Add employee</span>
 		</div>
-		<div class="choose-card float-left" style="background-color: rgb(188 109 250 / 100%)" data-id="2">
+		<div class="choose-card float-left" style="background-color: rgb(188 109 250 / 100%)" data-emp_type="2">
 			<i class="fa-solid fa-circle-plus"></i>
-			<span> Add accoutant </span>
+			<span> Add manager </span>
 		</div>
-		<div class="choose-card float-left" style="background-color: rgb(188 199 100 / 100%)" data-id="3">
+		<div class="choose-card float-left" style="background-color: rgb(188 199 100 / 100%)" data-emp_type="3">
 			<i class="fa-solid fa-circle-plus"></i>
-			<span> Add manager</span>
+			<span> Add accountant</span>
 		</div>
 	</div>
-
-	{{-- form add --}}
-	<div class="div-form-create d-none ">
-		<button class="btn-warning btn-back rounded-pill " type="button">
-            <span class="btn-label">
-                <i class="fa-solid fa-circle-arrow-left"></i>
-            </span>
-			back
-		</button>
-		<br>
-		<label for="import-csv" class="btn btn-info float-right">
-			Import CSV
-		</label>
-		<input type="file" name="import_csv" id="import-csv" class="d-none">
-		<form action="" id="form-create" method="post" enctype="multipart/form-data">
-			@csrf
-			<div class="profile-card col-12">
-				<div class="profile-card-img float-left ">
-					<div class="image-upload">
-						<label for="avatar-input" class="text-center">
-							<img id="avatar_null" src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}"
-							     width="100%">
-							<img id="output" width="100%"/>
-							<span>Click here to chage avatar</span>
-						</label>
-						<input type="file" name="avatar" accept="image/*" id="avatar-input">
-					</div>
+	<div id="div-profile" class="d-none">
+		<form id="information-form" enctype="multipart/form-data">
+			<div class="profile-card col-12 table-profile-update form-row">
+				<div class="image-upload">
+					<input type="hidden" name="type" id="type">
+					<label for="avatar" class="text-center">
+						@if($data->avatar === null )
+							<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%" alt="">
+						@else
+							<img src="{{ asset('') }}uploads/{{$data->avatar}}" width="90%" alt="">
+						@endif
+						<span>Click here to change avatar</span>
+					</label>
+					<input id="avatar" type="file" accept="image/*" name="avatar" class="d-none">
 				</div>
 				<div class="profile-card-info float-left">
-					<div class="profile-card-info-basic">
-						<table class="table">
-							<tr>
-								<td class="col-6">
-									First Name:
-									<br>
-									<span class="error-message-fname text-danger"></span
-									<label>
-										<input type="text" name="fname" class="form-control inp-fname"
-										       placeholder="First Name">
-									</label>
-								</td>
-								<td>
-									Last Name:
-									<br>
-									<span class="error-message-lname text-danger"> </span><label>
-										<input type="text" name="lname" class="form-control inp-lname"
-										       placeholder="Last Name">
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Gender:
-								</td>
-								<td>
-									<label>
-										<input type="radio" name="gender" value="1" class="inp-gender">
-									</label> Male
-									<span> / </span>
-									<label>
-										<input type="radio" name="gender" value="0" class="inp-gender">
-									</label> Female
-									<span class="error-message-gender text-danger "> </span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Date of birth:
-									<br>
-									<span class="error-message-dob text-danger"> </span> <label
-											for="date"></label>
-									<input type="date" name="dob" id="date" class="form-control inp-dob"
-									       style="width: 100%; display: inline;" required value=""
-									       placeholder="Date of birth">
-								</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<span class="error-message-fname text-danger"></span>
+							<label for="fname">
+								First Name:
+							</label>
+							<input type="text" name="fname" id="fname" class="form-control inp-fname">
+						</div>
+						<div class="form-group col-md-6">
+							<span class="error-message-lname text-danger"></span>
+							<label for="lname">
+								Last Name:
+							</label>
+							<input type="text" name="lname" id="lname" class="form-control inp-lname">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-4">
+							<span class="error-message-lname text-danger"></span>
+							<label for="dob">
+								Date of birth:
+							</label>
+							<input type="date" name="dob" id="dob" class="form-control inp-dob">
+						</div>
+						<div class="form-group col-md-4">
+							<span class="error-message-gender text-danger"></span>
+							<label for="gender">Gender</label>
+							<select name="gender" id="gender" class="form-control">
+								<option value="1" selected> Male</option>
+								<option value="0"> Female</option>
+							</select>
+						</div>
+						<div class="form-group col-md-4">
+							<span class="error-message-phone text-danger"></span>
+							<label for="phone">
+								Number phone:
+							</label>
+							<input type="text" name="phone" id="phone" class="form-control inp-phone">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6 mb-0">
+							<span class="error-message-city text-danger"></span>
+							<div class="form-group" id="city-select">
+								<label for="city">
 									City:
-									<br>
-									<span class="error-message-city text-danger"> </span>
-									<label for=""></label>
-									<select name="city" id="" class="form-control select-city"></select>
-								</td>
-								<td>
+								</label>
+								<select name="city" id="city" class="form-control select-city"></select>
+							</div>
+						</div>
+						<div class="form-group col-md-6 mb-0">
+							<span class="error-message-district text-danger"></span>
+							<div class="form-group" id="district-select">
+								<label for="district">
 									District:
-									<br>
-									<span class="error-message-district text-danger"> </span>
-									<select name="district" id="" class="form-control select-district"></select>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Number phone:
-									<br>
-									<span class="error-message-phone text-danger"> </span>
-									<label>
-										<input type="number" name="phone" value="" placeholder="Number phone"
-										       class="form-control inp-phone">
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Email:
-									<br>
-									<span class="error-message-email text-danger"> </span>
-									<label>
-										<input type="email" name="email" value="" placeholder="Email"
-										       class="form-control inp-email">
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Password:
-									<span toggle="#password-field"
-									      class="fa fa-fw fa-eye field_icon toggle-password"></span>
-									<span class="error-message-password text-danger"></span>
-									<label for="pass_log_id"></label>
-									<input type="password" name="password" value="" placeholder="Password"
-									       class="form-control inp-password" id="pass_log_id">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="error-message-dept_id text-danger"> </span>
-									<span>department</span>
-									<span class="error-message-dept_id text-danger"> </span>
-									<select id="" name="dept_id" class="select-department form-control inp-dept_id">
-										@foreach ($dept as $each)
-											<option value="{{ $each->id }}">{{ $each->name }}</option>
-										@endforeach
-									</select>
-								</td>
-								<td>
-									<span class="error-message-role_id text-danger"> </span>
-									<span>role</span>
-									<span class="error-message-role_id text-danger"> </span>
-									<select id="" name="role_id" class="select-role form-control inp-role_id"></select>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<button class="btn btn-success">Submit</button>
-								</td>
-							</tr>
-						</table>
+								</label>
+								<select name="district" id="district"
+								        class="form-control select-district"></select>
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6 mb-0">
+							<span class="error-message-department text-danger"></span>
+							<div class="form-group" id="department-select">
+								<label for="department">
+									Department:
+								</label>
+								<select name="department" id="department"
+								        class="form-control select-department"></select>
+							</div>
+						</div>
+						<div class="form-group col-md-6 mb-0">
+							<span class="error-message-role text-danger"></span>
+							<div class="form-group" id="role-select">
+								<label for="role">
+									Role:
+								</label>
+								<select name="role" id="role"
+								        class="form-control select-role"></select>
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<span class="error-message-email text-danger"></span>
+							<label for="email">
+								Email:
+							</label>
+							<input type="text" name="email" id="email" class="form-control inp-email">
+						</div>
+						<div class="form-group col-md-6">
+							<span class="error-message-password text-danger"></span>
+							<label for="password">
+								Password:
+							</label>
+							<div class="input-group input-group-merge">
+								<input type="password" name="password" id="password"
+								       class="form-control inp-password">
+								<div class="input-group-append" data-password="false">
+									<div class="input-group-text">
+										<span class="password-eye"></span>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
+			</div>
+			<div class="form-row d-flex justify-content-center">
+				<button class="btn btn-success">Submit</button>
+				<button class="btn btn-danger ml-1">Cancel</button>
 			</div>
 		</form>
-	</div>
-	{{-- profile-success --}}
-	<div class="div-profile-success d-none ">
-		<button class="btn-warning btn-back rounded-pill " type="button">
-            <span class="btn-label">
-                <i class="fa-solid fa-circle-arrow-left"></i>
-            </span>
-			back
-		</button>
-		<button class="btn-primary btn-update rounded-pill float-right " type="button">
-			Edit
-		</button>
-		<button class="btn-primary btn-close-update rounded-pill float-right d-none" type="button">
-			Close
-		</button>
-		<br>
-		<form action="" id="form-update" method="post" enctype="multipart/form-data">
-			@csrf
-			<div class="profile-card col-12 table-profile-success">
-				<div class="profile-card-img float-left ">
-					<div class="image-upload">
-						<label class="text-center">
-							<img class="avatar-alter-add-null"
-							     src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%" alt="">
-							<img class="avatar-alter-add" width="100%" alt="">
-						</label>
-					</div>
-				</div>
-				<div class="profile-card-info float-left">
-					<div class="profile-card-info-basic">
-						<table class="table ">
-							<tr>
-								<td class="col-3">Name:</td>
-								<td>
-									<span class="name-profile-success"></span>
-								</td>
-							</tr>
-							<tr>
-								<td>Gender:</td>
-								<td>
-									<span class="gender-profile-success"></span>
-								</td>
-							</tr>
-							<tr>
-								<td>Date of birth:</td>
-								<td>
-									<span class="dob-profile-success"></span>
-								</td>
-							</tr>
-							<tr>
-								<td>Address:</td>
-								<td>
-									<span class="address-profile-success"></span>
-								</td>
-							</tr>
-							<tr>
-								<td>Phone number</td>
-								<td>
-									<span class="phone-profile-success"></span>
-								</td>
-							</tr>
-							<tr>
-								<td>Email:</td>
-								<td>
-									<span class="email-profile-success"></span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="dept-profile-success"></span>
-								</td>
-								<td>
-									<span class="role-profile-success"></span>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="profile-card col-12 table-profile-update d-none">
-				<div class="profile-card-img float-left ">
-					<div class="image-upload">
-						<label for="file-input" class="text-center">
-							<img class="avatar-alter-add-null"
-							     src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" width="100%">
-							<img class="avatar-alter-add" width="100%">
-							<span>Click here to change avatar</span>
-						</label>
-						<input id="file-input" type="file" name="avatar"/>
-					</div>
-				</div>
-				<div class="profile-card-info float-left">
-					<div class="profile-card-info-basic">
-						<table class="table">
-							<tr>
-								<td class="col-6">
-									First Name:
-									<br>
-									<span class="error-message-fname text-danger"> </span>
-									<label>
-										<input type="text" name="fname" class="form-control inp-fname"
-										       placeholder="First Name">
-									</label>
-								</td>
-								<td>
-									Last Name:
-									<br>
-									<span class="error-message-lname text-danger"> </span>
-									<label>
-										<input type="text" name="lname" class="form-control inp-lname "
-										       placeholder="Last Name">
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Gender:
-								</td>
-								<td>
-									<label>
-										<input type="radio" name="gender" value="1" class="inp-gender">
-									</label> Male
-									<span> / </span>
-									<label>
-										<input type="radio" name="gender" value="0" class="inp-gender">
-									</label> Female
-									<span class="error-message-gender text-danger "> </span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Date of birth:
-									<br>
-									<span class="error-message-dob text-danger"> </span>
-									<label>
-										<input type="date" name="dob" class="form-control inp-dob"
-										       style="width: 100%; display: inline;" required value=""
-										       placeholder="Date of birth">
-									</label>
-								</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>
-									City:
-									<br>
-									<span class="error-message-city text-danger"></span>
-									<select name="city" id="" class="form-control select-city"></select>
-								</td>
-								<td>
-									District:
-									<br>
-									<span class="error-message-district text-danger"> </span>
-									<select name="district" id="" class="select-district form-control"></select>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Number phone:
-									<br>
-									<span class="error-message-phone text-danger"> </span>
-									<label>
-										<input type="number" name="phone" value="" placeholder="Number phone"
-										       class="form-control inp-phone">
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Email:
-									<br>
-									<span class="error-message-email text-danger"> </span>
-									<label>
-										<input type="email" name="email" value="" placeholder="Email"
-										       class="form-control inp-email">
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Password:
-									<span toggle="#password-field"
-									      class="fa fa-fw fa-eye field_icon toggle-password"></span>
-									<span class="error-message-password text-danger"> </span>
-									<label>
-										<input type="password" name="password" value="" placeholder="Password"
-										       class="form-control inp-password">
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>department</span>
-									<span class="error-message-dept_id text-danger"> </span>
-									<select id="" name="dept_id" class="form-control select-department inp-dept_id">
-										@foreach ($dept as $each)
-											<option value="{{ $each->id }}">{{ $each->name }}</option>
-										@endforeach
-									</select>
-								</td>
-								<td>
-									<span>role</span>
-									<span class="error-message-role_id text-danger"> </span>
-									<select id="" name="role_id" class="form-control inp-role_id select-role"></select>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<button class="btn btn-success">Submit</button>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-		</form>
-
 	</div>
 @endsection
 @push('js')
-	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>,
-	<script type="text/javascript">
+	<script src="{{ asset('js/main.min.js' )}}"></script>
+	<script>
         $(document).ready(async function () {
-            let profile_success = $('.div-profile-success');
-            let slCity          = $('.select-city');
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }
             });
+            let selectCity     = $('#city');
+            let selectDistrict = $('#district');
+            let avatar         = $('#avatar');
+            let department     = $('#department');
+            let role           = $('#role');
+            let type           = $('#type');
+            let profile        = $('#div-profile');
+            let btnCancel      = $('.btn-danger');
+            let btnSave        = $('.btn-success');
+            let chooseCard     = $('.choose-card');
 
-            $('.choose-card').click(function () {
-                const choose = $(this).data('id');
-                $('.choose-card').addClass('d-none');
-                $('.div-form-create').removeClass('d-none');
-                create(choose);
-            });
-
-            $('.btn-back').click(function () {
-                $('.title-name').text('');
-                $('.choose-card').removeClass('d-none');
-                $('.div-form-create').addClass('d-none');
-                profile_success.addClass('d-none');
-                $("#avatar_null").removeClass('d-none');
-                $("#output").addClass('d-none');
-            });
-            $('.btn-update').click(function () {
-                $('.title-name').text('');
-                $(this).addClass('d-none');
-                $('.table-profile-update').removeClass('d-none');
-                $('.table-profile-success').addClass('d-none');
-                $('.btn-close-update').removeClass('d-none');
-            });
-            $('.btn-close-update').click(function () {
-                $('.title-name').text('');
-                $(this).addClass('d-none');
-                $('.table-profile-update').addClass('d-none');
-                $('.table-profile-success').removeClass('d-none');
-                $('.btn-update').removeClass('d-none');
-            });
-
-            let array = [
-                'fname',
-                'lname',
-                'gender',
-                'dob',
-                'phone',
-                'email',
-                'password',
-            ];
-            $.each(array, function (index, each) {
-                let text = each;
-                $(`.inp-${each}`).on("change paste keyup", function (text) {
-                    $(`.error-message-${each}`).empty();
-                });
-            })
-            $('#avatar-input').change(function (event) {
-                $('#avatar_null').addClass('d-none');
-                $("#output").removeClass('d-none');
-                const output  = document.getElementById('output');
-                output.src    = URL.createObjectURL(event.target.files[0]);
-                output.onload = function () {
-                    URL.revokeObjectURL(output.src) // free memory
-                }
+            chooseCard.click(function () {
+                profile.prop('disabled', false);
+                let emp_type = $(this).data('emp_type');
+                type.val(emp_type);
+                $.ajax({
+                    type    : "post",
+                    url     : "{{ route('ceo.get_department') }}",
+                    dataType: "json",
+                    data    : {type: emp_type},
+                })
+                    .done(function (response) {
+                        let length = response.length;
+                        department.data('type', type);
+                        for (let i = 0; i < length; i++) {
+                            department.append($("<option>")
+                                .attr("value", response[i]['id'])
+                                .text(response[i]['name'])
+                            )
+                        }
+                        loadRoles(emp_type);
+                    })
+                chooseCard.addClass('d-none');
+                profile.removeClass('d-none');
             })
 
-            function create(choose) {
-                console.log(choose);
-                // $('#avatar-input').change(function(event) {
-                //     const { avatar } = event.target;
-                // });
-                let url,
-                    urlImport;
-                switch (choose) {
-                    case 1:
-                        url       = "{{ route('ceo.store_emp') }}";
-                        urlImport = "{{ route('ceo.import_employee') }}";
-                        break;
-                    case 2:
-                        url       = "{{ route('ceo.store_acct') }}";
-                        urlImport = "{{ route('ceo.import_acct') }}";
-                        break;
-                    case 3:
-                        url       = "{{ route('ceo.store_mgr') }}";
-                        urlImport = "{{ route('ceo.import_mgr') }}";
-                        break;
-                }
-                $('#import-csv').change(function (event) {
-                    const formData = new FormData();
-                    formData.append('file', $(this)[0].files[0]);
-                    $.ajax({
-                        type       : "post",
-                        url        : urlImport,
-                        data       : formData,
-                        async      : false,
-                        cache      : false,
-                        contentType: false,
-                        enctype    : 'multipart/form-data',
-                        processData: false,
-                        success    : function () {
-                            notifySuccess("Your CSV file has been successfully");
+            department.change(function () {
+                let data = type.val();
+                role.empty();
+                loadRoles(data);
+            })
+
+            btnCancel.click(function (e) {
+                e.preventDefault();
+                profile.prop('disabled', true);
+                chooseCard.removeClass('d-none');
+                profile.addClass('d-none');
+                department.empty();
+                role.empty();
+            })
+
+            function loadRoles(type) {
+                let dept_id = department.val();
+                $.ajax({
+                    type    : "post",
+                    url     : "{{ route('ceo.get_role') }}",
+                    dataType: "json",
+                    data    : {
+                        type   : type,
+                        dept_id: dept_id
+                    },
+                })
+                    .done(function (response) {
+                        let length = response.length;
+                        for (let i = 0; i < length; i++) {
+                            role.append($("<option>")
+                                .attr("value", response[i]['id'])
+                                .text(response[i]['name'])
+                            )
                         }
-
-                    });
-                });
-                $('#form-create').submit(function (e) {
-                    e.preventDefault();
-                    const formData = new FormData($(this)[0]);
-                    console.log(choose);
-                    $.ajax({
-                        type       : 'post',
-                        url        : url,
-                        processData: false,
-                        contentType: false,
-                        data       : formData,
-                        dataType   : "json",
-
-                        success: function (response) {
-                            $('.div-form-create').addClass('d-none');
-                            profile_success.removeClass('d-none');
-                            profile_success.find('.name-profile-success').text(response[1]['full_name']);
-                            profile_success.find('.gender-profile-success').text(response[1]['gender_name']);
-                            profile_success.find('.dob-profile-success').text(response[1]['date_of_birth']);
-                            profile_success.find('.address-profile-success').text(response[1]['address']);
-                            profile_success.find('.phone-profile-success').text(response[1]['phone']);
-                            profile_success.find('.email-profile-success').text(response[1]['email']);
-                            profile_success.find('.dept-profile-success').text(response[0][0]['departments']['name']);
-                            profile_success.find('.role-profile-success').text(response[0][0]['name']);
-                            if (response[1]['avatar'] != null) {
-                                $(".avatar-alter-add-null").addClass('d-none');
-                                $(".avatar-alter-add").attr('src', `{{ asset('')}}/img/${response[1]['avatar']}  `);
-                            }
-
-                            $('#form-create')[0].reset();
-                            $('#form-create').find('select').prop('selectedIndex', 0);
-                            profile_success.find('input[name="fname"]').val(response[1]['fname']);
-                            profile_success.find('input[name="lname"]').val(response[1]['lname']);
-                            profile_success.find('input[name="dob"]').val(response[1]['dob']);
-                            profile_success.find('input[name="phone"]').val(response[1]['phone']);
-                            profile_success.find('input[name="email"]').val(response[1]['email']);
-
-                        },
-                        error  : function (xhr, textStatus, errorThrown) {
-                            const err = JSON.parse(xhr.responseText);
-                            $.each(err.errors, function (key, value) {
-                                $(`.error-message-${key}`).text(value);
-                            })
-                        }
-                    });
-                });
+                    })
             }
 
-
-            slCity.select2();
-            const response = await fetch('{{ asset('locations/index.json') }}');
+            selectCity.select2();
+            const response = await fetch('{{ asset('locations/Index.json') }}');
             const cities   = await response.json();
             $.each(cities, function (index, each) {
-                slCity.append(
+                selectCity.append(
                     `<option value='${each.code}' data-path='${each.file_path}'>${index}</option>`);
             });
-            slCity.change(function () {
+            selectCity.change(function () {
                 loadDistrict();
             })
             await loadDistrict();
-            $('.select-district').select2();
+            selectDistrict.select2();
+            let keys     = Object.keys(cities);
+            let city     = selectCity.data('city');
+            let district = selectDistrict.data('district');
+
+            if (city === 'Hà Nội') {
+                $("#city").val('HN').trigger('change');
+                setTimeout(function () {
+                    $('#select2-district-container').text(district)
+                }, 100);
+            } else {
+                keys.forEach(function (key) {
+                    if (key === city) {
+                        $("#city").val(cities[key]['code']).trigger('change');
+                        setTimeout(function () {
+                            $('#select2-district-container').text(district)
+                        }, 100);
+                    }
+                });
+            }
 
             async function loadDistrict() {
-                $('.select-district').empty();
+                selectDistrict.empty();
                 const path      = $(".select-city option:selected").data('path');
                 const response  = await fetch('{{ asset('locations/') }}' + path);
                 const districts = await response.json();
                 $.each(districts.district, function (index, each) {
                     if (each.pre === "Quận" || each.pre === "Huyện") {
-                        $('.select-district').append(`
-                                <option>
-                                    ${each.name}
-                                </option>`);
+                        selectDistrict.append(`
+                            <option>
+                            	${each.name}
+                            </option>`);
                     }
                 });
             }
 
-            const dept_id = $(".select-department").val();
-            select_role(dept_id);
-            $(".select-department").change(function () {
-                const dept_id = $(this).val();
-                select_role(dept_id);
-            });
+            avatar.change(function () {
+                $('img').attr('src', $(this).val());
+            })
 
-            function select_role(dept_id) {
-                $(".select-role").empty();
-                $.ajax({
-                    type    : "post",
-                    url     : "{{ route('ceo.select_role') }}",
-                    data    : {
-                        dept_id: dept_id
-                    },
-                    dataType: "json",
-                    success : function (response) {
-                        $.each(response, function (index, value) {
-                            $(".select-role").append($('<option value="' + value.id + '">' +
-                                value.name + '</option>'))
-                        })
-                    }
-                });
-            }
-
-            $('.btn-update').click(function () {
-                $('.title-name').text('');
-                $(this).addClass('d-none');
-                $('.table-profile-update').removeClass('d-none');
-                $('.table-profile-success').addClass('d-none');
-                $('.btn-close-update').removeClass('d-none');
-
-            });
-            $('.btn-close-update').click(function () {
-                $('.title-name').text('');
-                $(this).addClass('d-none');
-                $('.table-profile-update').addClass('d-none');
-                $('.table-profile-success').removeClass('d-none');
-                $('.btn-update').removeClass('d-none');
-            });
-
-            $('#form-update').submit(function (e) {
+            btnSave.click(function (e) {
                 e.preventDefault();
-                const formUpdate = $(this);
+                let img = $('#avatar').val();
+                if (!img) {
+                    avatar.prop('disabled', true);
+                }
+                let formUpdate = $('#information-form');
+                let data       = new FormData(formUpdate[0]);
+                let city       = $('#select2-city-container').prop('title');
+                let district   = $('#select2-district-container').prop('title').replace(/\s{2,}/g, '');
+                let dept_id    = department.val();
+                let role_id    = role.val();
+                data.set('dept_id', dept_id);
+                data.set('role_id', role_id);
+                data.set('city', city);
+                data.set('district', district);
+                data.set('type', district);
                 $.ajax({
                     type       : "post",
-                    {{--url        : "{{ route('ceo.update_emp') }}",--}}
-                    dataType   : 'json',
-                    async      : false,
-                    cache      : false,
+                    url        : "{{ route('ceo.save_emp') }}",
                     contentType: false,
-                    enctype    : 'multipart/form-data',
-                    data       : formUpdate.serialize(),
-                    success    : function (response) {
-                        console.log(response);
-                    }
-                });
+                    processData: false,
+                    data       : data,
+                })
+                    .done(function (response) {
+                        chooseCard.addClass('d-none');
+                        profile.removeClass('d-none');
+                        if (response.success === true) {
+                            notifySuccess(response.data.message);
+                        } else {
+                            notifyError(response.data.message);
+                        }
+                        btnCancel.click();
+                    })
             })
 
             $('.toggle-password').click(function () {
-                $(this).toggleClass("fa-eye fa-eye-slash");
-                const input = $("#pass_log_id");
+                $(this).toggleClass("mdi-eye mdi-eye-off");
+                let input = $("#password");
                 if (input.attr("type") === "password") {
                     input.attr("type", "text");
                 } else {

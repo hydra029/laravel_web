@@ -149,7 +149,7 @@
 	</div>
 	{{-- // department list table --}}
 	<div class="dept-list col-12">
-		<button class="btn-success btn-add-dept " type="button">
+		<button class="btn-success btn-add-dept" type="button">
 			Add
 			<span class="btn-label">
                 <i class="fa-solid fa-circle-plus"></i>
@@ -248,7 +248,7 @@
 				@csrf
 				<div class="card-header card-header-icon" data-background-color="rose">
 					<i class="fa-solid fa-address-book fa-2x" aria-hidden="true"></i>
-					<span class=" card-title h2"> Add department</span>
+					<span class="card-title h2"> Add department</span>
 				</div>
 				<div class="card-content">
 					<table class="table form-table">

@@ -42,10 +42,6 @@ class RoleController extends Controller
 		return view('ceo.role', compact('dept'));
 	}
 
-	/**
-	 * @param StoreRoleRequest $request
-	 * @return JsonResponse
-	 */
 	public function store(Request $request): JsonResponse
 	{
 		try {
@@ -62,10 +58,6 @@ class RoleController extends Controller
 		}
 	}
 
-	/**
-	 * @param UpdateRoleRequest $request
-	 * @return string
-	 */
 	public function update(Request $request): string
 	{
 		$id             = $request->id;
@@ -91,8 +83,10 @@ class RoleController extends Controller
 		$id   = $request->id;
 		$data = Role::find($id);
 		$data->delete();
-		return $this->successResponse([
-			                              'message' => 'Delete success',
-		                              ]);
+		return $this->successResponse(
+			[
+				'message' => 'Delete success',
+			]
+		);
 	}
 }

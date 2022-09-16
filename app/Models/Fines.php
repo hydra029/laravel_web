@@ -49,7 +49,7 @@ class Fines extends Model
 
     public function getFinesTimeAttribute(): string
     {
-        return $this->fines . " phút" ;
+        return $this->fines;
     }
 
     public function getDeductionDetailAttribute(): string

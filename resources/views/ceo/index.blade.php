@@ -111,8 +111,7 @@
         }
 
         th, td {
-            text-align: center;
-        !important;
+            text-align: center !important;
         }
 	</style>
 @endpush
@@ -136,7 +135,7 @@
 		</button>
 		<br>
 		<div class="col-12 p-2 border border-1 border-light department_employees ">
-			<table class="table table-striped table-striped" id="table-department-employees">
+			<table class="table table-striped" id="table-department-employees">
 				<thead class="bg-light">
 				<tr>
 					<th class="col-1">#</th>
@@ -172,7 +171,6 @@
 				<th class="col-3 am"><span>Members</span></th>
 				<th class="col-3 am"><span>Manager</span></th>
 				<th class="col-2 am"><span>Action</span></th>
-
 				</thead>
 				<tbody>
 				@foreach ($dept as $each)
@@ -223,10 +221,8 @@
 									@endif
 									<a class="manager-name ">{{ $each->manager->full_name }}</a>
 								@endif
-
 							</div>
 						</td>
-
 						<td class="align-middle am">
 							<div class="am">
 								<i class="fa-solid fa-eye btn-show-department text-primary"

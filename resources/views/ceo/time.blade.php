@@ -208,22 +208,10 @@
 
                         })
                         .fail(function () {
-                            $.toast({
-                                heading  : 'Something went wrong',
-                                text     : "Your time input format is incorrect",
-                                icon     : 'success',
-                                position : 'top-right',
-                                hideAfter: 2000,
-                            });
+                            notifyError("Your time input format is incorrect");
                         })
                 } else {
-                    $.toast({
-                        heading  : 'Something went wrong',
-                        text     : 'Your input data is not time',
-                        icon     : 'error',
-                        position : 'top-right',
-                        hideAfter: 2000,
-                    });
+                    notifyError('Your input data is not time')
                 }
             });
 

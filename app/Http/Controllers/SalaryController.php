@@ -70,7 +70,7 @@ class SalaryController extends Controller
 			->where('year', $year)
 			->where('dept_name', $dept_name)
 			->where('role_name', $role_name)
-			->first()
+			->get()
 			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_over_work_day', 'bonus_salary_off_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_off_work_day', 'pay_rate_work_day'])->toArray();
 		$arr['salary'] = $salary;
 		$arr['fines']  = $fines;

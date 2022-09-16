@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\SignEnum;
 use App\Http\Requests\StoreAccountantRequest;
-use App\Http\Requests\StoreCeoRequest;
 use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\StoreInformationRequest;
-use App\Http\Requests\UpdateCeoRequest;
+use App\Http\Requests\StoreManagerRequest;
 use App\Imports\AccountantsImport;
 use App\Imports\EmployeesImport;
 use App\Imports\ManagersImport;
@@ -21,6 +19,7 @@ use App\Models\Fines;
 use App\Models\Manager;
 use App\Models\Role;
 use App\Models\Salary;
+use Arr;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
@@ -261,12 +260,46 @@ class CeoController extends Controller
 		return Role::where('dept_id', $dept_id)->get();
 	}
 
+	public function saveEmployee(StoreEmployeeRequest $request): JsonResponse
+	{
+		$arr = $request->validated();
+		$type = $arr['type'];
+		unset($arr['type']);
+		switch ($type) {
+			case '1':
+				$data = Employee::query();
+				break;
+			case '2':
+				$data = Manager::query();
+				break;
+			default:
+				$data = Accountant::query();
+				break;
+		}
+		if ($request->file('avatar')) {
+			$avatar     = $request->file('avatar');
+			$empCount   = $data::count() + 1;
+			$avatarName = time() . '_' . $empCount . '_1';
+			$avatar->move(public_path('img'), $avatarName);
+			$arr['avatar'] = $avatarName;
+		}
+		$hashPassword    = Hash::make($request->get('password'));
+		$arr['password'] = $hashPassword;
+		$data->create($arr);
+		return $this->successResponse(
+			[
+				'message' => 'Create Employee successfully',
+			]
+		);
+	}
+
 	public function storeEmployee(StoreEmployeeRequest $storeEmployeeRequest): array
 	{
 		$arr = $storeEmployeeRequest->validated();
 		if ($storeEmployeeRequest->file('avatar')) {
 			$avatar     = $storeEmployeeRequest->file('avatar');
-			$avatarName = date('YmdHi') . $avatar->getClientOriginalName();
+			$empCount   = Employee::count() + 1;
+			$avatarName = time() . '_' . $empCount . '_1';
 			$avatar->move(public_path('img'), $avatarName);
 			$arr['avatar'] = $avatarName;
 		}
@@ -293,7 +326,6 @@ class CeoController extends Controller
 			->toArray();
 	}
 
-
 	public function deleteEmployee(Request $request): JsonResponse
 	{
 		$id = $request->get('id');
@@ -310,7 +342,8 @@ class CeoController extends Controller
 		$arr = $request->validated();
 		if ($request->file('avatar')) {
 			$avatar     = $request->file('avatar');
-			$avatarName = date('YmdHi') . $avatar->getClientOriginalName();
+			$empCount   = Accountant::count() + 1;
+			$avatarName = time() . '_' . $empCount . '_3';
 			$avatar->move(public_path('img'), $avatarName);
 			$arr['avatar'] = $avatarName;
 		}
@@ -325,12 +358,13 @@ class CeoController extends Controller
 		return [$role, $emp];
 	}
 
-	public function storeManager(StoreInformationRequest $request): array
+	public function storeManager(StoreManagerRequest $request): array
 	{
 		$arr = $request->validated();
 		if ($request->file('avatar')) {
 			$avatar     = $request->file('avatar');
-			$avatarName = date('YmdHi') . $avatar->getClientOriginalName();
+			$empCount   = Manager::count() + 1;
+			$avatarName = time() . '_' . $empCount . '_2';
 			$avatar->move(public_path('img'), $avatarName);
 			$arr['avatar'] = $avatarName;
 		}

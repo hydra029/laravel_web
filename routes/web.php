@@ -104,11 +104,13 @@ Route::group(['prefix' => 'ceo', 'as' => 'ceo.', 'middleware' => 'ceo'], static 
 	Route::post('/department_accountants', [DepartmentController::class, 'departmentAccountants'])->name('department_accountants');
 	Route::get('/create_emp', [CeoController::class, 'createEmployee'])->name('create_emp');
 	Route::post('/store_emp', [CeoController::class, 'storeEmployee'])->name('store_emp');
+	Route::post('/save_emp', [CeoController::class, 'saveEmployee'])->name('save_emp');
 	Route::post('/store_acct', [CeoController::class, 'storeAccountant'])->name('store_acct');
 	Route::post('/store_mgr', [CeoController::class, 'storeManager'])->name('store_mgr');
 	Route::post('/select_role', [CeoController::class, 'selectRole'])->name('select_role');
 	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
 	Route::delete('/delete_emp', [CeoController::class, 'deleteEmployee'])->name('delete_emp');
+	Route::delete('/update_emp', [CeoController::class, 'updateEmployee'])->name('update_emp');
 	Route::post('/employee_infor', [CeoController::class, 'employeeInformation'])->name('employee_infor');
 	Route::post('/import_employee', [CeoController::class, 'importEmployee'])->name('import_employee');
 	Route::post('/import_acct', [CeoController::class, 'importAccountant'])->name('import_acct');
@@ -120,6 +122,8 @@ Route::group(['prefix' => 'ceo', 'as' => 'ceo.', 'middleware' => 'ceo'], static 
 	Route::get('/get_shift_time', [ApiController::class, 'getShiftTimes'])->name('get_shift_time');
 	Route::post('get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
 	Route::get('/personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
+	Route::post('/get_department', [ApiController::class, 'getDepartments'])->name('get_department');
+	Route::post('/get_role', [ApiController::class, 'getRoles'])->name('get_role');
 	Route::get('/access_token', [CeoController::class, 'accessToken'])->name('access_token');
 	Route::group(['prefix' => 'roles', 'as' => 'roles.'], static function () {
 		Route::post('/store', [RoleController::class, 'store'])->name('store');

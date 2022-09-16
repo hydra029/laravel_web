@@ -47,7 +47,7 @@ class Role extends Model
 
    public function getPayRateMoneyAttribute(): string
    {
-        return number_format((float)($this->pay_rate)) . ' đ';
+        return number_format((float)($this->pay_rate)) . ' VNĐ';
    }
 
 	public function departments(): BelongsTo

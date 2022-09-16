@@ -13,6 +13,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
 use App\Models\Manager;
+use App\Models\Role;
 use App\Models\Salary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -50,10 +51,32 @@ class ApiController extends Controller
 			->get();
 	}
 
-	public function getDepartments(): Collection
+	public function getDepartments(Request $request): Collection
 	{
-		return Department::whereNull('deleted_at')
-			->get(['id', 'name']);
+		$data = Department::whereNull('deleted_at');
+		$type = $request->get('type');
+		if ($type === '3') {
+			$data = $data->where('id','=','1');
+		} else if ($type === '2') {
+			$dept = Manager::whereNotNull('dept_id')->pluck('dept_id');
+			$data = $data->whereNotIn ('id', $dept);
+		} else {
+			$data = $data->where('id','<>','1');
+		}
+		return $data->get(['id', 'name']);
+	}
+
+	public function getRoles(Request $request): Collection
+	{
+		$type = $request->get('type');
+		$data = Role::whereNull('deleted_at')
+		->where('dept_id', '=', $request->get('dept_id'));
+		if ($type !== '2') {
+			$data = $data->where('name', '<>', 'Manager');
+		} else {
+			$data = $data->where('name', '=', 'Manager');
+		}
+		return $data->get(['id', 'name']);
 	}
 
 	public function getPersonalSalary(Request $request)
@@ -114,6 +137,7 @@ class ApiController extends Controller
 					break;
 				default:
 					$user = Accountant::query();
+					break;
 			}
 			$data = $user->with(['roles', 'departments'])
 				->where('id', '=', $id)
