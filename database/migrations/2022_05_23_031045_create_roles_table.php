@@ -16,14 +16,13 @@ class CreateRolesTable extends Migration
 	{
 		Schema::create('roles', static function (Blueprint $table) {
 			$table->id();
-			$table->unsignedBigInteger('dept_id');
+			$table->foreignId('dept_id')->constrained('departments');
 			$table->string('name');
             $table->integer('pay_rate');
 			$table->softDeletes();
             $table->unique(['dept_id', 'name']);
 		});
         Role::insert([
-            'id' => '1',
             'dept_id' => '1',
             'name' => 'Manager',
             'pay_rate' => '10000000',
