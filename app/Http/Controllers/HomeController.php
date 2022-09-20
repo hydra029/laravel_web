@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\EmpRoleEnum;
 use App\Models\Accountant;
-use App\Models\Ceo;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Fines;
@@ -56,8 +54,8 @@ class HomeController extends Controller
 			)->append(['full_name', 'date_of_birth', 'gender_name', 'address']);
 		}
 		return view('test', [
-			'data' => $data,
-			'title' => 'Test'
+			'title' => 'Test',
+			'data' => $data
 		]);
 	}
 

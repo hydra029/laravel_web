@@ -702,6 +702,7 @@
                                             }
                                         }
                                         if (tdDate1 === crDate1) {
+                                            // set time active button confirmation 99 days
                                             if (crDate <= 99) {
                                                 let E1 = workTime['Early_1'] + overTime['Early_1'] + offTime['Early_1'];
                                                 let E2 = workTime['Early_2'] + overTime['Early_2'] + offTime['Early_2'];
@@ -713,20 +714,17 @@
                                                 let X3 = TT + TT1 + TT2;
                                                 if (X1 < 26) {
                                                     if (X2 < 26) {
-                                                        if (X3 < 26) {
+                                                        if (X3 <= 26) {
                                                             TT  = X3;
                                                             TT2 = 0;
-                                                        } else if (X3 === 26) {
-                                                            TT  = X3;
-                                                            TT1 = 0;
                                                         } else {
                                                             TT  = 26;
                                                             TT2 = X3 - 26;
                                                         }
                                                         TT1 = 0;
-                                                    } else if (X2 === 26) {
-                                                        TT  = X2;
-                                                        TT1 = 0;
+                                                    } else {
+                                                        TT  = 26;
+                                                        TT1 = X2 - 26;
                                                     }
                                                 } else if (X1 > 26) {
                                                     TT = 26;

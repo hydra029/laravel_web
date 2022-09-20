@@ -284,11 +284,10 @@
                                     `<img src="{{ asset('img/istockphoto-1223671392-612x612.jpg') }}" style=" border-radius:50% " width="40px">`
                             }
                             if (v['acct_id'] !== null) {
-                                if (v['sign'] == null) {
+                                sign = `<i class="fa-solid fa-square-check text-success"></i>`
+                                if (v['sign'] == null || v['sign'] == 1) {
                                     sign =
                                         ` <input type="checkbox" name="sign" class="check_box" data-id="${v['emp_id']}" data-dept_name="${v['dept_name']}" data-role_name="${v.role_name}"> `
-                                } else {
-                                    sign = `<i class="fa-solid fa-square-check text-success"></i>`
                                 }
                             }
                             if (v['dept_name'] === 'Accountant' && v['acct_id'] === null) {

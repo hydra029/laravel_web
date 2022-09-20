@@ -1,87 +1,87 @@
 @extends('layout.master')
 @include('accountants.menu')
 @push('css')
-    <link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
-    <link href="{{ asset('css/fullcalendar.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<link href="{{ asset('css/main.min.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
+	<link href="{{ asset('css/fullcalendar.css' )}}" rel="stylesheet" type="text/css" id="light-style"/>
 @endpush
 @section('content')
-    <div class="col-2 p-1">
-        <table id="table_salary">
-            <tr>
-                <th class="col-6">Type</th>
-                <th class="type col-2">WD</th>
-                <th class="type col-2">OT</th>
-                <th class="type col-2">OD</th>
-            </tr>
-        </table>
-        <div id='external-events'>
-            <div class='fc-event fc-h-event event-1'>
-                <div class='fc-event-main tc event-0'>
-                    <span class="text-left">Early 1:</span>
-                    <span class="E13 col-2"></span>
-                    <span class="E12 col-2"></span>
-                    <span class="E11 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-2'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Early 2:</span>
-                    <span class="E23 col-2"></span>
-                    <span class="E22 col-2"></span>
-                    <span class="E21 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-3'>
-                <div class='fc-event-main tc event-0'>
-                    <span>On Time:</span>
-                    <span class="OT3 col-2"></span>
-                    <span class="OT2 col-2"></span>
-                    <span class="OT1 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-4'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Late 1:</span>
-                    <span class="L13 col-2"></span>
-                    <span class="L12 col-2"></span>
-                    <span class="L11 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-5'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Late 2:</span>
-                    <span class="L23 col-2"></span>
-                    <span class="L22 col-2"></span>
-                    <span class="L21 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-6'>
-                <div class='fc-event-main tc event-0'>
-                    <span>Miss:</span>
-                    <span class="MS3 col-2"></span>
-                    <span class="MS2 col-2"></span>
-                    <span class="MS1 col-2"></span>
-                </div>
-            </div>
-            <div class='fc-event fc-h-event event-7'>
-                <div class='fc-event-main tc event-0'>
+	<div class="col-2 p-1">
+		<table id="table_salary">
+			<tr>
+				<th class="col-6">Type</th>
+				<th class="type col-2">WD</th>
+				<th class="type col-2">OT</th>
+				<th class="type col-2">OD</th>
+			</tr>
+		</table>
+		<div id='external-events'>
+			<div class='fc-event fc-h-event event-1'>
+				<div class='fc-event-main tc event-0'>
+					<span class="text-left">Early 1:</span>
+					<span class="E13 col-2"></span>
+					<span class="E12 col-2"></span>
+					<span class="E11 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-2'>
+				<div class='fc-event-main tc event-0'>
+					<span>Early 2:</span>
+					<span class="E23 col-2"></span>
+					<span class="E22 col-2"></span>
+					<span class="E21 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-3'>
+				<div class='fc-event-main tc event-0'>
+					<span>On Time:</span>
+					<span class="OT3 col-2"></span>
+					<span class="OT2 col-2"></span>
+					<span class="OT1 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-4'>
+				<div class='fc-event-main tc event-0'>
+					<span>Late 1:</span>
+					<span class="L13 col-2"></span>
+					<span class="L12 col-2"></span>
+					<span class="L11 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-5'>
+				<div class='fc-event-main tc event-0'>
+					<span>Late 2:</span>
+					<span class="L23 col-2"></span>
+					<span class="L22 col-2"></span>
+					<span class="L21 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-6'>
+				<div class='fc-event-main tc event-0'>
+					<span>Miss:</span>
+					<span class="MS3 col-2"></span>
+					<span class="MS2 col-2"></span>
+					<span class="MS1 col-2"></span>
+				</div>
+			</div>
+			<div class='fc-event fc-h-event event-7'>
+				<div class='fc-event-main tc event-0'>
                     <span>
                         Off Work:
                     </span>
-                    <span class="OW3 col-2"></span>
-                    <span class="OW2 col-2"></span>
-                    <span class="OW1 col-2"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-10 p-1">
-        <div id="calendar"></div>
-    </div>
+					<span class="OW3 col-2"></span>
+					<span class="OW2 col-2"></span>
+					<span class="OW1 col-2"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-10 p-1">
+		<div id="calendar"></div>
+	</div>
 @endsection
 @push('js')
-    <script src="{{ asset('js/main.min.js' )}}"></script>
-    <script>
+	<script src="{{ asset('js/main.min.js' )}}"></script>
+	<script>
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -199,7 +199,7 @@
             const keys       = ['Late_1', 'Late_2', 'OnTime', 'Early_1', 'Early_2', 'OffWork', 'Miss'];
             let workTime     = {
                     ...Object.fromEntries(
-                            keys.map(key => [key, 0])
+                        keys.map(key => [key, 0])
                     )
                 },
                 overTime     = {...workTime},
@@ -224,23 +224,23 @@
                 dataType: 'json',
                 method  : 'GET',
             })
-                    .done(function (response) {
-                        for (let i = 0; i < response.length; i++) {
-                            Object.keys(response[i]).forEach(key => {
-                                response[i][key] = response[i][key].slice(0, 5);
-                            });
-                        }
-                        firstShift  = response[0];
-                        secondShift = response[1];
-                        lastShift   = response[2];
-                    })
+                .done(function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        Object.keys(response[i]).forEach(key => {
+                            response[i][key] = response[i][key].slice(0, 5);
+                        });
+                    }
+                    firstShift  = response[0];
+                    secondShift = response[1];
+                    lastShift   = response[2];
+                })
             calendar.render();
             loadAttendance(today);
 
             $(".fc-goto-button")
-                    .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
-                    .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
-                    .addClass('d-none');
+                .after($('<select>').attr('id', 'sl-2').append($('<option>').text('Month')))
+                .after($('<select>').attr('id', 'sl-1').append($('<option>').text('Year')))
+                .addClass('d-none');
 
             let currentYear = new Date().getFullYear(),
                 firstYear   = $('#sl-1 :last-child').index();
@@ -249,8 +249,8 @@
 
             for (let i = currentYear; i >= 2020; i--) {
                 sl1.append($('<option>')
-                        .attr('value', i)
-                        .text(i)
+                    .attr('value', i)
+                    .text(i)
                 )
             }
 
@@ -260,8 +260,8 @@
                     j = '0' + i;
                 }
                 sl2.append($('<option>')
-                        .attr('value', i)
-                        .text(j)
+                    .attr('value', i)
+                    .text(j)
                 )
             }
 
@@ -269,8 +269,8 @@
             let num = 9998;
 
             function loadAttendance(date) {
-                let first_day      = getFirstDate(date),
-                    lastDay      = getLastDate(date),
+                let first_day   = getFirstDate(date),
+                    last_day    = getLastDate(date),
                     currentTime = new Date(first_day).getTime(),
                     currentDate = getDate(todayDate);
                 $.ajax({
@@ -279,122 +279,122 @@
                     dataType: 'json',
                     data    : {
                         first_day: first_day,
-                        lastDay: lastDay
+                        last_day : last_day
                     },
                 })
-                        .done(function (response) {
-                            Object.keys(workTime).forEach(key => {
-                                workTime[key] = 0;
-                            });
-                            Object.keys(overTime).forEach(key => {
-                                overTime[key] = 0;
-                            });
-                            Object.keys(offTime).forEach(key => {
-                                offTime[key] = 0;
-                            });
-                            eventSource      = []
-                            let shift_num    = response.length,
-                                selectedDate = first_day,
-                                nextShift    = 0,
-                                total_day    = getDayCount(first_day);
-                            if (shift_num > 0) {
-                                for (let i = 0; i < shift_num; i++) {
-                                    num--;
-                                    let currentShift = response[i]['shift'],
-                                        date         = response[i]['date'];
-                                    check_in         = response[i]['check_in'];
-                                    check_out        = response[i]['check_out'];
+                    .done(function (response) {
+                        Object.keys(workTime).forEach(key => {
+                            workTime[key] = 0;
+                        });
+                        Object.keys(overTime).forEach(key => {
+                            overTime[key] = 0;
+                        });
+                        Object.keys(offTime).forEach(key => {
+                            offTime[key] = 0;
+                        });
+                        eventSource      = []
+                        let shift_num    = response.length,
+                            selectedDate = first_day,
+                            nextShift    = 0,
+                            total_day    = getDayCount(first_day);
+                        if (shift_num > 0) {
+                            for (let i = 0; i < shift_num; i++) {
+                                num--;
+                                let currentShift = response[i]['shift'],
+                                    date         = response[i]['date'];
+                                check_in         = response[i]['check_in'];
+                                check_out        = response[i]['check_out'];
 
-                                    let defaultDate = getDate(selectedDate);
-                                    let currentDate = getDate(date);
-                                    if (i === 0) {
-                                        addEvent(date, selectedDate, currentShift)
-                                        if (defaultDate < currentDate) {
-                                            let offDate = first_day;
-                                            for (let n = 1; n < currentDate; n++) {
-                                                addEvent(offDate)
-                                                offDate = getNextDate(offDate)
-                                            }
-                                        }
-                                    } else {
-                                        addEvent(date, selectedDate, currentShift, nextShift);
-                                        if (currentDate !== defaultDate) {
-                                            if (currentDate - defaultDate > 0) {
-                                                let offDate = getNextDate(selectedDate);
-                                                for (let n = defaultDate + 1; n < currentDate; n++) {
-                                                    addEvent(offDate);
-                                                    offDate = getNextDate(offDate);
-                                                }
-                                            }
+                                let defaultDate = getDate(selectedDate);
+                                let currentDate = getDate(date);
+                                if (i === 0) {
+                                    addEvent(date, selectedDate, currentShift)
+                                    if (defaultDate < currentDate) {
+                                        let offDate = first_day;
+                                        for (let n = 1; n < currentDate; n++) {
+                                            addEvent(offDate)
+                                            offDate = getNextDate(offDate)
                                         }
                                     }
-                                    selectedDate = date;
-                                    check_in !== null && (check_in = check_in.slice(0, 5));
-                                    check_out !== null && (check_out = check_out.slice(0, 5));
-                                    checkTime(check_in, check_out, currentShift, date);
-                                    nextShift = currentShift === 1 ? 1 : currentShift === 2 ? 2 : 3;
-                                    let title = check_in + Array(16).fill('\xa0').join('') + check_out;
-                                    let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
-                                    let event = {
-                                        id        : num,
-                                        title     : title,
-                                        start     : date,
-                                        allDay    : true,
-                                        overlap   : false,
-                                        background: color,
-                                    }
-                                    eventSource.push(event);
-                                }
-                                let lastDate = response[shift_num - 1]['date'];
-                                let days     = getDate(lastDate);
-                                let currentDate   = new Date().getDate();
-                                if (days < total_day) {
-                                    if (currentTime === todayTime) {
-                                        total_day = currentDate;
-                                    }
-                                    if (currentTime <= todayTime) {
-                                        addEvent(lastDate, '', 0, nextShift);
-                                    }
-                                    for (let i = days + 1; i <= total_day; i++) {
-                                        let selectedDate = new Date(lastDate)
-                                        let date         = getFullDate(selectedDate.setDate(i));
-                                        addEvent(date)
+                                } else {
+                                    addEvent(date, selectedDate, currentShift, nextShift);
+                                    if (currentDate !== defaultDate) {
+                                        if (currentDate - defaultDate > 0) {
+                                            let offDate = getNextDate(selectedDate);
+                                            for (let n = defaultDate + 1; n < currentDate; n++) {
+                                                addEvent(offDate);
+                                                offDate = getNextDate(offDate);
+                                            }
+                                        }
                                     }
                                 }
-                            } else {
-                                if (todayTime === currentTime) {
+                                selectedDate = date;
+                                check_in !== null && (check_in = check_in.slice(0, 5));
+                                check_out !== null && (check_out = check_out.slice(0, 5));
+                                checkTime(check_in, check_out, currentShift, date);
+                                nextShift = currentShift === 1 ? 1 : currentShift === 2 ? 2 : 3;
+                                let title = check_in + Array(16).fill('\xa0').join('') + check_out;
+                                let color = 'linear-gradient(to right, ' + color_1 + ' 50%,' + color_2 + ' 50%)';
+                                let event = {
+                                    id        : num,
+                                    title     : title,
+                                    start     : date,
+                                    allDay    : true,
+                                    overlap   : false,
+                                    background: color,
+                                }
+                                eventSource.push(event);
+                            }
+                            let lastDate    = response[shift_num - 1]['date'];
+                            let days        = getDate(lastDate);
+                            let currentDate = new Date().getDate();
+                            if (days < total_day) {
+                                if (currentTime === todayTime) {
                                     total_day = currentDate;
                                 }
                                 if (currentTime <= todayTime) {
-                                    for (let i = 1; i <= total_day; i++) {
-                                        let date = getFullDate(new Date(selectedDate).setDate(i));
-                                        addEvent(date);
-                                    }
+                                    addEvent(lastDate, '', 0, nextShift);
+                                }
+                                for (let i = days + 1; i <= total_day; i++) {
+                                    let selectedDate = new Date(lastDate)
+                                    let date         = getFullDate(selectedDate.setDate(i));
+                                    addEvent(date)
                                 }
                             }
-                            calendar.addEventSource(eventSource);
-                            $('.E11').text(workTime['Early_1']);
-                            $('.E21').text(workTime['Early_2']);
-                            $('.OT1').text(workTime['OnTime']);
-                            $('.L11').text(workTime['Late_1']);
-                            $('.L21').text(workTime['Late_2']);
-                            $('.MS1').text(workTime['Miss']);
-                            $('.OW1').text(workTime['OffWork']);
-                            $('.E12').text(overTime['Early_1']);
-                            $('.E22').text(overTime['Early_2']);
-                            $('.OT2').text(overTime['OnTime']);
-                            $('.L12').text(overTime['Late_1']);
-                            $('.L22').text(overTime['Late_2']);
-                            $('.MS2').text(overTime['Miss']);
-                            $('.OW2').text(overTime['OffWork']);
-                            $('.E13').text(offTime['Early_1']);
-                            $('.E23').text(offTime['Early_2']);
-                            $('.OT3').text(offTime['OnTime']);
-                            $('.L13').text(offTime['Late_1']);
-                            $('.L23').text(offTime['Late_2']);
-                            $('.MS3').text(offTime['Miss']);
-                            $('.OW3').text(offTime['OffWork']);
-                        })
+                        } else {
+                            if (todayTime === currentTime) {
+                                total_day = currentDate;
+                            }
+                            if (currentTime <= todayTime) {
+                                for (let i = 1; i <= total_day; i++) {
+                                    let date = getFullDate(new Date(selectedDate).setDate(i));
+                                    addEvent(date);
+                                }
+                            }
+                        }
+                        calendar.addEventSource(eventSource);
+                        $('.E11').text(workTime['Early_1']);
+                        $('.E21').text(workTime['Early_2']);
+                        $('.OT1').text(workTime['OnTime']);
+                        $('.L11').text(workTime['Late_1']);
+                        $('.L21').text(workTime['Late_2']);
+                        $('.MS1').text(workTime['Miss']);
+                        $('.OW1').text(workTime['OffWork']);
+                        $('.E12').text(overTime['Early_1']);
+                        $('.E22').text(overTime['Early_2']);
+                        $('.OT2').text(overTime['OnTime']);
+                        $('.L12').text(overTime['Late_1']);
+                        $('.L22').text(overTime['Late_2']);
+                        $('.MS2').text(overTime['Miss']);
+                        $('.OW2').text(overTime['OffWork']);
+                        $('.E13').text(offTime['Early_1']);
+                        $('.E23').text(offTime['Early_2']);
+                        $('.OT3').text(offTime['OnTime']);
+                        $('.L13').text(offTime['Late_1']);
+                        $('.L23').text(offTime['Late_2']);
+                        $('.MS3').text(offTime['Miss']);
+                        $('.OW3').text(offTime['OffWork']);
+                    })
             }
 
             sl2.change(function () {
@@ -403,7 +403,7 @@
 
             function loadDate(date) {
                 let currentMonth = date.getMonth() + 1;
-                let currentYear = date.getFullYear();
+                let currentYear  = date.getFullYear();
                 sl1.val(currentYear).change();
                 sl2.val(currentMonth).change();
             }
@@ -414,15 +414,15 @@
             }
 
             function getLastDate(date) {
-                date  = new Date(date);
+                date        = new Date(date);
                 let lastDay = new Date(date.setMonth(date.getMonth() + 1));
                 return new Date(lastDay.setDate(0)).toISOString().slice(0, 10);
             }
 
             function getDayCount(date) {
-                date  = new Date(date);
+                date        = new Date(date);
                 let lastDay = new Date(date.setMonth(date.getMonth() + 1));
-                date  = new Date(lastDay.setDate(0));
+                date        = new Date(lastDay.setDate(0));
                 return new Date(date).getDate();
             }
 
@@ -551,5 +551,5 @@
                 }
             }
         });
-    </script>
+	</script>
 @endpush

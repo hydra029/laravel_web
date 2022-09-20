@@ -304,9 +304,12 @@
                             detail_salary.find(".detail-salary")
                                 .text(response['salary']['salary_money']);
                         }
+                        if(response['salary']['sign'] === 2) {
+                            btnConfirm.removeClass('d-none');
+                        }
                         if (month - 0 === currentMonth - 1 && year - 0 === currentYear) {
                             if (currentDate >= 15 && currentDate <= 25) {
-                                btnConfirm.removeClass('d-none');
+
                             }
                         }
                     }

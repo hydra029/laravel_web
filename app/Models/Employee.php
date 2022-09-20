@@ -197,7 +197,7 @@ class Employee extends Model implements Authenticatable
     public function roles(): BelongsTo
     {
         return $this->BelongsTo(Role::class,'role_id', 'id')
-            ->select(['id', 'name']);
+            ->select(['id', 'name','pay_rate']);
     }
 
     public function attendance(): HasMany

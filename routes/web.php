@@ -34,6 +34,7 @@ Route::group(['prefix' => 'employees', 'as' => 'employees.', 'middleware' => 'em
 	Route::post('get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
 	Route::get('personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
 	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
+	Route::post('/confirm_salary', [ApiController::class, 'confirmSalary'])->name('confirm_salary');
 });
 
 Route::group(['prefix' => 'managers', 'as' => 'managers.', 'middleware' => 'manager'], static function () {
@@ -57,7 +58,7 @@ Route::group(['prefix' => 'managers', 'as' => 'managers.', 'middleware' => 'mana
 	Route::get('/get_shift_time', [ApiController::class, 'getShiftTimes'])->name('get_shift_time');
 	Route::post('/get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
 	Route::get('/personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
-	Route::post('/confirm_salary', [EmployeeController::class, 'confirmSalary'])->name('confirm_salary');
+	Route::post('/confirm_salary', [ApiController::class, 'confirmSalary'])->name('confirm_salary');
 	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
 	Route::group(['middleware' => 'mgr_acct'], static function () {
 		Route::get('/sign_employee_salary', [ManagerController::class, 'signEmployeeSalary'])->name('sign_employee_salary');
@@ -85,6 +86,7 @@ Route::group(['prefix' => 'accountants', 'as' => 'accountants.', 'middleware' =>
 	Route::post('get_personal_salary', [ApiController::class, 'getPersonalSalary'])->name('get_personal_salary');
 	Route::get('/personal_information', [ApiController::class, 'personalInformation'])->name('personal_information');
 	Route::post('/update_information', [ApiController::class, 'updateInformation'])->name('update_information');
+	Route::post('/confirm_salary', [ApiController::class, 'confirmSalary'])->name('confirm_salary');
 });
 
 Route::group(['prefix' => 'ceo', 'as' => 'ceo.', 'middleware' => 'ceo'], static function () {

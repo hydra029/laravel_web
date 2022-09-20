@@ -56,12 +56,12 @@ class ApiController extends Controller
 		$data = Department::whereNull('deleted_at');
 		$type = $request->get('type');
 		if ($type === '3') {
-			$data = $data->where('id','=','1');
+			$data = $data->where('id', '=', '1');
 		} else if ($type === '2') {
 			$dept = Manager::whereNotNull('dept_id')->pluck('dept_id');
-			$data = $data->whereNotIn ('id', $dept);
+			$data = $data->whereNotIn('id', $dept);
 		} else {
-			$data = $data->where('id','<>','1');
+			$data = $data->where('id', '<>', '1');
 		}
 		return $data->get(['id', 'name']);
 	}
@@ -70,7 +70,7 @@ class ApiController extends Controller
 	{
 		$type = $request->get('type');
 		$data = Role::whereNull('deleted_at')
-		->where('dept_id', '=', $request->get('dept_id'));
+			->where('dept_id', '=', $request->get('dept_id'));
 		if ($type !== '2') {
 			$data = $data->where('name', '<>', 'Manager');
 		} else {
@@ -93,16 +93,18 @@ class ApiController extends Controller
 			->where('year', '=', $year)
 			->where('dept_name', '=', $dept_name)
 			->where('role_name', '=', $role_name)
-			->where('sign', '=', SignEnum::CEO_SIGNED)
 			->first();
-		if ($salary === null) {
-			return 0;
+
+		if ($salary) {
+			if ($salary['sign'] === 2 || $salary['sign'] === 3) {
+				$salary
+					->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_off_work_day', 'bonus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_off_work_day', 'pay_rate_work_day'])->toArray();
+				$arr['salary'] = $salary;
+				$arr['fines']  = $fines;
+				return $arr;
+			}
 		}
-		$salary
-			->append(['salary_money', 'deduction_detail', 'pay_rate_money', 'bonus_salary_off_work_day', 'bonus_salary_over_work_day', 'deduction_late_one_detail', 'deduction_late_two_detail', 'deduction_early_one_detail', 'deduction_early_two_detail', 'deduction_miss_detail', 'pay_rate_over_work_day', 'pay_rate_off_work_day', 'pay_rate_work_day'])->toArray();
-		$arr['salary'] = $salary;
-		$arr['fines']  = $fines;
-		return $arr;
+		return 0;
 	}
 
 	public function confirmSalary(): int

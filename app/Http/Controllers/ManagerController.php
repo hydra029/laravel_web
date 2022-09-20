@@ -315,6 +315,8 @@ class ManagerController extends Controller
 		return $this->successResponse($arr);
 	}
 
+
+
 	public function salaryDetail(Request $request): array
 	{
 		$id        = $request->id;

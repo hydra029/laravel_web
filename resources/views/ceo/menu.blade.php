@@ -12,12 +12,6 @@
         </a>
     </li>
     <li class="side-nav-item">
-        <a href="{{route('ceo.department')}}" class="side-nav-link">
-            <i class="uil-briefcase-alt"></i>
-            <span> Department </span>
-        </a>
-    </li>
-    <li class="side-nav-item">
         <a href="{{route('ceo.employee_salary')}}" class="side-nav-link">
             <i class="uil-calendar-alt"></i>
             <span> Employee Salary </span>

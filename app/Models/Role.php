@@ -55,5 +55,4 @@ class Role extends Model
 		return $this->BelongsTo(Department::class, 'dept_id', 'id')
 			->select(['id', 'name']);
 	}
-
 }

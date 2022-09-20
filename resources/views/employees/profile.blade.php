@@ -270,15 +270,15 @@
                 $.ajax({
                     type    : "post",
                     url     : "{{ route('employees.update_information') }}",
-                    dataType: 'json',
+                    dataType: 'text',
                     data    : data,
                 })
                     .done(function (response) {
-                        btnSave.addClass('d-none');
+                        notifySuccess(response);
+                        $('.disabled').prop('disabled', true);
                         $('.input-group-append').removeClass('d-none');
                         btnChange.removeClass('d-none');
-                        $('.disabled').prop('disabled', true);
-                        notifySuccess(response);
+                        btnSave.addClass('d-none');
                     })
             })
 

@@ -187,7 +187,7 @@ class Accountant extends Model
     public function roles(): BelongsTo
     {
         return $this->BelongsTo(Role::class, 'role_id', 'id')
-            ->select(['id', 'name']);
+            ->select(['id', 'name','pay_rate']);
     }
 
     public function attendance(): HasMany
@@ -195,6 +195,4 @@ class Accountant extends Model
         return $this->HasMany(Attendance::class, 'emp_id', 'id')
             ->where('emp_role', '=', 3);
     }
-
-	public $timestamps = true;
 }

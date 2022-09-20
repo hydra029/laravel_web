@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SignEnum;
 use App\Models\Department;
 use App\Models\Fines;
 use App\Models\Salary;
@@ -41,7 +42,8 @@ class SalaryController extends Controller
 		$salary        = Salary::with('emp')
 			->where('month', $month)
 			->where('year', $year)
-			->whereNotNull('acct_id');
+			->whereNotNull('acct_id')
+			->whereNotNull('sign');
 		if ($department_id !== 'all') {
 			$dept_name = Department::whereNull('deleted_at')
 				->where('id', '=', $department_id)
