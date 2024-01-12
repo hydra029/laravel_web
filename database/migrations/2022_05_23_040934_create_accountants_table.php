@@ -31,7 +31,6 @@ class CreateAccountantsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 		});
-		Department::foreign('acct_id')->references('id')->on('accountants');
 	}
 
 	/**
